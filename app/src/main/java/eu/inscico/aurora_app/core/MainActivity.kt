@@ -1,4 +1,4 @@
-package eu.inscico.aurora_app
+package eu.inscico.aurora_app.core
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import eu.inscico.aurora_app.ui.AuroraApp
 import eu.inscico.aurora_app.ui.theme.AURORAEnergyTrackerTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,13 +18,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AURORAEnergyTrackerTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }
+                AuroraApp()
             }
         }
     }

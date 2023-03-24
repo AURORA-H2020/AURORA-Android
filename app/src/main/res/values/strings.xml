@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">AURORA Energy Tracker</string>
+    <string name="app_name" translatable="false">AURORA Energy Tracker</string>
+
+    <string name="bottom_bar_tab_home">Home</string>
+    <string name="bottom_bar_tab_photovoltaic">Photovoltaic</string>
+    <string name="bottom_bar_tab_settings">Settings</string>
+
+    <!-- General -->
+    <string name="cancel">cancel</string>
 </resources>
