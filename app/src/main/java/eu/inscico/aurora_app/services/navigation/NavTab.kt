@@ -10,10 +10,10 @@ sealed class NavTab(
     @DrawableRes val iconRes: Int
 ) {
 
-    object Home : NavTab("tab-home", R.string.bottom_bar_tab_home, R.drawable.outline_space_dashboard_24)
+    object Home : NavTab("tab-home", R.string.bottom_bar_tab_home, R.drawable.baseline_pie_chart_24)
 
-    object Photovoltaic : NavTab("tab-photovoltaic", R.string.bottom_bar_tab_photovoltaic, R.drawable.outline_solar_power_24)
+    object Photovoltaic : NavTab("tab-photovoltaic", R.string.bottom_bar_tab_photovoltaic, R.drawable.baseline_solar_power_24)
 
-    object Settings : NavTab("tab-settings", R.string.bottom_bar_tab_settings, R.drawable.outline_settings_24)
+    object Settings : NavTab("tab-settings", R.string.bottom_bar_tab_settings, R.drawable.baseline_settings_24)
 
 }

@@ -3,8 +3,10 @@ package eu.inscico.aurora_app.services.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.*
 import eu.inscico.aurora_app.ui.screens.home.HomeScreen
-import eu.inscico.aurora_app.ui.screens.login.LoginScreen
+import eu.inscico.aurora_app.ui.screens.login.CreateProfileScreen
+import eu.inscico.aurora_app.ui.screens.login.AuthScreen
 import eu.inscico.aurora_app.ui.screens.photovoltaic.PhotovoltaicCalculatorScreen
+import eu.inscico.aurora_app.ui.screens.settings.EditProfileScreen
 import eu.inscico.aurora_app.ui.screens.settings.SettingsScreen
 
 sealed class NavGraphDirections(
@@ -29,7 +31,18 @@ sealed class NavGraphDirections(
     object Login : NavGraphDirections(
         route = "login",
         content = {
-            LoginScreen()
+            AuthScreen()
+        }
+    ) {
+        fun getNavRoute(): String {
+            return route
+        }
+    }
+
+    object CreateProfile : NavGraphDirections(
+        route = "create_profile",
+        content = {
+            CreateProfileScreen()
         }
     ) {
         fun getNavRoute(): String {
@@ -79,6 +92,17 @@ sealed class NavGraphDirections(
         route = "settings",
         content = {
             SettingsScreen()
+        }
+    ) {
+        fun getNavRoute(): String {
+            return route
+        }
+    }
+
+    object EditProfile : NavGraphDirections(
+        route = "editProfile",
+        content = {
+            EditProfileScreen()
         }
     ) {
         fun getNavRoute(): String {

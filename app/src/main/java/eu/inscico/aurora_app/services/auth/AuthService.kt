@@ -1,0 +1,140 @@
+package eu.inscico.aurora_app.services.auth
+
+import android.app.Activity
+import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
+import eu.inscico.aurora_app.R
+import eu.inscico.aurora_app.services.UserService
+import eu.inscico.aurora_app.utils.PrefsUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
+
+class AuthService(
+    private val context: Context,
+    private val _firebaseAuth: FirebaseAuth,
+    private val _firestore: FirebaseFirestore,
+    private val _userService: UserService
+) {
+
+    var wasLoggedIn: Boolean
+        get() {
+            return PrefsUtils.get(context, "wasLoggedIn", false)
+        }
+        set(value) {
+            PrefsUtils.save(context, "wasLoggedIn", value)
+        }
+
+    var currentFirebaseUser: FirebaseUser?
+        get() {
+            return _currentFirebaseUserLive.value
+        }
+        set(value) {
+            _currentFirebaseUserLive.value = value
+        }
+    private var _currentFirebaseUserLive: MutableLiveData<FirebaseUser?> = MutableLiveData()
+    val currentFirebaseUserLive: LiveData<FirebaseUser?> = _currentFirebaseUserLive
+
+    private var _isAuthenticatedLive = MutableLiveData(
+        wasLoggedIn
+    )
+
+    var googleAccount: GoogleSignInAccount? = null
+
+    val isAuthenticatedLive: LiveData<Boolean> = _isAuthenticatedLive
+    var isAuthenticated: Boolean
+        private set(value) {
+            _isAuthenticatedLive.postValue(value)
+        }
+        get() {
+            return _isAuthenticatedLive.value ?: false
+        }
+
+    init {
+        _firebaseAuth.addAuthStateListener {
+            val authenticated = it.currentUser != null
+            if (authenticated) {
+                wasLoggedIn = true
+                isAuthenticated = true
+                currentFirebaseUser = _firebaseAuth.currentUser
+                loadUser(it.currentUser?.uid ?: "")
+
+            } else {
+                wasLoggedIn = false
+                isAuthenticated = false
+                currentFirebaseUser = null
+            }
+
+        }
+    }
+
+    fun loginWithGoogle(activity: Activity) {
+
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(activity.applicationContext.getString(R.string.google_auth_server_client_id))
+            .requestEmail()
+            .build()
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        val mGoogleSignInClient = GoogleSignIn.getClient(activity, gso);
+
+        val signInIntent = mGoogleSignInClient.signInIntent
+        activity.startActivityForResult(signInIntent, 62443)
+
+    }
+
+    fun getLastNameFromGoogle(): String? {
+        return googleAccount?.familyName
+    }
+
+    fun getFirstNameFromGoogle(): String? {
+        return googleAccount?.givenName
+    }
+
+    private fun isUserProfileCreated(): LiveData<Boolean> {
+        return _userService.isUserProfileCreatedLive
+    }
+
+    fun loadUser(authId: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            _userService.getUserByAuthId(authId)
+        }
+    }
+
+    fun googleSignOut(activity: Activity){
+
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(activity.applicationContext.getString(R.string.google_auth_server_client_id))
+            .requestEmail()
+            .build()
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        val mGoogleSignInClient = GoogleSignIn.getClient(activity, gso);
+        mGoogleSignInClient.signOut()
+            .addOnCompleteListener(activity, OnCompleteListener<Void?> {
+               logout()
+            })
+    }
+
+    fun logout(){
+        _firebaseAuth.signOut()
+        googleAccount = null
+        wasLoggedIn = false
+        currentFirebaseUser = null
+        isAuthenticated = false
+        _userService.logout()
+    }
+}

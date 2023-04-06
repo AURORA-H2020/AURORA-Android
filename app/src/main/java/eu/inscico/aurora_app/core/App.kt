@@ -2,6 +2,7 @@ package eu.inscico.aurora_app.core
 
 import android.app.Application
 import eu.inscico.aurora_app.core.koin.servicesModule
+import eu.inscico.aurora_app.core.koin.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -20,7 +21,7 @@ class App : Application() {
         startKoin{
             androidLogger(Level.ERROR)
             androidContext(this@App)
-            modules(servicesModule)
+            modules(servicesModule, viewModelModule)
         }
     }
 

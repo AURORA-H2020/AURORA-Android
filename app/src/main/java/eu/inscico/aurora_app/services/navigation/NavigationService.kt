@@ -54,4 +54,14 @@ class NavigationService {
             }
         }
     }
+
+    fun toCreateProfile() {
+        val navDirection = NavGraphDirections.CreateProfile.getNavRoute()
+        navControllerApp?.navigate(navDirection)
+    }
+
+    fun toEditProfile() {
+        val navDirection = NavGraphDirections.EditProfile.getNavRoute()
+        navControllerApp?.navigate(navDirection)
+    }
 }
