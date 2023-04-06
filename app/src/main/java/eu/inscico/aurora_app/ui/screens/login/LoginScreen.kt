@@ -23,13 +23,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
+import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.ui.components.SignInButton
+import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel = koinViewModel()
+    viewModel: LoginViewModel = koinViewModel(),
+    navigationService: NavigationService = get()
 ) {
 
     val context = LocalContext.current
@@ -154,7 +157,7 @@ fun LoginScreen(
                         icon = painterResource(id = R.drawable.baseline_email_24),
                         iconColor = MaterialTheme.colorScheme.primary,
                         onClick = {
-                            //onClick()
+                            navigationService.toSignInWithEmail()
                         }
                     )
 

@@ -64,4 +64,9 @@ class NavigationService {
         val navDirection = NavGraphDirections.EditProfile.getNavRoute()
         navControllerApp?.navigate(navDirection)
     }
+
+    fun toSignInWithEmail(){
+        val navDirection = NavGraphDirections.SignInWithEmail.getNavRoute()
+        navControllerAuth?.navigate(navDirection)
+    }
 }
