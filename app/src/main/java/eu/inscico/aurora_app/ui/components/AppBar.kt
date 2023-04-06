@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -29,13 +30,31 @@ fun AppBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(4.dp, 8.dp, 4.dp, 8.dp).background(MaterialTheme.colorScheme.surface),
+            .padding(4.dp, 46.dp, 4.dp, 0.dp).background(MaterialTheme.colorScheme.surface),
         verticalAlignment = Alignment.Bottom,
     ) {
 
 
+        if(hasBackNavigation) {
+            Column(content = {
+                Image(
+                    painter = painterResource(id = eu.inscico.aurora_app.R.drawable.baseline_arrow_back_24),
+                    modifier = Modifier
+                        .height(48.dp)
+                        .width(48.dp)
+                        .padding(7.dp)
+                        .clickable{
+                            callback?.invoke()
+                        },
+                    contentDescription = "",
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
+                )
+            })
+        }
+
+
         // add title or logo
-        Row(modifier = Modifier.padding(12.dp, 16.dp, 16.dp, 10.dp)) {
+        Row(modifier = Modifier.padding(7.dp)) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.headlineLarge,
@@ -47,19 +66,6 @@ fun AppBar(
                 color = MaterialTheme.colorScheme.primary
             )
         }
-
-
-        if(hasBackNavigation) {
-                Column(content = {
-                    Image(
-                        painter = painterResource(id = eu.inscico.aurora_app.R.drawable.baseline_arrow_back_24),
-                        modifier = Modifier
-                            .height(44.dp)
-                            .padding(7.dp, 11.dp, 7.dp, 11.dp),
-                        contentDescription = ""
-                    )
-                })
-            }
 
             if(actionButton != null){
                 Column(content = actionButton, modifier = Modifier.clickable {
