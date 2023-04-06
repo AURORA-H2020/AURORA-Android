@@ -6,6 +6,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import eu.inscico.aurora_app.ui.theme.AURORAEnergyTrackerTheme
 
 @Composable
 fun AuroraScaffold(
@@ -17,13 +18,16 @@ fun AuroraScaffold(
     floatingActionButtonPosition: FabPosition = FabPosition.End,
     content: @Composable ((PaddingValues) -> Unit) = {}
 ){
-    Scaffold(
-        modifier = modifier,
-        topBar = topBar,
-        bottomBar = bottomBar,
-        floatingActionButton = floatingActionButton,
-        floatingActionButtonPosition = floatingActionButtonPosition,
-        snackbarHost = snackBarHost,
-        content = content,
-    )
+
+    AURORAEnergyTrackerTheme() {
+        Scaffold(
+            modifier = modifier,
+            topBar = topBar,
+            bottomBar = bottomBar,
+            floatingActionButton = floatingActionButton,
+            floatingActionButtonPosition = floatingActionButtonPosition,
+            snackbarHost = snackBarHost,
+            content = content,
+        )
+    }
 }

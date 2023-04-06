@@ -1,21 +1,37 @@
 package eu.inscico.aurora_app.ui.theme
 
+import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 
-private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200
+private val DarkColorPalette = darkColorScheme(
+    primary = primaryLight,
+    secondary = primaryDark,
+    background = backgroundColorDark,
+    onSecondary = whiteMediumEmphasis,
+    surface = surfacesDarkTheme,
+    onBackground = outlineVariantDark,
+    error = error,
+    tertiary = tertiary
 )
 
-private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
+private val LightColorPalette = lightColorScheme(
+    primary = primary,
+    secondary = primaryLight,
+    background = backgroundColorLight,
+    onSecondary = blackMediumEmphasis,
+    surface = surfacesLightTheme,
+    onBackground = outlineVariantLight,
+    error = error,
+    tertiary = tertiary,
+    outlineVariant = dividerLight
 
     /* Other default colors to override
     background = Color.White,
@@ -32,16 +48,28 @@ fun AURORAEnergyTrackerTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colors = if (darkTheme) {
+    val colorscheme = if (darkTheme) {
         DarkColorPalette
     } else {
         LightColorPalette
     }
 
+    val colorScheme = colorscheme
+
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as Activity).window
+            window.statusBarColor = colorScheme.primary.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+        }
+    }
+
+
     MaterialTheme(
-        colors = colors,
-        typography = Typography,
-        shapes = Shapes,
+        colorScheme = colorScheme,
+        typography = MaterialTheme.typography,
+        shapes = MaterialTheme.shapes,
         content = content
     )
 }

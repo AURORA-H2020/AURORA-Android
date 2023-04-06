@@ -1,10 +1,61 @@
 <resources>
     <string name="app_name" translatable="false">AURORA Energy Tracker</string>
+    <string name="google_auth_server_client_id" translatable="false">388054164645-sts6oh4kjnpb99onqdp62cpn964nhl9t.apps.googleusercontent.com</string>
 
     <string name="bottom_bar_tab_home">Home</string>
     <string name="bottom_bar_tab_photovoltaic">Photovoltaic</string>
     <string name="bottom_bar_tab_settings">Settings</string>
 
     <!-- General -->
-    <string name="cancel">cancel</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Login/Create Profile -->
+    <string name="login_aurora_title">Welcome to AURORA</string>
+    <string name="login_aurora_description">Empowering a new generation of near zero-emission citizens</string>
+    <string name="login_google_sign_in_button_text">Sign in with Goolge</string>
+    <string name="login_apple_sign_in_button_text">Sign in with Apple</string>
+    <string name="login_email_sign_in_button_text">Sign in with Email</string>
+    <string name="login_sign_in_button_loading_text">Signing in …</string>
+
+    <string name="create_profile_title">Create your profile</string>
+    <string name="profile_title">Profile</string>
+    <string name="logout_button_title">Logout</string>
+    <string name="create_profile_country_title">Country</string>
+    <string name="create_profile_first_name_hint">First name</string>
+    <string name="create_profile_last_name_hint">Last name</string>
+    <string name="create_profile_year_of_birth_hint">Birth year</string>
+    <string name="create_profile_gender_hint">Gender</string>
+    <string name="create_profile_city_hint">City</string>
+    <string name="create_profile_description">Enter your information to create your personal AURORA profile.</string>
+    <string name="create_profile_drop_down_prefer_not_to_say">Prefer not to say</string>
+    <string name="create_profile_drop_down_please_choose">Please choose</string>
+    <string name="create_profile_city_drop_down_other_city">Other city</string>
+    <string name="create_profile_country_selection_info">This information helps us to more accurately calculate your carbon footprint. Please note that you can\'t change your country later.</string>
+    <string name="profile_gender_male">male</string>
+    <string name="profile_gender_female">female</string>
+    <string name="profile_gender_non_binary">non binary</string>
+    <string name="profile_gender_generic">prefer not to say</string>
+    <string name="profile_submit">Submit</string>
+
+    <!-- Settings -->
+    <string name="settings_app_bar_title">Settings</string>
+    <string name="settings_profile_section_title">Account</string>
+    <string name="settings_profile_edit_profile_title">Edit profile </string>
+    <string name="settings_profile_logout_title">Logout</string>
+    <string name="settings_notifications_section_title">Notifications</string>
+    <string name="settings_notifications_electricity_bill_reminder_title">Electricity bill reminder</string>
+    <string name="settings_notifications_heating_bill_reminder_title">Heating bill reminder</string>
+    <string name="settings_notifications_mobility_reminder_title">Mobility reminder</string>
+    <string name="settings_data_privacy_section_title">Data privacy</string>
+    <string name="settings_data_privacy_download_data_title">Download my data</string>
+    <string name="settings_data_privacy_delete_account_title">Delete my account</string>
+    <string name="settings_legal_information_section_title">Legal information</string>
+    <string name="settings_legal_information_feature_preview_title">Feature preview</string>
+    <string name="settings_legal_information_imprint_title">Imprint</string>
+    <string name="settings_legal_information_privacy_policy_title">Privacy policy</string>
+    <string name="settings_legal_information_licenses_title">Licenses</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_settings_logout_title">Are you sure you want to logout?</string>
+
 </resources>
