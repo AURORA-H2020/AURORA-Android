@@ -55,9 +55,14 @@ class NavigationService {
         }
     }
 
+    fun toLogin() {
+        val navDirection = NavGraphDirections.Login.getNavRoute()
+        navControllerAuth?.navigate(navDirection)
+    }
+
     fun toCreateProfile() {
         val navDirection = NavGraphDirections.CreateProfile.getNavRoute()
-        navControllerApp?.navigate(navDirection)
+        navControllerAuth?.navigate(navDirection)
     }
 
     fun toEditProfile() {

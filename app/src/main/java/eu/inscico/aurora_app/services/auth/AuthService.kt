@@ -14,9 +14,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.services.UserService
 import eu.inscico.aurora_app.utils.PrefsUtils
+import eu.inscico.aurora_app.utils.TypedResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 
 class AuthService(
@@ -48,8 +50,6 @@ class AuthService(
         wasLoggedIn
     )
 
-    var googleAccount: GoogleSignInAccount? = null
-
     val isAuthenticatedLive: LiveData<Boolean> = _isAuthenticatedLive
     var isAuthenticated: Boolean
         private set(value) {
@@ -58,6 +58,8 @@ class AuthService(
         get() {
             return _isAuthenticatedLive.value ?: false
         }
+
+    var googleAccount: GoogleSignInAccount? = null
 
     init {
         _firebaseAuth.addAuthStateListener {
@@ -76,6 +78,24 @@ class AuthService(
 
         }
     }
+
+    fun loadUser(authId: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            _userService.getUserByAuthId(authId)
+        }
+    }
+
+    fun logout(){
+        _firebaseAuth.signOut()
+        googleAccount = null
+        wasLoggedIn = false
+        currentFirebaseUser = null
+        isAuthenticated = false
+        _userService.logout()
+    }
+
+    // region: Google
+    // ---------------------------------------------------------------------------------------------
 
     fun loginWithGoogle(activity: Activity) {
 
@@ -102,16 +122,6 @@ class AuthService(
         return googleAccount?.givenName
     }
 
-    private fun isUserProfileCreated(): LiveData<Boolean> {
-        return _userService.isUserProfileCreatedLive
-    }
-
-    fun loadUser(authId: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            _userService.getUserByAuthId(authId)
-        }
-    }
-
     fun googleSignOut(activity: Activity){
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -125,16 +135,39 @@ class AuthService(
         val mGoogleSignInClient = GoogleSignIn.getClient(activity, gso);
         mGoogleSignInClient.signOut()
             .addOnCompleteListener(activity, OnCompleteListener<Void?> {
-               logout()
+                logout()
             })
     }
 
-    fun logout(){
-        _firebaseAuth.signOut()
-        googleAccount = null
-        wasLoggedIn = false
-        currentFirebaseUser = null
-        isAuthenticated = false
-        _userService.logout()
+    // endregion
+
+    // region: Email
+    // ---------------------------------------------------------------------------------------------
+    suspend fun registerWithEmailAndPassword(email: String, password: String): TypedResult<Boolean, String> {
+        return try {
+            val result = _firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+            if(result.user != null){
+                TypedResult.Success(true)
+            } else {
+                TypedResult.Success(false)
+            }
+        } catch (e: Exception) {
+            TypedResult.Failure("error")
+        }
     }
+
+    suspend fun loginWithEmailAndPassword(email: String, password: String): TypedResult<Boolean, String> {
+        return try {
+            val result = _firebaseAuth.signInWithEmailAndPassword(email, password).await()
+            if(result.user != null){
+            TypedResult.Success(true)
+            } else {
+                TypedResult.Success(false)
+            }
+        } catch (e: Exception) {
+            TypedResult.Failure("${e.message}")
+        }
+    }
+
+    // endregion
 }

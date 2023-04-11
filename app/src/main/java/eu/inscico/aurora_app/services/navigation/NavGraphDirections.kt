@@ -5,6 +5,7 @@ import androidx.navigation.*
 import eu.inscico.aurora_app.ui.screens.home.HomeScreen
 import eu.inscico.aurora_app.ui.screens.login.CreateProfileScreen
 import eu.inscico.aurora_app.ui.screens.login.AuthScreen
+import eu.inscico.aurora_app.ui.screens.login.LoginScreen
 import eu.inscico.aurora_app.ui.screens.login.SignInWithEmailScreen
 import eu.inscico.aurora_app.ui.screens.photovoltaic.PhotovoltaicCalculatorScreen
 import eu.inscico.aurora_app.ui.screens.settings.EditProfileScreen
@@ -29,10 +30,21 @@ sealed class NavGraphDirections(
     // region: Login
     // ---------------------------------------------------------------------------------------------
 
+    object Auth : NavGraphDirections(
+        route = "auth",
+        content = {
+            AuthScreen()
+        }
+    ) {
+        fun getNavRoute(): String {
+            return route
+        }
+    }
+
     object Login : NavGraphDirections(
         route = "login",
         content = {
-            AuthScreen()
+            LoginScreen()
         }
     ) {
         fun getNavRoute(): String {

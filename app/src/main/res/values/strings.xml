@@ -36,6 +36,17 @@
     <string name="profile_gender_non_binary">non binary</string>
     <string name="profile_gender_generic">prefer not to say</string>
     <string name="profile_submit">Submit</string>
+    <string name="sign_in_with_email_tab_bar_login">Login</string>
+    <string name="sign_in_with_email_tab_bar_register">Register</string>
+    <string name="sign_in_with_email_tab_login_forgot_password_title">Forgot password</string>
+    <string name="sign_in_with_email_email_title">Email</string>
+    <string name="sign_in_with_email_password_title">Password</string>
+    <string name="sign_in_with_email_password_confirm_title">Password confirm</string>
+    <string name="sign_in_with_email_tab_register_password_requirement_at_least_eight_chars">- At least 8 characters.</string>
+    <string name="sign_in_with_email_tab_register_password_requirement_at_least_one_letter">- At least one letter.</string>
+    <string name="sign_in_with_email_tab_register_password_requirement_at_least_one_number">- At least one number.</string>
+    <string name="sign_in_with_email_tab_register_password_requirement_at_least_one_uppercase_letter">- At least one uppercase letter.</string>
+    <string name="sign_in_with_email_tab_register_password_confirmation_doesnt_match">- Password confirmation does not match.</string>
 
     <!-- Settings -->
     <string name="settings_app_bar_title">Settings</string>

@@ -59,9 +59,6 @@ fun AuroraApp(
     val keyboardState by keyboardAsState()
     val isKeyboardOpen = keyboardState == KeyboardState.Opened
 
-    val isAuthenticatedState =
-        authService.isAuthenticatedLive.observeAsState(authService.isAuthenticated)
-
     AURORAEnergyTrackerTheme {
         val navControllerApp = rememberNavController()
         navigationService.navControllerApp = navControllerApp
@@ -73,13 +70,14 @@ fun AuroraApp(
         navigationService.navControllerTabs = navControllerTabs
 
         val user = userService.userLive.observeAsState()
+        val firebaseUser = authService.currentFirebaseUserLive.observeAsState()
 
         NavHost(navController = navControllerApp, startDestination = "app") {
             composable("app") {
                 AuroraScaffold(
                     snackBarHost = {},
                     bottomBar = {
-                        if (user.value != null && isAuthenticatedState.value && !isKeyboardOpen) {
+                        if (user.value != null && firebaseUser.value != null) {
                             NavigationBar(
                                 modifier = Modifier.background(MaterialTheme.colorScheme.surface),
                                 containerColor = MaterialTheme.colorScheme.surface,
@@ -127,10 +125,7 @@ fun AuroraApp(
                         }
                     }
                 ) { innerPadding ->
-
-                    Log.d("AuthHelp", "user not null, ${user.value != null}")
                     if (user.value != null) {
-                        Log.d("AuthHelp", "navHost tabs")
                         // Tabs NavHost
                         NavHost(
                             navController = navControllerTabs,
@@ -141,17 +136,9 @@ fun AuroraApp(
                         }
                     } else {
                         // Auth NavHost
-                        //val isAuthenticated = authService.isAuthenticatedLive.observeAsState()
-                        //Log.d("AuthHelp", "is authenticated ${isAuthenticated.value}")
-
                         NavHost(
                             navController = navControllerAuth,
-                            startDestination = //if (isAuthenticated.value == true) {
-                                //NavGraphDirections.CreateProfile.getNavRoute()
-                            //} else {
-                                NavGraphDirections.Login.getNavRoute()
-                            //}
-                    ,
+                            startDestination = NavGraphDirections.Auth.getNavRoute(),
                             modifier = Modifier.padding(innerPadding)
                         ) {
                             NavUtils.getNavGraph(this)

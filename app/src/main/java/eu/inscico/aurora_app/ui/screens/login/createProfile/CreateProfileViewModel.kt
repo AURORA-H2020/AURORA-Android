@@ -1,8 +1,7 @@
-package eu.inscico.aurora_app.ui.screens.login
+package eu.inscico.aurora_app.ui.screens.login.createProfile
 
 import androidx.lifecycle.ViewModel
 import eu.inscico.aurora_app.model.Gender
-import eu.inscico.aurora_app.model.User
 import eu.inscico.aurora_app.model.UserResponse
 import eu.inscico.aurora_app.services.CountriesService
 import eu.inscico.aurora_app.services.UserService
