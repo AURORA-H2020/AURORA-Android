@@ -6,6 +6,7 @@ import eu.inscico.aurora_app.model.UserResponse
 import eu.inscico.aurora_app.services.CountriesService
 import eu.inscico.aurora_app.services.UserService
 import eu.inscico.aurora_app.services.auth.AuthService
+import eu.inscico.aurora_app.utils.TypedResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -56,10 +57,8 @@ class CreateProfileViewModel(
         return _authService.getLastNameFromGoogle()
     }
 
-    fun createUser(user: UserResponse){
-        CoroutineScope(Dispatchers.IO).launch {
-            _userService.createUser(user)
-        }
+    suspend fun createUser(user: UserResponse): TypedResult<Boolean, String>{
+            return _userService.createUser(user)
     }
 
 }

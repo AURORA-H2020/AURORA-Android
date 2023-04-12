@@ -3,7 +3,7 @@ package eu.inscico.aurora_app.services.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.*
 import eu.inscico.aurora_app.ui.screens.home.HomeScreen
-import eu.inscico.aurora_app.ui.screens.login.CreateProfileScreen
+import eu.inscico.aurora_app.ui.screens.login.createProfile.CreateProfileScreen
 import eu.inscico.aurora_app.ui.screens.login.AuthScreen
 import eu.inscico.aurora_app.ui.screens.login.LoginScreen
 import eu.inscico.aurora_app.ui.screens.login.SignInWithEmailScreen

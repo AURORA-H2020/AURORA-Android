@@ -1,4 +1,4 @@
-package eu.inscico.aurora_app.ui.screens.login
+package eu.inscico.aurora_app.ui.screens.login.createProfile
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -24,16 +24,24 @@ import eu.inscico.aurora_app.model.City
 import eu.inscico.aurora_app.model.Gender
 import eu.inscico.aurora_app.model.Gender.Companion.toGenderString
 import eu.inscico.aurora_app.model.UserResponse
+import eu.inscico.aurora_app.services.navigation.NavGraphDirections
+import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.ui.components.AppBar
 import eu.inscico.aurora_app.ui.components.FormEntry
 import eu.inscico.aurora_app.ui.components.FormEntryType
-import eu.inscico.aurora_app.ui.screens.login.createProfile.CreateProfileViewModel
 import eu.inscico.aurora_app.ui.theme.primary
+import eu.inscico.aurora_app.utils.TypedResult
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CreateProfileScreen(
-    viewModel: CreateProfileViewModel = koinViewModel()
+    viewModel: CreateProfileViewModel = koinViewModel(),
+    navigationService: NavigationService = get()
 ) {
 
     val countries = viewModel.countries.observeAsState()
@@ -234,7 +242,19 @@ fun CreateProfileScreen(
                             gender = Gender.parseGenderToString(gender.value),
                             yearOfBirth = birthYear.value.toIntOrNull()
                         )
-                        viewModel.createUser(user)
+                        CoroutineScope(Dispatchers.IO).launch {
+                        val result = viewModel.createUser(user)
+                            when(result){
+                                is TypedResult.Failure -> {
+                                    // TODO:
+                                }
+                                is TypedResult.Success -> {
+                                    withContext(Dispatchers.Main){
+                                        navigationService.navControllerAuth?.popBackStack(route = NavGraphDirections.Auth.getNavRoute(), inclusive = false )
+                                    }
+                                }
+                            }
+                        }
                     }
                 }) {
                 Text(

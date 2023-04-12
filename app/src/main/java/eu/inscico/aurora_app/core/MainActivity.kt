@@ -4,9 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
@@ -15,12 +12,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import eu.inscico.aurora_app.services.UserService
 import eu.inscico.aurora_app.services.auth.AuthService
+import eu.inscico.aurora_app.services.auth.AuthService.Companion.GOOGLE_LOGIN_RESULT_CODE
+import eu.inscico.aurora_app.services.navigation.NavGraphDirections
+import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.ui.AuroraApp
-import eu.inscico.aurora_app.ui.screens.login.CreateProfileScreen
 import eu.inscico.aurora_app.ui.theme.AURORAEnergyTrackerTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 
 
@@ -29,6 +29,7 @@ class MainActivity : ComponentActivity() {
     private val _authService: AuthService by inject()
     private val _userService: UserService by inject()
     private val _firebaseAuth: FirebaseAuth by inject()
+    private val _navigationService: NavigationService by inject()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -41,6 +42,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
+
+        // check google sign in active
         val account = GoogleSignIn.getLastSignedInAccount(this)
         _authService.googleAccount = account
     }
@@ -49,11 +52,10 @@ class MainActivity : ComponentActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
-            62443 -> {
+            GOOGLE_LOGIN_RESULT_CODE -> {
                 try {
-                    val task: Task<GoogleSignInAccount> =
-                        GoogleSignIn.getSignedInAccountFromIntent(data)
-                    handleSignInResult(task)
+                    val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+                    handleGoogleSignInResult(task)
                 } catch (e: ApiException) {
                     // ...
                 }
@@ -61,7 +63,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+    private fun handleGoogleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account: GoogleSignInAccount = completedTask.getResult(ApiException::class.java)
             _authService.googleAccount = account
@@ -70,12 +72,7 @@ class MainActivity : ComponentActivity() {
             _firebaseAuth.signInWithCredential(firebaseCredential)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        CoroutineScope(Dispatchers.IO).launch {
-                            val authId = task.result.user?.uid
-                            if(authId != null){
-                                _userService.getUserByAuthId(authId)
-                            }
-                        }
+                        _navigationService.navControllerAuth?.popBackStack(route = NavGraphDirections.Auth.getNavRoute(), inclusive = false)
                     } else {
                         // If sign in fails, display a message to the user.
 

@@ -16,21 +16,18 @@ fun AuthScreen(
     viewModel: LoginViewModel = koinViewModel(),
     navigationService: NavigationService = get(),
     authService: AuthService = get()
-){
+) {
 
     val showCreateProfileScreen = remember {
         mutableStateOf(false)
     }
 
-    val helpLive = authService.helpLive.observeAsState()
-    Log.d("authscreenhelp", "${helpLive.value}")
-
     val currentFirebaseUser = viewModel.currentFirebaseUser.observeAsState()
 
-    LaunchedEffect(currentFirebaseUser) {
-        if(currentFirebaseUser.value != null){
+    LaunchedEffect(Unit) {
+        if (currentFirebaseUser.value != null) {
             val authId = currentFirebaseUser.value?.uid
-            if(authId != null){
+            if(authId != null) {
                 val result = viewModel.loadUser(authId)
                 when (result) {
                     is TypedResult.Success -> {
@@ -40,15 +37,25 @@ fun AuthScreen(
                         showCreateProfileScreen.value = result.reason
                     }
                 }
+            } else {
+                showCreateProfileScreen.value = false
             }
         }
     }
 
-    if(helpLive.value == true){
-        navigationService.navControllerAuth?.popBackStack(route = NavGraphDirections.Auth.getNavRoute(), inclusive = false)
-        navigationService.toCreateProfile()//CreateProfileScreen()
+    if (currentFirebaseUser.value != null){
+        if (showCreateProfileScreen.value) {
+            navigationService.navControllerAuth?.popBackStack(
+                route = NavGraphDirections.Auth.getNavRoute(),
+                inclusive = false
+            )
+            navigationService.toCreateProfile()
+        }
     } else {
-        navigationService.navControllerAuth?.popBackStack(route = NavGraphDirections.Auth.getNavRoute(), inclusive = false)
-        navigationService.toLogin()//LoginScreen()
+        navigationService.navControllerAuth?.popBackStack(
+            route = NavGraphDirections.Auth.getNavRoute(),
+            inclusive = false
+        )
+        navigationService.toLogin()
     }
 }

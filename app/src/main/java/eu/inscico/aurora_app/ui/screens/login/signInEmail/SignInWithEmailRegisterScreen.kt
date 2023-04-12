@@ -195,7 +195,6 @@ fun SignInWithEmailRegisterScreen(
                         .padding(horizontal = 32.dp),
                     enabled = validationErrorList.value.isEmpty() && validationConfirmationErrorList.value.isEmpty(),
                     onClick = {
-                        authService.helpLive.postValue(true)
                         CoroutineScope(Dispatchers.IO).launch {
                             val result = viewModel.registerWithEmailAndPassword(email = email.value, password = password.value)
                             when(result){

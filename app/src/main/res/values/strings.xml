@@ -52,6 +52,8 @@
     <string name="settings_app_bar_title">Settings</string>
     <string name="settings_profile_section_title">Account</string>
     <string name="settings_profile_edit_profile_title">Edit profile </string>
+    <string name="settings_profile_change_password_title">Change password</string>
+    <string name="settings_profile_change_email_title">Change email</string>
     <string name="settings_profile_logout_title">Logout</string>
     <string name="settings_notifications_section_title">Notifications</string>
     <string name="settings_notifications_electricity_bill_reminder_title">Electricity bill reminder</string>

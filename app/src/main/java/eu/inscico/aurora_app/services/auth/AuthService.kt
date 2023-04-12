@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import eu.inscico.aurora_app.R
+import eu.inscico.aurora_app.model.UserSignInType
 import eu.inscico.aurora_app.services.UserService
 import eu.inscico.aurora_app.utils.PrefsUtils
 import eu.inscico.aurora_app.utils.TypedResult
@@ -23,10 +24,16 @@ import kotlinx.coroutines.tasks.await
 
 class AuthService(
     private val context: Context,
-    private val _firebaseAuth: FirebaseAuth,
+    val _firebaseAuth: FirebaseAuth,
     private val _firestore: FirebaseFirestore,
     private val _userService: UserService
 ) {
+
+    companion object {
+        const val GOOGLE_LOGIN_RESULT_CODE = 900913
+    }
+
+    var userSignInType: UserSignInType? = null
 
     var wasLoggedIn: Boolean
         get() {
@@ -70,10 +77,15 @@ class AuthService(
                 currentFirebaseUser = _firebaseAuth.currentUser
                 loadUser(it.currentUser?.uid ?: "")
 
+                userSignInType = getUserLoginType()
+
             } else {
+                currentFirebaseUser = null
+                _userService.logout()
                 wasLoggedIn = false
                 isAuthenticated = false
-                currentFirebaseUser = null
+                googleAccount = null
+                userSignInType = null
             }
 
         }
@@ -87,11 +99,15 @@ class AuthService(
 
     fun logout(){
         _firebaseAuth.signOut()
-        googleAccount = null
-        wasLoggedIn = false
-        currentFirebaseUser = null
-        isAuthenticated = false
-        _userService.logout()
+    }
+
+    fun getUserLoginType(): UserSignInType {
+        if(googleAccount != null){
+            return UserSignInType.GOOGLE
+        } else {
+            return UserSignInType.EMAIL
+        }
+        // TODO: add apple login
     }
 
     // region: Google
@@ -110,7 +126,7 @@ class AuthService(
         val mGoogleSignInClient = GoogleSignIn.getClient(activity, gso);
 
         val signInIntent = mGoogleSignInClient.signInIntent
-        activity.startActivityForResult(signInIntent, 62443)
+        activity.startActivityForResult(signInIntent, GOOGLE_LOGIN_RESULT_CODE)
 
     }
 

@@ -26,9 +26,6 @@ class UserService(
     private val _userLive = MutableLiveData<User?>()
     val userLive: LiveData<User?> = _userLive
 
-    private var _isUserProfileCreatedLive = MutableLiveData<Boolean>()
-    val isUserProfileCreatedLive: LiveData<Boolean> = _isUserProfileCreatedLive
-
     init {
         val userId = _firebaseAuth.currentUser?.uid
         userId?.let {
@@ -50,10 +47,8 @@ class UserService(
                     val user = User.from(userResponse)
                     if (user != null) {
                         _userLive.postValue(user)
-                        _isUserProfileCreatedLive.postValue(true)
                         return TypedResult.Success(user)
                     }
-                    _isUserProfileCreatedLive.postValue(false)
                     return TypedResult.Failure(true)
                 }
             }
@@ -63,7 +58,7 @@ class UserService(
         }
     }
 
-    suspend fun createUser(user: UserResponse): TypedResult<Any, String> {
+    suspend fun createUser(user: UserResponse): TypedResult<Boolean, String> {
         try {
 
             val authId = _firebaseAuth.currentUser?.uid ?: return TypedResult.Failure("")

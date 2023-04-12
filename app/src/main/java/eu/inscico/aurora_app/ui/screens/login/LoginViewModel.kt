@@ -21,8 +21,6 @@ class LoginViewModel(
 
     val currentFirebaseUser = _authService.currentFirebaseUserLive
 
-    val isAuthenticated = _authService.isAuthenticatedLive
-
     suspend fun loadUser(authId: String): TypedResult<User, Boolean> {
         return _userService.getUserByAuthId(authId)
     }

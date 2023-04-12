@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
+import eu.inscico.aurora_app.model.UserSignInType
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.ActionEntry
@@ -76,6 +77,29 @@ fun SettingsScreen(
                 navigationService.toEditProfile()
             }
         )
+
+
+        if(viewModel.userSignInType == UserSignInType.EMAIL){
+            ActionEntry(
+                title = stringResource(id = R.string.settings_profile_change_email_title),
+                iconRes = R.drawable.baseline_mail_outline_24,
+                titleColor = MaterialTheme.colorScheme.primary,
+                isNavigation = false,
+                callback = {
+
+                }
+            )
+            ActionEntry(
+                title = stringResource(id = R.string.settings_profile_change_password_title),
+                iconRes = R.drawable.outline_vpn_key_24,
+                titleColor = MaterialTheme.colorScheme.primary,
+                isNavigation = false,
+                callback = {
+
+                }
+            )
+
+        }
 
         ActionEntry(
             title = stringResource(id = R.string.settings_profile_logout_title),
