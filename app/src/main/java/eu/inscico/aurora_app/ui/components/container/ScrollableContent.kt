@@ -20,7 +20,6 @@ fun ScrollableContent(
     Column(
         modifier = Modifier
             .background(background)
-            .padding(horizontal = 16.dp)
             .fillMaxWidth()
             .fillMaxHeight()
             .verticalScroll(rememberScrollState()),

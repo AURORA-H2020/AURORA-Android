@@ -19,7 +19,8 @@ private val DarkColorPalette = darkColorScheme(
     surface = surfacesDarkTheme,
     onBackground = outlineVariantDark,
     error = error,
-    tertiary = tertiary
+    tertiary = tertiary,
+    outlineVariant = outlineVariantLight,
 )
 
 private val LightColorPalette = lightColorScheme(
@@ -31,7 +32,7 @@ private val LightColorPalette = lightColorScheme(
     onBackground = outlineVariantLight,
     error = error,
     tertiary = tertiary,
-    outlineVariant = dividerLight
+    outlineVariant = outlineVariantDark
 
     /* Other default colors to override
     background = Color.White,

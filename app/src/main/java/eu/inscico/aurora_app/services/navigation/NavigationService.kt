@@ -67,7 +67,17 @@ class NavigationService {
 
     fun toEditProfile() {
         val navDirection = NavGraphDirections.EditProfile.getNavRoute()
-        navControllerApp?.navigate(navDirection)
+        navControllerTabSettings?.navigate(navDirection)
+    }
+
+    fun toUpdateUserPassword() {
+        val navDirection = NavGraphDirections.UpdateUserPassword.getNavRoute()
+        navControllerTabSettings?.navigate(navDirection)
+    }
+
+    fun toUpdateUserEmail() {
+        val navDirection = NavGraphDirections.UpdateUserEmail.getNavRoute()
+        navControllerTabSettings?.navigate(navDirection)
     }
 
     fun toSignInWithEmail(){

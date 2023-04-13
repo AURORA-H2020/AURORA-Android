@@ -1,9 +1,11 @@
 package eu.inscico.aurora_app.services
 
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
+import com.google.firestore.v1.StructuredAggregationQuery.Aggregation.Count
 import eu.inscico.aurora_app.model.City
 import eu.inscico.aurora_app.model.CityResponse
 import eu.inscico.aurora_app.model.Country
@@ -27,6 +29,9 @@ class CountriesService(
 
     private val _citiesFromCountryLive = MutableLiveData<List<City>?>()
     val citiesFromCountryLive: LiveData<List<City>?> = _citiesFromCountryLive
+
+    val userCountryLive = MutableLiveData<Country?>()
+    val userCityLive = MutableLiveData<City?>()
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
@@ -58,7 +63,7 @@ class CountriesService(
                     val country = Country.from(countryResponse)
 
                     val countryCode = country?.countryCode
-                    if(countryCode != null) {
+                    if (countryCode != null) {
                         country.displayName = getCountryNameForCode(countryCode)
                     }
 
@@ -79,11 +84,36 @@ class CountriesService(
         }
     }
 
+    suspend fun getUserCountryById(countryId: String): TypedResult<Country, Any> {
+        try {
+            // Get countries
+            val userCountrySnapshot =
+                _firestore.collection(countriesCollectionName).document(countryId).get().await()
+            userCountrySnapshot?.let {
+                try {
+                    val countryResponse =
+                        it.toObject<CountryResponse>() ?: return TypedResult.Failure("")
+                    val country = Country.from(countryResponse) ?: return TypedResult.Failure("")
+                    val countryCode = country.countryCode
+                    country.displayName = getCountryNameForCode(countryCode)
+                    userCountryLive.postValue(country)
+                    return TypedResult.Success(country)
+                } catch (e: Exception) {
+                    return TypedResult.Failure("")
+                }
+            }
+            return TypedResult.Failure("")
+        } catch (e: Exception) {
+            return TypedResult.Failure(e.toString())
+        }
+    }
+
     suspend fun loadCitiesForCountry(countryId: String): TypedResult<List<City>, Any> {
         _citiesFromCountryLive.postValue(null)
         try {
             // Get countries
-            val citiesSnapshot = _firestore.collection(countriesCollectionName).document(countryId).collection(citiesCollectionName).get().await()
+            val citiesSnapshot = _firestore.collection(countriesCollectionName).document(countryId)
+                .collection(citiesCollectionName).get().await()
             val cities = citiesSnapshot.mapNotNull {
                 try {
                     val cityResponse = it.toObject<CityResponse>() ?: return@mapNotNull null
@@ -98,6 +128,29 @@ class CountriesService(
             _citiesFromCountryLive.postValue(cities)
 
             return TypedResult.Success(cities)
+        } catch (e: Exception) {
+            return TypedResult.Failure(e.toString())
+        }
+    }
+
+    suspend fun getUserCityById(countryId: String, cityId: String): TypedResult<City, Any> {
+        try {
+            // Get countries
+            val userCitySnapshot =
+                _firestore.collection(countriesCollectionName).document(countryId)
+                    .collection(citiesCollectionName).document(cityId).get().await()
+            userCitySnapshot?.let {
+                try {
+                    val cityResponse =
+                        it.toObject<CityResponse>() ?: return TypedResult.Failure("")
+                    val city = City.from(cityResponse) ?: return TypedResult.Failure("")
+                    userCityLive.postValue(city)
+                    return TypedResult.Success(city)
+                } catch (e: Exception) {
+                    return TypedResult.Failure("")
+                }
+            }
+            return TypedResult.Failure("")
         } catch (e: Exception) {
             return TypedResult.Failure(e.toString())
         }

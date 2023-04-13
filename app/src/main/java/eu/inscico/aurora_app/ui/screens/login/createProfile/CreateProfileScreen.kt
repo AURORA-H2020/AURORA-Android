@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -38,6 +39,7 @@ import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateProfileScreen(
     viewModel: CreateProfileViewModel = koinViewModel(),
@@ -84,7 +86,7 @@ fun CreateProfileScreen(
             actionButton = {
                 Text(text = stringResource(id = R.string.logout_button_title))
             },
-            callback = {
+            backNavigationCallback = {
                 // TODO: logout
             }
         )

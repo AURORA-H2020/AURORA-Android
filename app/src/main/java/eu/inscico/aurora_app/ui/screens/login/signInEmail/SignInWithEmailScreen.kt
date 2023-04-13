@@ -37,7 +37,7 @@ fun SignInWithEmailScreen(
         AppBar(
             title = stringResource(id = R.string.login_email_sign_in_button_text),
             hasBackNavigation = true,
-            callback = {
+            backNavigationCallback = {
                 navigationService.navControllerAuth?.popBackStack()
             }
         )

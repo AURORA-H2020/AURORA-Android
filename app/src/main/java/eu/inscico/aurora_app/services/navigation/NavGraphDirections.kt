@@ -8,8 +8,10 @@ import eu.inscico.aurora_app.ui.screens.login.AuthScreen
 import eu.inscico.aurora_app.ui.screens.login.LoginScreen
 import eu.inscico.aurora_app.ui.screens.login.SignInWithEmailScreen
 import eu.inscico.aurora_app.ui.screens.photovoltaic.PhotovoltaicCalculatorScreen
-import eu.inscico.aurora_app.ui.screens.settings.EditProfileScreen
+import eu.inscico.aurora_app.ui.screens.settings.profile.EditProfileScreen
 import eu.inscico.aurora_app.ui.screens.settings.SettingsScreen
+import eu.inscico.aurora_app.ui.screens.settings.profile.UpdateEmailScreen
+import eu.inscico.aurora_app.ui.screens.settings.profile.UpdatePasswordScreen
 
 sealed class NavGraphDirections(
     protected val route: String,
@@ -127,6 +129,28 @@ sealed class NavGraphDirections(
         route = "editProfile",
         content = {
             EditProfileScreen()
+        }
+    ) {
+        fun getNavRoute(): String {
+            return route
+        }
+    }
+
+    object UpdateUserPassword : NavGraphDirections(
+        route = "updateUserPassword",
+        content = {
+            UpdatePasswordScreen()
+        }
+    ) {
+        fun getNavRoute(): String {
+            return route
+        }
+    }
+
+    object UpdateUserEmail : NavGraphDirections(
+        route = "updateUserEmail",
+        content = {
+            UpdateEmailScreen()
         }
     ) {
         fun getNavRoute(): String {

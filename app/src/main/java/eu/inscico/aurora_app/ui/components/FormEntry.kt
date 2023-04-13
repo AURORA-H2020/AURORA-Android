@@ -5,9 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowDropDown
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,14 +20,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.util.*
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
+@ExperimentalMaterial3Api
 fun FormEntry(
     title: String,
     formEntryType: FormEntryType,
     initialItem: String,
     items: List<String>? = null,
-    callback: ((name: String, index: Int?) -> Unit)? = null
+    callback: ((name: String, index: Int?) -> Unit)? = null,
+    readOnly: Boolean = false
 ) {
 
     val selectedItem = remember {
@@ -38,13 +39,12 @@ fun FormEntry(
         mutableStateOf(false)
     }
 
-    Divider()
-
     ListItem(
         modifier = Modifier
-            .background(MaterialTheme.colors.surface)
+            .background(MaterialTheme.colorScheme.surface)
             .fillMaxWidth(),
-        trailing = {
+        headlineText = {Text(text = title)},
+        trailingContent = {
             when (formEntryType) {
                 FormEntryType.TEXT_INPUT -> {
                     Row(
@@ -52,11 +52,12 @@ fun FormEntry(
                     ) {
                         BasicTextField(
                             textStyle = TextStyle(
-                                color = MaterialTheme.colors.onSecondary,
+                                color = MaterialTheme.colorScheme.onSecondary,
                                 fontSize = 17.sp,
                                 lineHeight = 16.sp,
                                 textAlign = TextAlign.End
                             ),
+                            readOnly = readOnly,
                             value = selectedItem.value,
                             onValueChange = {
                                 selectedItem.value = it
@@ -68,7 +69,9 @@ fun FormEntry(
                     Row(
                         modifier = Modifier.clickable(
                             onClick = {
-                                isExpanded.value = !isExpanded.value
+                                if(!readOnly){
+                                    isExpanded.value = !isExpanded.value
+                                }
                             },
                         ),
                         horizontalArrangement = Arrangement.End,
@@ -77,7 +80,7 @@ fun FormEntry(
                         Text(
                             text = selectedItem.value,
                             style = TextStyle(
-                                color = MaterialTheme.colors.onSecondary,
+                                color = MaterialTheme.colorScheme.onSecondary,
                                 fontSize = 17.sp,
                                 lineHeight = 16.sp,
                                 textAlign = TextAlign.End
@@ -86,12 +89,14 @@ fun FormEntry(
 
                         Spacer(modifier = Modifier.width(8.dp))
 
-                        Image(
-                            Icons.Outlined.ArrowDropDown,
-                            contentDescription = "",
-                            colorFilter = ColorFilter.tint(MaterialTheme.colors.onSecondary),
-                            alignment = Alignment.CenterEnd
-                        )
+                        if(!readOnly) {
+                            Image(
+                                Icons.Outlined.ArrowDropDown,
+                                contentDescription = "",
+                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSecondary),
+                                alignment = Alignment.CenterEnd
+                            )
+                        }
 
                         DropdownMenu(
                             expanded = isExpanded.value,
@@ -102,19 +107,17 @@ fun FormEntry(
                                     selectedItem.value = it
                                     isExpanded.value = false
                                     callback?.invoke(it, items.indexOf(it))
-                                }) {
-                                    Text(it)
-                                }
+                                },
+                                    text = { Text(text = it) }
+                                )
                             }
                         }
                     }
                 }
             }
-        },
-        text = {
-            Text(text = title)
         }
     )
+    Divider()
 }
 
 enum class FormEntryType {

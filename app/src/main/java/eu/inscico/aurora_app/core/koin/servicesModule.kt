@@ -49,7 +49,8 @@ val servicesModule = module {
     single {
         UserService(
             _firestore = get(),
-            _firebaseAuth = get()
+            _firebaseAuth = get(),
+            _countryService = get()
         )
     }
 
