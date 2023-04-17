@@ -16,6 +16,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.UserSignInType
+import eu.inscico.aurora_app.model.push.PushNotificationType
+import eu.inscico.aurora_app.services.NotificationCreationService
+import eu.inscico.aurora_app.services.NotificationService
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.ActionEntry
@@ -28,7 +31,8 @@ import org.koin.androidx.compose.koinViewModel
 fun SettingsScreen(
     viewModel: SettingsViewModel = koinViewModel(),
     navigationService: NavigationService = get(),
-    userFeedbackService: UserFeedbackService = get()
+    userFeedbackService: UserFeedbackService = get(),
+    _notificationCreationService: NotificationCreationService = get()
 ) {
 
     Column(
@@ -147,21 +151,30 @@ fun SettingsScreen(
                     title = stringResource(id = R.string.settings_notifications_electricity_bill_reminder_title),
                     iconRes = R.drawable.outline_electric_bolt_24,
                     isNavigation = true,
-                    iconColor = MaterialTheme.colorScheme.tertiary
+                    iconColor = MaterialTheme.colorScheme.tertiary,
+                    callback = {
+                        navigationService.toElectricityBillReminder()
+                    }
                 )
 
                 ActionEntry(
                     title = stringResource(id = R.string.settings_notifications_heating_bill_reminder_title),
                     iconRes = R.drawable.outline_local_fire_department_24,
                     isNavigation = true,
-                    iconColor = MaterialTheme.colorScheme.error
+                    iconColor = MaterialTheme.colorScheme.error,
+                    callback = {
+                        navigationService.toHeatingBillReminder()
+                    }
                 )
 
                 ActionEntry(
                     title = stringResource(id = R.string.settings_notifications_mobility_reminder_title),
                     iconRes = R.drawable.outline_directions_car_24,
                     isNavigation = true,
-                    iconColor = androidx.compose.ui.graphics.Color.Blue
+                    iconColor = androidx.compose.ui.graphics.Color.Blue,
+                    callback = {
+                        navigationService.toMobilityReminder()
+                    }
                 )
 
                 Divider()

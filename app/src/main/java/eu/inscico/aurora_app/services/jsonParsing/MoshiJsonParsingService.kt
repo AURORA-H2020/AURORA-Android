@@ -2,6 +2,7 @@ package eu.inscico.aurora_app.services.jsonParsing
 
 import com.squareup.moshi.*
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import eu.inscico.aurora_app.model.reminder.ReminderTime
 import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.*
@@ -10,6 +11,7 @@ import java.util.*
 class MoshiJsonParsingService(override val dateFormatPattern: String) : JsonParsingService {
 
     private val moshi = Moshi.Builder()
+        .add(CustomReminderTimeAdapter())
         .add(CustomCalendarAdapter(dateFormatPattern))
         .add(CustomGregorianCalendarAdapter(dateFormatPattern))
         .add(KotlinJsonAdapterFactory())
@@ -100,5 +102,88 @@ class MoshiJsonParsingService(override val dateFormatPattern: String) : JsonPars
     }
 
     // endregion
+
+    class CustomReminderTimeAdapter : JsonAdapter<ReminderTime?>() {
+
+        val dateFormatPattern = "yyyy-MM-dd'T'HH:mm:ss'.'SSS'Z'"
+
+
+        val mMoshi = Moshi.Builder().add(CustomCalendarAdapter(dateFormatPattern))
+            .add(CustomGregorianCalendarAdapter(dateFormatPattern)).add(KotlinJsonAdapterFactory()).build()
+
+        @FromJson
+        override fun fromJson(reader: JsonReader): ReminderTime? {
+            val cpToCheck = reader.peekJson()
+            val cpToCheck2 = reader.peekJson()
+            val cpToCheck3 = reader.peekJson()
+            val cpToCheck4 = reader.peekJson()
+
+            try {
+                val value =
+                    mMoshi.adapter(ReminderTime.ReminderTimeYearly::class.java)
+                        .fromJson(cpToCheck)
+
+                reader.skipValue()
+
+                return value
+            } catch (e: Exception) {
+                try {
+                    val value =
+                        mMoshi.adapter(ReminderTime.ReminderTimeMonthly::class.java)
+                            .fromJson(cpToCheck2)
+
+                    reader.skipValue()
+
+                    return value
+
+                } catch (e: java.lang.Exception) {
+                    try {
+                        val value =
+                            mMoshi.adapter(ReminderTime.ReminderTimeWeekly::class.java)
+                                .fromJson(cpToCheck3)
+
+                        reader.skipValue()
+
+                        return value
+
+                    } catch (e: java.lang.Exception) {
+                        try {
+                            val value =
+                                mMoshi.adapter(ReminderTime.ReminderTimeDaily::class.java)
+                                    .fromJson(cpToCheck4)
+
+                            reader.skipValue()
+
+                            return value
+                        } catch (e: java.lang.Exception) {
+                            return null
+                        }
+                    }
+                }
+            }
+        }
+
+        @ToJson
+        override fun toJson(writer: JsonWriter, value: ReminderTime?) {
+            val jsonString = when(value){
+                is ReminderTime.ReminderTimeDaily -> {
+                    mMoshi.adapter(ReminderTime.ReminderTimeDaily::class.java).toJson(value)
+                }
+                is ReminderTime.ReminderTimeMonthly -> {
+                    mMoshi.adapter(ReminderTime.ReminderTimeMonthly::class.java).toJson(value)
+                }
+                is ReminderTime.ReminderTimeWeekly -> {
+                    mMoshi.adapter(ReminderTime.ReminderTimeWeekly::class.java).toJson(value)
+                }
+                is ReminderTime.ReminderTimeYearly -> {
+                    mMoshi.adapter(ReminderTime.ReminderTimeYearly::class.java).toJson(value)
+                }
+                null -> {
+                    null
+                }
+            }
+            writer.value(jsonString)
+        }
+    }
 
 }

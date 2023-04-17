@@ -78,10 +78,11 @@ fun AuroraApp(
                     snackBarHost = {},
                     bottomBar = {
                         if (user.value != null && firebaseUser.value != null) {
+                            Divider()
                             NavigationBar(
-                                modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-                                containerColor = MaterialTheme.colorScheme.surface,
-                                contentColor = MaterialTheme.colorScheme.surface
+                                modifier = Modifier.background(semiTransparent),
+                                containerColor = semiTransparent,
+                                contentColor = semiTransparent
                             ) {
                                 val navBackStackEntry by navControllerTabs.currentBackStackEntryAsState()
                                 val currentDestination = navBackStackEntry?.destination

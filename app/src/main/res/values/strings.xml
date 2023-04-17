@@ -8,6 +8,7 @@
 
     <!-- General -->
     <string name="cancel">Cancel</string>
+    <string name="okay">Okay</string>
 
     <!-- Login/Create Profile -->
     <string name="login_aurora_title">Welcome to AURORA</string>
@@ -76,6 +77,39 @@
     <string name="settings_change_email_title">Change email</string>
     <string name="settings_change_email_new_email_description">Current email address:\n%1$s</string>
     <string name="settings_change_email_password_description">Enter your current password.</string>
+    <string name="settings_notifications_enabled_title">Enabled</string>
+    <string name="settings_notifications_frequency_title">Frequency</string>
+    <string name="settings_notifications_frequency_daily_title">Daily</string>
+    <string name="settings_notifications_frequency_weekly_title">Weekly</string>
+    <string name="settings_notifications_frequency_monthly_title">Monthly</string>
+    <string name="settings_notifications_frequency_yearly_title">Yearly</string>
+    <string name="settings_notifications_frequency_weekly_weekday_title">Weekday</string>
+    <string name="settings_notifications_frequency_weekly_weekday_monday_title">Monday</string>
+    <string name="settings_notifications_frequency_weekly_weekday_tuesday_title">Tuesday</string>
+    <string name="settings_notifications_frequency_weekly_weekday_wednesday_title">Wednesday</string>
+    <string name="settings_notifications_frequency_weekly_weekday_thursday_title">Thursday</string>
+    <string name="settings_notifications_frequency_weekly_weekday_friday_title">Friday</string>
+    <string name="settings_notifications_frequency_weekly_weekday_saturday_title">Saturday</string>
+    <string name="settings_notifications_frequency_weekly_weekday_sunday_title">Sunday</string>
+    <string name="settings_notifications_time_title">Time</string>
+    <string name="settings_notifications_day_title">Day</string>
+    <string name="settings_notifications_month_title">Month</string>
+    <string name="settings_notifications_month_january_title">January</string>
+    <string name="settings_notifications_month_february_title">February</string>
+    <string name="settings_notifications_month_march_title">March</string>
+    <string name="settings_notifications_month_april_title">April</string>
+    <string name="settings_notifications_month_may_title">May</string>
+    <string name="settings_notifications_month_june_title">June</string>
+    <string name="settings_notifications_month_july_title">July</string>
+    <string name="settings_notifications_month_august_title">August</string>
+    <string name="settings_notifications_month_september_title">September</string>
+    <string name="settings_notifications_month_october_title">October</string>
+    <string name="settings_notifications_month_november_title">November</string>
+    <string name="settings_notifications_time_display_title">Uhrzeit auswählen</string>
+    <string name="settings_notifications_electricity_description">We can remind you to enter your electricity consumption based on your bill. Just let us know when you expect the next one.</string>
+    <string name="settings_notifications_heating_description">We can remind you to enter your energy consumption based on your bill. Just let us know when you expect the next one.</string>
+    <string name="settings_notifications_mobility_description">We can remind you to regulary enter your transportation data. Just let us know how frequently you travel.</string>
+    <string name="settings_notifications_next_reminder_send_info">The next notification will be sent on %1$s</string>
 
     <!-- Dialogs -->
     <string name="dialog_settings_logout_title">Are you sure you want to logout?</string>

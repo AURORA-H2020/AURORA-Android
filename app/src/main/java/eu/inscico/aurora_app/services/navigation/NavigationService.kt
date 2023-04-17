@@ -80,6 +80,21 @@ class NavigationService {
         navControllerTabSettings?.navigate(navDirection)
     }
 
+    fun toElectricityBillReminder() {
+        val navDirection = NavGraphDirections.ElectricityBillReminder.getNavRoute()
+        navControllerTabSettings?.navigate(navDirection)
+    }
+
+    fun toHeatingBillReminder() {
+        val navDirection = NavGraphDirections.HeatingBillReminder.getNavRoute()
+        navControllerTabSettings?.navigate(navDirection)
+    }
+
+    fun toMobilityReminder() {
+        val navDirection = NavGraphDirections.MobilityReminder.getNavRoute()
+        navControllerTabSettings?.navigate(navDirection)
+    }
+
     fun toSignInWithEmail(){
         val navDirection = NavGraphDirections.SignInWithEmail.getNavRoute()
         navControllerAuth?.navigate(navDirection)

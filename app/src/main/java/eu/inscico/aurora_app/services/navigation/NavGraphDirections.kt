@@ -10,6 +10,9 @@ import eu.inscico.aurora_app.ui.screens.login.SignInWithEmailScreen
 import eu.inscico.aurora_app.ui.screens.photovoltaic.PhotovoltaicCalculatorScreen
 import eu.inscico.aurora_app.ui.screens.settings.profile.EditProfileScreen
 import eu.inscico.aurora_app.ui.screens.settings.SettingsScreen
+import eu.inscico.aurora_app.ui.screens.settings.notifications.ElectricityBillNotificationScreen
+import eu.inscico.aurora_app.ui.screens.settings.notifications.HeatingBillNotificationScreen
+import eu.inscico.aurora_app.ui.screens.settings.notifications.MobilityNotificationScreen
 import eu.inscico.aurora_app.ui.screens.settings.profile.UpdateEmailScreen
 import eu.inscico.aurora_app.ui.screens.settings.profile.UpdatePasswordScreen
 
@@ -151,6 +154,39 @@ sealed class NavGraphDirections(
         route = "updateUserEmail",
         content = {
             UpdateEmailScreen()
+        }
+    ) {
+        fun getNavRoute(): String {
+            return route
+        }
+    }
+
+    object ElectricityBillReminder : NavGraphDirections(
+        route = "electricityBillReminder",
+        content = {
+            ElectricityBillNotificationScreen()
+        }
+    ) {
+        fun getNavRoute(): String {
+            return route
+        }
+    }
+
+    object HeatingBillReminder : NavGraphDirections(
+        route = "heatingBillReminder",
+        content = {
+            HeatingBillNotificationScreen()
+        }
+    ) {
+        fun getNavRoute(): String {
+            return route
+        }
+    }
+
+    object MobilityReminder : NavGraphDirections(
+        route = "mobilityReminder",
+        content = {
+            MobilityNotificationScreen()
         }
     ) {
         fun getNavRoute(): String {

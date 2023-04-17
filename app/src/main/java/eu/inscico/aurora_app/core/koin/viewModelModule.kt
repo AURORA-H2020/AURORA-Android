@@ -5,6 +5,7 @@ import eu.inscico.aurora_app.ui.screens.login.LoginViewModel
 import eu.inscico.aurora_app.ui.screens.login.signInEmail.SignInWithEmailViewModel
 import eu.inscico.aurora_app.ui.screens.settings.profile.EditProfileViewModel
 import eu.inscico.aurora_app.ui.screens.settings.SettingsViewModel
+import eu.inscico.aurora_app.ui.screens.settings.notifications.SettingsReminderViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -42,6 +43,12 @@ val viewModelModule = module {
         EditProfileViewModel(
             _userService = get(),
             _countriesService = get()
+        )
+    }
+
+    viewModel {
+        SettingsReminderViewModel(
+            _notificationService = get()
         )
     }
 }
