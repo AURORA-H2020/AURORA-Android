@@ -1,5 +1,6 @@
 package eu.inscico.aurora_app.ui.theme
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
 
 val backgroundColorLight = Color(0xffF7F7F7)
@@ -10,7 +11,7 @@ val surfacesLightTheme = Color(0xffffffff)
 val surfacesDarkTheme = Color(0x14121212)
 val primary = Color(0xff003449)
 val primaryDark = Color(0x14002230)
-val primaryLight = Color(0xff97F5F5)
+val primaryLight = Color(0x14174961)
 val primaryOverlay12 = Color(0x1434491F)
 val outlineVariantLight = Color(0x29FFFFFF)
 val outlineVariantDark = Color(0x14000000)
@@ -19,3 +20,8 @@ val tertiary = Color(0x99FFCC00)
 val dividerLight = Color(0x0000001F)
 val semiTransparent = Color(0x4DFFFFFF)
 val iconColorMedium = Color(0x148E8E93)
+
+val mobilityBlue = Color(0xFF0047AB)
+val heatingRed = error
+val electricityYellow = tertiary
+

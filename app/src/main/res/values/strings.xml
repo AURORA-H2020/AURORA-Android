@@ -9,6 +9,7 @@
     <!-- General -->
     <string name="cancel">Cancel</string>
     <string name="okay">Okay</string>
+    <string name="form_spinner_item_please_chose">Please choose</string>
 
     <!-- Login/Create Profile -->
     <string name="login_aurora_title">Welcome to AURORA</string>
@@ -48,6 +49,96 @@
     <string name="sign_in_with_email_tab_register_password_requirement_at_least_one_number">- At least one number.</string>
     <string name="sign_in_with_email_tab_register_password_requirement_at_least_one_uppercase_letter">- At least one uppercase letter.</string>
     <string name="sign_in_with_email_tab_register_password_confirmation_doesnt_match">- Password confirmation does not match.</string>
+
+    <!-- Home -->
+    <string name="home_dashboard_title">Dashboard</string>
+    <string name="home_your_carbon_footprint_title">Your carbon footprint</string>
+    <string name="home_energy_lables_title">View your energy labels</string>
+    <string name="home_add_consumption_button_title">Add a consumption</string>
+    <string name="home_learn_more_title">Learn more</string>
+    <string name="home_consumptions_latest_entries_title">Latest entries</string>
+    <string name="home_consumptions_title">Consumptions</string>
+    <string name="home_consumptions_add_first_title">Add your first consumption entry</string>
+    <string name="home_consumptions_add_consumtion_button_title">Add consumption</string>
+    <string name="home_consumptions_type_electricity_title">Electricity</string>
+    <string name="home_consumptions_type_heating_title">Heating</string>
+    <string name="home_consumptions_type_transportation_title">Transportation</string>
+    <string name="home_consumptions_show_all_entries_button_title">Show all entries</string>
+    <string name="home_consumptions_all_entries_title">All consumption entries</string>
+    <string name="home_add_consumption_title">Add consumption</string>
+
+    <string name="home_add_consumption_form_consumption_title">Consumption</string>
+    <string name="home_add_consumption_form_electricity_consumption_description_title">You can find this information in your electricity bill.</string>
+    <string name="home_add_consumption_form_heating_consumption_description_title">You can find this information in your heating bill.</string>
+    <string name="home_add_consumption_form_people_in_household_title">People in household: %1$d</string>
+    <string name="home_add_consumption_form_people_in_household_description_title">How many people, including you, live in your household</string>
+    <string name="home_add_consumption_form_begin_title">Beginning</string>
+    <string name="home_add_consumption_form_end_title">End</string>
+    <string name="home_add_consumption_form_electricity_beginning_end_description_title">Select the beginning and end of this consumption. You can find this information on your electricity bill.</string>
+    <string name="home_add_consumption_form_heating_beginning_end_description_title">Select the beginning and end of this consumption. You can find this information on your heating bill.</string>
+    <string name="home_add_consumption_form_costs_title">Costs</string>
+    <string name="home_add_consumption_form_description_title">Description</string>
+    <string name="home_add_consumption_form_description_info_text_title">You may add a description to your entry to help you find it later.</string>
+    <string name="home_add_consumption_form_heating_fuel_type_title">Select your type of heating. You can find this information on your heating bill.</string>
+
+
+    <string name="home_add_consumption_heating_fuel_title">Heating fuel</string>
+    <string name="heating_fuel_type_oil_title">Oil</string>
+    <string name="heating_fuel_type_natural_gas_title">Natural gas</string>
+    <string name="heating_fuel_type_lpg_title">LPG</string>
+    <string name="heating_fuel_type_biomass_title">Biomass</string>
+    <string name="heating_fuel_type_locally_produced_biomass_title">Locally produced biomass</string>
+    <string name="heating_fuel_type_geo_thermal_title">Geo thermal</string>
+    <string name="heating_fuel_type_solar_thermal_title">Solar thermal</string>
+    <string name="heating_fuel_type_district_title">District</string>
+    <string name="heating_fuel_type_electric_title">Electric</string>
+
+    <string name="home_add_consumption_district_heating_source_title">District heating source</string>
+    <string name="district_heating_source_type_coal_title">Coal</string>
+    <string name="district_heating_source_type_natural_gas_title">Natural gas</string>
+    <string name="district_heating_source_type_oil_title">Oil</string>
+    <string name="district_heating_source_type_electricity_title">Electricity</string>
+    <string name="district_heating_source_type_solar_thermal_title">Solar thermal energy</string>
+    <string name="district_heating_source_type_geo_thermal_title">Geo thermal energy</string>
+    <string name="district_heating_source_type_biomass_title">Biomass</string>
+    <string name="district_heating_source_type_waste_treatment_title">Waste treatment</string>
+    <string name="district_heating_source_type_default_title">Default</string>
+
+    <string name="home_add_consumption_transportation_type_title">Transportation type</string>
+    <string name="home_add_consumption_transportation_type_section_cars_and_bikes_title">Cars &amp; Motorcycles</string>
+    <string name="home_add_consumption_transportation_type_section_busses_title">Busses</string>
+    <string name="home_add_consumption_transportation_type_section_trains_and_trams_title">Trains &amp; Trams</string>
+    <string name="home_add_consumption_transportation_type_section_aviation_title">Aviation</string>
+    <string name="home_add_consumption_transportation_type_section_other_title">Other</string>
+    <string name="home_add_consumption_transportation_type_item_fuel_car_title">Fuel car</string>
+    <string name="home_add_consumption_transportation_type_item_electric_car_title">Electric car</string>
+    <string name="home_add_consumption_transportation_type_item_hybrid_car_title">Hybrid car</string>
+    <string name="home_add_consumption_transportation_type_item_motorcycle_title">Motorcycle</string>
+    <string name="home_add_consumption_transportation_type_item_electric_motorcycle_title">Electric motorcycle</string>
+    <string name="home_add_consumption_transportation_type_item_electric_bus_title">Electric bus</string>
+    <string name="home_add_consumption_transportation_type_item_hybrid_bus_title">Hybrid-electric bus</string>
+    <string name="home_add_consumption_transportation_type_item_alternative_fuel_bus_title">Alternative fuel bus</string>
+    <string name="home_add_consumption_transportation_type_item_diesel_bus_title">Diesel bus</string>
+    <string name="home_add_consumption_transportation_type_item_other_bus_title">Other bus</string>
+    <string name="home_add_consumption_transportation_type_item_metro_tram_or_else_title">Metro, tram or urban light train</string>
+    <string name="home_add_consumption_transportation_type_item_electric_passenger_train_title">Electric passenger train</string>
+    <string name="home_add_consumption_transportation_type_item_diesel_passenger_train_title">Diesel passenger train</string>
+    <string name="home_add_consumption_transportation_type_item_high_speed_train_title">High speed train</string>
+    <string name="home_add_consumption_transportation_type_item_plane_title">Plane</string>
+    <string name="home_add_consumption_transportation_type_item_electric_bike_title">Electric bike</string>
+    <string name="home_add_consumption_transportation_type_item_electric_scooter_title">Electric scooter</string>
+    <string name="home_add_consumption_transportation_type_item_bike_title">Bike</string>
+    <string name="home_add_consumption_transportation_type_item_walking_title">Walking</string>
+
+    <string name="home_add_consumption_transportation_public_occupancy_with_count_title">Occupancy: %1$d</string>
+    <string name="home_add_consumption_transportation_public_occupancy_title">Occupancy</string>
+    <string name="home_add_consumption_transportation_public_occupancy_almost_empty_title">Almost empty</string>
+    <string name="home_add_consumption_transportation_public_occupancy_medium_title">Medium occupancy</string>
+    <string name="home_add_consumption_transportation_public_occupancy_nearly_full_title">Nearly full</string>
+    <string name="home_add_consumption_transportation_distance_title">Distance</string>
+    <string name="home_add_consumption_transportation_start_of_travel_title">Start of travel</string>
+
+
 
     <!-- Settings -->
     <string name="settings_app_bar_title">Settings</string>

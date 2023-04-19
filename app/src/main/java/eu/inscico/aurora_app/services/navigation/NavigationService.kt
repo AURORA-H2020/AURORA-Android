@@ -55,8 +55,16 @@ class NavigationService {
         }
     }
 
+    // region: Auth
+    // ---------------------------------------------------------------------------------------------
+
     fun toLogin() {
         val navDirection = NavGraphDirections.Login.getNavRoute()
+        navControllerAuth?.navigate(navDirection)
+    }
+
+    fun toSignInWithEmail(){
+        val navDirection = NavGraphDirections.SignInWithEmail.getNavRoute()
         navControllerAuth?.navigate(navDirection)
     }
 
@@ -64,6 +72,10 @@ class NavigationService {
         val navDirection = NavGraphDirections.CreateProfile.getNavRoute()
         navControllerAuth?.navigate(navDirection)
     }
+    // endregion
+
+    // region: Settings
+    // ---------------------------------------------------------------------------------------------
 
     fun toEditProfile() {
         val navDirection = NavGraphDirections.EditProfile.getNavRoute()
@@ -95,8 +107,20 @@ class NavigationService {
         navControllerTabSettings?.navigate(navDirection)
     }
 
-    fun toSignInWithEmail(){
-        val navDirection = NavGraphDirections.SignInWithEmail.getNavRoute()
-        navControllerAuth?.navigate(navDirection)
+    // endregion
+
+    // region: Home
+    // ---------------------------------------------------------------------------------------------
+
+    fun toConsumptionsList() {
+        val navDirection = NavGraphDirections.ConsumptionsList.getNavRoute()
+        navControllerTabHome?.navigate(navDirection)
     }
+
+    fun toAddConsumption() {
+        val navDirection = NavGraphDirections.AddConsumption.getNavRoute()
+        navControllerTabHome?.navigate(navDirection)
+    }
+
+    // endregion
 }

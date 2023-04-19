@@ -1,0 +1,372 @@
+package eu.inscico.aurora_app.ui.screens.home.addConsumption
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import com.google.firebase.Timestamp
+import eu.inscico.aurora_app.R
+import eu.inscico.aurora_app.model.Gender
+import eu.inscico.aurora_app.model.Gender.Companion.toGenderString
+import eu.inscico.aurora_app.model.consumptions.*
+import eu.inscico.aurora_app.model.consumptions.DistrictHeatingSource.Companion.getDisplayName
+import eu.inscico.aurora_app.model.consumptions.DistrictHeatingSource.Companion.parseDistrictHeatingSourceToString
+import eu.inscico.aurora_app.model.consumptions.HeatingFuelType.Companion.getDisplayName
+import eu.inscico.aurora_app.model.consumptions.HeatingFuelType.Companion.parseHeatingFuelToString
+import eu.inscico.aurora_app.services.navigation.NavGraphDirections
+import eu.inscico.aurora_app.services.navigation.NavigationService
+import eu.inscico.aurora_app.ui.components.forms.AddSubtractCountFormEntry
+import eu.inscico.aurora_app.ui.components.forms.BeginEndPickerFormEntry
+import eu.inscico.aurora_app.ui.components.forms.SpinnerFormEntry
+import eu.inscico.aurora_app.ui.components.forms.SpinnerItem
+import eu.inscico.aurora_app.utils.TypedResult
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.koin.androidx.compose.get
+import org.koin.androidx.compose.koinViewModel
+import java.util.*
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AddHeatingConsumption(
+    viewModel: AddConsumptionViewModel,
+    navigationService: NavigationService = get()
+){
+
+    val context = LocalContext.current
+
+    val consumption = remember {
+        mutableStateOf("")
+    }
+
+    val peopleInHousehold = remember {
+        mutableStateOf(1)
+    }
+
+    val beginDateTime = remember {
+        mutableStateOf(Calendar.getInstance().timeInMillis)
+    }
+
+    val endDateTime = remember {
+        mutableStateOf(Calendar.getInstance().timeInMillis + (86400000 * 2).toLong())
+    }
+
+    val costs = remember {
+        mutableStateOf("")
+    }
+
+    val description = remember {
+        mutableStateOf("")
+    }
+
+    val heatingFuel = remember {
+        mutableStateOf<HeatingFuelType?>(null)
+    }
+
+    val districtHeatingSource = remember {
+        mutableStateOf<DistrictHeatingSource?>(null)
+    }
+
+
+    fun isSaveValid(): Boolean {
+        return consumption.value.toDoubleOrNull() != null
+                && heatingFuel.value != null
+                && (heatingFuel.value != HeatingFuelType.DISTRICT || districtHeatingSource.value != null)
+    }
+
+    val isSaveValid = remember {
+        mutableStateOf(isSaveValid())
+    }
+
+    Column(
+        Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.Start
+    ) {
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            value = consumption.value,
+            label = {
+                Text(text = stringResource(id = R.string.home_add_consumption_form_consumption_title))
+            },
+            onValueChange = {
+                consumption.value = it
+                isSaveValid.value = isSaveValid()
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            trailingIcon = {
+                Text(text = "kWh")
+            }
+        )
+
+        Spacer(Modifier.height(4.dp))
+
+        Text(
+            text = stringResource(id = R.string.home_add_consumption_form_heating_consumption_description_title),
+            modifier = Modifier.padding(horizontal = 16.dp),
+            style = MaterialTheme.typography.labelSmall,
+            textAlign = TextAlign.Start,
+            color = MaterialTheme.colorScheme.onSecondary
+        )
+
+        Spacer(Modifier.height(16.dp))
+
+        AddSubtractCountFormEntry(
+            titleRes = R.string.home_add_consumption_form_people_in_household_title,
+            initialValue = peopleInHousehold.value,
+            isNullCountPossible = false){
+            peopleInHousehold.value = it
+        }
+
+
+        Spacer(Modifier.height(4.dp))
+
+        Text(
+            text = stringResource(id = R.string.home_add_consumption_form_people_in_household_description_title),
+            modifier = Modifier.padding(horizontal = 16.dp),
+            style = MaterialTheme.typography.labelSmall,
+            textAlign = TextAlign.Start,
+            color = MaterialTheme.colorScheme.onSecondary
+        )
+
+        Spacer(Modifier.height(16.dp))
+
+        val allHeatingFuelSpinnerEntries = viewModel.allHeatingFuels.map {
+            SpinnerItem.Entry(name = it.getDisplayName(context), data = it)
+        }
+
+        val selectedHeatingFuelEntry = if(heatingFuel.value != null){
+            SpinnerItem.Entry(name = heatingFuel.value!!.getDisplayName(context) , data = heatingFuel.value)
+        } else {
+            null
+        }
+
+        SpinnerFormEntry(
+            title = stringResource(id = R.string.home_add_consumption_heating_fuel_title),
+            selectedEntry = selectedHeatingFuelEntry,
+            allEntries = allHeatingFuelSpinnerEntries,
+            callback = { item, _ ->
+                heatingFuel.value = item.data as HeatingFuelType
+                isSaveValid.value = isSaveValid()
+            }
+        )
+
+        if(heatingFuel.value == HeatingFuelType.DISTRICT){
+
+            val allDistrictHeatingSourceSpinnerItems = viewModel.allDistrictHeatingSource.map {
+                SpinnerItem.Entry(name = it.getDisplayName(context), data = it)
+            }
+
+            val selectedEntry = if(districtHeatingSource.value != null){
+                SpinnerItem.Entry(name = districtHeatingSource.value!!.getDisplayName(context) , data = heatingFuel.value)
+            } else {
+                null
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            SpinnerFormEntry(
+                title = stringResource(id = R.string.home_add_consumption_district_heating_source_title),
+                selectedEntry = selectedEntry,
+                allEntries = allDistrictHeatingSourceSpinnerItems,
+                callback = { item, _ ->
+                    districtHeatingSource.value = item.data as DistrictHeatingSource
+                    isSaveValid.value = isSaveValid()
+                }
+            )
+
+        }
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = stringResource(id = R.string.home_add_consumption_form_heating_fuel_type_title),
+            modifier = Modifier.padding(horizontal = 16.dp),
+            style = MaterialTheme.typography.labelSmall,
+            textAlign = TextAlign.Start,
+            color = MaterialTheme.colorScheme.onSecondary
+        )
+
+        Spacer(Modifier.height(16.dp))
+
+        BeginEndPickerFormEntry(
+            initialBeginCalendarAsLong = beginDateTime.value,
+            initialEndCalendarAsLong = endDateTime.value,
+            callback = { beginCalendarAsLong: Long?, endCalendarAsLong: Long? ->
+                if(beginCalendarAsLong != null){
+                    beginDateTime.value = beginCalendarAsLong
+                }
+                if(endCalendarAsLong != null){
+                    endDateTime.value = endCalendarAsLong
+                }
+            })
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = stringResource(id = R.string.home_add_consumption_form_heating_beginning_end_description_title),
+            modifier = Modifier.padding(horizontal = 16.dp),
+            style = MaterialTheme.typography.labelSmall,
+            textAlign = TextAlign.Start,
+            color = MaterialTheme.colorScheme.onSecondary
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            value = costs.value,
+            label = {
+                Text(text = stringResource(id = R.string.home_add_consumption_form_costs_title))
+            },
+            onValueChange = {
+                costs.value = it
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            trailingIcon = {
+                Text(text = "€")
+            }
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Text(
+                style = MaterialTheme.typography.labelLarge,
+                text = stringResource(id = R.string.home_add_consumption_form_description_title),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Start
+            )
+        }
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            value = description.value,
+            label = {
+                Text(text = stringResource(id = R.string.home_add_consumption_form_description_title))
+            },
+            onValueChange = {
+                description.value = it
+            }
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = stringResource(id = R.string.home_add_consumption_form_description_info_text_title),
+            modifier = Modifier.padding(horizontal = 16.dp),
+            style = MaterialTheme.typography.labelSmall,
+            textAlign = TextAlign.Start,
+            color = MaterialTheme.colorScheme.onSecondary
+        )
+
+        val buttonColor = if (isSaveValid.value) {
+            MaterialTheme.colorScheme.primary
+        } else {
+            MaterialTheme.colorScheme.onSurfaceVariant
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            TextButton(
+                modifier = Modifier
+                    .background(buttonColor)
+                    .padding(horizontal = 32.dp),
+                enabled = isSaveValid.value,
+                onClick = {
+
+                    val finalDistrictHeatingSource = if(heatingFuel.value == HeatingFuelType.DISTRICT){
+                        districtHeatingSource.value
+                    } else {
+                        null
+                    }
+
+                    val finalValue = consumption.value.toDoubleOrNull()
+
+                    if(finalValue != null && heatingFuel.value != null) {
+
+                        val heatingConsumptionDataResponse = HeatingConsumptionDataResponse(
+                            costs = costs.value.toDoubleOrNull(),
+                            endDate = Timestamp(Date(endDateTime.value)),
+                            startDate = Timestamp(Date(beginDateTime.value)),
+                            householdSize = peopleInHousehold.value,
+                            heatingFuel = heatingFuel.value?.parseHeatingFuelToString(),
+                            districtHeatingSource = finalDistrictHeatingSource?.parseDistrictHeatingSourceToString(),
+                        )
+
+                        val consumptionResponse = ConsumptionResponse(
+                            category = ConsumptionType.parseConsumptionTypeToString(ConsumptionType.HEATING),
+                            value = finalValue,
+                            description = description.value,
+                            createdAt = Timestamp(Date(System.currentTimeMillis())),
+                            electricity = null,
+                            heating = heatingConsumptionDataResponse,
+                            transportation = null
+                        )
+
+                        CoroutineScope(Dispatchers.IO).launch {
+                            val result = viewModel.createConsumption(consumptionResponse)
+                            when (result) {
+                                is TypedResult.Failure -> {
+                                    // TODO:
+                                }
+                                is TypedResult.Success -> {
+                                    withContext(Dispatchers.Main) {
+                                        navigationService.navControllerTabHome?.popBackStack(
+                                            route = NavGraphDirections.AddConsumption.getNavRoute(),
+                                            inclusive = true
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        // TODO:
+                    }
+                }) {
+                Text(
+                    text = stringResource(id = R.string.settings_edit_profile_submit_button_title),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = Color.White
+                )
+
+                Spacer(Modifier.height(16.dp))
+            }
+        }
+    }
+
+}

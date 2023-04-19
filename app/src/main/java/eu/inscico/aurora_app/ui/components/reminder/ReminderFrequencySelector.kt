@@ -57,7 +57,7 @@ fun ReminderFrequencySelector(
                     isExpanded.value = !isExpanded.value
                 }
             ),
-        headlineText = { Text(text = stringResource(id = R.string.settings_notifications_frequency_title)) },
+        headlineContent = { Text(text = stringResource(id = R.string.settings_notifications_frequency_title)) },
         trailingContent = {
             Row(
                 modifier = Modifier

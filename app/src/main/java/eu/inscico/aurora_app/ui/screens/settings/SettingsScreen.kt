@@ -24,6 +24,9 @@ import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.ActionEntry
 import eu.inscico.aurora_app.ui.components.AppBar
 import eu.inscico.aurora_app.ui.components.container.ScrollableContent
+import eu.inscico.aurora_app.ui.theme.electricityYellow
+import eu.inscico.aurora_app.ui.theme.heatingRed
+import eu.inscico.aurora_app.ui.theme.mobilityBlue
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 
@@ -151,7 +154,8 @@ fun SettingsScreen(
                     title = stringResource(id = R.string.settings_notifications_electricity_bill_reminder_title),
                     iconRes = R.drawable.outline_electric_bolt_24,
                     isNavigation = true,
-                    iconColor = MaterialTheme.colorScheme.tertiary,
+                    iconColor = electricityYellow,
+                    hasIconBackground = true,
                     callback = {
                         navigationService.toElectricityBillReminder()
                     }
@@ -161,7 +165,8 @@ fun SettingsScreen(
                     title = stringResource(id = R.string.settings_notifications_heating_bill_reminder_title),
                     iconRes = R.drawable.outline_local_fire_department_24,
                     isNavigation = true,
-                    iconColor = MaterialTheme.colorScheme.error,
+                    iconColor = heatingRed,
+                    hasIconBackground = true,
                     callback = {
                         navigationService.toHeatingBillReminder()
                     }
@@ -171,7 +176,8 @@ fun SettingsScreen(
                     title = stringResource(id = R.string.settings_notifications_mobility_reminder_title),
                     iconRes = R.drawable.outline_directions_car_24,
                     isNavigation = true,
-                    iconColor = androidx.compose.ui.graphics.Color.Blue,
+                    iconColor = mobilityBlue,
+                    hasIconBackground = true,
                     callback = {
                         navigationService.toMobilityReminder()
                     }
@@ -198,7 +204,10 @@ fun SettingsScreen(
                 ActionEntry(
                     title = stringResource(id = R.string.settings_data_privacy_download_data_title),
                     iconRes = R.drawable.outline_download_24,
-                    isNavigation = false
+                    isNavigation = false,
+                    callback = {
+
+                    }
                 )
 
                 ActionEntry(

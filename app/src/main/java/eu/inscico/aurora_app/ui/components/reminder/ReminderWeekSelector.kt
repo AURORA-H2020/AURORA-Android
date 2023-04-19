@@ -57,7 +57,7 @@ fun ReminderWeekSelector(
                     isExpanded.value = !isExpanded.value
                 }
             ),
-        headlineText = { Text(text = stringResource(id = R.string.settings_notifications_frequency_weekly_weekday_title)) },
+        headlineContent = { Text(text = stringResource(id = R.string.settings_notifications_frequency_weekly_weekday_title)) },
         trailingContent = {
             Row(
                 modifier = Modifier,

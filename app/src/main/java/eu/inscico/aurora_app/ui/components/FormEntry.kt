@@ -43,7 +43,7 @@ fun FormEntry(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.surface)
             .fillMaxWidth(),
-        headlineText = {Text(text = title)},
+        headlineContent = {Text(text = title)},
         trailingContent = {
             when (formEntryType) {
                 FormEntryType.TEXT_INPUT -> {

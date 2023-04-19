@@ -61,7 +61,7 @@ fun ReminderMonthSelector(
                     isExpanded.value = !isExpanded.value
                 }
             ),
-        headlineText = { Text(text = stringResource(id = R.string.settings_notifications_month_title)) },
+        headlineContent = { Text(text = stringResource(id = R.string.settings_notifications_month_title)) },
         trailingContent = {
             Row(
                 modifier = Modifier,

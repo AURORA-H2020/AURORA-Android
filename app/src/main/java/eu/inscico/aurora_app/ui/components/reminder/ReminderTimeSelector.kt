@@ -45,7 +45,7 @@ fun ReminderTimeSelector(
             .clickable {
                 openTimeDialog.value = !openTimeDialog.value
             },
-        headlineText = { Text(text = stringResource(id = R.string.settings_notifications_time_title)) },
+        headlineContent = { Text(text = stringResource(id = R.string.settings_notifications_time_title)) },
         trailingContent = {
             Row(
                 horizontalArrangement = Arrangement.End,

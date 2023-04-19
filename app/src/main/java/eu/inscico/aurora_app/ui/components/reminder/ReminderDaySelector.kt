@@ -63,7 +63,7 @@ fun ReminderDaySelector(
                     isExpanded.value = !isExpanded.value
                 }
             ),
-        headlineText = { Text(text = stringResource(id = R.string.settings_notifications_day_title)) },
+        headlineContent = { Text(text = stringResource(id = R.string.settings_notifications_day_title)) },
         trailingContent = {
             Row(
                 modifier = Modifier,

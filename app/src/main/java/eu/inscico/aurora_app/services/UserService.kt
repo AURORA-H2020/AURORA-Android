@@ -19,7 +19,8 @@ import kotlinx.coroutines.tasks.await
 class UserService(
     private val _firestore: FirebaseFirestore,
     private val _firebaseAuth: FirebaseAuth,
-    private val _countryService: CountriesService
+    private val _countryService: CountriesService,
+    private val _consumptionsService: ConsumptionsService
 ) {
 
     private val collectionName = "users"
@@ -32,6 +33,7 @@ class UserService(
         userId?.let {
             CoroutineScope(Dispatchers.IO).launch {
                 getUserByAuthId(userId)
+                _consumptionsService.setConsumptionsListener(collectionName, userId)
             }
         }
     }
@@ -53,6 +55,8 @@ class UserService(
                         if (user.city != null) {
                             _countryService.getUserCityById(user.country, user.city)
                         }
+
+                        _consumptionsService.setConsumptionsListener(collectionName, authId)
 
                         return TypedResult.Success(user)
                     }
@@ -149,5 +153,6 @@ class UserService(
 
     fun logout() {
         _userLive.postValue(null)
+        _consumptionsService.deleteData()
     }
 }

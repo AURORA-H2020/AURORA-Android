@@ -1,5 +1,7 @@
 package eu.inscico.aurora_app.core.koin
 
+import eu.inscico.aurora_app.ui.screens.home.HomeViewModel
+import eu.inscico.aurora_app.ui.screens.home.addConsumption.AddConsumptionViewModel
 import eu.inscico.aurora_app.ui.screens.login.createProfile.CreateProfileViewModel
 import eu.inscico.aurora_app.ui.screens.login.LoginViewModel
 import eu.inscico.aurora_app.ui.screens.login.signInEmail.SignInWithEmailViewModel
@@ -49,6 +51,18 @@ val viewModelModule = module {
     viewModel {
         SettingsReminderViewModel(
             _notificationService = get()
+        )
+    }
+
+    viewModel {
+        HomeViewModel(
+            _consumptionService = get()
+        )
+    }
+
+    viewModel {
+        AddConsumptionViewModel(
+            _consumptionService = get()
         )
     }
 }

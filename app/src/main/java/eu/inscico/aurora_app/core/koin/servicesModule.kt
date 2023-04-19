@@ -2,10 +2,7 @@ package eu.inscico.aurora_app.core.koin
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import eu.inscico.aurora_app.services.CountriesService
-import eu.inscico.aurora_app.services.NotificationCreationService
-import eu.inscico.aurora_app.services.NotificationService
-import eu.inscico.aurora_app.services.UserService
+import eu.inscico.aurora_app.services.*
 import eu.inscico.aurora_app.services.auth.AuthService
 import eu.inscico.aurora_app.services.jsonParsing.JsonParsingService
 import eu.inscico.aurora_app.services.jsonParsing.MoshiJsonParsingService
@@ -52,7 +49,8 @@ val servicesModule = module {
         UserService(
             _firestore = get(),
             _firebaseAuth = get(),
-            _countryService = get()
+            _countryService = get(),
+            _consumptionsService = get()
         )
     }
 
@@ -65,6 +63,10 @@ val servicesModule = module {
 
     single {
         NotificationCreationService(androidContext())
+    }
+
+    single {
+        ConsumptionsService(_firestore = get(), _firebaseAuth = get())
     }
 
 }

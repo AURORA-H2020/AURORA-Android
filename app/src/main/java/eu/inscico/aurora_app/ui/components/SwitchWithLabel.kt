@@ -23,7 +23,7 @@ fun SwitchWithLabel(label: String, state: Boolean, onStateChange: (Boolean) -> U
         modifier = Modifier
             .background(MaterialTheme.colorScheme.surface)
             .fillMaxWidth(),
-        headlineText = { androidx.compose.material3.Text(text = label) },
+        headlineContent = { androidx.compose.material3.Text(text = label) },
         trailingContent = {
 
             Row(
