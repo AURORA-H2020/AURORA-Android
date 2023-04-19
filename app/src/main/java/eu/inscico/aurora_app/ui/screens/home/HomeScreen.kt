@@ -54,6 +54,7 @@ fun HomeScreen(
             title = stringResource(id = R.string.bottom_bar_tab_home),
             hasBackNavigation = false
         )
+
         Column(
             Modifier.background(MaterialTheme.colorScheme.background)
         ) {
@@ -159,16 +160,25 @@ fun HomeScreen(
                 val secondLatestConsumption = sortedConsumptions?.getOrNull(1)
                 val thirdLatestConsumption = sortedConsumptions?.getOrNull(2)
 
+                val latestItemsCallback : (Consumption) -> Unit =  {
+                    val id = when(it){
+                        is Consumption.ElectricityConsumption -> it.id
+                        is Consumption.HeatingConsumption -> it.id
+                        is Consumption.TransportationConsumption -> it.id
+                    }
+                    navigationService.toConsumptionDetails(id)
+            }
+
                 if (firstLatestConsumption != null) {
                     Divider()
-                    ConsumptionListItem(consumption = firstLatestConsumption){}
+                    ConsumptionListItem(consumption = firstLatestConsumption, callback = latestItemsCallback)
                     Divider()
                     if (secondLatestConsumption != null) {
-                        ConsumptionListItem(consumption = secondLatestConsumption){}
+                        ConsumptionListItem(consumption = secondLatestConsumption, callback = latestItemsCallback)
                         Divider()
                     }
                     if (thirdLatestConsumption != null) {
-                        ConsumptionListItem(consumption = thirdLatestConsumption){}
+                        ConsumptionListItem(consumption = thirdLatestConsumption, callback = latestItemsCallback)
                         Divider()
 
                         Spacer(modifier = Modifier.height(12.dp))

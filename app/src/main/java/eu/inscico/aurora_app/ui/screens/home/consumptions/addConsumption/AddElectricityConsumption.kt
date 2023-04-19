@@ -1,4 +1,4 @@
-package eu.inscico.aurora_app.ui.screens.home.addConsumption
+package eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.Timestamp
 import eu.inscico.aurora_app.R
+import eu.inscico.aurora_app.model.consumptions.Consumption
 import eu.inscico.aurora_app.model.consumptions.ConsumptionResponse
 import eu.inscico.aurora_app.model.consumptions.ConsumptionType
 import eu.inscico.aurora_app.model.consumptions.ElectricityConsumptionDataResponse
@@ -46,36 +47,49 @@ import java.util.*
 
 @Composable
 fun AddElectricityConsumption(
-    viewModel: AddConsumptionViewModel,
+    initialValues: Consumption.ElectricityConsumption? = null,
+    viewModel: AddConsumptionViewModel = koinViewModel(),
     navigationService: NavigationService = get()
 ) {
 
+    val initialConsumption = if(initialValues?.value != null){
+        String.format("%.1f",initialValues.value)
+    } else {
+        ""
+    }
+
     val consumption = remember {
-        mutableStateOf("")
+        mutableStateOf(initialConsumption)
     }
 
     val peopleInHousehold = remember {
-        mutableStateOf(1)
+        mutableStateOf(initialValues?.electricity?.householdSize ?: 1)
     }
 
     val beginDateTime = remember {
-        mutableStateOf(Calendar.getInstance().timeInMillis)
+        mutableStateOf(initialValues?.electricity?.startDate?.timeInMillis ?: Calendar.getInstance().timeInMillis)
     }
 
     val endDateTime = remember {
-        mutableStateOf(Calendar.getInstance().timeInMillis + (86400000 * 2).toLong())
+        mutableStateOf(initialValues?.electricity?.endDate?.timeInMillis ?: (Calendar.getInstance().timeInMillis + (86400000 * 2).toLong()))
+    }
+
+    val initialCosts = if(initialValues?.electricity?.costs != null){
+        String.format("%.1f",initialValues.electricity.costs)
+    } else {
+        ""
     }
 
     val costs = remember {
-        mutableStateOf("")
+        mutableStateOf(initialCosts)
     }
 
     val description = remember {
-        mutableStateOf("")
+        mutableStateOf(initialValues?.description ?: "")
     }
 
     val isSaveValid = remember {
-        mutableStateOf(consumption.value.toDoubleOrNull() != null)
+        mutableStateOf(consumption.value.replace(",", ".").toDoubleOrNull() != null)
     }
 
 
@@ -98,7 +112,7 @@ fun AddElectricityConsumption(
             },
             onValueChange = {
                 consumption.value = it
-                isSaveValid.value = it.toDoubleOrNull() != null
+                isSaveValid.value = it.replace(",",".").toDoubleOrNull() != null
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             trailingIcon = {
@@ -238,7 +252,7 @@ fun AddElectricityConsumption(
                 onClick = {
 
                     val electricityConsumptionDataResponse = ElectricityConsumptionDataResponse(
-                        costs = costs.value.toDoubleOrNull(),
+                        costs = costs.value.replace(",",".").toDoubleOrNull(),
                         endDate = Timestamp(Date(endDateTime.value)),
                         startDate = Timestamp(Date(beginDateTime.value)),
                         householdSize = peopleInHousehold.value
@@ -246,30 +260,39 @@ fun AddElectricityConsumption(
 
                     val consumptionResponse = ConsumptionResponse(
                         category = ConsumptionType.parseConsumptionTypeToString(ConsumptionType.ELECTRICITY),
-                        value = consumption.value.toDoubleOrNull(),
+                        value = consumption.value.replace(",",".").toDoubleOrNull(),
                         description = description.value,
-                        createdAt = Timestamp(Date(System.currentTimeMillis())),
+                        createdAt = Timestamp(initialValues?.createdAt?.time ?: Date(System.currentTimeMillis())),
                         electricity = electricityConsumptionDataResponse,
                         heating = null,
                         transportation = null
                     )
 
-                    CoroutineScope(Dispatchers.IO).launch {
-                        val result = viewModel.createConsumption(consumptionResponse)
-                        when (result) {
-                            is TypedResult.Failure -> {
-                                // TODO:
+                    if(consumptionResponse.value != null && consumptionResponse.electricity?.costs != null){
+                        CoroutineScope(Dispatchers.IO).launch {
+
+                            val result = if(initialValues != null){
+                                consumptionResponse.id = initialValues.id
+                                consumptionResponse.updatedAt = Timestamp(Calendar.getInstance().time)
+                                viewModel.updateConsumption(consumptionResponse)
+                            } else {
+                                viewModel.createConsumption(consumptionResponse)
                             }
-                            is TypedResult.Success -> {
-                                withContext(Dispatchers.Main) {
-                                    navigationService.navControllerTabHome?.popBackStack(
-                                        route = NavGraphDirections.AddConsumption.getNavRoute(),
-                                        inclusive = true
-                                    )
+                            when (result) {
+                                is TypedResult.Failure -> {
+                                    // TODO:
+                                }
+                                is TypedResult.Success -> {
+                                    withContext(Dispatchers.Main) {
+                                        navigationService.navControllerTabHome?.popBackStack()
+                                    }
                                 }
                             }
                         }
+                    } else {
+                        // TODO:
                     }
+
                 }) {
                 Text(
                     text = stringResource(id = R.string.settings_edit_profile_submit_button_title),

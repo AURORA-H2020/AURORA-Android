@@ -2,9 +2,10 @@ package eu.inscico.aurora_app.services.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.*
-import eu.inscico.aurora_app.ui.screens.home.AllConsumptionsListScreen
+import eu.inscico.aurora_app.ui.screens.home.consumptions.AllConsumptionsListScreen
 import eu.inscico.aurora_app.ui.screens.home.HomeScreen
-import eu.inscico.aurora_app.ui.screens.home.addConsumption.AddConsumptionScreen
+import eu.inscico.aurora_app.ui.screens.home.consumptions.ConsumptionDetailScreen
+import eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption.AddConsumptionScreen
 import eu.inscico.aurora_app.ui.screens.login.createProfile.CreateProfileScreen
 import eu.inscico.aurora_app.ui.screens.login.AuthScreen
 import eu.inscico.aurora_app.ui.screens.login.LoginScreen
@@ -116,6 +117,20 @@ sealed class NavGraphDirections(
     ) {
         fun getNavRoute(): String {
             return route
+        }
+    }
+
+    object ConsumptionDetails : NavGraphDirections(
+        route = "consumptionDetails",
+        content = {
+            ConsumptionDetailScreen()
+        },
+        args = listOf(
+            NavArg(name = "id", type = NavType.StringType)
+        )
+    ) {
+        fun getNavRoute(id: String): String {
+            return "consumptionDetails/${id}"
         }
     }
 

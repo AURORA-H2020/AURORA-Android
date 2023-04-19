@@ -1,7 +1,10 @@
 package eu.inscico.aurora_app.core.koin
 
+import androidx.lifecycle.SavedStateHandle
 import eu.inscico.aurora_app.ui.screens.home.HomeViewModel
-import eu.inscico.aurora_app.ui.screens.home.addConsumption.AddConsumptionViewModel
+import eu.inscico.aurora_app.ui.screens.home.consumptions.AllConsumptionsListViewModel
+import eu.inscico.aurora_app.ui.screens.home.consumptions.ConsumptionDetailViewModel
+import eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption.AddConsumptionViewModel
 import eu.inscico.aurora_app.ui.screens.login.createProfile.CreateProfileViewModel
 import eu.inscico.aurora_app.ui.screens.login.LoginViewModel
 import eu.inscico.aurora_app.ui.screens.login.signInEmail.SignInWithEmailViewModel
@@ -64,5 +67,18 @@ val viewModelModule = module {
         AddConsumptionViewModel(
             _consumptionService = get()
         )
+    }
+
+    viewModel {
+        AllConsumptionsListViewModel(
+            _consumptionService = get()
+        )
+    }
+
+    viewModel { (handle: SavedStateHandle) ->
+    ConsumptionDetailViewModel(
+        savedStateHandle = handle,
+        _consumptionService = get()
+    )
     }
 }

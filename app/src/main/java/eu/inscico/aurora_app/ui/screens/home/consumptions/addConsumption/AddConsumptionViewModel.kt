@@ -1,4 +1,4 @@
-package eu.inscico.aurora_app.ui.screens.home.addConsumption
+package eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
@@ -53,8 +53,27 @@ class AddConsumptionViewModel(
         return spinnerItems
     }
 
+    fun getSectionForSelectedTransportType(context: Context, item: TransportationType?): TransportationTypeSection? {
+        if(item == null) return null
+        val allSections = getSpinnerSectionsOfTransportation(context)
+
+        allSections.forEach { section ->
+            section.entries?.forEach {entry ->
+                if(entry == item){
+                    return section.section as TransportationTypeSection
+                }
+
+            }
+        }
+        return null
+    }
+
     suspend fun createConsumption(consumptionResponse: ConsumptionResponse): TypedResult<Boolean, String> {
         return _consumptionService.createConsumption(consumptionResponse)
+    }
+
+    suspend fun updateConsumption(consumptionResponse: ConsumptionResponse): TypedResult<Boolean, String> {
+        return _consumptionService.updateConsumption(consumptionResponse)
     }
 
 }

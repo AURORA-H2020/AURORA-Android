@@ -4,10 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,16 +18,61 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBar(
-    modifier: Modifier = Modifier,
     title: String,
     hasBackNavigation: Boolean,
-    actionButton: @Composable (ColumnScope.() -> Unit)? = null,
+    actionButton: @Composable() (RowScope.() -> Unit)? = null,
     backNavigationCallback: (() -> Unit)? = null,
     actionButtonCallback: (() -> Unit)? = null
 ) {
 
+    MediumTopAppBar(
+        title = {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleLarge,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Start,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+        },
+        navigationIcon = {
+            if (hasBackNavigation) {
+                Image(
+                    painter = painterResource(id = eu.inscico.aurora_app.R.drawable.baseline_arrow_back_24),
+                    modifier = Modifier
+
+                        .size(42.dp)
+                        .padding(horizontal = 7.dp)
+                        .clickable {
+                            backNavigationCallback?.invoke()
+                        },
+                    contentDescription = "",
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
+                )
+            }
+        },
+        actions = {
+
+            if (actionButton != null) {
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically,
+                    content = actionButton,
+                    modifier = Modifier.clickable {
+                        actionButtonCallback?.invoke()
+                    }
+                )
+            }
+        },
+    )
+    Divider()
+
+/*
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -102,4 +144,6 @@ fun AppBar(
         Spacer(Modifier.height(2.dp))
         Divider(color = MaterialTheme.colorScheme.outlineVariant)
     }
+
+ */
 }

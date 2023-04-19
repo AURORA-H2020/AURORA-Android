@@ -39,6 +39,7 @@ class ConsumptionResponse (
                     householdSize = item.electricity.householdSize
                     )
                     ConsumptionResponse(
+                        id = item.id,
                         carbonEmissions = item.carbonEmissions,
                     category = ConsumptionType.parseConsumptionTypeToString(item.category),
                     createdAt = if (item.createdAt?.time != null) Timestamp(item.createdAt.time) else null,
@@ -62,6 +63,7 @@ class ConsumptionResponse (
                     districtHeatingSource = item.heating.districtHeatingSource?.parseDistrictHeatingSourceToString(),
                     )
                     ConsumptionResponse(
+                        id = item.id,
                         carbonEmissions = item.carbonEmissions,
                         category = ConsumptionType.parseConsumptionTypeToString(item.category),
                         createdAt = if (item.createdAt?.time != null) Timestamp(item.createdAt.time) else null,
@@ -84,6 +86,7 @@ class ConsumptionResponse (
                                 transportationType = item.transportation.transportationType.parseTransportationTypeToString()
                         )
                     ConsumptionResponse(
+                        id = item.id,
                         carbonEmissions = item.carbonEmissions,
                         category = ConsumptionType.parseConsumptionTypeToString(item.category),
                         createdAt = if (item.createdAt?.time != null) Timestamp(item.createdAt.time) else null,

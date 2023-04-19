@@ -1,4 +1,4 @@
-package eu.inscico.aurora_app.ui.screens.home.addConsumption
+package eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -48,38 +48,45 @@ import java.util.*
 
 @Composable
 fun AddTransportationConsumption(
-    viewModel: AddConsumptionViewModel,
+    initialValues: Consumption.TransportationConsumption? = null,
+    viewModel: AddConsumptionViewModel = koinViewModel(),
     navigationService: NavigationService = get()
 ){
 
     val context = LocalContext.current
 
+    val initialDistance = if(initialValues?.value != null){
+        String.format("%.1f",initialValues.value)
+    } else {
+        ""
+    }
+
     val distance = remember {
-        mutableStateOf("")
+        mutableStateOf(initialDistance)
     }
 
     val startOfTravelAsLong = remember {
-        mutableStateOf(Calendar.getInstance().timeInMillis)
+        mutableStateOf(initialValues?.transportation?.dateOfTravel?.timeInMillis ?: Calendar.getInstance().timeInMillis)
     }
 
     val transportationType = remember {
-        mutableStateOf<TransportationType?>(null)
+        mutableStateOf<TransportationType?>(initialValues?.transportation?.transportationType)
     }
 
     val transportationSection = remember {
-        mutableStateOf<TransportationTypeSection?>(null)
+        mutableStateOf<TransportationTypeSection?>(viewModel.getSectionForSelectedTransportType(context, transportationType.value))
     }
 
     val occupancyApproximately = remember {
-        mutableStateOf<PublicVehicleOccupancy?>(null)
+        mutableStateOf<PublicVehicleOccupancy?>(initialValues?.transportation?.publicVehicleOccupancy)
     }
 
     val occupancyPrecisely = remember {
-        mutableStateOf(1)
+        mutableStateOf(initialValues?.transportation?.privateVehicleOccupancy ?: 1)
     }
 
     val description = remember {
-        mutableStateOf("")
+        mutableStateOf(initialValues?.description ?: "")
     }
 
     val openDatePicker = remember {
@@ -91,7 +98,7 @@ fun AddTransportationConsumption(
     }
 
     fun isSaveValid(): Boolean {
-        return distance.value.toDoubleOrNull() != null
+        return distance.value.replace(",", ".").toDoubleOrNull() != null
                 && transportationType.value != null
                 && ((transportationSection.value != TransportationTypeSection.TRAINS_AND_TRAMS
                 || transportationSection.value != TransportationTypeSection.BUSSES) || occupancyApproximately.value != null)
@@ -400,30 +407,38 @@ fun AddTransportationConsumption(
 
                     val consumptionResponse = ConsumptionResponse(
                         category = ConsumptionType.parseConsumptionTypeToString(ConsumptionType.TRANSPORTATION),
-                        value = distance.value.toDoubleOrNull(),
+                        value = distance.value.replace(",",".").toDoubleOrNull(),
                         description = description.value,
-                        createdAt = Timestamp(Date(System.currentTimeMillis())),
+                        createdAt = Timestamp(initialValues?.createdAt?.time ?: Date(System.currentTimeMillis())),
                         electricity = null,
                         heating = null,
                         transportation = transportationConsumptionDataResponse
                     )
 
-                    CoroutineScope(Dispatchers.IO).launch {
-                        val result = viewModel.createConsumption(consumptionResponse)
-                        when (result) {
-                            is TypedResult.Failure -> {
-                                // TODO:
+                    if(consumptionResponse.value != null){
+                        CoroutineScope(Dispatchers.IO).launch {
+
+                            val result = if(initialValues != null){
+                                consumptionResponse.id = initialValues.id
+                                viewModel.updateConsumption(consumptionResponse)
+                            } else {
+                                viewModel.createConsumption(consumptionResponse)
                             }
-                            is TypedResult.Success -> {
-                                withContext(Dispatchers.Main) {
-                                    navigationService.navControllerTabHome?.popBackStack(
-                                        route = NavGraphDirections.AddConsumption.getNavRoute(),
-                                        inclusive = true
-                                    )
+                            when (result) {
+                                is TypedResult.Failure -> {
+                                    // TODO:
+                                }
+                                is TypedResult.Success -> {
+                                    withContext(Dispatchers.Main) {
+                                        navigationService.navControllerTabHome?.popBackStack()
+                                    }
                                 }
                             }
                         }
+                    } else {
+                        // TODO:
                     }
+
                 }) {
                 Text(
                     text = stringResource(id = R.string.settings_edit_profile_submit_button_title),

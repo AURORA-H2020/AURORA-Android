@@ -10,6 +10,11 @@
     <string name="cancel">Cancel</string>
     <string name="okay">Okay</string>
     <string name="form_spinner_item_please_chose">Please choose</string>
+    <string name="search">Search</string>
+    <string name="created">Created</string>
+    <string name="updated">Updated</string>
+    <string name="no_value_to_display">-</string>
+    <string name="delete">delete</string>
 
     <!-- Login/Create Profile -->
     <string name="login_aurora_title">Welcome to AURORA</string>
@@ -137,6 +142,7 @@
     <string name="home_add_consumption_transportation_public_occupancy_nearly_full_title">Nearly full</string>
     <string name="home_add_consumption_transportation_distance_title">Distance</string>
     <string name="home_add_consumption_transportation_start_of_travel_title">Start of travel</string>
+    <string name="home_add_consumption_carbon_emissions_title">Carbon emissions</string>
 
 
 
@@ -204,5 +210,6 @@
 
     <!-- Dialogs -->
     <string name="dialog_settings_logout_title">Are you sure you want to logout?</string>
+    <string name="dialog_consumption_delete_title">Are you sure you want to delete the entry?</string>
 
 </resources>

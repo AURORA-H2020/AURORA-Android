@@ -82,6 +82,40 @@ class ConsumptionsService(
         }
     }
 
+    suspend fun updateConsumption(consumptionResponse: ConsumptionResponse): TypedResult<Boolean, String> {
+        try {
+
+            val authId = _firebaseAuth.currentUser?.uid ?: return TypedResult.Failure("")
+            val docId = consumptionResponse.id ?: return TypedResult.Failure("")
+
+            _firestore.collection(usersCollectionName).document(authId)
+                .collection(collectionName).document(docId).set(consumptionResponse).await()
+
+            return TypedResult.Success(true)
+        } catch (e: Exception) {
+            return TypedResult.Failure(e.message ?: "")
+        }
+    }
+
+    suspend fun deleteConsumption(consumption: Consumption): TypedResult<Any, Any> {
+        val authId = _firebaseAuth.currentUser?.uid ?: return TypedResult.Failure("")
+        val consumptionId = when(consumption){
+            is Consumption.ElectricityConsumption -> consumption.id
+            is Consumption.HeatingConsumption -> consumption.id
+            is Consumption.TransportationConsumption -> consumption.id
+        }
+
+        try {
+            _firestore.collection(usersCollectionName).document(authId)
+                .collection(collectionName).document(consumptionId)
+                .delete()
+
+            return TypedResult.Success(true)
+        } catch (e: Exception) {
+            return TypedResult.Failure(e.message ?: "")
+        }
+    }
+
     fun deleteData(){
         userConsumptionsLive.postValue(null)
         _listener?.remove()

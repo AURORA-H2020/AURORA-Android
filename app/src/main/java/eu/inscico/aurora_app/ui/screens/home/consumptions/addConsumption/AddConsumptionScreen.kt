@@ -1,4 +1,4 @@
-package eu.inscico.aurora_app.ui.screens.home.addConsumption
+package eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -49,13 +49,13 @@ fun AddConsumptionScreen(
 
         when (selectedConsumptionEntry.value) {
             ConsumptionType.ELECTRICITY -> {
-                AddElectricityConsumption(viewModel)
+                AddElectricityConsumption()
             }
             ConsumptionType.HEATING -> {
-                AddHeatingConsumption(viewModel)
+                AddHeatingConsumption()
             }
             ConsumptionType.TRANSPORTATION -> {
-                AddTransportationConsumption(viewModel)
+                AddTransportationConsumption()
             }
             null -> {
                 Column(

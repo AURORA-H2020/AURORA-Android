@@ -8,6 +8,7 @@ import java.util.Calendar
 sealed class Consumption {
 
     data class ElectricityConsumption(
+        val id: String,
         val carbonEmissions: Double?,
         val category: ConsumptionType,
         val createdAt: Calendar?,
@@ -20,6 +21,7 @@ sealed class Consumption {
     ) : Consumption()
 
     data class HeatingConsumption(
+        val id: String,
         val carbonEmissions: Double?,
         val category: ConsumptionType,
         val createdAt: Calendar?,
@@ -32,6 +34,7 @@ sealed class Consumption {
     ) : Consumption()
 
     data class TransportationConsumption(
+        val id: String,
         val carbonEmissions: Double?,
         val category: ConsumptionType,
         val createdAt: Calendar?,
@@ -88,6 +91,7 @@ sealed class Consumption {
                         householdSize = item.electricity?.householdSize ?: return null
                     )
                     ElectricityConsumption(
+                        id = item.id ?: return null,
                         carbonEmissions = item.carbonEmissions,
                         category = category,
                         createdAt = createdAt,
@@ -147,6 +151,7 @@ sealed class Consumption {
                     )
 
                     HeatingConsumption(
+                        id = item.id ?: return null,
                         carbonEmissions = item.carbonEmissions,
                         category = category,
                         createdAt = createdAt,
@@ -234,6 +239,7 @@ sealed class Consumption {
 
 
                     TransportationConsumption(
+                        id = item.id ?: return null,
                         carbonEmissions = item.carbonEmissions,
                         category = category,
                         createdAt = createdAt,

@@ -1,4 +1,4 @@
-package eu.inscico.aurora_app.ui.screens.home.addConsumption
+package eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -46,47 +46,60 @@ import java.util.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddHeatingConsumption(
-    viewModel: AddConsumptionViewModel,
+    initialValue: Consumption.HeatingConsumption? = null,
+    viewModel: AddConsumptionViewModel = koinViewModel(),
     navigationService: NavigationService = get()
 ){
 
     val context = LocalContext.current
 
+    val initialConsumption = if(initialValue?.value != null){
+        String.format("%.1f",initialValue.value)
+    } else {
+        ""
+    }
+
     val consumption = remember {
-        mutableStateOf("")
+        mutableStateOf(initialConsumption)
     }
 
     val peopleInHousehold = remember {
-        mutableStateOf(1)
+        mutableStateOf(initialValue?.heating?.householdSize ?: 1)
     }
 
     val beginDateTime = remember {
-        mutableStateOf(Calendar.getInstance().timeInMillis)
+        mutableStateOf(initialValue?.heating?.startDate?.timeInMillis ?: Calendar.getInstance().timeInMillis)
     }
 
     val endDateTime = remember {
-        mutableStateOf(Calendar.getInstance().timeInMillis + (86400000 * 2).toLong())
+        mutableStateOf(initialValue?.heating?.endDate?.timeInMillis ?: (Calendar.getInstance().timeInMillis + (86400000 * 2).toLong()))
+    }
+
+    val initialCosts = if(initialValue?.heating?.costs != null){
+        String.format("%.1f",initialValue.heating.costs)
+    } else {
+        ""
     }
 
     val costs = remember {
-        mutableStateOf("")
+        mutableStateOf(initialCosts)
     }
 
     val description = remember {
-        mutableStateOf("")
+        mutableStateOf(initialValue?.description ?: "")
     }
 
     val heatingFuel = remember {
-        mutableStateOf<HeatingFuelType?>(null)
+        mutableStateOf<HeatingFuelType?>(initialValue?.heating?.heatingFuel)
     }
 
     val districtHeatingSource = remember {
-        mutableStateOf<DistrictHeatingSource?>(null)
+        mutableStateOf<DistrictHeatingSource?>(initialValue?.heating?.districtHeatingSource)
     }
 
 
     fun isSaveValid(): Boolean {
-        return consumption.value.toDoubleOrNull() != null
+        return consumption.value.replace(",", ".").toDoubleOrNull() != null
                 && heatingFuel.value != null
                 && (heatingFuel.value != HeatingFuelType.DISTRICT || districtHeatingSource.value != null)
     }
@@ -315,12 +328,12 @@ fun AddHeatingConsumption(
                         null
                     }
 
-                    val finalValue = consumption.value.toDoubleOrNull()
+                    val finalValue = consumption.value.replace(",",".").toDoubleOrNull()
 
                     if(finalValue != null && heatingFuel.value != null) {
 
                         val heatingConsumptionDataResponse = HeatingConsumptionDataResponse(
-                            costs = costs.value.toDoubleOrNull(),
+                            costs = costs.value.replace(",",".").toDoubleOrNull(),
                             endDate = Timestamp(Date(endDateTime.value)),
                             startDate = Timestamp(Date(beginDateTime.value)),
                             householdSize = peopleInHousehold.value,
@@ -332,24 +345,27 @@ fun AddHeatingConsumption(
                             category = ConsumptionType.parseConsumptionTypeToString(ConsumptionType.HEATING),
                             value = finalValue,
                             description = description.value,
-                            createdAt = Timestamp(Date(System.currentTimeMillis())),
+                            createdAt = Timestamp(initialValue?.createdAt?.time ?: Date(System.currentTimeMillis())),
                             electricity = null,
                             heating = heatingConsumptionDataResponse,
                             transportation = null
                         )
 
                         CoroutineScope(Dispatchers.IO).launch {
-                            val result = viewModel.createConsumption(consumptionResponse)
+                            val result = if(initialValue != null){
+                                consumptionResponse.id = initialValue.id
+                                consumptionResponse.updatedAt = Timestamp(Calendar.getInstance().time)
+                                viewModel.updateConsumption(consumptionResponse)
+                            } else {
+                                viewModel.createConsumption(consumptionResponse)
+                            }
                             when (result) {
                                 is TypedResult.Failure -> {
                                     // TODO:
                                 }
                                 is TypedResult.Success -> {
                                     withContext(Dispatchers.Main) {
-                                        navigationService.navControllerTabHome?.popBackStack(
-                                            route = NavGraphDirections.AddConsumption.getNavRoute(),
-                                            inclusive = true
-                                        )
+                                        navigationService.navControllerTabHome?.popBackStack()
                                     }
                                 }
                             }

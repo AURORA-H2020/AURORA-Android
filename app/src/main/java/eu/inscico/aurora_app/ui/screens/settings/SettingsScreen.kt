@@ -52,9 +52,6 @@ fun SettingsScreen(
             hasBackNavigation = false,
             actionButton = {
                 androidx.compose.material.Text(text = stringResource(id = R.string.logout_button_title))
-            },
-            backNavigationCallback = {
-                // TODO: logout
             }
         )
 
