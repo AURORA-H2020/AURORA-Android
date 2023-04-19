@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.toObject
 import eu.inscico.aurora_app.model.*
+import eu.inscico.aurora_app.model.consumptions.Consumption
 import eu.inscico.aurora_app.utils.TypedResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -94,6 +95,18 @@ class UserService(
             _firestore.collection(collectionName).document(authId).set(user).await()
 
             getUserByAuthId(authId)
+            return TypedResult.Success(true)
+        } catch (e: Exception) {
+            return TypedResult.Failure(e.message ?: "")
+        }
+    }
+
+    suspend fun deleteUser(): TypedResult<Any, Any> {
+        val authId = _firebaseAuth.currentUser?.uid ?: return TypedResult.Failure("")
+
+        try {
+            _firestore.collection(collectionName).document(authId).delete()
+
             return TypedResult.Success(true)
         } catch (e: Exception) {
             return TypedResult.Failure(e.message ?: "")

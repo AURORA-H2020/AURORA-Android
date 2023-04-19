@@ -101,6 +101,10 @@ class AuthService(
         _firebaseAuth.signOut()
     }
 
+    fun deleteUser(){
+       // _firebaseAuth.
+    }
+
     fun getUserLoginType(): UserSignInType {
         if(googleAccount != null){
             return UserSignInType.GOOGLE

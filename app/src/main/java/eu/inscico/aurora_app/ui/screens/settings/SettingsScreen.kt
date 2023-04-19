@@ -3,9 +3,9 @@ package eu.inscico.aurora_app.ui.screens.settings
 import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +27,11 @@ import eu.inscico.aurora_app.ui.components.container.ScrollableContent
 import eu.inscico.aurora_app.ui.theme.electricityYellow
 import eu.inscico.aurora_app.ui.theme.heatingRed
 import eu.inscico.aurora_app.ui.theme.mobilityBlue
+import eu.inscico.aurora_app.utils.ExternalUtils
+import eu.inscico.aurora_app.utils.TypedResult
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 
@@ -49,10 +54,7 @@ fun SettingsScreen(
 
         AppBar(
             title = stringResource(id = R.string.settings_app_bar_title),
-            hasBackNavigation = false,
-            actionButton = {
-                androidx.compose.material.Text(text = stringResource(id = R.string.logout_button_title))
-            }
+            hasBackNavigation = false
         )
 
         Column(
@@ -212,9 +214,29 @@ fun SettingsScreen(
                     iconRes = R.drawable.outline_delete_outline_24,
                     iconColor = MaterialTheme.colorScheme.error,
                     titleColor = MaterialTheme.colorScheme.error,
-                    isNavigation = false
-                )
+                    isNavigation = false,
+                    callback = {
+                        userFeedbackService.showDialog(
+                            message = context.getString(R.string.delete),
+                            confirmButtonText = context.getString(R.string.dialog_account_delete_title),
+                            confirmButtonCallback = {
+                                CoroutineScope(Dispatchers.IO).launch {
 
+                                    val result = viewModel.deleteUser()
+                                    when(result){
+                                        is TypedResult.Failure -> {
+                                            // TODO:
+                                        }
+                                        is TypedResult.Success -> {
+
+                                        }
+                                    }
+                                }
+
+                            }
+                        )
+                    }
+                )
                 Divider()
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -227,6 +249,47 @@ fun SettingsScreen(
                 ) {
                     androidx.compose.material.Text(
                         style = MaterialTheme.typography.labelLarge,
+                        text = stringResource(id = R.string.settings_section_support_title),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Start
+                    )
+                }
+
+                ActionEntry(
+                    title = stringResource(id = R.string.settings_section_support_about_the_app_title),
+                    iconRes = R.drawable.baseline_layers_24,
+                    isNavigation = false,
+                    callback = {
+                        ExternalUtils.openBrowser(context, "https://www.aurora-h2020.eu/aurora/ourapp/")
+                    }
+                )
+
+                ActionEntry(
+                    title = stringResource(id = R.string.settings_section_support_contact_title),
+                    iconRes = R.drawable.baseline_question_mark_24,
+                    isNavigation = false,
+                    callback = {
+                        if(viewModel.getSupportUrl() != null){
+                            ExternalUtils.openBrowser(context, viewModel.getSupportUrl())
+                        } else {
+                            // TODO:
+                        }
+                    }
+                )
+
+
+                Divider()
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Text(
+                        style = MaterialTheme.typography.labelLarge,
                         text = stringResource(id = R.string.settings_legal_information_section_title),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Start
@@ -237,6 +300,24 @@ fun SettingsScreen(
                     title = stringResource(id = R.string.settings_legal_information_feature_preview_title),
                     iconRes = R.drawable.outline_auto_fix_high_24,
                     isNavigation = false
+                )
+
+                ActionEntry(
+                    title = stringResource(id = R.string.settings_legal_information_imprint_title),
+                    iconRes = R.drawable.baseline_info_24,
+                    isNavigation = false,
+                    callback = {
+                        ExternalUtils.openBrowser(context, "https://www.aurora-h2020.eu/aurora/privacy-policy/")
+                    }
+                )
+
+                ActionEntry(
+                    title = stringResource(id = R.string.settings_legal_information_privacy_policy_title),
+                    iconRes = R.drawable.baseline_lock_24,
+                    isNavigation = false,
+                    callback = {
+                        ExternalUtils.openBrowser(context, "https://www.aurora-h2020.eu/aurora/privacy-policy/")
+                    }
                 )
 
                 ActionEntry(

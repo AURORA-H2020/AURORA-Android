@@ -207,9 +207,13 @@
     <string name="settings_notifications_heating_description">We can remind you to enter your energy consumption based on your bill. Just let us know when you expect the next one.</string>
     <string name="settings_notifications_mobility_description">We can remind you to regulary enter your transportation data. Just let us know how frequently you travel.</string>
     <string name="settings_notifications_next_reminder_send_info">The next notification will be sent on %1$s</string>
+    <string name="settings_section_support_title">Support</string>
+    <string name="settings_section_support_about_the_app_title">About the app</string>
+    <string name="settings_section_support_contact_title">Contact support</string>
 
     <!-- Dialogs -->
     <string name="dialog_settings_logout_title">Are you sure you want to logout?</string>
     <string name="dialog_consumption_delete_title">Are you sure you want to delete the entry?</string>
+    <string name="dialog_account_delete_title">Are you sure you want to delete your account?</string>
 
 </resources>

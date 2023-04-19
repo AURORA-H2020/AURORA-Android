@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import eu.inscico.aurora_app.model.UserSignInType
 import eu.inscico.aurora_app.services.UserService
 import eu.inscico.aurora_app.services.auth.AuthService
+import eu.inscico.aurora_app.utils.TypedResult
 
 class SettingsViewModel(
     private val _userService: UserService,
@@ -18,11 +19,42 @@ class SettingsViewModel(
             UserSignInType.GOOGLE -> {
                 _authService.googleSignOut(activity)
             }
-            UserSignInType.APPLE -> TODO()
+            UserSignInType.APPLE -> {
+            // TODO:
+            }
             UserSignInType.EMAIL -> {
                 _authService.logout()
             }
-            null -> TODO()
+            null -> _authService.logout()
+        }
+    }
+
+    fun deleteUserData(){
+        when(_authService.userSignInType){
+            UserSignInType.GOOGLE -> {
+
+            }
+            UserSignInType.APPLE -> {
+
+            }
+            UserSignInType.EMAIL -> {}
+            null -> {
+
+            }
+        }
+    }
+
+    suspend fun deleteUser(): TypedResult<Any, Any>{
+        return _userService.deleteUser()
+    }
+
+    fun getSupportUrl(): String?{
+        val authId = _userService.userLive.value?.id
+        val countryId = _userService.userLive.value?.country
+        return if(authId != null && countryId != null){
+            "https://www.aurora-h2020.eu/app-support/?user_id=$authId&country_id=$countryId"
+        } else {
+            null
         }
     }
 }
