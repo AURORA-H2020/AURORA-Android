@@ -34,8 +34,6 @@ fun ActionEntry(
     callback: (() -> Unit)? = null
 ) {
 
-    Divider()
-
     ListItem(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.surface)

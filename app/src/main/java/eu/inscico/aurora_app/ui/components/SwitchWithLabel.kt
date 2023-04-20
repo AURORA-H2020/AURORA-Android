@@ -16,8 +16,6 @@ fun SwitchWithLabel(label: String, state: Boolean, onStateChange: (Boolean) -> U
 
     val interactionSource = remember { MutableInteractionSource() }
 
-    Divider()
-
     ListItem(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.surface)
@@ -48,5 +46,4 @@ fun SwitchWithLabel(label: String, state: Boolean, onStateChange: (Boolean) -> U
             }
         }
     )
-    Divider()
 }

@@ -115,9 +115,15 @@ fun AddHeatingConsumption(
         horizontalAlignment = Alignment.Start
     ) {
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
+            shape = RoundedCornerShape(16.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
@@ -130,9 +136,7 @@ fun AddHeatingConsumption(
                 isSaveValid.value = isSaveValid()
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            trailingIcon = {
-                Text(text = "kWh")
-            }
+            trailingIcon = { Text(text = "kWh") }
         )
 
         Spacer(Modifier.height(4.dp))
@@ -249,6 +253,12 @@ fun AddHeatingConsumption(
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
+            shape = RoundedCornerShape(16.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
@@ -284,6 +294,12 @@ fun AddHeatingConsumption(
         Spacer(modifier = Modifier.height(4.dp))
 
         OutlinedTextField(
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
+            shape = RoundedCornerShape(16.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
@@ -317,7 +333,8 @@ fun AddHeatingConsumption(
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             Button(
                 modifier = Modifier
-                    .padding(horizontal = 32.dp).fillMaxWidth(),
+                    .padding(horizontal = 32.dp)
+                    .fillMaxWidth(),
                 enabled = isSaveValid.value,
                 shape = RoundedCornerShape(32.dp),
                 onClick = {

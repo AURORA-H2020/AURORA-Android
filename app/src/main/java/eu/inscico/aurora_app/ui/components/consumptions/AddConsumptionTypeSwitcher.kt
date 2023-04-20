@@ -55,12 +55,12 @@ fun AddConsumptionTypeSwitcher(
         }
     }
 
-    Column(Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.surface), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
 
 
         Button(
             modifier = Modifier
-                .padding(horizontal = 32.dp, vertical = 16.dp)
+                .padding(horizontal = 32.dp)
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = consumptionColor.copy(alpha = 0.2F)),
             shape = RoundedCornerShape(32.dp),

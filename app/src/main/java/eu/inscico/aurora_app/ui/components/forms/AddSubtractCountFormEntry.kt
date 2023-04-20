@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
@@ -36,71 +37,80 @@ fun AddSubtractCountFormEntry(
         mutableStateOf(initialValue)
     }
 
-    ListItem(
-        modifier = Modifier
+    Column(
+        Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.onSecondary,
-                shape = RoundedCornerShape(4.dp)
-            ),
-        trailingContent = {
-            Row(
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            .clip(shape = RoundedCornerShape(16.dp))
+    ) {
+        ListItem(
+            modifier = Modifier
+                .fillMaxWidth(),
+            trailingContent = {
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
 
-                val buttonColor = if(isNullCountPossible){
-                    if(count.value > 0){
-                        ColorFilter.tint(MaterialTheme.colorScheme.primary)
-                    } else {
-                        ColorFilter.tint(MaterialTheme.colorScheme.onSecondary)
-                    }
-                } else {
-                    if(count.value > 1){
-                        ColorFilter.tint(MaterialTheme.colorScheme.primary)
-                    } else {
-                        ColorFilter.tint(MaterialTheme.colorScheme.onSecondary)
-                    }
-                }
-
-                Image(
-                    painter = painterResource(id = R.drawable.baseline_remove_circle_24),
-                    contentDescription = "",
-                    colorFilter = buttonColor,
-                    modifier = Modifier.clickable {
-                        if (isNullCountPossible) {
-                            count.value = count.value - 1
-                            callback.invoke(count.value)
-                        } else if (count.value > 1) {
-                            count.value = count.value - 1
-                            callback.invoke(count.value)
+                    val buttonColor = if (isNullCountPossible) {
+                        if (count.value > 0) {
+                            ColorFilter.tint(MaterialTheme.colorScheme.primary)
+                        } else {
+                            ColorFilter.tint(MaterialTheme.colorScheme.onSecondary)
                         }
-                    }.padding(8.dp)
-                )
+                    } else {
+                        if (count.value > 1) {
+                            ColorFilter.tint(MaterialTheme.colorScheme.primary)
+                        } else {
+                            ColorFilter.tint(MaterialTheme.colorScheme.onSecondary)
+                        }
+                    }
 
-                Spacer(modifier = Modifier.width(6.dp))
+                    Image(
+                        painter = painterResource(id = R.drawable.baseline_remove_circle_24),
+                        contentDescription = "",
+                        colorFilter = buttonColor,
+                        modifier = Modifier
+                            .clickable {
+                                if (isNullCountPossible) {
+                                    count.value = count.value - 1
+                                    callback.invoke(count.value)
+                                } else if (count.value > 1) {
+                                    count.value = count.value - 1
+                                    callback.invoke(count.value)
+                                }
+                            }
+                            .padding(8.dp)
+                    )
 
-                Text(text = count.value.toString(), style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.width(6.dp))
 
-                Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = count.value.toString(),
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.Bold
+                    )
 
-                Image(
-                    painter = painterResource(id = R.drawable.baseline_add_circle_24),
-                    contentDescription = "",
-                    colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
-                    modifier = Modifier.clickable {
-                        count.value = count.value + 1
-                        callback.invoke(count.value)
-                    }.padding(8.dp)
+                    Spacer(modifier = Modifier.width(6.dp))
+
+                    Image(
+                        painter = painterResource(id = R.drawable.baseline_add_circle_24),
+                        contentDescription = "",
+                        colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
+                        modifier = Modifier
+                            .clickable {
+                                count.value = count.value + 1
+                                callback.invoke(count.value)
+                            }
+                            .padding(8.dp)
+                    )
+                }
+            },
+            headlineContent = {
+                Text(
+                    text = stringResource(id = titleRes)
                 )
             }
-        },
-        headlineContent = {
-            Text(
-                text = stringResource(id = titleRes)
-                )
-        }
-    )
+        )
+    }
 }

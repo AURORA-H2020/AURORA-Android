@@ -2,6 +2,7 @@ package eu.inscico.aurora_app.ui.screens.settings.notifications
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -9,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -61,14 +63,25 @@ fun MobilityNotificationScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                SwitchWithLabel(
-                    label = stringResource(id = R.string.settings_notifications_enabled_title),
-                    state = enabledSwitch.value,
-                    onStateChange = {
-                        viewModel.updateMobilityReminderActive(it)
-                        enabledSwitch.value = it
-                        viewModel.updateNotificationAlarm(enabledSwitch.value, ConsumptionType.TRANSPORTATION)
-                    })
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .clip(shape = RoundedCornerShape(16.dp))
+                ) {
+
+                    SwitchWithLabel(
+                        label = stringResource(id = R.string.settings_notifications_enabled_title),
+                        state = enabledSwitch.value,
+                        onStateChange = {
+                            viewModel.updateMobilityReminderActive(it)
+                            enabledSwitch.value = it
+                            viewModel.updateNotificationAlarm(
+                                enabledSwitch.value,
+                                ConsumptionType.TRANSPORTATION
+                            )
+                        })
+                }
 
                 Text(
                     text = stringResource(id = R.string.settings_notifications_mobility_description),

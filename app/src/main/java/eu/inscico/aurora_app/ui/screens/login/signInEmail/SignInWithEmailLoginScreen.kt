@@ -35,11 +35,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.get
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignInWithEmailLoginScreen(
     viewModel: SignInWithEmailViewModel,
     navigationService: NavigationService = get()
-){
+) {
 
     val email = remember {
         mutableStateOf("")
@@ -51,100 +52,112 @@ fun SignInWithEmailLoginScreen(
     val passwordVisible = rememberSaveable { mutableStateOf(false) }
 
 
-    Column() {
+    Column(
+        Modifier.background(MaterialTheme.colorScheme.background)
+    ) {
 
-        ScrollableContent {
+        Spacer(modifier = Modifier.height(8.dp))
 
-            Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            text = stringResource(id = R.string.login_email_sign_in_button_text),
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.headlineSmall
+        )
 
-            Text(
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Spacer(Modifier.height(32.dp))
+
+            OutlinedTextField(
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent,
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
+                shape = RoundedCornerShape(16.dp),
+                value = email.value,
+                label = {
+                    Text(text = stringResource(id = R.string.sign_in_with_email_email_title))
+                },
+                onValueChange = {
+                    email.value = it
+                })
+
+            Spacer(Modifier.height(8.dp))
+
+            OutlinedTextField(
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent,
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
+                shape = RoundedCornerShape(16.dp),
+                value = password.value,
+                label = {
+                    Text(text = stringResource(id = R.string.sign_in_with_email_password_title))
+                },
+                visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                trailingIcon = {
+                    val image = if (passwordVisible.value)
+                        R.drawable.outline_visibility_24
+                    else R.drawable.outline_visibility_off_24
+
+                    // Please provide localized description for accessibility services
+                    val description =
+                        if (passwordVisible.value) "Hide password" else "Show password"
+
+                    IconButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
+                        Icon(painterResource(id = image), description)
+                    }
+                },
+                onValueChange = {
+                    password.value = it
+                })
+
+            Spacer(Modifier.height(46.dp))
+
+            Button(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                text = stringResource(id = R.string.login_email_sign_in_button_text),
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.headlineSmall
-            )
-
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-                Spacer(Modifier.height(32.dp))
-
-                OutlinedTextField(
-                    value = email.value,
-                    label = {
-                        Text(text = stringResource(id = R.string.sign_in_with_email_email_title))
-                    },
-                    onValueChange = {
-                        email.value = it
-                    })
-
-                Spacer(Modifier.height(8.dp))
-
-                OutlinedTextField(
-                    value = password.value,
-                    label = {
-                        Text(text = stringResource(id = R.string.sign_in_with_email_password_title))
-                    },
-                    visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    trailingIcon = {
-                        val image = if (passwordVisible.value)
-                            R.drawable.outline_visibility_24
-                        else R.drawable.outline_visibility_off_24
-
-                        // Please provide localized description for accessibility services
-                        val description =
-                            if (passwordVisible.value) "Hide password" else "Show password"
-
-                        IconButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
-                            Icon(painterResource(id = image), description)
-                        }
-                    },
-                    onValueChange = {
-                        password.value = it
-                    })
-
-                Spacer(Modifier.height(46.dp))
-
-                Button(
-                    modifier = Modifier
-                        .padding(horizontal = 32.dp).fillMaxWidth(),
-                    shape = RoundedCornerShape(32.dp),
-                    onClick = {
-                        CoroutineScope(Dispatchers.IO).launch {
-                            val result = viewModel.loginWithEmailAndPassword(
-                                email = email.value,
-                                password = password.value
-                            )
-                            when (result) {
-                                is TypedResult.Failure -> {}
-                                is TypedResult.Success -> {
-                                    withContext(Dispatchers.Main) {
-                                        navigationService.navControllerAuth?.popBackStack(
-                                            route = NavGraphDirections.Auth.getNavRoute(),
-                                            inclusive = false
-                                        )
-                                    }
+                    .padding(horizontal = 32.dp)
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(32.dp),
+                onClick = {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val result = viewModel.loginWithEmailAndPassword(
+                            email = email.value,
+                            password = password.value
+                        )
+                        when (result) {
+                            is TypedResult.Failure -> {}
+                            is TypedResult.Success -> {
+                                withContext(Dispatchers.Main) {
+                                    navigationService.navControllerAuth?.popBackStack(
+                                        route = NavGraphDirections.Auth.getNavRoute(),
+                                        inclusive = false
+                                    )
                                 }
                             }
                         }
+                    }
 
-                    }) {
-                    Text(
-                        text = stringResource(id = R.string.sign_in_with_email_tab_bar_login),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = Color.White
-                    )
-                }
-
-                Spacer(Modifier.height(16.dp))
-
-                Text(stringResource(id = R.string.sign_in_with_email_tab_login_forgot_password_title))
+                }) {
+                Text(
+                    text = stringResource(id = R.string.sign_in_with_email_tab_bar_login),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = Color.White
+                )
             }
+
+            Spacer(Modifier.height(16.dp))
+
+            Text(stringResource(id = R.string.sign_in_with_email_tab_login_forgot_password_title))
         }
     }
 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -37,10 +39,8 @@ fun AllConsumptionsListScreen(
 
     val context = LocalContext.current
 
-    val userConsumptions = viewModel.searchResults.observeAsState(emptyList())
+    val userConsumptions = viewModel.searchResults.observeAsState(viewModel.userConsumptions.value)
     val state = rememberLazyListState()
-
-    viewModel.searchForResults(context)
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -68,20 +68,23 @@ fun AllConsumptionsListScreen(
             }
         )
 
+        Spacer(modifier = Modifier.height(8.dp))
 
         AuroraSearchBar {
             viewModel.searchForResults(context, it)
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         userConsumptions.value?.let { consumptions ->
             LazyColumn(
                 Modifier
-                    .fillMaxSize(),
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .clip(shape = RoundedCornerShape(16.dp)),
                 state = state,
             ) {
                 items(consumptions) { item ->
-                    Divider()
+
                     ConsumptionListItem(consumption = item) {
                         val id = when(it){
                             is Consumption.ElectricityConsumption -> it.id
@@ -90,7 +93,7 @@ fun AllConsumptionsListScreen(
                         }
                         navigationService.toConsumptionDetails(id)
                     }
-                    if (consumptions.indexOf(item) == consumptions.lastIndex) {
+                    if (consumptions.indexOf(item) != consumptions.lastIndex) {
                         Divider()
                     }
                 }

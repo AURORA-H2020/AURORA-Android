@@ -222,4 +222,5 @@
     <string name="dialog_consumption_delete_title">Are you sure you want to delete the entry?</string>
     <string name="dialog_account_delete_title">Are you sure you want to delete your account?</string>
 
+    <!-- User Feedback -->
 </resources>

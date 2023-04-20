@@ -4,11 +4,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -85,59 +87,66 @@ fun HomeScreen(
                     )
                 }
 
-                Divider()
-                ListItem(
+                Column(
                     modifier = Modifier
+                        .padding(16.dp)
+                        .clip(shape = RoundedCornerShape(16.dp))
                         .background(MaterialTheme.colorScheme.surface)
-                        .clickable { },
-                    headlineContent = { Text(stringResource(id = R.string.home_energy_lables_title)) },
-                    leadingContent = {
-                        Image(
-                            painterResource(id = R.drawable.outline_bar_chart_24),
-                            contentDescription = "",
-                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-                            alignment = Alignment.CenterEnd
-                        )
-                    }
-                )
-                Divider()
-                ListItem(
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.surface)
-                        .clickable {
-                            navigationService.toAddConsumption()
-                        },
-                    headlineContent = { Text(stringResource(id = R.string.home_add_consumption_button_title)) },
-                    leadingContent = {
-                        Image(
-                            painterResource(id = R.drawable.outline_add_circle_outline_24),
-                            contentDescription = "",
-                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-                            alignment = Alignment.CenterEnd
-                        )
-                    }
-                )
-                Divider()
-                ListItem(
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.surface)
-                        .clickable {
-                            ExternalUtils.openBrowser(
-                                context = context,
-                                url = "https://www.aurora-h2020.eu"
+                ) {
+
+                    ListItem(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.surface)
+                            .clickable { },
+                        headlineContent = { Text(stringResource(id = R.string.home_energy_lables_title)) },
+                        leadingContent = {
+                            Image(
+                                painterResource(id = R.drawable.outline_bar_chart_24),
+                                contentDescription = "",
+                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+                                alignment = Alignment.CenterEnd
                             )
-                        },
-                    headlineContent = { Text(stringResource(id = R.string.home_learn_more_title)) },
-                    leadingContent = {
-                        Image(
-                            painterResource(id = R.drawable.baseline_question_mark_24),
-                            contentDescription = "",
-                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-                            alignment = Alignment.CenterEnd
-                        )
-                    }
-                )
-                Divider()
+                        }
+                    )
+                    Divider()
+                    ListItem(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.surface)
+                            .clickable {
+                                navigationService.toAddConsumption()
+                            },
+                        headlineContent = { Text(stringResource(id = R.string.home_add_consumption_button_title)) },
+                        leadingContent = {
+                            Image(
+                                painterResource(id = R.drawable.outline_add_circle_outline_24),
+                                contentDescription = "",
+                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+                                alignment = Alignment.CenterEnd
+                            )
+                        }
+                    )
+                    Divider()
+                    ListItem(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.surface)
+                            .clickable {
+                                ExternalUtils.openBrowser(
+                                    context = context,
+                                    url = "https://www.aurora-h2020.eu"
+                                )
+                            },
+                        headlineContent = { Text(stringResource(id = R.string.home_learn_more_title)) },
+                        leadingContent = {
+                            Image(
+                                painterResource(id = R.drawable.baseline_question_mark_24),
+                                contentDescription = "",
+                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+                                alignment = Alignment.CenterEnd
+                            )
+                        }
+                    )
+                }
+
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -164,45 +173,64 @@ fun HomeScreen(
                 val secondLatestConsumption = sortedConsumptions?.getOrNull(1)
                 val thirdLatestConsumption = sortedConsumptions?.getOrNull(2)
 
-                val latestItemsCallback : (Consumption) -> Unit =  {
-                    val id = when(it){
+                val latestItemsCallback: (Consumption) -> Unit = {
+                    val id = when (it) {
                         is Consumption.ElectricityConsumption -> it.id
                         is Consumption.HeatingConsumption -> it.id
                         is Consumption.TransportationConsumption -> it.id
                     }
                     navigationService.toConsumptionDetails(id)
-            }
+                }
 
-                if (firstLatestConsumption != null) {
-                    Divider()
-                    ConsumptionListItem(consumption = firstLatestConsumption, callback = latestItemsCallback)
-                    Divider()
-                    if (secondLatestConsumption != null) {
-                        ConsumptionListItem(consumption = secondLatestConsumption, callback = latestItemsCallback)
-                        Divider()
+                Column(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clip(shape = RoundedCornerShape(16.dp))
+                        .background(MaterialTheme.colorScheme.surface)
+                ) {
+
+                    if (firstLatestConsumption != null) {
+                        ConsumptionListItem(
+                            consumption = firstLatestConsumption,
+                            callback = latestItemsCallback
+                        )
+                        if (secondLatestConsumption != null) {
+                            Divider()
+                            ConsumptionListItem(
+                                consumption = secondLatestConsumption,
+                                callback = latestItemsCallback
+                            )
+                        }
+                        if (thirdLatestConsumption != null) {
+                            Divider()
+                            ConsumptionListItem(
+                                consumption = thirdLatestConsumption,
+                                callback = latestItemsCallback
+                            )
+                        }
                     }
-                    if (thirdLatestConsumption != null) {
-                        ConsumptionListItem(consumption = thirdLatestConsumption, callback = latestItemsCallback)
-                        Divider()
+                }
 
-                        Spacer(modifier = Modifier.height(12.dp))
+                if ((sortedConsumptions?.size ?: 0) > 3) {
 
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Button(
+                            onClick = {
+                                navigationService.toConsumptionsList()
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.outline)
                         ) {
-                            Button(
-                                onClick = {
-                                    navigationService.toConsumptionsList()
-                                          },
-                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.outline)
-                            ) {
-                                Text(text = stringResource(id = R.string.home_consumptions_show_all_entries_button_title))
-                            }
+                            Text(text = stringResource(id = R.string.home_consumptions_show_all_entries_button_title))
                         }
                     }
 
-                } else {
+                }
+                if (sortedConsumptions?.isEmpty() == true) {
 
                     Column(
                         modifier = Modifier.fillMaxWidth(),

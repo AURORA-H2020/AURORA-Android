@@ -11,6 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -42,12 +43,12 @@ fun SpinnerFormEntry(
         mutableStateOf(allEntries)
     }
 
-    fun <T>getSectionForSelectedItem(item: SpinnerItem.Entry<T>): SpinnerItem.Section<*>? {
+    fun <T> getSectionForSelectedItem(item: SpinnerItem.Entry<T>): SpinnerItem.Section<*>? {
         val allSections = allEntries.filterIsInstance<SpinnerItem.Section<T>>()
 
         allSections.forEach { section ->
-            section.entries?.forEach {entry ->
-                if(entry as? T == item.data){
+            section.entries?.forEach { entry ->
+                if (entry as? T == item.data) {
                     return section
                 }
 
@@ -56,36 +57,44 @@ fun SpinnerFormEntry(
         return null
     }
 
-    ListItem(
-        modifier = Modifier
+    Column(
+        Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.onSecondary,
-                shape = RoundedCornerShape(4.dp)
-            )
-            .clickable {
-                openDropDown.value = !openDropDown.value
-            },
-        headlineContent = { Text(text = title, overflow = TextOverflow.Ellipsis, maxLines = 1) },
-        trailingContent = {
+            .clip(shape = RoundedCornerShape(16.dp))
+    ) {
 
-            Row(
-                horizontalArrangement = Arrangement.End,
-            ) {
-
+        ListItem(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    openDropDown.value = !openDropDown.value
+                },
+            headlineContent = {
                 Text(
-                    text = selectedItem.value?.name ?: stringResource(id = R.string.form_spinner_item_please_chose),
-                    style = TextStyle(
-                        color = MaterialTheme.colorScheme.onSecondary,
-                        fontSize = 17.sp,
-                        lineHeight = 16.sp,
-                        textAlign = TextAlign.End
-                    )
+                    text = title,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
                 )
+            },
+            trailingContent = {
 
-                Spacer(modifier = Modifier.width(8.dp))
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                ) {
+
+                    Text(
+                        text = selectedItem.value?.name
+                            ?: stringResource(id = R.string.form_spinner_item_please_chose),
+                        style = TextStyle(
+                            color = MaterialTheme.colorScheme.onSecondary,
+                            fontSize = 17.sp,
+                            lineHeight = 16.sp,
+                            textAlign = TextAlign.End
+                        )
+                    )
+
+                    Spacer(modifier = Modifier.width(8.dp))
 
                     Image(
                         painterResource(id = R.drawable.outline_arrow_drop_down_24),
@@ -94,38 +103,46 @@ fun SpinnerFormEntry(
                         alignment = Alignment.CenterEnd
                     )
 
-                DropdownMenu(
-                    expanded = openDropDown.value,
-                    onDismissRequest = { openDropDown.value = false },
-                ) {
+                    DropdownMenu(
+                        expanded = openDropDown.value,
+                        onDismissRequest = { openDropDown.value = false },
+                    ) {
 
-                    allItems.value.forEach {
-                        when(it){
-                            is SpinnerItem.Entry<*> -> {
-                                DropdownMenuItem(
-                                    onClick = {
-                                        selectedItem.value = it
-                                        openDropDown.value = false
+                        allItems.value.forEach {
+                            when (it) {
+                                is SpinnerItem.Entry<*> -> {
+                                    DropdownMenuItem(
+                                        onClick = {
+                                            selectedItem.value = it
+                                            openDropDown.value = false
 
-                                        val itemSection = getSectionForSelectedItem(it)
-                                        callback.invoke(it, itemSection)
-                                    },
-                                    text = {
-                                        Text(text = it.name, style = MaterialTheme.typography.bodyMedium)
+                                            val itemSection = getSectionForSelectedItem(it)
+                                            callback.invoke(it, itemSection)
+                                        },
+                                        text = {
+                                            Text(
+                                                text = it.name,
+                                                style = MaterialTheme.typography.bodyMedium
+                                            )
+                                        }
+                                    )
+                                }
+                                is SpinnerItem.Section<*> -> {
+                                    Column(modifier = Modifier.padding(start = 4.dp)) {
+                                        Text(
+                                            text = it.name,
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = MaterialTheme.colorScheme.onSecondary
+                                        )
+                                        Divider()
                                     }
-                                )
-                            }
-                            is SpinnerItem.Section<*> -> {
-                                Column(modifier = Modifier.padding(start = 4.dp)) {
-                                    Text(text = it.name, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSecondary)
-                                    Divider()
                                 }
                             }
                         }
                     }
                 }
-            }
-        })
+            })
+    }
 }
 
 sealed class SpinnerItem {
@@ -133,11 +150,11 @@ sealed class SpinnerItem {
         val section: Any,
         val name: String,
         val entries: List<T>?
-    ): SpinnerItem()
+    ) : SpinnerItem()
 
     data class Entry<T>(
         val name: String,
         val data: T,
 
-    ): SpinnerItem()
+        ) : SpinnerItem()
 }

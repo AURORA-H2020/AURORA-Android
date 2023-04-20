@@ -42,9 +42,11 @@ fun AddConsumptionScreen(
         )
 
         if (selectedConsumptionEntry.value != null) {
+            Spacer(modifier = Modifier.height(16.dp))
             AddConsumptionTypeSwitcher(selectedConsumptionEntry.value!!) {
                 selectedConsumptionEntry.value = it
             }
+            Spacer(modifier = Modifier.height(16.dp))
         }
 
         when (selectedConsumptionEntry.value) {

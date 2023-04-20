@@ -121,7 +121,6 @@ fun FormEntry(
             }
         }
     )
-    Divider()
 }
 
 enum class FormEntryType {

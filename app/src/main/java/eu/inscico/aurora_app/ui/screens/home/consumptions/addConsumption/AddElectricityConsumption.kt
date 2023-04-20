@@ -44,6 +44,7 @@ import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 import java.util.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddElectricityConsumption(
     initialValues: Consumption.ElectricityConsumption? = null,
@@ -95,17 +96,23 @@ fun AddElectricityConsumption(
     Column(
         Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.Start
     ) {
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 16.dp)
+            ,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
+            shape = RoundedCornerShape(16.dp),
             value = consumption.value,
             label = {
                 Text(text = stringResource(id = R.string.home_add_consumption_form_consumption_title))
@@ -181,6 +188,12 @@ fun AddElectricityConsumption(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
+            shape = RoundedCornerShape(16.dp),
             value = costs.value,
             label = {
                 Text(text = stringResource(id = R.string.home_add_consumption_form_costs_title))
@@ -216,6 +229,12 @@ fun AddElectricityConsumption(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
+            shape = RoundedCornerShape(16.dp),
             value = description.value,
             label = {
                 Text(text = stringResource(id = R.string.home_add_consumption_form_description_title))
@@ -269,7 +288,7 @@ fun AddElectricityConsumption(
                         transportation = null
                     )
 
-                    if(consumptionResponse.value != null && consumptionResponse.electricity?.costs != null){
+                    if(consumptionResponse.value != null){
                         CoroutineScope(Dispatchers.IO).launch {
 
                             val result = if(initialValues != null){

@@ -1,10 +1,14 @@
 package eu.inscico.aurora_app.ui.components.reminder
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -133,53 +137,60 @@ fun ReminderSelector(
         mutableStateOf(getReminderNotificationTime())
     }
 
-    Divider()
-    ReminderFrequencySelector(
-        initialSelection = selectedFrequency.value
-    ){
-        selectedFrequency.value = it
-        notificationTime.value = getReminderNotificationTime()
-        callback.invoke(notificationTime.value)
-    }
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .clip(shape = RoundedCornerShape(16.dp))
+    ) {
 
-    Divider()
-
-    if(addMonthSelector.value){
-        ReminderMonthSelector(initialValue = selectedMonth.value){
-            selectedMonth.value = it
+        ReminderFrequencySelector(
+            initialSelection = selectedFrequency.value
+        ) {
+            selectedFrequency.value = it
             notificationTime.value = getReminderNotificationTime()
             callback.invoke(notificationTime.value)
         }
-        Divider()
-    }
 
-    if(addDaySelector.value){
-        ReminderDaySelector(month = selectedMonth.value, initialValue = selectedDay.value){
-            selectedDay.value = it
-            notificationTime.value = getReminderNotificationTime()
-            callback.invoke(notificationTime.value)
+        Divider()
+
+        if (addMonthSelector.value) {
+            ReminderMonthSelector(initialValue = selectedMonth.value) {
+                selectedMonth.value = it
+                notificationTime.value = getReminderNotificationTime()
+                callback.invoke(notificationTime.value)
+            }
+            Divider()
         }
-        Divider()
-    }
 
-    if(addWeekdaySelector.value){
-        ReminderWeekSelector(initialValue = selectedWeek.value) {
-            selectedWeek.value = it
-            notificationTime.value = getReminderNotificationTime()
-            callback.invoke(notificationTime.value)
+        if (addDaySelector.value) {
+            ReminderDaySelector(month = selectedMonth.value, initialValue = selectedDay.value) {
+                selectedDay.value = it
+                notificationTime.value = getReminderNotificationTime()
+                callback.invoke(notificationTime.value)
+            }
+            Divider()
         }
-        Divider()
-    }
 
-    if(addTimeSelector.value){
-        ReminderTimeSelector(initialValue = selectedTime.value) {
-            selectedTime.value = it
-            val newNotificationTime = getReminderNotificationTime()
-            notificationTime.value = newNotificationTime
-
-            callback.invoke(notificationTime.value)
+        if (addWeekdaySelector.value) {
+            ReminderWeekSelector(initialValue = selectedWeek.value) {
+                selectedWeek.value = it
+                notificationTime.value = getReminderNotificationTime()
+                callback.invoke(notificationTime.value)
+            }
+            Divider()
         }
-        Divider()
+
+        if (addTimeSelector.value) {
+            ReminderTimeSelector(initialValue = selectedTime.value) {
+                selectedTime.value = it
+                val newNotificationTime = getReminderNotificationTime()
+                notificationTime.value = newNotificationTime
+
+                callback.invoke(notificationTime.value)
+            }
+
+        }
     }
 
     notificationTime.value.let {
@@ -187,10 +198,11 @@ fun ReminderSelector(
             text = context.getString(
                 R.string.settings_notifications_next_reminder_send_info,
                 CalendarUtils.toDateString(notificationService.getNextNotificationTime(it), "dd.MM.yyyy, HH:mm")),
-            modifier = Modifier.padding(horizontal = 32.dp),
             style = MaterialTheme.typography.labelSmall,
             textAlign = TextAlign.Start,
-            color = MaterialTheme.colorScheme.onSecondary
+            color = MaterialTheme.colorScheme.onSecondary,
+            modifier = Modifier.fillMaxWidth()
+                .padding(horizontal = 16.dp)
         )
     }
 }

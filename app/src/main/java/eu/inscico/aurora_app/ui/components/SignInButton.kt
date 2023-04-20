@@ -1,14 +1,18 @@
 package eu.inscico.aurora_app.ui.components
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.*
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
@@ -28,14 +32,20 @@ fun SignInButton(
     onClick: () -> Unit
 ) {
     Surface(
-        modifier = Modifier.clickable(
-            enabled = !isLoading,
-            onClick = onClick
-        ),
-        shape = shape,
-        border = BorderStroke(width = 1.dp, color = borderColor),
-        color = backgroundColor
+        Modifier
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.outlineVariant,
+                shape = RoundedCornerShape(4.dp)
+            )
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = rememberRipple(true),
+                enabled = !isLoading,
+                onClick = onClick
+            ).clip(RoundedCornerShape(20.dp)),
     ) {
+
         Row(
             modifier = Modifier
                 .padding(
@@ -54,7 +64,10 @@ fun SignInButton(
             )
             Spacer(modifier = Modifier.width(8.dp))
 
-            Text(text = if (isLoading) loadingText else text, color = MaterialTheme.colorScheme.onSurface)
+            Text(
+                text = if (isLoading) loadingText else text,
+                color = MaterialTheme.colorScheme.onSurface
+            )
             if (isLoading) {
                 Spacer(modifier = Modifier.width(16.dp))
                 CircularProgressIndicator(

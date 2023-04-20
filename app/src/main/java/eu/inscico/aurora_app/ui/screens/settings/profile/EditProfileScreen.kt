@@ -12,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -91,12 +92,11 @@ fun EditProfileScreen(
         ) {
 
             Column(
-                modifier = Modifier.background(MaterialTheme.colorScheme.background)
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .clip(shape = RoundedCornerShape(16.dp))
             ) {
-
-
-                Spacer(modifier = Modifier.height(20.dp))
-                Divider()
 
                 FormEntry(
                     title = stringResource(id = R.string.create_profile_first_name_hint),
@@ -108,6 +108,8 @@ fun EditProfileScreen(
                     }
                 )
 
+                Divider()
+
                 FormEntry(
                     title = stringResource(id = R.string.create_profile_last_name_hint),
                     formEntryType = FormEntryType.TEXT_INPUT,
@@ -117,6 +119,8 @@ fun EditProfileScreen(
                         isSaveValid.value = validateSaveAllowed()
                     }
                 )
+
+                Divider()
 
                 FormEntry(
                     title = stringResource(id = R.string.create_profile_year_of_birth_hint),
@@ -129,6 +133,8 @@ fun EditProfileScreen(
                     }
                 )
 
+                Divider()
+
                 FormEntry(
                     title = stringResource(id = R.string.create_profile_gender_hint),
                     formEntryType = FormEntryType.SPINNER,
@@ -140,6 +146,8 @@ fun EditProfileScreen(
                     }
                 )
 
+                Divider()
+
                 FormEntry(
                     title = stringResource(id = R.string.create_profile_country_title),
                     formEntryType = FormEntryType.SPINNER,
@@ -148,6 +156,7 @@ fun EditProfileScreen(
                 )
 
                 if (viewModel.currentCity.value != null) {
+                    Divider()
                     FormEntry(
                         title = stringResource(id = R.string.create_profile_city_hint),
                         formEntryType = FormEntryType.SPINNER,
@@ -172,7 +181,8 @@ fun EditProfileScreen(
 
                 Button(
                     modifier = Modifier
-                        .padding(horizontal = 32.dp).fillMaxWidth(),
+                        .padding(horizontal = 32.dp)
+                        .fillMaxWidth(),
                     enabled = isSaveValid.value,
                     shape = RoundedCornerShape(32.dp),
                     onClick = {

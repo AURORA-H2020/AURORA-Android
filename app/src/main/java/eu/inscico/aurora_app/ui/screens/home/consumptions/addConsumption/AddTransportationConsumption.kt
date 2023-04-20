@@ -10,10 +10,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
@@ -46,6 +49,7 @@ import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 import java.util.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTransportationConsumption(
     initialValues: Consumption.TransportationConsumption? = null,
@@ -116,91 +120,92 @@ fun AddTransportationConsumption(
         horizontalAlignment = Alignment.Start
     ) {
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-        val buttonBackground = MaterialTheme.colorScheme.outlineVariant
-
-        ListItem(
-            modifier = Modifier
+        Column(
+            Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.onSecondary,
-                    shape = RoundedCornerShape(4.dp)
-                ),
-            headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_transportation_start_of_travel_title)) },
-            trailingContent = {
-                Row(
-                    horizontalArrangement = Arrangement.End,
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .drawBehind {
-                                drawRoundRect(
-                                    Color(buttonBackground.value).copy(alpha = 0.2F),
-                                    cornerRadius = CornerRadius(4.dp.toPx())
-                                )
-                            }
-                            .clickable {
-                                openDatePicker.value = !openDatePicker.value
-                            }
-                            .defaultMinSize(minWidth = 90.dp, minHeight = 35.dp),
-                        contentAlignment = Alignment.Center
+                .clip(shape = RoundedCornerShape(16.dp))
+        ) {
+
+            ListItem(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_transportation_start_of_travel_title)) },
+                trailingContent = {
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .clickable {
+                                    openDatePicker.value = !openDatePicker.value
+                                }
+                                .defaultMinSize(minWidth = 90.dp, minHeight = 35.dp)
+                        ) {
 
-                        val calendar = Calendar.getInstance()
-                        calendar.timeInMillis = startOfTravelAsLong.value
+                            val calendar = Calendar.getInstance()
+                            calendar.timeInMillis = startOfTravelAsLong.value
 
-                        Text(
-                            text = CalendarUtils.toDateString(calendar),
-                            style = TextStyle(
-                                color = MaterialTheme.colorScheme.onSecondary,
-                                fontSize = 15.sp,
-                                textAlign = TextAlign.End,
+                            Text(
+                                text = CalendarUtils.toDateString(calendar),
+                                style = TextStyle(
+                                    color = MaterialTheme.colorScheme.onSecondary,
+                                    fontSize = 15.sp,
+                                    textAlign = TextAlign.End,
 
-                                ),
-                            textAlign = TextAlign.End
-                        )
+                                    ),
+                                textAlign = TextAlign.End
+                            )
 
-                    }
+                            Image(
+                                painter = painterResource(id = R.drawable.outline_arrow_drop_down_24),
+                                contentDescription = "",
+                                colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSecondary)
+                            )
 
-                    Spacer(modifier = Modifier.width(4.dp))
+                        }
 
-                    Box(
-                        modifier = Modifier
-                            .drawBehind {
-                                drawRoundRect(
-                                    Color(buttonBackground.value).copy(alpha = 0.2F),
-                                    cornerRadius = CornerRadius(4.dp.toPx())
-                                )
-                            }
-                            .clickable {
-                                openTimePicker.value = !openTimePicker.value
-                            }
-                            .defaultMinSize(minWidth = 90.dp, minHeight = 35.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
+                        Spacer(modifier = Modifier.width(4.dp))
 
-                        val calendar = Calendar.getInstance()
-                        calendar.timeInMillis = startOfTravelAsLong.value
+                        Row(
+                            modifier = Modifier
+                                .clickable {
+                                    openTimePicker.value = !openTimePicker.value
+                                }
+                                .defaultMinSize(minWidth = 90.dp, minHeight = 35.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.End
+                        ) {
 
-                        Text(
-                            text = CalendarUtils.toDateString(calendar, "HH:mm"),
-                            style = TextStyle(
-                                color = MaterialTheme.colorScheme.onSecondary,
-                                fontSize = 15.sp,
-                                textAlign = TextAlign.End,
+                            val calendar = Calendar.getInstance()
+                            calendar.timeInMillis = startOfTravelAsLong.value
 
-                                ),
-                            textAlign = TextAlign.End
-                        )
+                            Text(
+                                text = CalendarUtils.toDateString(calendar, "HH:mm"),
+                                style = TextStyle(
+                                    color = MaterialTheme.colorScheme.onSecondary,
+                                    fontSize = 15.sp,
+                                    textAlign = TextAlign.End,
 
+                                    ),
+                                textAlign = TextAlign.End
+                            )
+
+                            Image(
+                                painter = painterResource(id = R.drawable.outline_arrow_drop_down_24),
+                                contentDescription = "",
+                                colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSecondary)
+                            )
+
+                        }
                     }
                 }
-            }
-        )
-
+            )
+        }
 
         val startOfTravelAsCalendar = Calendar.getInstance()
         startOfTravelAsCalendar.timeInMillis = startOfTravelAsLong.value
@@ -262,7 +267,7 @@ fun AddTransportationConsumption(
                 Spacer(Modifier.height(8.dp))
 
                 AddSubtractCountFormEntry(
-                    titleRes = R.string.home_add_consumption_transportation_public_occupancy_with_count_title,
+                    titleRes = R.string.home_add_consumption_transportation_public_occupancy_title,
                     initialValue = occupancyPrecisely.value,
                     isNullCountPossible = false
                 ) {
@@ -273,7 +278,7 @@ fun AddTransportationConsumption(
             TransportationTypeSection.BUSSES,
             TransportationTypeSection.TRAINS_AND_TRAMS -> {
 
-                Spacer(Modifier.height(4.dp))
+                Spacer(Modifier.height(8.dp))
 
                 val allOccupanciesSpinnerItems = viewModel.allPublicVehicleOccupancyTypes.map {
                     SpinnerItem.Entry(name = it.getDisplayName(context), data = it)
@@ -306,6 +311,12 @@ fun AddTransportationConsumption(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
+            shape = RoundedCornerShape(16.dp),
             value = distance.value,
             label = {
                 Text(text = stringResource(id = R.string.home_add_consumption_transportation_distance_title))
@@ -340,6 +351,12 @@ fun AddTransportationConsumption(
         Spacer(modifier = Modifier.height(4.dp))
 
         OutlinedTextField(
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
+            shape = RoundedCornerShape(16.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),

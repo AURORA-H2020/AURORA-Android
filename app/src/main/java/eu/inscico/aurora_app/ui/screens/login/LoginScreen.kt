@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material3.*
@@ -140,6 +141,7 @@ fun LoginScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     SignInButton(
+                        shape = RoundedCornerShape(16.dp),
                         text = stringResource(id = R.string.login_google_sign_in_button_text),
                         loadingText = stringResource(id = R.string.login_sign_in_button_loading_text),
                         isLoading = false,

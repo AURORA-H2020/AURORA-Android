@@ -2,6 +2,7 @@ package eu.inscico.aurora_app.ui.screens.settings.notifications
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -9,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -32,7 +34,7 @@ fun ElectricityBillNotificationScreen(
 
     val enabledSwitch = remember { mutableStateOf(viewModel.electricityReminderActive) }
 
-    if(enabledSwitch.value){
+    if (enabledSwitch.value) {
         try {
             notificationService.notificationPermissionHandler?.checkAndHandleNotificationPermission()
         } catch (e: Exception) {
@@ -55,11 +57,12 @@ fun ElectricityBillNotificationScreen(
             background = MaterialTheme.colorScheme.background
         ) {
 
-            Spacer(modifier = Modifier.height(8.dp))
 
             Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .clip(shape = RoundedCornerShape(16.dp))
             ) {
 
                 SwitchWithLabel(
@@ -68,31 +71,36 @@ fun ElectricityBillNotificationScreen(
                     onStateChange = {
                         viewModel.updateElectricityReminderActive(it)
                         enabledSwitch.value = it
-                        viewModel.updateNotificationAlarm(enabledSwitch.value, ConsumptionType.ELECTRICITY)
-                })
+                        viewModel.updateNotificationAlarm(
+                            enabledSwitch.value,
+                            ConsumptionType.ELECTRICITY
+                        )
+                    })
+            }
 
-                Text(
-                    text = stringResource(id = R.string.settings_notifications_electricity_description),
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    style = MaterialTheme.typography.labelSmall,
-                    textAlign = TextAlign.Start,
-                    color = MaterialTheme.colorScheme.onSecondary)
+            Text(
+                text = stringResource(id = R.string.settings_notifications_electricity_description),
+                modifier = Modifier.padding(horizontal = 16.dp),
+                style = MaterialTheme.typography.labelSmall,
+                textAlign = TextAlign.Start,
+                color = MaterialTheme.colorScheme.onSecondary
+            )
+
+            Spacer(Modifier.height(32.dp))
+
+            if (enabledSwitch.value) {
+
+                val reminder = notificationService.electricityReminder
 
 
-                Spacer(Modifier.height(32.dp))
-
-
-                if(enabledSwitch.value){
-
-                    val reminder = notificationService.electricityReminder
-                    ReminderSelector(reminder){
+                    ReminderSelector(reminder) {
                         //notificationReminder.value = it
                         viewModel.updateElectricityReminder(it)
-                        viewModel.updateNotificationAlarm(enabledSwitch.value, ConsumptionType.ELECTRICITY)
+                        viewModel.updateNotificationAlarm(
+                            enabledSwitch.value,
+                            ConsumptionType.ELECTRICITY
+                        )
                     }
-
-                }
-
             }
         }
     }
