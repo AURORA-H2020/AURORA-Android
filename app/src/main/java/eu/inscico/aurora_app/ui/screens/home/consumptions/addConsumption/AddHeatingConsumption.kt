@@ -1,7 +1,5 @@
 package eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,14 +19,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.firebase.Timestamp
 import eu.inscico.aurora_app.R
-import eu.inscico.aurora_app.model.Gender
-import eu.inscico.aurora_app.model.Gender.Companion.toGenderString
 import eu.inscico.aurora_app.model.consumptions.*
 import eu.inscico.aurora_app.model.consumptions.DistrictHeatingSource.Companion.getDisplayName
 import eu.inscico.aurora_app.model.consumptions.DistrictHeatingSource.Companion.parseDistrictHeatingSourceToString
 import eu.inscico.aurora_app.model.consumptions.HeatingFuelType.Companion.getDisplayName
 import eu.inscico.aurora_app.model.consumptions.HeatingFuelType.Companion.parseHeatingFuelToString
-import eu.inscico.aurora_app.services.navigation.NavGraphDirections
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.ui.components.forms.AddSubtractCountFormEntry
 import eu.inscico.aurora_app.ui.components.forms.BeginEndPickerFormEntry

@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
-import eu.inscico.aurora_app.model.UserSignInType
+import eu.inscico.aurora_app.model.user.UserSignInType
 import eu.inscico.aurora_app.services.notification.NotificationCreationService
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
@@ -40,6 +40,8 @@ fun SettingsScreen(
     userFeedbackService: UserFeedbackService = get(),
     _notificationCreationService: NotificationCreationService = get()
 ) {
+
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -229,7 +231,13 @@ fun SettingsScreen(
                         iconRes = R.drawable.outline_download_24,
                         isNavigation = false,
                         callback = {
-
+                            viewModel.downloadUserData{ isSuccess, jsonData ->
+                                if(isSuccess && jsonData != null){
+                                    ExternalUtils.createJsonFileAndShare(context, jsonData)
+                                } else {
+                                    // TODO:  
+                                }
+                            }
                         }
                     )
 

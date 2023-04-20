@@ -22,9 +22,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.City
-import eu.inscico.aurora_app.model.Gender
-import eu.inscico.aurora_app.model.Gender.Companion.toGenderString
-import eu.inscico.aurora_app.model.UserResponse
+import eu.inscico.aurora_app.model.user.Gender
+import eu.inscico.aurora_app.model.user.Gender.Companion.toGenderString
+import eu.inscico.aurora_app.model.user.UserResponse
 import eu.inscico.aurora_app.services.navigation.NavGraphDirections
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.ui.components.AppBar

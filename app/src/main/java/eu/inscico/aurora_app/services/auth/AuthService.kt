@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import eu.inscico.aurora_app.R
-import eu.inscico.aurora_app.model.UserSignInType
+import eu.inscico.aurora_app.model.user.UserSignInType
 import eu.inscico.aurora_app.services.CountriesService
 import eu.inscico.aurora_app.services.UserService
 import eu.inscico.aurora_app.utils.PrefsUtils

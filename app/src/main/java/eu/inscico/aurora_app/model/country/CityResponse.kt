@@ -1,6 +1,7 @@
-package eu.inscico.aurora_app.model
+package eu.inscico.aurora_app.model.country
 
 import com.google.firebase.firestore.DocumentId
+import eu.inscico.aurora_app.model.PvgisParamsResponse
 
 data class CityResponse(
 

@@ -1,4 +1,4 @@
-package eu.inscico.aurora_app.model
+package eu.inscico.aurora_app.model.user
 
 import android.content.Context
 import com.squareup.moshi.Json
@@ -52,18 +52,18 @@ enum class Gender {
 
         fun parseStringToGender(genderString: String?): Gender {
             return when (genderString) {
-                "male" -> Gender.MALE
-                "female" -> Gender.FEMALE
-                "nonBinary" -> Gender.NON_BINARY
-                else -> Gender.OTHER
+                "male" -> MALE
+                "female" -> FEMALE
+                "nonBinary" -> NON_BINARY
+                else -> OTHER
             }
         }
 
         fun parseGenderToString(gender: Gender?): String {
             return when (gender) {
-                Gender.MALE -> "male"
-                Gender.FEMALE -> "female"
-                Gender.NON_BINARY -> "nonBinary"
+                MALE -> "male"
+                FEMALE -> "female"
+                NON_BINARY -> "nonBinary"
                 else -> "other"
             }
         }

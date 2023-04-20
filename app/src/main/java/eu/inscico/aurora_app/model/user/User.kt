@@ -1,6 +1,6 @@
-package eu.inscico.aurora_app.model
+package eu.inscico.aurora_app.model.user
 
-import eu.inscico.aurora_app.model.Gender.Companion.parseStringToGender
+import eu.inscico.aurora_app.model.user.Gender.Companion.parseStringToGender
 
 data class User(
 

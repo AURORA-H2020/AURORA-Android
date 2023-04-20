@@ -1,4 +1,4 @@
-package eu.inscico.aurora_app.model
+package eu.inscico.aurora_app.model.country
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId

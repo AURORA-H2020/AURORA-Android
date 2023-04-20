@@ -2,14 +2,16 @@ package eu.inscico.aurora_app.ui.screens.settings
 
 import android.app.Activity
 import androidx.lifecycle.ViewModel
-import eu.inscico.aurora_app.model.UserSignInType
+import eu.inscico.aurora_app.model.user.UserSignInType
+import eu.inscico.aurora_app.services.CloudFunctionsService
 import eu.inscico.aurora_app.services.UserService
 import eu.inscico.aurora_app.services.auth.AuthService
 import eu.inscico.aurora_app.utils.TypedResult
 
 class SettingsViewModel(
     private val _userService: UserService,
-    private val _authService: AuthService
+    private val _authService: AuthService,
+    private val _cloudFunctionsService: CloudFunctionsService
 ): ViewModel() {
 
     val userSignInType = _authService.userSignInType
@@ -59,5 +61,9 @@ class SettingsViewModel(
         } else {
             null
         }
+    }
+
+    fun downloadUserData(resultCallback: (Boolean, String?)-> Unit){
+        _cloudFunctionsService.downloadUserData(resultCallback)
     }
 }

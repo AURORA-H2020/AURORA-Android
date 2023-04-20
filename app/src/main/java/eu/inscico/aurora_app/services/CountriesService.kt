@@ -1,15 +1,13 @@
 package eu.inscico.aurora_app.services
 
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
-import com.google.firestore.v1.StructuredAggregationQuery.Aggregation.Count
 import eu.inscico.aurora_app.model.City
-import eu.inscico.aurora_app.model.CityResponse
-import eu.inscico.aurora_app.model.Country
-import eu.inscico.aurora_app.model.CountryResponse
+import eu.inscico.aurora_app.model.country.CityResponse
+import eu.inscico.aurora_app.model.country.Country
+import eu.inscico.aurora_app.model.country.CountryResponse
 import eu.inscico.aurora_app.utils.TypedResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

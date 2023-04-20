@@ -7,13 +7,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.toObject
-import eu.inscico.aurora_app.model.*
-import eu.inscico.aurora_app.model.consumptions.Consumption
+import eu.inscico.aurora_app.model.user.User
+import eu.inscico.aurora_app.model.user.UserResponse
 import eu.inscico.aurora_app.utils.TypedResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 

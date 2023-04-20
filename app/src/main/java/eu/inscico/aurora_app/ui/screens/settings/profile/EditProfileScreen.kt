@@ -1,6 +1,5 @@
 package eu.inscico.aurora_app.ui.screens.settings.profile
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -18,9 +17,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
-import eu.inscico.aurora_app.model.Gender
-import eu.inscico.aurora_app.model.Gender.Companion.toGenderString
-import eu.inscico.aurora_app.model.UserResponse
+import eu.inscico.aurora_app.model.user.Gender
+import eu.inscico.aurora_app.model.user.Gender.Companion.toGenderString
+import eu.inscico.aurora_app.model.user.UserResponse
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.ui.components.AppBar
 import eu.inscico.aurora_app.ui.components.FormEntry

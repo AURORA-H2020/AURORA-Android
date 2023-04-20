@@ -1,4 +1,4 @@
-package eu.inscico.aurora_app.model
+package eu.inscico.aurora_app.model.country
 
 data class Country(
     val id: String,

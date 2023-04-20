@@ -1,5 +1,7 @@
 package eu.inscico.aurora_app.model
 
+import eu.inscico.aurora_app.model.country.CityResponse
+
 data class City(
     val id: String,
     val hasPhotovoltaics: Boolean?,

@@ -1,7 +1,12 @@
 package eu.inscico.aurora_app.core.koin
 
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.functions.FirebaseFunctions
+import com.google.firebase.functions.ktx.functions
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.ktx.app
 import eu.inscico.aurora_app.services.*
 import eu.inscico.aurora_app.services.auth.AuthService
 import eu.inscico.aurora_app.services.jsonParsing.JsonParsingService
@@ -26,6 +31,14 @@ val servicesModule = module {
 
     factory<FirebaseFirestore> {
         FirebaseFirestore.getInstance()
+    }
+
+    factory<FirebaseFunctions> {
+        FirebaseFunctions.getInstance( FirebaseApp.getInstance(),"europe-west3")
+    }
+
+    single {
+        CloudFunctionsService(context = androidContext(), _functions = get(), _jsonParsingService = get())
     }
 
     single { AuthService(

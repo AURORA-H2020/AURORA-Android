@@ -1,12 +1,10 @@
 package eu.inscico.aurora_app.services
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.toObject
-import eu.inscico.aurora_app.model.UserResponse
 import eu.inscico.aurora_app.model.consumptions.Consumption
 import eu.inscico.aurora_app.model.consumptions.ConsumptionResponse
 import eu.inscico.aurora_app.utils.TypedResult

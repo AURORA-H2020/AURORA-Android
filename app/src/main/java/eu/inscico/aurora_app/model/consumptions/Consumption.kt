@@ -1,8 +1,5 @@
 package eu.inscico.aurora_app.model.consumptions
 
-import eu.inscico.aurora_app.model.Gender
-import eu.inscico.aurora_app.model.User
-import eu.inscico.aurora_app.model.UserResponse
 import java.util.Calendar
 
 sealed class Consumption {

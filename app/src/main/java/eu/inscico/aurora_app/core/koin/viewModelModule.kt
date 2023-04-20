@@ -27,7 +27,8 @@ val viewModelModule = module {
     viewModel {
         SettingsViewModel(
             _userService = get(),
-            _authService = get()
+            _authService = get(),
+            _cloudFunctionsService = get()
         )
     }
 
