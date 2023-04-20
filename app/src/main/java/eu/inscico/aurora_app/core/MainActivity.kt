@@ -15,6 +15,8 @@ import eu.inscico.aurora_app.services.auth.AuthService
 import eu.inscico.aurora_app.services.auth.AuthService.Companion.GOOGLE_LOGIN_RESULT_CODE
 import eu.inscico.aurora_app.services.navigation.NavGraphDirections
 import eu.inscico.aurora_app.services.navigation.NavigationService
+import eu.inscico.aurora_app.services.notification.NotificationPermissionHandler
+import eu.inscico.aurora_app.services.notification.NotificationService
 import eu.inscico.aurora_app.ui.AuroraApp
 import eu.inscico.aurora_app.ui.theme.AURORAEnergyTrackerTheme
 import kotlinx.coroutines.CoroutineScope
@@ -27,11 +29,26 @@ import org.koin.android.ext.android.inject
 class MainActivity : ComponentActivity() {
 
     private val _authService: AuthService by inject()
-    private val _userService: UserService by inject()
+    private val _notificationService: NotificationService by inject()
     private val _firebaseAuth: FirebaseAuth by inject()
     private val _navigationService: NavigationService by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // init notification permission handler
+        _notificationService.notificationPermissionHandler =
+            NotificationPermissionHandler(_activity = this)
+
+        if (_notificationService.electricityReminderActivePrefs
+            || _notificationService.heatingReminderActivePrefs
+            || _notificationService.mobilityReminderActivePrefs
+        ) {
+            try {
+                _notificationService.notificationPermissionHandler?.checkAndHandleNotificationPermission()
+            } catch (e: Exception) {
+            }
+        }
 
         setContent {
             AURORAEnergyTrackerTheme {
@@ -72,7 +89,10 @@ class MainActivity : ComponentActivity() {
             _firebaseAuth.signInWithCredential(firebaseCredential)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        _navigationService.navControllerAuth?.popBackStack(route = NavGraphDirections.Auth.getNavRoute(), inclusive = false)
+                        _navigationService.navControllerAuth?.popBackStack(
+                            route = NavGraphDirections.Auth.getNavRoute(),
+                            inclusive = false
+                        )
                     } else {
                         // If sign in fails, display a message to the user.
 

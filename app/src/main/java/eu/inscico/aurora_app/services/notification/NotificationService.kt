@@ -22,6 +22,8 @@ class NotificationService(
     private val _jsonParsingService: JsonParsingService
 ) {
 
+    var notificationPermissionHandler: NotificationPermissionHandler? = null
+
     var electricityReminderActivePrefs: Boolean
         get() {
             return PrefsUtils.get(context, "electricityReminderActive", false)

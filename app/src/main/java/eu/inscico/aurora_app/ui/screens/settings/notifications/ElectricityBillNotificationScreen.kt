@@ -32,7 +32,12 @@ fun ElectricityBillNotificationScreen(
 
     val enabledSwitch = remember { mutableStateOf(viewModel.electricityReminderActive) }
 
-
+    if(enabledSwitch.value){
+        try {
+            notificationService.notificationPermissionHandler?.checkAndHandleNotificationPermission()
+        } catch (e: Exception) {
+        }
+    }
 
     Column(
         Modifier.background(MaterialTheme.colorScheme.background)
