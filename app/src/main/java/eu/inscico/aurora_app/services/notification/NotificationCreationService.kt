@@ -1,4 +1,4 @@
-package eu.inscico.aurora_app.services
+package eu.inscico.aurora_app.services.notification
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.core.MainActivity
@@ -31,6 +32,7 @@ class NotificationCreationService(val context: Context) {
         pushNotificationType: PushNotificationType,
         payload: JSONObject? = null,
     ) {
+
         // Generate random notification UUID to show multiple notifications, even if it is the same
         val randomNotificationUUID = UUID.randomUUID().hashCode()
 

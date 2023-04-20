@@ -206,6 +206,12 @@
     <string name="settings_notifications_electricity_description">We can remind you to enter your electricity consumption based on your bill. Just let us know when you expect the next one.</string>
     <string name="settings_notifications_heating_description">We can remind you to enter your energy consumption based on your bill. Just let us know when you expect the next one.</string>
     <string name="settings_notifications_mobility_description">We can remind you to regulary enter your transportation data. Just let us know how frequently you travel.</string>
+    <string name="settings_notifications_mobility_alarm_notification_description">Add your mobility data to the AURORA Energy Tracker and check your progress towards becoming a near-zero emission citizen!</string>
+    <string name="settings_notifications_electricity_alarm_notification_description">Add your electricity data to the AURORA Energy Tracker and check your progress towards becoming a near-zero emission citizen!</string>
+    <string name="settings_notifications_heating_alarm_notification_description">Add your heating data to the AURORA Energy Tracker and check your progress towards becoming a near-zero emission citizen!</string>
+    <string name="settings_notifications_mobility_alarm_notification_title">Mobility reminder</string>
+    <string name="settings_notifications_heating_alarm_notification_title">Heating bill reminder</string>
+    <string name="settings_notifications_electricity_alarm_notification_title">Electricity bill reminder</string>
     <string name="settings_notifications_next_reminder_send_info">The next notification will be sent on %1$s</string>
     <string name="settings_section_support_title">Support</string>
     <string name="settings_section_support_about_the_app_title">About the app</string>

@@ -1,8 +1,9 @@
 package eu.inscico.aurora_app.ui.screens.settings.notifications
 
 import androidx.lifecycle.ViewModel
+import eu.inscico.aurora_app.model.consumptions.ConsumptionType
 import eu.inscico.aurora_app.model.reminder.ReminderTime
-import eu.inscico.aurora_app.services.NotificationService
+import eu.inscico.aurora_app.services.notification.NotificationService
 
 class SettingsReminderViewModel(
     private val _notificationService: NotificationService
@@ -36,5 +37,14 @@ class SettingsReminderViewModel(
     fun updateMobilityReminder(mobilityReminder: ReminderTime){
         _notificationService.mobilityReminder = mobilityReminder
     }
+
+    fun updateNotificationAlarm(isEnabled: Boolean, type: ConsumptionType){
+        val electricityReminderTime = _notificationService.electricityReminder
+        if(electricityReminderTime != null){
+            val nextNotificationTime = _notificationService.getNextNotificationTime(electricityReminderTime)
+            _notificationService.updateNotificationAlarm(isEnabled = isEnabled, notificationType = type, nextNotificationTime = nextNotificationTime)
+        }
+    }
+
 
 }

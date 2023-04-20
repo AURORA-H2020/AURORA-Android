@@ -13,7 +13,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
-import eu.inscico.aurora_app.services.NotificationService
+import eu.inscico.aurora_app.model.consumptions.ConsumptionType
+import eu.inscico.aurora_app.services.notification.NotificationService
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.ui.components.AppBar
 import eu.inscico.aurora_app.ui.components.SwitchWithLabel
@@ -59,6 +60,7 @@ fun HeatingBillNotificationScreen(
                     onStateChange = {
                         viewModel.updateHeatingReminderActive(it)
                         enabledSwitch.value = it
+                        viewModel.updateNotificationAlarm(enabledSwitch.value, ConsumptionType.HEATING)
                     })
 
                 Text(
@@ -78,6 +80,7 @@ fun HeatingBillNotificationScreen(
                     ReminderSelector(reminder){
                         //notificationReminder.value = it
                         viewModel.updateHeatingReminder(it)
+                        viewModel.updateNotificationAlarm(enabledSwitch.value, ConsumptionType.HEATING)
                     }
 
                 }

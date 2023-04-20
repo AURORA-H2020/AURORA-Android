@@ -54,8 +54,6 @@ class CalendarUtils {
 
             calendar.set(Calendar.DAY_OF_WEEK, 1)
 
-            Log.d("getWeekDaysHELP", toDateString(calendar, "EEEE"))
-
             repeat(7) {
                 val name = toDateString(calendar, "EEEE")
                 val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
@@ -108,10 +106,8 @@ class CalendarUtils {
             calendar.set(Calendar.MONTH, requestedMonth)
             calendar.set(Calendar.DAY_OF_MONTH, 1)
 
-            Log.d("getDaysOfMonthHelp", toDateString(calendar))
-
             while (requestedMonth == calendar.get(Calendar.MONTH)) {
-                Log.d("getDaysOfMonthHelp", toDateString(calendar))
+
                 val day = CalendarDayItem.fromValues(
                     year = calendar.get(Calendar.YEAR),
                     month = requestedMonth,

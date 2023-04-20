@@ -40,7 +40,7 @@ class TimeUtils {
         }
 
         fun getValidMinuteFromInput(minuteString: String): Int {
-            Log.d("getValidMinuteFromInput", "minuteString: $minuteString")
+
             return when {
                 minuteString.isEmpty() -> {
                     0
@@ -51,7 +51,7 @@ class TimeUtils {
                     } else {
                         minuteString.substring(minuteString.length - 2)
                     }
-                    Log.d("getValidMinuteFromInput", "shortened: $shortenedMinuteString")
+
                     val shortenedMinute = shortenedMinuteString.toInt()
                     if (isMinuteReal(shortenedMinute)) {
                         shortenedMinute

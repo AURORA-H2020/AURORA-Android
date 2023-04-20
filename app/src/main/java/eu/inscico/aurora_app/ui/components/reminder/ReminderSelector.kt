@@ -14,10 +14,9 @@ import eu.inscico.aurora_app.model.reminder.CalendarDayItem
 import eu.inscico.aurora_app.model.reminder.CalendarMonthItem
 import eu.inscico.aurora_app.model.reminder.CalendarWeekItem
 import eu.inscico.aurora_app.model.reminder.ReminderTime
-import eu.inscico.aurora_app.services.NotificationService
+import eu.inscico.aurora_app.services.notification.NotificationService
 import eu.inscico.aurora_app.utils.CalendarUtils
 import org.koin.androidx.compose.get
-import org.koin.core.component.getScopeId
 import java.util.*
 
 @Composable

@@ -1,13 +1,10 @@
 package eu.inscico.aurora_app.ui.screens.settings.notifications
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -16,12 +13,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
-import eu.inscico.aurora_app.services.NotificationService
+import eu.inscico.aurora_app.model.consumptions.ConsumptionType
+import eu.inscico.aurora_app.services.notification.NotificationService
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.ui.components.AppBar
 import eu.inscico.aurora_app.ui.components.SwitchWithLabel
 import eu.inscico.aurora_app.ui.components.container.ScrollableContent
-import eu.inscico.aurora_app.ui.components.reminder.ReminderFrequencySelector
 import eu.inscico.aurora_app.ui.components.reminder.ReminderSelector
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
@@ -34,6 +31,8 @@ fun ElectricityBillNotificationScreen(
 ) {
 
     val enabledSwitch = remember { mutableStateOf(viewModel.electricityReminderActive) }
+
+
 
     Column(
         Modifier.background(MaterialTheme.colorScheme.background)
@@ -64,6 +63,7 @@ fun ElectricityBillNotificationScreen(
                     onStateChange = {
                         viewModel.updateElectricityReminderActive(it)
                         enabledSwitch.value = it
+                        viewModel.updateNotificationAlarm(enabledSwitch.value, ConsumptionType.ELECTRICITY)
                 })
 
                 Text(
@@ -83,6 +83,7 @@ fun ElectricityBillNotificationScreen(
                     ReminderSelector(reminder){
                         //notificationReminder.value = it
                         viewModel.updateElectricityReminder(it)
+                        viewModel.updateNotificationAlarm(enabledSwitch.value, ConsumptionType.ELECTRICITY)
                     }
 
                 }

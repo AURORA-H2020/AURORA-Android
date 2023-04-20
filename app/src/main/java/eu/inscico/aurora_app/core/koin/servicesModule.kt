@@ -7,6 +7,8 @@ import eu.inscico.aurora_app.services.auth.AuthService
 import eu.inscico.aurora_app.services.jsonParsing.JsonParsingService
 import eu.inscico.aurora_app.services.jsonParsing.MoshiJsonParsingService
 import eu.inscico.aurora_app.services.navigation.NavigationService
+import eu.inscico.aurora_app.services.notification.NotificationCreationService
+import eu.inscico.aurora_app.services.notification.NotificationService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
