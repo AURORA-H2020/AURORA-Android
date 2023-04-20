@@ -1,10 +1,10 @@
 package eu.inscico.aurora_app.ui.screens.login.createProfile
 
+import android.app.Activity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
-import androidx.compose.material3.Divider
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -84,10 +84,17 @@ fun CreateProfileScreen(
             title = stringResource(id = R.string.profile_title),
             hasBackNavigation = false,
             actionButton = {
-                Text(text = stringResource(id = R.string.logout_button_title))
-            },
-            backNavigationCallback = {
-                // TODO: logout
+                Row(
+                    modifier = Modifier.clickable {
+                        viewModel.userLogout(context as Activity)
+                        navigationService.navControllerAuth?.popBackStack()
+                    }
+                ){
+                    Text(
+                        text = stringResource(id = R.string.logout_button_title),
+                        style = MaterialTheme.typography.labelLarge,
+                        modifier = Modifier.padding(4.dp))
+                }
             }
         )
 
@@ -104,9 +111,11 @@ fun CreateProfileScreen(
                 contentDescription = "",
                 colorFilter = ColorFilter.tint(primary)
             )
+            
+            Spacer(modifier = Modifier.height(32.dp))
 
             Text(
-                modifier = Modifier.padding(32.dp),
+                modifier = Modifier.padding(horizontal = 32.dp),
                 text = stringResource(id = R.string.create_profile_title),
                 style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center
@@ -181,7 +190,7 @@ fun CreateProfileScreen(
             FormEntry(
                 title = stringResource(id = R.string.create_profile_country_title),
                 formEntryType = FormEntryType.SPINNER,
-                initialItem = country.value?.displayName ?: "",
+                initialItem = country.value?.displayName ?: countryDisplayNames?.first() ?: "",
                 items = countryDisplayNames,
                 callback = { _, index ->
                     if (index != null) {
@@ -208,16 +217,16 @@ fun CreateProfileScreen(
                     formEntryType = FormEntryType.SPINNER,
                     initialItem = city.value?.name ?: "",
                     items = citiesFromCountryNames,
-                    callback = { _, index ->
-                        if (index != null) {
+                    callback = { name, index ->
+
+                        if(name == context.getString(R.string.create_profile_city_drop_down_other_city)){
+                            city.value = null
+                        } else if (index != null) {
                             val selectedCity = citiesFromCountry.value?.elementAt(index)
                             city.value = selectedCity
                         }
                     }
                 )
-                Divider()
-            } else {
-                Divider()
             }
 
             Text(
@@ -229,10 +238,10 @@ fun CreateProfileScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            TextButton(
+            Button(
                 modifier = Modifier
-                    .background(primary)
-                    .padding(horizontal = 32.dp),
+                    .padding(horizontal = 32.dp).fillMaxWidth(),
+                shape = RoundedCornerShape(32.dp),
                 onClick = {
                     val countryId = country.value?.id
                     if(countryId != null){

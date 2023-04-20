@@ -3,17 +3,17 @@ package eu.inscico.aurora_app.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowDropDown
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import eu.inscico.aurora_app.R
 
 @Composable
 fun AuroraDropDownMenu(
@@ -34,7 +34,7 @@ fun AuroraDropDownMenu(
                 onValueChange = { },
                 label = { Text(text = "My List") },
                 modifier = Modifier.fillMaxWidth(),
-                trailingIcon = { Icon(Icons.Outlined.ArrowDropDown, null) },
+                trailingIcon = { Icon(painter = painterResource(id = R.drawable.outline_arrow_drop_down_24), null) },
                 readOnly = true
             )
             DropdownMenu(
@@ -49,7 +49,7 @@ fun AuroraDropDownMenu(
                             selectedIndex.value = items.indexOf(entry)
                             expanded.value = false
                         },
-                        content = {
+                        text = {
                             Text(
                                 text = (entry),
                                 modifier = Modifier.wrapContentWidth())

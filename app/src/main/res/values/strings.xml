@@ -75,7 +75,7 @@
     <string name="home_add_consumption_form_consumption_title">Consumption</string>
     <string name="home_add_consumption_form_electricity_consumption_description_title">You can find this information in your electricity bill.</string>
     <string name="home_add_consumption_form_heating_consumption_description_title">You can find this information in your heating bill.</string>
-    <string name="home_add_consumption_form_people_in_household_title">People in household: %1$d</string>
+    <string name="home_add_consumption_form_people_in_household_title">People in household:</string>
     <string name="home_add_consumption_form_people_in_household_description_title">How many people, including you, live in your household</string>
     <string name="home_add_consumption_form_begin_title">Beginning</string>
     <string name="home_add_consumption_form_end_title">End</string>

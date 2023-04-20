@@ -9,7 +9,7 @@ import eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption.AddCons
 import eu.inscico.aurora_app.ui.screens.login.createProfile.CreateProfileScreen
 import eu.inscico.aurora_app.ui.screens.login.AuthScreen
 import eu.inscico.aurora_app.ui.screens.login.LoginScreen
-import eu.inscico.aurora_app.ui.screens.login.SignInWithEmailScreen
+import eu.inscico.aurora_app.ui.screens.login.signInEmail.SignInWithEmailScreen
 import eu.inscico.aurora_app.ui.screens.photovoltaic.PhotovoltaicCalculatorScreen
 import eu.inscico.aurora_app.ui.screens.settings.profile.EditProfileScreen
 import eu.inscico.aurora_app.ui.screens.settings.SettingsScreen

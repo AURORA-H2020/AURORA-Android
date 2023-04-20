@@ -4,11 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -98,7 +93,7 @@ fun HomeScreen(
                     headlineContent = { Text(stringResource(id = R.string.home_energy_lables_title)) },
                     leadingContent = {
                         Image(
-                            painterResource(id = R.drawable.baseline_bar_chart_24),
+                            painterResource(id = R.drawable.outline_bar_chart_24),
                             contentDescription = "",
                             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
                             alignment = Alignment.CenterEnd
@@ -115,7 +110,7 @@ fun HomeScreen(
                     headlineContent = { Text(stringResource(id = R.string.home_add_consumption_button_title)) },
                     leadingContent = {
                         Image(
-                            Icons.Filled.AddCircle,
+                            painterResource(id = R.drawable.outline_add_circle_outline_24),
                             contentDescription = "",
                             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
                             alignment = Alignment.CenterEnd
@@ -127,7 +122,10 @@ fun HomeScreen(
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.surface)
                         .clickable {
-                                   ExternalUtils.openBrowser(context = context, url = "https://www.aurora-h2020.eu")
+                            ExternalUtils.openBrowser(
+                                context = context,
+                                url = "https://www.aurora-h2020.eu"
+                            )
                         },
                     headlineContent = { Text(stringResource(id = R.string.home_learn_more_title)) },
                     leadingContent = {
@@ -215,7 +213,7 @@ fun HomeScreen(
                             modifier = Modifier
                                 .size(100.dp)
                                 .padding(vertical = 16.dp),
-                            painter = painterResource(id = R.drawable.baseline_add_circle_24),
+                            painter = painterResource(id = R.drawable.outline_add_circle_outline_24),
                             contentDescription = "",
                             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.outlineVariant)
                         )

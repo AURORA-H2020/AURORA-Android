@@ -29,22 +29,25 @@ class SettingsViewModel(
         }
     }
 
-    fun deleteUserData(){
+    fun deleteUserData(activity: Activity){
         when(_authService.userSignInType){
             UserSignInType.GOOGLE -> {
-
+                _authService.googleRevokeAccess(activity)
             }
             UserSignInType.APPLE -> {
 
             }
-            UserSignInType.EMAIL -> {}
+            UserSignInType.EMAIL -> {
+                _authService.deleteUser()
+            }
             null -> {
-
+                _authService.deleteUser()
             }
         }
     }
 
-    suspend fun deleteUser(): TypedResult<Any, Any>{
+    suspend fun deleteUser(activity: Activity): TypedResult<Any, Any>{
+        deleteUserData(activity)
         return _userService.deleteUser()
     }
 

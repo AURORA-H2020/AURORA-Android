@@ -1,8 +1,10 @@
 package eu.inscico.aurora_app.ui.screens.login.createProfile
 
+import android.app.Activity
 import androidx.lifecycle.ViewModel
 import eu.inscico.aurora_app.model.Gender
 import eu.inscico.aurora_app.model.UserResponse
+import eu.inscico.aurora_app.model.UserSignInType
 import eu.inscico.aurora_app.services.CountriesService
 import eu.inscico.aurora_app.services.UserService
 import eu.inscico.aurora_app.services.auth.AuthService
@@ -59,6 +61,21 @@ class CreateProfileViewModel(
 
     suspend fun createUser(user: UserResponse): TypedResult<Boolean, String>{
             return _userService.createUser(user)
+    }
+
+    fun userLogout(activity: Activity){
+        when(_authService.userSignInType){
+            UserSignInType.GOOGLE -> {
+                _authService.googleSignOut(activity)
+            }
+            UserSignInType.APPLE -> {
+                // TODO:
+            }
+            UserSignInType.EMAIL -> {
+                _authService.logout()
+            }
+            null -> _authService.logout()
+        }
     }
 
 }

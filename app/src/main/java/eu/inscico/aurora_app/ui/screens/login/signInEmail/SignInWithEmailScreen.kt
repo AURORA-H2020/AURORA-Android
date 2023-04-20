@@ -1,9 +1,8 @@
-package eu.inscico.aurora_app.ui.screens.login
+package eu.inscico.aurora_app.ui.screens.login.signInEmail
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.TabRow
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.*
 import androidx.compose.material3.Tab
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -44,7 +43,7 @@ fun SignInWithEmailScreen(
 
         TabRow(
             selectedTabIndex = pagerState.currentPage,
-            backgroundColor = MaterialTheme.colorScheme.surface,
+            containerColor = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onSurface
         ) {
             Tab(

@@ -5,7 +5,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -29,7 +31,6 @@ import eu.inscico.aurora_app.ui.components.SignInButton
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = koinViewModel(),
@@ -155,7 +156,7 @@ fun LoginScreen(
                         text = stringResource(id = R.string.login_email_sign_in_button_text),
                         loadingText = stringResource(id = R.string.login_sign_in_button_loading_text),
                         isLoading = false,
-                        icon = painterResource(id = R.drawable.baseline_email_24),
+                        icon = painterResource(id = R.drawable.outline_email_24),
                         iconColor = MaterialTheme.colorScheme.primary,
                         onClick = {
                             navigationService.toSignInWithEmail()

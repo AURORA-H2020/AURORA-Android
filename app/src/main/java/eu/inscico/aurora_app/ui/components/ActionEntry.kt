@@ -7,10 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ListItem
-import androidx.compose.material.Text
-import androidx.compose.material3.Divider
+import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -26,7 +23,6 @@ import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.ui.AuroraScaffold
 import eu.inscico.aurora_app.ui.theme.AURORAEnergyTrackerTheme
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ActionEntry(
     isNavigation: Boolean,
@@ -46,7 +42,7 @@ fun ActionEntry(
             .fillMaxWidth().clickable {
                 callback?.invoke()
             },
-        icon = {
+        leadingContent = {
             if(hasIconBackground){
                 Box(
                     modifier = Modifier
@@ -73,16 +69,7 @@ fun ActionEntry(
                 )
             }
         },
-        trailing = {
-            if (isNavigation) {
-                Image(
-                    painter = painterResource(id = R.drawable.outline_keyboard_arrow_right_24),
-                    contentDescription = "",
-                    colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSecondary)
-                )
-            }
-        },
-        text = {
+        headlineContent = {
             Text(
                 text = title,
                 color = titleColor,

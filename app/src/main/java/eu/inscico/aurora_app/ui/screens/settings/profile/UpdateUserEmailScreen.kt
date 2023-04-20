@@ -3,12 +3,9 @@ package eu.inscico.aurora_app.ui.screens.settings.profile
 import android.util.Patterns
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -123,8 +120,8 @@ fun UpdateEmailScreen(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     trailingIcon = {
                         val image = if (passwordVisible.value)
-                            R.drawable.baseline_visibility_24
-                        else R.drawable.baseline_visibility_off_24
+                            R.drawable.outline_visibility_24
+                        else R.drawable.outline_visibility_off_24
 
                         // Please provide localized description for accessibility services
                         val description = if (passwordVisible.value) "Hide password" else "Show password"
@@ -154,10 +151,10 @@ fun UpdateEmailScreen(
 
                 Spacer(Modifier.height(23.dp))
 
-                TextButton(
+                Button(
                     modifier = Modifier
-                        .background(primary)
-                        .padding(horizontal = 32.dp),
+                        .padding(horizontal = 32.dp).fillMaxWidth(),
+                    shape = RoundedCornerShape(32.dp),
                     enabled = isNewEmailValid.value,
                     onClick = {
                         userService.updateUserEmail(newEmail = newEmail.value, password = password.value){ wasSucessfull ->

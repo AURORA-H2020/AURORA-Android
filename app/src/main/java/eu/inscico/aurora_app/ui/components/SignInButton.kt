@@ -3,11 +3,7 @@ package eu.inscico.aurora_app.ui.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.*
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -18,7 +14,6 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 
-@ExperimentalMaterialApi
 @Composable
 fun SignInButton(
     text: String,

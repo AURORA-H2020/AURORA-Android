@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ListItem
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -96,6 +95,7 @@ fun AddElectricityConsumption(
     Column(
         Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.Start
     ) {
@@ -202,7 +202,7 @@ fun AddElectricityConsumption(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.Start
         ) {
-            androidx.compose.material.Text(
+            Text(
                 style = MaterialTheme.typography.labelLarge,
                 text = stringResource(id = R.string.home_add_consumption_form_description_title),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -244,11 +244,12 @@ fun AddElectricityConsumption(
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            TextButton(
+
+            Button(
                 modifier = Modifier
-                    .background(buttonColor)
-                    .padding(horizontal = 32.dp),
+                    .padding(horizontal = 32.dp).fillMaxWidth(),
                 enabled = isSaveValid.value,
+                shape = RoundedCornerShape(32.dp),
                 onClick = {
 
                     val electricityConsumptionDataResponse = ElectricityConsumptionDataResponse(
@@ -293,14 +294,14 @@ fun AddElectricityConsumption(
                         // TODO:
                     }
 
-                }) {
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = buttonColor)
+            ) {
                 Text(
                     text = stringResource(id = R.string.settings_edit_profile_submit_button_title),
                     style = MaterialTheme.typography.labelLarge,
                     color = Color.White
                 )
-
-                Spacer(Modifier.height(16.dp))
             }
         }
     }

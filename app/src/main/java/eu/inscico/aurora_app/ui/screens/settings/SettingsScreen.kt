@@ -5,7 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -84,7 +84,7 @@ fun SettingsScreen(
 
                 ActionEntry(
                     title = stringResource(id = R.string.settings_profile_edit_profile_title),
-                    iconRes = R.drawable.baseline_account_circle_24,
+                    iconRes = R.drawable.outline_account_circle_24,
                     isNavigation = true,
                     callback = {
                         navigationService.toEditProfile()
@@ -141,7 +141,7 @@ fun SettingsScreen(
                         .padding(horizontal = 16.dp, vertical = 8.dp),
                     horizontalArrangement = Arrangement.Start
                 ) {
-                    androidx.compose.material.Text(
+                    Text(
                         style = MaterialTheme.typography.labelLarge,
                         text = stringResource(id = R.string.settings_notifications_section_title),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -192,7 +192,7 @@ fun SettingsScreen(
                         .padding(horizontal = 16.dp, vertical = 8.dp),
                     horizontalArrangement = Arrangement.Start
                 ) {
-                    androidx.compose.material.Text(
+                    Text(
                         style = MaterialTheme.typography.labelLarge,
                         text = stringResource(id = R.string.settings_data_privacy_section_title),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -217,18 +217,17 @@ fun SettingsScreen(
                     isNavigation = false,
                     callback = {
                         userFeedbackService.showDialog(
-                            message = context.getString(R.string.delete),
-                            confirmButtonText = context.getString(R.string.dialog_account_delete_title),
+                            message = context.getString(R.string.dialog_account_delete_title),
+                            confirmButtonText = context.getString(R.string.delete),
                             confirmButtonCallback = {
                                 CoroutineScope(Dispatchers.IO).launch {
 
-                                    val result = viewModel.deleteUser()
+                                    val result = viewModel.deleteUser(context as Activity)
                                     when(result){
                                         is TypedResult.Failure -> {
                                             // TODO:
                                         }
                                         is TypedResult.Success -> {
-
                                         }
                                     }
                                 }
@@ -247,7 +246,7 @@ fun SettingsScreen(
                         .padding(horizontal = 16.dp, vertical = 8.dp),
                     horizontalArrangement = Arrangement.Start
                 ) {
-                    androidx.compose.material.Text(
+                    Text(
                         style = MaterialTheme.typography.labelLarge,
                         text = stringResource(id = R.string.settings_section_support_title),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -257,7 +256,7 @@ fun SettingsScreen(
 
                 ActionEntry(
                     title = stringResource(id = R.string.settings_section_support_about_the_app_title),
-                    iconRes = R.drawable.baseline_layers_24,
+                    iconRes = R.drawable.outline_layers_24,
                     isNavigation = false,
                     callback = {
                         ExternalUtils.openBrowser(context, "https://www.aurora-h2020.eu/aurora/ourapp/")
@@ -304,7 +303,7 @@ fun SettingsScreen(
 
                 ActionEntry(
                     title = stringResource(id = R.string.settings_legal_information_imprint_title),
-                    iconRes = R.drawable.baseline_info_24,
+                    iconRes = R.drawable.outline_info_24,
                     isNavigation = false,
                     callback = {
                         ExternalUtils.openBrowser(context, "https://www.aurora-h2020.eu/aurora/privacy-policy/")
@@ -313,7 +312,7 @@ fun SettingsScreen(
 
                 ActionEntry(
                     title = stringResource(id = R.string.settings_legal_information_privacy_policy_title),
-                    iconRes = R.drawable.baseline_lock_24,
+                    iconRes = R.drawable.outline_lock_24,
                     isNavigation = false,
                     callback = {
                         ExternalUtils.openBrowser(context, "https://www.aurora-h2020.eu/aurora/privacy-policy/")

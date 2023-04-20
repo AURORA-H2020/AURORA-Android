@@ -30,7 +30,8 @@ val servicesModule = module {
         context = androidContext(),
         _firebaseAuth = get(),
         _firestore = get(),
-        _userService = get()
+        _userService = get(),
+        _countriesService = get()
     ) }
 
     single {

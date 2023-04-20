@@ -53,6 +53,12 @@ fun ConsumptionDetailScreen(
         mutableStateOf(false)
     }
 
+    val editIconRes = if(editModeOn.value){
+        R.drawable.outline_edit_off_24
+    } else {
+        R.drawable.outline_edit_24
+    }
+
 
     Column(
         modifier = Modifier
@@ -77,7 +83,7 @@ fun ConsumptionDetailScreen(
             actionButton = {
                 Row() {
                     Image(
-                        painter = painterResource(id = R.drawable.baseline_edit_24),
+                        painter = painterResource(id = editIconRes),
                         modifier = Modifier
                             .size(42.dp)
                             .padding(horizontal = 7.dp)

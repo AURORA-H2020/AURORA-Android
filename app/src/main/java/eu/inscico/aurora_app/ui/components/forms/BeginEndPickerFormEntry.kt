@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -16,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -68,34 +71,31 @@ fun BeginEndPickerFormEntry(
         headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_form_begin_title)) },
         trailingContent = {
             Row(
-                horizontalArrangement = Arrangement.End,
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(
-                    modifier = Modifier
-                        .drawBehind {
-                            drawRoundRect(
-                                Color(buttonBackground.value).copy(alpha = 0.2F),
-                                cornerRadius = CornerRadius(4.dp.toPx())
-                            )
-                        }
-                        .defaultMinSize(minWidth = 90.dp, minHeight = 35.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    val beginCalendar = Calendar.getInstance()
-                    beginCalendar.timeInMillis = beginCalendarAsLong.value
+                val beginCalendar = Calendar.getInstance()
+                beginCalendar.timeInMillis = beginCalendarAsLong.value
 
-                    Text(
-                        text = CalendarUtils.toDateString(beginCalendar),
-                        style = TextStyle(
-                            color = MaterialTheme.colorScheme.onSecondary,
-                            fontSize = 15.sp,
-                            textAlign = TextAlign.End,
+                Text(
+                    text = CalendarUtils.toDateString(beginCalendar),
+                    style = TextStyle(
+                        color = MaterialTheme.colorScheme.onSecondary,
+                        fontSize = 15.sp,
+                        textAlign = TextAlign.End,
 
-                            ),
-                        textAlign = TextAlign.End
-                    )
-                }
+                        ),
+                    textAlign = TextAlign.End
+                )
+
+                Image(
+                    painter = painterResource(id = R.drawable.outline_arrow_drop_down_24),
+                    contentDescription = "",
+                    colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSecondary)
+                )
             }
+
+
         }
     )
 
@@ -116,35 +116,28 @@ fun BeginEndPickerFormEntry(
         headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_form_end_title)) },
         trailingContent = {
             Row(
-                horizontalArrangement = Arrangement.End,
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(
-                    modifier = Modifier
-                        .drawBehind {
-                            drawRoundRect(
-                                Color(buttonBackground.value).copy(alpha = 0.2F),
-                                cornerRadius = CornerRadius(4.dp.toPx())
-                            )
-                        }
-                        .defaultMinSize(minWidth = 90.dp, minHeight = 35.dp),
-                    contentAlignment = Alignment.Center
-                ) {
+                val endCalendar = Calendar.getInstance()
+                endCalendar.timeInMillis = endCalendarAsLong.value
 
-                    val endCalendar = Calendar.getInstance()
-                    endCalendar.timeInMillis = endCalendarAsLong.value
+                Text(
+                    text = CalendarUtils.toDateString(endCalendar),
+                    style = TextStyle(
+                        color = MaterialTheme.colorScheme.onSecondary,
+                        fontSize = 15.sp,
+                        textAlign = TextAlign.End,
 
-                    Text(
-                        text = CalendarUtils.toDateString(endCalendar),
-                        style = TextStyle(
-                            color = MaterialTheme.colorScheme.onSecondary,
-                            fontSize = 15.sp,
-                            textAlign = TextAlign.End,
+                        ),
+                    textAlign = TextAlign.End
+                )
 
-                            ),
-                        textAlign = TextAlign.End
-                    )
-
-                }
+                Image(
+                    painter = painterResource(id = R.drawable.outline_arrow_drop_down_24),
+                    contentDescription = "",
+                    colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSecondary)
+                )
             }
         }
     )

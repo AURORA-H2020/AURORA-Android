@@ -2,12 +2,9 @@ package eu.inscico.aurora_app.ui.screens.settings.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -103,8 +100,8 @@ fun UpdatePasswordScreen(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     trailingIcon = {
                         val image = if (oldPasswordVisible.value)
-                            R.drawable.baseline_visibility_24
-                        else R.drawable.baseline_visibility_off_24
+                            R.drawable.outline_visibility_24
+                        else R.drawable.outline_visibility_off_24
 
                         // Please provide localized description for accessibility services
                         val description = if (oldPasswordVisible.value) "Hide password" else "Show password"
@@ -128,8 +125,8 @@ fun UpdatePasswordScreen(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     trailingIcon = {
                         val image = if (newPasswordVisible.value)
-                            R.drawable.baseline_visibility_24
-                        else R.drawable.baseline_visibility_off_24
+                            R.drawable.outline_visibility_24
+                        else R.drawable.outline_visibility_off_24
 
                         // Please provide localized description for accessibility services
                         val description = if (newPasswordVisible.value) "Hide password" else "Show password"
@@ -178,8 +175,8 @@ fun UpdatePasswordScreen(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     trailingIcon = {
                         val image = if (newPasswordConfirmVisible.value)
-                            R.drawable.baseline_visibility_24
-                        else R.drawable.baseline_visibility_off_24
+                            R.drawable.outline_visibility_24
+                        else R.drawable.outline_visibility_off_24
 
                         // Please provide localized description for accessibility services
                         val description = if (newPasswordConfirmVisible.value) "Hide password" else "Show password"
@@ -202,10 +199,10 @@ fun UpdatePasswordScreen(
 
                 Spacer(Modifier.height(23.dp))
 
-                TextButton(
+                Button(
                     modifier = Modifier
-                        .background(primary)
-                        .padding(horizontal = 32.dp),
+                        .padding(horizontal = 32.dp).fillMaxWidth(),
+                    shape = RoundedCornerShape(32.dp),
                     enabled = validationErrorList.value.isEmpty() && validationConfirmationErrorList.value.isEmpty(),
                     onClick = {
                         userService.updateUserPassword(oldPassword = oldPassword.value, newPassword = newPassword.value){ wasSucessfull ->

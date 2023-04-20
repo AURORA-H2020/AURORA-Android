@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.UserSignInType
+import eu.inscico.aurora_app.services.CountriesService
 import eu.inscico.aurora_app.services.UserService
 import eu.inscico.aurora_app.utils.PrefsUtils
 import eu.inscico.aurora_app.utils.TypedResult
@@ -26,7 +27,8 @@ class AuthService(
     private val context: Context,
     val _firebaseAuth: FirebaseAuth,
     private val _firestore: FirebaseFirestore,
-    private val _userService: UserService
+    private val _userService: UserService,
+    private val _countriesService: CountriesService
 ) {
 
     companion object {
@@ -76,6 +78,9 @@ class AuthService(
                 isAuthenticated = true
                 currentFirebaseUser = _firebaseAuth.currentUser
                 loadUser(it.currentUser?.uid ?: "")
+                CoroutineScope(Dispatchers.IO).launch {
+                    _countriesService.loadCountries()
+                }
 
                 userSignInType = getUserLoginType()
 
@@ -86,6 +91,7 @@ class AuthService(
                 isAuthenticated = false
                 googleAccount = null
                 userSignInType = null
+                PrefsUtils.clearAllPrefs(context)
             }
 
         }
@@ -102,7 +108,11 @@ class AuthService(
     }
 
     fun deleteUser(){
-       // _firebaseAuth.
+        _firebaseAuth.currentUser?.delete()?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    logout()
+                }
+            }
     }
 
     fun getUserLoginType(): UserSignInType {
@@ -156,6 +166,24 @@ class AuthService(
         mGoogleSignInClient.signOut()
             .addOnCompleteListener(activity, OnCompleteListener<Void?> {
                 logout()
+            })
+        mGoogleSignInClient.revokeAccess()
+    }
+
+    fun googleRevokeAccess(activity: Activity){
+
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(activity.applicationContext.getString(R.string.google_auth_server_client_id))
+            .requestEmail()
+            .build()
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        val mGoogleSignInClient = GoogleSignIn.getClient(activity, gso);
+        mGoogleSignInClient.revokeAccess()
+            .addOnCompleteListener(activity, OnCompleteListener<Void?> {
+                deleteUser()
             })
     }
 

@@ -1,6 +1,7 @@
 package eu.inscico.aurora_app.ui.screens.home.consumptions
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -52,9 +53,11 @@ fun AllConsumptionsListScreen(
                 navigationService.navControllerTabHome?.popBackStack()
             },
             actionButton = {
-                Row() {
+                Row(modifier = Modifier.clickable {
+                    navigationService.toAddConsumption()
+                }) {
                     Image(
-                        painter = painterResource(id = R.drawable.baseline_add_24),
+                        painter = painterResource(id = R.drawable.outline_add_24),
                         modifier = Modifier
                             .size(42.dp)
                             .padding(horizontal = 7.dp),
@@ -62,9 +65,6 @@ fun AllConsumptionsListScreen(
                         colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
                     )
                 }
-            },
-            actionButtonCallback = {
-                navigationService.toAddConsumption()
             }
         )
 

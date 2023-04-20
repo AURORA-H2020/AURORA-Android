@@ -2,9 +2,8 @@ package eu.inscico.aurora_app.ui.screens.settings.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
-import androidx.compose.material3.Divider
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -171,11 +170,11 @@ fun EditProfileScreen(
                 horizontalArrangement = Arrangement.Center
             ) {
 
-                TextButton(
+                Button(
                     modifier = Modifier
-                        .background(buttonColor)
-                        .padding(horizontal = 32.dp),
+                        .padding(horizontal = 32.dp).fillMaxWidth(),
                     enabled = isSaveValid.value,
+                    shape = RoundedCornerShape(32.dp),
                     onClick = {
                         val updatedUser = UserResponse(
                             city = currentUserLive.value?.city,

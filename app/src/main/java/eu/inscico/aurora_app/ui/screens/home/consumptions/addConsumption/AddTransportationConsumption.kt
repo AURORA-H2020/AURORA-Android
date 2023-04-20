@@ -371,11 +371,11 @@ fun AddTransportationConsumption(
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            TextButton(
+            Button(
                 modifier = Modifier
-                    .background(buttonColor)
-                    .padding(horizontal = 32.dp),
+                    .padding(horizontal = 32.dp).fillMaxWidth(),
                 enabled = isSaveValid.value,
+                shape = RoundedCornerShape(32.dp),
                 onClick = {
 
                     val transportationConsumptionDataResponse = when(transportationSection.value){
@@ -439,7 +439,8 @@ fun AddTransportationConsumption(
                         // TODO:
                     }
 
-                }) {
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = buttonColor)) {
                 Text(
                     text = stringResource(id = R.string.settings_edit_profile_submit_button_title),
                     style = MaterialTheme.typography.labelLarge,

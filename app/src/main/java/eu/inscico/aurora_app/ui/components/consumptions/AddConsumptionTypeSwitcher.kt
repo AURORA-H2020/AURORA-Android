@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -54,79 +55,84 @@ fun AddConsumptionTypeSwitcher(
         }
     }
 
-    TextButton(
-        modifier = Modifier
-            .background(consumptionColor.copy(alpha = 0.2F))
-            .fillMaxWidth(),
-        shape = MaterialTheme.shapes.extraSmall,
-        onClick = {
-            openPopupMenu.value = !openPopupMenu.value
-        }) {
+    Column(Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.surface), horizontalAlignment = Alignment.CenterHorizontally) {
 
-        Row(
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(horizontal = 32.dp)
-        ) {
-            Image(
-                modifier = Modifier.padding(6.dp),
-                painter = painterResource(id = getIconRes(selectedConsumption.value)),
-                contentDescription = "",
-                colorFilter = ColorFilter.tint(color = consumptionColor),
-            )
-            Text(
-                modifier = Modifier.padding(vertical = 6.dp),
-                text = selectedConsumption.value.getDisplayName(context),
-                style = MaterialTheme.typography.labelLarge,
-                color = consumptionColor
-            )
-            Image(
-                painterResource(id = R.drawable.outline_arrow_drop_down_24),
-                contentDescription = "",
-                colorFilter = ColorFilter.tint(consumptionColor),
-                alignment = Alignment.CenterEnd
-            )
-        }
 
-        DropdownMenu(
-            modifier = Modifier.fillMaxWidth(),
-            expanded = openPopupMenu.value,
-            onDismissRequest = { openPopupMenu.value = false },
-        ) {
+        Button(
+            modifier = Modifier
+                .padding(horizontal = 32.dp, vertical = 16.dp)
+                .fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = consumptionColor.copy(alpha = 0.2F)),
+            shape = RoundedCornerShape(32.dp),
+            onClick = {
+                openPopupMenu.value = !openPopupMenu.value
+            }) {
 
-            val consumptionSwitchItems = when (selectedConsumption.value) {
-                ConsumptionType.ELECTRICITY -> {
-                    listOf(ConsumptionType.TRANSPORTATION, ConsumptionType.HEATING)
-                }
-                ConsumptionType.HEATING -> {
-                    listOf(ConsumptionType.TRANSPORTATION, ConsumptionType.ELECTRICITY)
-                }
-                ConsumptionType.TRANSPORTATION -> {
-                    listOf(ConsumptionType.ELECTRICITY, ConsumptionType.HEATING)
-                }
+            Row(
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(horizontal = 32.dp)
+            ) {
+                Image(
+                    modifier = Modifier.padding(6.dp),
+                    painter = painterResource(id = getIconRes(selectedConsumption.value)),
+                    contentDescription = "",
+                    colorFilter = ColorFilter.tint(color = consumptionColor),
+                )
+                Text(
+                    modifier = Modifier.padding(vertical = 6.dp),
+                    text = selectedConsumption.value.getDisplayName(context),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = consumptionColor
+                )
+                Image(
+                    painterResource(id = R.drawable.outline_arrow_drop_down_24),
+                    contentDescription = "",
+                    colorFilter = ColorFilter.tint(consumptionColor),
+                    alignment = Alignment.CenterEnd
+                )
             }
 
-            consumptionSwitchItems.forEach {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                        .clickable {
-                            selectedConsumption.value = it
-                            callback.invoke(it)
-                            openPopupMenu.value = false
-                        }) {
-                    Image(
-                        painterResource(id = getIconRes(it)),
-                        contentDescription = ""
-                    )
-                    Text(
-                        text = it.getDisplayName(context),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
+            DropdownMenu(
+                modifier = Modifier.fillMaxWidth(),
+                expanded = openPopupMenu.value,
+                onDismissRequest = { openPopupMenu.value = false },
+            ) {
 
+                val consumptionSwitchItems = when (selectedConsumption.value) {
+                    ConsumptionType.ELECTRICITY -> {
+                        listOf(ConsumptionType.TRANSPORTATION, ConsumptionType.HEATING)
+                    }
+                    ConsumptionType.HEATING -> {
+                        listOf(ConsumptionType.TRANSPORTATION, ConsumptionType.ELECTRICITY)
+                    }
+                    ConsumptionType.TRANSPORTATION -> {
+                        listOf(ConsumptionType.ELECTRICITY, ConsumptionType.HEATING)
+                    }
+                }
+
+                consumptionSwitchItems.forEach {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                            .clickable {
+                                selectedConsumption.value = it
+                                callback.invoke(it)
+                                openPopupMenu.value = false
+                            }) {
+                        Image(
+                            painterResource(id = getIconRes(it)),
+                            contentDescription = ""
+                        )
+                        Text(
+                            text = it.getDisplayName(context),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+
+                    }
                 }
             }
         }
