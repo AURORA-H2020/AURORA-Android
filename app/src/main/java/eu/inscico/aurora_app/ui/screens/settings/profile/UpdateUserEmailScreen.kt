@@ -3,8 +3,10 @@ package eu.inscico.aurora_app.ui.screens.settings.profile
 import android.util.Patterns
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -13,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -26,6 +29,7 @@ import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.services.UserService
 import eu.inscico.aurora_app.services.auth.AuthService
 import eu.inscico.aurora_app.services.navigation.NavigationService
+import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.AppBar
 import eu.inscico.aurora_app.ui.components.container.ScrollableContent
 import eu.inscico.aurora_app.ui.screens.login.signInEmail.validatePasswordConfirmation
@@ -34,11 +38,13 @@ import eu.inscico.aurora_app.ui.theme.primary
 import org.koin.androidx.compose.get
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpdateEmailScreen(
     userService: UserService = get(),
     authService: AuthService = get(),
-    navigationService: NavigationService = get()
+    navigationService: NavigationService = get(),
+    userFeedbackService: UserFeedbackService = get()
 ){
 
     val context = LocalContext.current
@@ -56,7 +62,9 @@ fun UpdateEmailScreen(
     }
 
     Column(
-        Modifier.background(MaterialTheme.colorScheme.background)
+        Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
     ) {
 
         AppBar(
@@ -67,20 +75,28 @@ fun UpdateEmailScreen(
             }
         )
 
-        ScrollableContent(
-            background = MaterialTheme.colorScheme.background
-        ) {
+        Column(Modifier.verticalScroll(rememberScrollState())) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
             Column(
-                modifier = Modifier.fillMaxSize(),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .clip(shape = RoundedCornerShape(16.dp)),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
                 Spacer(Modifier.height(32.dp))
 
                 OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = Color.Transparent,
+                        unfocusedBorderColor = Color.Transparent,
+                        containerColor = MaterialTheme.colorScheme.surface
+                    ),
+                    shape = RoundedCornerShape(16.dp),
                     value = newEmail.value,
                     label = {
                         Text(text = stringResource(id = R.string.settings_change_email_new_email_title))
@@ -95,13 +111,13 @@ fun UpdateEmailScreen(
                 if(currentEmail != null) {
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 4.dp, start = 32.dp, end = 32.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                            .padding(top = 4.dp, start = 16.dp, end = 16.dp).fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Start
                     ) {
                         Text(
+                            modifier = Modifier.padding(horizontal = 16.dp),
                             text = context.getString(R.string.settings_change_email_new_email_description, currentEmail),
-                            modifier = Modifier.padding(horizontal = 32.dp),
                             style = MaterialTheme.typography.labelSmall,
                             textAlign = TextAlign.Start,
                             color = MaterialTheme.colorScheme.onSecondary
@@ -112,6 +128,13 @@ fun UpdateEmailScreen(
                 Spacer(Modifier.height(32.dp))
 
                 OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = Color.Transparent,
+                        unfocusedBorderColor = Color.Transparent,
+                        containerColor = MaterialTheme.colorScheme.surface
+                    ),
+                    shape = RoundedCornerShape(16.dp),
                     value = password.value,
                     label = {
                         Text(text = stringResource(id = R.string.settings_change_password_old_password_title))
@@ -136,13 +159,13 @@ fun UpdateEmailScreen(
 
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 4.dp, start = 32.dp, end = 32.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                            .padding(top = 4.dp, start = 16.dp, end = 16.dp).fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Start
                     ) {
                         Text(
+                            modifier = Modifier.padding(horizontal = 16.dp),
                             text = stringResource(id = R.string.settings_change_email_password_description),
-                            modifier = Modifier.padding(horizontal = 32.dp),
                             style = MaterialTheme.typography.labelSmall,
                             textAlign = TextAlign.Start,
                             color = MaterialTheme.colorScheme.onSecondary
@@ -153,7 +176,8 @@ fun UpdateEmailScreen(
 
                 Button(
                     modifier = Modifier
-                        .padding(horizontal = 32.dp).fillMaxWidth(),
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth(),
                     shape = RoundedCornerShape(32.dp),
                     enabled = isNewEmailValid.value,
                     onClick = {
@@ -161,7 +185,7 @@ fun UpdateEmailScreen(
                             if(wasSucessfull){
                                 navigationService.navControllerTabSettings?.popBackStack()
                             } else {
-                                // TODO:
+                                userFeedbackService.showSnackbar(R.string.settings_update_email_fail_message)
                             }
                         }
 

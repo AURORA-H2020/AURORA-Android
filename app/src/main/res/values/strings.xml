@@ -221,6 +221,17 @@
     <string name="dialog_settings_logout_title">Are you sure you want to logout?</string>
     <string name="dialog_consumption_delete_title">Are you sure you want to delete the entry?</string>
     <string name="dialog_account_delete_title">Are you sure you want to delete your account?</string>
+    <string name="dialog_account_delete_description">Please enter your password to delete your account.</string>
 
     <!-- User Feedback -->
+    <string name="login_email_fail_message">An error occurred while trying to login. Please check your inputs and try again.</string>
+    <string name="login_email_register_fail_message">An error occurred while trying to create a new account. Please check your inputs and try again.</string>
+    <string name="login_create_profile_fail_message">An error occurred while trying to create a new profile. Please check your inputs and try again.</string>
+    <string name="settings_update_email_fail_message">An error occurred while trying to update your email address. Please check your inputs and try again.</string>
+    <string name="settings_update_password_fail_message">An error occurred while trying to update your password. Please check your inputs and try again.</string>
+    <string name="settings_download_data_bulk_fail_message">An error occurred while trying to download your data.</string>
+    <string name="settings_delete_account_fail_message">An error occurred while trying to delete your account.</string>
+    <string name="settings_delete_consumption_entry_fail_message">An error occurred while trying to delete this entry.</string>
+    <string name="settings_add_consumption_entry_fail_message">An error occurred while trying to create this entry.</string>
+    <string name="settings_update_profile_fail_message">An error occurred while trying to update your profile.</string>
 </resources>

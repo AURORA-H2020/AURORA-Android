@@ -7,7 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
@@ -22,6 +22,7 @@ import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.ActionEntry
 import eu.inscico.aurora_app.ui.components.AppBar
 import eu.inscico.aurora_app.ui.components.container.ScrollableContent
+import eu.inscico.aurora_app.ui.components.dialogs.ReenterPasswordAndDeleteAccountDialog
 import eu.inscico.aurora_app.ui.theme.electricityYellow
 import eu.inscico.aurora_app.ui.theme.heatingRed
 import eu.inscico.aurora_app.ui.theme.mobilityBlue
@@ -42,6 +43,8 @@ fun SettingsScreen(
 ) {
 
     val context = LocalContext.current
+
+    val showDeleteAccountDialog = remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -231,17 +234,41 @@ fun SettingsScreen(
                         iconRes = R.drawable.outline_download_24,
                         isNavigation = false,
                         callback = {
+                            userFeedbackService.showLoadingDialog()
                             viewModel.downloadUserData{ isSuccess, jsonData ->
+                                userFeedbackService.hideLoadingDialog()
                                 if(isSuccess && jsonData != null){
                                     ExternalUtils.createJsonFileAndShare(context, jsonData)
                                 } else {
-                                    // TODO:  
+                                    userFeedbackService.showSnackbar(R.string.settings_download_data_bulk_fail_message)
                                 }
                             }
                         }
                     )
 
                     Divider()
+
+                    val reenteredPasswordCallback: (String) -> Unit = { password ->
+                        userFeedbackService.showLoadingDialog()
+                        CoroutineScope(Dispatchers.IO).launch {
+                            viewModel.deleteUser(password, context as Activity){ isSuccess ->
+                                userFeedbackService.hideLoadingDialog()
+                                if(isSuccess){
+                                    viewModel.userLogout(context as Activity)
+                                } else {
+                                    userFeedbackService.showSnackbar(R.string.settings_delete_account_fail_message)
+                                }
+
+                            }
+                        }
+                    }
+
+                    ReenterPasswordAndDeleteAccountDialog(
+                        showDialog = showDeleteAccountDialog.value,
+                        reenteredPasswordCallback = reenteredPasswordCallback,
+                        dismissCallback = {
+                            showDeleteAccountDialog.value = false
+                        })
 
                     ActionEntry(
                         title = stringResource(id = R.string.settings_data_privacy_delete_account_title),
@@ -250,24 +277,8 @@ fun SettingsScreen(
                         titleColor = MaterialTheme.colorScheme.error,
                         isNavigation = false,
                         callback = {
-                            userFeedbackService.showDialog(
-                                message = context.getString(R.string.dialog_account_delete_title),
-                                confirmButtonText = context.getString(R.string.delete),
-                                confirmButtonCallback = {
-                                    CoroutineScope(Dispatchers.IO).launch {
-
-                                        val result = viewModel.deleteUser(context as Activity)
-                                        when (result) {
-                                            is TypedResult.Failure -> {
-                                                // TODO:
-                                            }
-                                            is TypedResult.Success -> {
-                                            }
-                                        }
-                                    }
-
-                                }
-                            )
+                            userFeedbackService.showSnackbar("Not yet completed")
+                            //showDeleteAccountDialog.value = true
                         }
                     )
                 }
@@ -348,7 +359,10 @@ fun SettingsScreen(
                     ActionEntry(
                         title = stringResource(id = R.string.settings_legal_information_feature_preview_title),
                         iconRes = R.drawable.outline_auto_fix_high_24,
-                        isNavigation = false
+                        isNavigation = false,
+                        callback = {
+                            userFeedbackService.showSnackbar("Not yet completed")
+                        }
                     )
 
                     Divider()
@@ -384,7 +398,10 @@ fun SettingsScreen(
                     ActionEntry(
                         title = stringResource(id = R.string.settings_legal_information_licenses_title),
                         iconRes = R.drawable.outline_receipt_24,
-                        isNavigation = false
+                        isNavigation = false,
+                        callback = {
+                            userFeedbackService.showSnackbar("Not yet completed")
+                        }
                     )
                 }
             }

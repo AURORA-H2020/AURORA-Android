@@ -21,6 +21,7 @@ import eu.inscico.aurora_app.model.user.Gender
 import eu.inscico.aurora_app.model.user.Gender.Companion.toGenderString
 import eu.inscico.aurora_app.model.user.UserResponse
 import eu.inscico.aurora_app.services.navigation.NavigationService
+import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.AppBar
 import eu.inscico.aurora_app.ui.components.FormEntry
 import eu.inscico.aurora_app.ui.components.FormEntryType
@@ -37,7 +38,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun EditProfileScreen(
     viewModel: EditProfileViewModel = koinViewModel(),
-    navigationService: NavigationService = get()
+    navigationService: NavigationService = get(),
+    userFeedbackService: UserFeedbackService = get()
 ) {
 
     val currentUserLive = viewModel.currentUserLive.observeAsState()
@@ -197,7 +199,7 @@ fun EditProfileScreen(
                             val result = viewModel.updateUser(updatedUser)
                             when (result) {
                                 is TypedResult.Failure -> {
-                                    // TODO:
+                                    userFeedbackService.showSnackbar(R.string.settings_update_profile_fail_message)
                                 }
                                 is TypedResult.Success -> {
                                     withContext(Dispatchers.Main) {

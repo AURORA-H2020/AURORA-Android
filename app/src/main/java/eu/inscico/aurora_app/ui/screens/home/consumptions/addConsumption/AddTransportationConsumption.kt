@@ -33,6 +33,7 @@ import eu.inscico.aurora_app.model.consumptions.TransportationType.Companion.get
 import eu.inscico.aurora_app.model.consumptions.TransportationType.Companion.parseTransportationTypeToString
 import eu.inscico.aurora_app.services.navigation.NavGraphDirections
 import eu.inscico.aurora_app.services.navigation.NavigationService
+import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.datePicker.MaterialDatePickerDialog
 import eu.inscico.aurora_app.ui.components.forms.AddSubtractCountFormEntry
 import eu.inscico.aurora_app.ui.components.forms.BeginEndPickerFormEntry
@@ -54,7 +55,8 @@ import java.util.*
 fun AddTransportationConsumption(
     initialValues: Consumption.TransportationConsumption? = null,
     viewModel: AddConsumptionViewModel = koinViewModel(),
-    navigationService: NavigationService = get()
+    navigationService: NavigationService = get(),
+    userFeedbackService: UserFeedbackService = get()
 ){
 
     val context = LocalContext.current
@@ -443,7 +445,7 @@ fun AddTransportationConsumption(
                             }
                             when (result) {
                                 is TypedResult.Failure -> {
-                                    // TODO:
+                                    userFeedbackService.showSnackbar(R.string.settings_add_consumption_entry_fail_message)
                                 }
                                 is TypedResult.Success -> {
                                     withContext(Dispatchers.Main) {
@@ -453,7 +455,7 @@ fun AddTransportationConsumption(
                             }
                         }
                     } else {
-                        // TODO:
+                        userFeedbackService.showSnackbar(R.string.settings_add_consumption_entry_fail_message)
                     }
 
                 },

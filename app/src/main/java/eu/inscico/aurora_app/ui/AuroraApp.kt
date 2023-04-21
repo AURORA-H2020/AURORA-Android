@@ -75,7 +75,9 @@ fun AuroraApp(
         NavHost(navController = navControllerApp, startDestination = "app") {
             composable("app") {
                 AuroraScaffold(
-                    snackBarHost = {},
+                    snackbarHost = {
+                        userFeedbackService.getSnackbar()
+                    },
                     bottomBar = {
                         if (user.value != null && firebaseUser.value != null) {
                             Divider()
@@ -157,6 +159,11 @@ fun AuroraApp(
         val showDialog = remember { userFeedbackService._showDialog }
         if (showDialog.value) {
             userFeedbackService.getDialog()
+        }
+
+        val showLoadingDialog = remember { userFeedbackService._showLoadingDialog }
+        if (showLoadingDialog.value) {
+            userFeedbackService.GetLoadingDialog()
         }
 
     }

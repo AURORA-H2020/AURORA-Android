@@ -15,6 +15,7 @@ fun AuroraScaffold(
     bottomBar: @Composable (() -> Unit) = {},
     snackBarHost: @Composable (() -> Unit) = {},
     floatingActionButton: @Composable (() -> Unit) = {},
+    snackbarHost: @Composable () -> Unit = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
     content: @Composable ((PaddingValues) -> Unit) = {}
 ){
@@ -26,8 +27,8 @@ fun AuroraScaffold(
             bottomBar = bottomBar,
             floatingActionButton = floatingActionButton,
             floatingActionButtonPosition = floatingActionButtonPosition,
-            snackbarHost = snackBarHost,
-            content = content,
+            snackbarHost = snackbarHost,
+            content = content
         )
     }
 }

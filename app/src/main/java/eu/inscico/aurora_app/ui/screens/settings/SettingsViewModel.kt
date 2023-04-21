@@ -31,26 +31,31 @@ class SettingsViewModel(
         }
     }
 
-    fun deleteUserData(activity: Activity){
+    fun deleteUserData(activity: Activity, resultCallback: (Boolean)-> Unit){
         when(_authService.userSignInType){
             UserSignInType.GOOGLE -> {
-                _authService.googleRevokeAccess(activity)
+                _authService.googleRevokeAccess(activity , resultCallback)
             }
             UserSignInType.APPLE -> {
 
             }
             UserSignInType.EMAIL -> {
-                _authService.deleteUser()
+                _authService.deleteUser(resultCallback)
             }
             null -> {
-                _authService.deleteUser()
+                _authService.deleteUser(resultCallback)
             }
         }
     }
 
-    suspend fun deleteUser(activity: Activity): TypedResult<Any, Any>{
-        deleteUserData(activity)
-        return _userService.deleteUser()
+    suspend fun deleteUser(password: String, activity: Activity, resultCallback: (Boolean)-> Unit){
+        _userService.deleteUser(password){
+            if(it){
+                deleteUserData(activity, resultCallback)
+            } else {
+                resultCallback.invoke(false)
+            }
+        }
     }
 
     fun getSupportUrl(): String?{

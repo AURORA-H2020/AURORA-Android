@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.services.navigation.NavGraphDirections
 import eu.inscico.aurora_app.services.navigation.NavigationService
+import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.utils.TypedResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +35,8 @@ import org.koin.androidx.compose.get
 @Composable
 fun SignInWithEmailLoginScreen(
     viewModel: SignInWithEmailViewModel,
-    navigationService: NavigationService = get()
+    navigationService: NavigationService = get(),
+    userFeedbackService: UserFeedbackService = get()
 ) {
 
     val email = remember {
@@ -63,7 +65,7 @@ fun SignInWithEmailLoginScreen(
         )
 
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -130,7 +132,9 @@ fun SignInWithEmailLoginScreen(
                             password = password.value
                         )
                         when (result) {
-                            is TypedResult.Failure -> {}
+                            is TypedResult.Failure -> {
+                                userFeedbackService.showSnackbar(R.string.login_email_fail_message)
+                            }
                             is TypedResult.Success -> {
                                 withContext(Dispatchers.Main) {
                                     navigationService.navControllerAuth?.popBackStack(

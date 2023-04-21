@@ -107,10 +107,13 @@ class AuthService(
         _firebaseAuth.signOut()
     }
 
-    fun deleteUser(){
+    fun deleteUser(resultCallback: (Boolean)-> Unit){
         _firebaseAuth.currentUser?.delete()?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    resultCallback.invoke(true)
                     logout()
+                } else {
+                   resultCallback.invoke(false)
                 }
             }
     }
@@ -170,7 +173,7 @@ class AuthService(
         mGoogleSignInClient.revokeAccess()
     }
 
-    fun googleRevokeAccess(activity: Activity){
+    fun googleRevokeAccess(activity: Activity, resultCallback: (Boolean)-> Unit){
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -183,7 +186,11 @@ class AuthService(
         val mGoogleSignInClient = GoogleSignIn.getClient(activity, gso);
         mGoogleSignInClient.revokeAccess()
             .addOnCompleteListener(activity, OnCompleteListener<Void?> {
-                deleteUser()
+                if(it.isSuccessful){
+                    deleteUser(resultCallback)
+                } else {
+                    resultCallback.invoke(false)
+                }
             })
     }
 

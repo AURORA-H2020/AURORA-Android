@@ -25,6 +25,7 @@ import eu.inscico.aurora_app.model.consumptions.DistrictHeatingSource.Companion.
 import eu.inscico.aurora_app.model.consumptions.HeatingFuelType.Companion.getDisplayName
 import eu.inscico.aurora_app.model.consumptions.HeatingFuelType.Companion.parseHeatingFuelToString
 import eu.inscico.aurora_app.services.navigation.NavigationService
+import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.forms.AddSubtractCountFormEntry
 import eu.inscico.aurora_app.ui.components.forms.BeginEndPickerFormEntry
 import eu.inscico.aurora_app.ui.components.forms.SpinnerFormEntry
@@ -43,7 +44,8 @@ import java.util.*
 fun AddHeatingConsumption(
     initialValue: Consumption.HeatingConsumption? = null,
     viewModel: AddConsumptionViewModel = koinViewModel(),
-    navigationService: NavigationService = get()
+    navigationService: NavigationService = get(),
+    userFeedbackService: UserFeedbackService = get()
 ){
 
     val context = LocalContext.current
@@ -373,7 +375,7 @@ fun AddHeatingConsumption(
                             }
                             when (result) {
                                 is TypedResult.Failure -> {
-                                    // TODO:
+                                    userFeedbackService.showSnackbar(R.string.settings_add_consumption_entry_fail_message)
                                 }
                                 is TypedResult.Success -> {
                                     withContext(Dispatchers.Main) {
@@ -383,7 +385,7 @@ fun AddHeatingConsumption(
                             }
                         }
                     } else {
-                        // TODO:
+                        userFeedbackService.showSnackbar(R.string.settings_add_consumption_entry_fail_message)
                     }
                 },
                         colors = ButtonDefaults.buttonColors(containerColor = buttonColor)) {

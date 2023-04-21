@@ -85,7 +85,7 @@ fun ConsumptionDetailScreen(
                     Image(
                         painter = painterResource(id = editIconRes),
                         modifier = Modifier
-                            .size(42.dp)
+                            .size(38.dp)
                             .padding(horizontal = 7.dp)
                             .clickable {
                                 editModeOn.value = !editModeOn.value
@@ -96,7 +96,7 @@ fun ConsumptionDetailScreen(
                     Image(
                         painter = painterResource(id = R.drawable.outline_delete_outline_24),
                         modifier = Modifier
-                            .size(42.dp)
+                            .size(38.dp)
                             .padding(horizontal = 7.dp)
                             .clickable {
                                 userFeedbackService.showDialog(
@@ -109,7 +109,7 @@ fun ConsumptionDetailScreen(
                                                     viewModel.deleteConsumption(consumption.value!!)
                                                 when (result) {
                                                     is TypedResult.Failure -> {
-                                                        // TODO:
+                                                        userFeedbackService.showSnackbar(R.string.settings_delete_consumption_entry_fail_message)
                                                     }
                                                     is TypedResult.Success -> {
                                                         withContext(Dispatchers.Main){
@@ -119,7 +119,7 @@ fun ConsumptionDetailScreen(
                                                 }
                                             }
                                         } else {
-                                            // TODO:
+                                            userFeedbackService.showSnackbar(R.string.settings_delete_consumption_entry_fail_message)
                                         }
                                     }
                                 )

@@ -1,9 +1,7 @@
 package eu.inscico.aurora_app.ui.screens.login
 
 import android.app.Activity
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ContentAlpha
@@ -41,7 +39,8 @@ fun LoginScreen(
     val context = LocalContext.current
 
     val gradientColor = if (isSystemInDarkTheme()) {
-        Color.Black
+        Color.White//Color.Black
+        // TODO:  
     } else {
         Color.White
     }
@@ -113,7 +112,8 @@ fun LoginScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f),
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
@@ -197,7 +197,7 @@ fun LoginScreen(
 
                         Column(modifier = Modifier
                             .fillMaxWidth()
-                            .weight(1f),
+                            .verticalScroll(rememberScrollState()),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
@@ -207,6 +207,7 @@ fun LoginScreen(
                                 textAlign = TextAlign.Center,
                                 color = MaterialTheme.colorScheme.onSecondary
                             )
+                            Spacer(modifier = Modifier.height(5.dp))
                         }
 
                     }

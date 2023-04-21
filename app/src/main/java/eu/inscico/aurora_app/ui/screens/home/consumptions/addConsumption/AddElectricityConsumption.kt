@@ -31,6 +31,7 @@ import eu.inscico.aurora_app.model.consumptions.ConsumptionType
 import eu.inscico.aurora_app.model.consumptions.ElectricityConsumptionDataResponse
 import eu.inscico.aurora_app.services.navigation.NavGraphDirections
 import eu.inscico.aurora_app.services.navigation.NavigationService
+import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.datePicker.MaterialDatePickerDialog
 import eu.inscico.aurora_app.ui.components.forms.AddSubtractCountFormEntry
 import eu.inscico.aurora_app.ui.components.forms.BeginEndPickerFormEntry
@@ -49,7 +50,8 @@ import java.util.*
 fun AddElectricityConsumption(
     initialValues: Consumption.ElectricityConsumption? = null,
     viewModel: AddConsumptionViewModel = koinViewModel(),
-    navigationService: NavigationService = get()
+    navigationService: NavigationService = get(),
+    userFeedbackService: UserFeedbackService = get()
 ) {
 
     val initialConsumption = if(initialValues?.value != null){
@@ -300,7 +302,7 @@ fun AddElectricityConsumption(
                             }
                             when (result) {
                                 is TypedResult.Failure -> {
-                                    // TODO:
+                                    userFeedbackService.showSnackbar(R.string.settings_add_consumption_entry_fail_message)
                                 }
                                 is TypedResult.Success -> {
                                     withContext(Dispatchers.Main) {
@@ -310,7 +312,7 @@ fun AddElectricityConsumption(
                             }
                         }
                     } else {
-                        // TODO:
+                        userFeedbackService.showSnackbar(R.string.settings_add_consumption_entry_fail_message)
                     }
 
                 },

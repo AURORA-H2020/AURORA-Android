@@ -26,6 +26,7 @@ import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.services.auth.AuthService
 import eu.inscico.aurora_app.services.navigation.NavGraphDirections
 import eu.inscico.aurora_app.services.navigation.NavigationService
+import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.container.ScrollableContent
 import eu.inscico.aurora_app.ui.theme.primary
 import eu.inscico.aurora_app.utils.TypedResult
@@ -40,6 +41,7 @@ import org.koin.androidx.compose.get
 fun SignInWithEmailRegisterScreen(
     viewModel: SignInWithEmailViewModel,
     navigationService: NavigationService = get(),
+    userFeedbackService: UserFeedbackService = get(),
     authService: AuthService = get()
 ) {
 
@@ -86,7 +88,7 @@ fun SignInWithEmailRegisterScreen(
         )
 
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -222,7 +224,7 @@ fun SignInWithEmailRegisterScreen(
                         )
                         when (result) {
                             is TypedResult.Failure -> {
-                                // TODO:
+                                userFeedbackService.showSnackbar(R.string.login_email_register_fail_message)
                             }
                             is TypedResult.Success -> {
                                 withContext(Dispatchers.Main) {

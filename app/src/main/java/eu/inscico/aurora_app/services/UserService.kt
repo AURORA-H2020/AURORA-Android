@@ -99,18 +99,34 @@ class UserService(
         }
     }
 
-    suspend fun deleteUser(): TypedResult<Any, Any> {
-        val authId = _firebaseAuth.currentUser?.uid ?: return TypedResult.Failure("")
+    suspend fun deleteUser(password: String , resultCallback: (Boolean)-> Unit) {
 
         try {
-            _firestore.collection(collectionName).document(authId).delete()
+            val user = _firebaseAuth.currentUser ?: return
 
-            return TypedResult.Success(true)
-        } catch (e: Exception) {
-            return TypedResult.Failure(e.message ?: "")
+            val email = user.email ?: return
+
+            val credential = EmailAuthProvider
+                .getCredential(email, password)
+
+            user.reauthenticate(credential).addOnCompleteListener {
+                if (it.isSuccessful) {
+                    _firestore.collection(collectionName).document(user.uid).delete()
+                        .addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                resultCallback.invoke(true)
+                            } else {
+                                resultCallback.invoke(false)
+                            }
+                        }
+                } else {
+                    resultCallback.invoke(false)
+                }
+            }
+        }catch (e: Exception) {
+            resultCallback.invoke(false)
         }
     }
-
 
     fun updateUserPassword(
         oldPassword: String,
@@ -127,7 +143,7 @@ class UserService(
         user.reauthenticate(credential)
             .addOnCompleteListener {
 
-                if(it.isSuccessful){
+                if (it.isSuccessful) {
                     user.updatePassword(newPassword).addOnCompleteListener {
                         callback?.invoke(it.isSuccessful)
                     }
@@ -152,7 +168,7 @@ class UserService(
         user.reauthenticate(credential)
             .addOnCompleteListener {
 
-                if(it.isSuccessful){
+                if (it.isSuccessful) {
                     user.updateEmail(newEmail).addOnCompleteListener {
                         callback?.invoke(it.isSuccessful)
                     }

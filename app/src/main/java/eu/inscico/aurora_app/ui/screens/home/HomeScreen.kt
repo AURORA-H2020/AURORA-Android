@@ -27,6 +27,7 @@ import eu.inscico.aurora_app.model.consumptions.ElectricityConsumptionData
 import eu.inscico.aurora_app.services.ConsumptionsService
 import eu.inscico.aurora_app.services.CountriesService
 import eu.inscico.aurora_app.services.navigation.NavigationService
+import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.AppBar
 import eu.inscico.aurora_app.ui.components.consumptions.ConsumptionListItem
 import eu.inscico.aurora_app.ui.components.container.ScrollableContent
@@ -40,7 +41,8 @@ import java.util.*
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel(),
-    navigationService: NavigationService = get()
+    navigationService: NavigationService = get(),
+    userFeedbackService: UserFeedbackService = get()
 ) {
 
     val context = LocalContext.current
@@ -97,7 +99,9 @@ fun HomeScreen(
                     ListItem(
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.surface)
-                            .clickable { },
+                            .clickable {
+                                userFeedbackService.showSnackbar("Not yet completed")
+                            },
                         headlineContent = { Text(stringResource(id = R.string.home_energy_lables_title)) },
                         leadingContent = {
                             Image(

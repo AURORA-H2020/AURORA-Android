@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
@@ -27,6 +28,7 @@ import eu.inscico.aurora_app.model.user.Gender.Companion.toGenderString
 import eu.inscico.aurora_app.model.user.UserResponse
 import eu.inscico.aurora_app.services.navigation.NavGraphDirections
 import eu.inscico.aurora_app.services.navigation.NavigationService
+import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.AppBar
 import eu.inscico.aurora_app.ui.components.FormEntry
 import eu.inscico.aurora_app.ui.components.FormEntryType
@@ -43,7 +45,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CreateProfileScreen(
     viewModel: CreateProfileViewModel = koinViewModel(),
-    navigationService: NavigationService = get()
+    navigationService: NavigationService = get(),
+    userFeedbackService: UserFeedbackService = get()
 ) {
 
     val countries = viewModel.countries.observeAsState()
@@ -65,11 +68,11 @@ fun CreateProfileScreen(
     }
 
     val country = remember {
-        mutableStateOf(countries.value?.first()/*"udn3GiM30aqviGBkswpl"*/)
+        mutableStateOf(countries.value?.first())
     }
 
     val city = remember {
-        mutableStateOf<City?>(viewModel.cities.value?.first())
+        mutableStateOf(viewModel.cities.value?.first())
     }
 
 
@@ -85,15 +88,21 @@ fun CreateProfileScreen(
             hasBackNavigation = false,
             actionButton = {
                 Row(
-                    modifier = Modifier.clickable {
-                        viewModel.userLogout(context as Activity)
-                        navigationService.navControllerAuth?.popBackStack()
-                    }
+                    modifier = Modifier
+                        .size(38.dp)
+                        .clickable {
+                            viewModel.userLogout(context as Activity)
+                            navigationService.navControllerAuth?.popBackStack()
+                        }
                 ){
-                    Text(
-                        text = stringResource(id = R.string.logout_button_title),
-                        style = MaterialTheme.typography.labelLarge,
-                        modifier = Modifier.padding(4.dp))
+                    Image(
+                        painter = painterResource(id = R.drawable.outline_logout_24),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 7.dp),
+                        contentDescription = "",
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
+                    )
                 }
             }
         )
@@ -104,6 +113,8 @@ fun CreateProfileScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            Spacer(modifier = Modifier.heightIn(16.dp))
 
             Image(
                 modifier = Modifier.size(100.dp),
@@ -117,57 +128,73 @@ fun CreateProfileScreen(
             Text(
                 modifier = Modifier.padding(horizontal = 32.dp),
                 text = stringResource(id = R.string.create_profile_title),
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Center
+                style = MaterialTheme.typography.headlineSmall,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+
+            Spacer(modifier = Modifier.heightIn(8.dp))
 
             Text(
                 modifier = Modifier.padding(horizontal = 32.dp),
                 text = stringResource(id = R.string.create_profile_description),
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.labelLarge,
                 textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            FormEntry(
-                title = stringResource(id = R.string.create_profile_first_name_hint),
-                formEntryType = FormEntryType.TEXT_INPUT,
-                initialItem = firstName.value,
-                callback = { name, _ ->
-                    firstName.value = name
-                }
-            )
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .clip(shape = RoundedCornerShape(16.dp))) {
 
-            FormEntry(
-                title = stringResource(id = R.string.create_profile_last_name_hint),
-                formEntryType = FormEntryType.TEXT_INPUT,
-                initialItem = lastName.value,
-                callback = { name, _ ->
-                    lastName.value = name
-                }
-            )
+                FormEntry(
+                    title = stringResource(id = R.string.create_profile_first_name_hint),
+                    formEntryType = FormEntryType.TEXT_INPUT,
+                    initialItem = firstName.value,
+                    callback = { name, _ ->
+                        firstName.value = name
+                    }
+                )
 
-            FormEntry(
-                title = stringResource(id = R.string.create_profile_year_of_birth_hint),
-                formEntryType = FormEntryType.SPINNER,
-                initialItem = birthYear.value,
-                items = viewModel.calendarYears,
-                callback = { name, _ ->
-                    birthYear.value = name
-                }
-            )
+                Divider()
 
-            FormEntry(
-                title = stringResource(id = R.string.create_profile_gender_hint),
-                formEntryType = FormEntryType.SPINNER,
-                initialItem = gender.value.toGenderString(context),
-                items = Gender.getGenderDisplayList(context),
-                callback = { _, index ->
-                    gender.value = viewModel.genders.get(index ?: viewModel.genders.lastIndex)
-                }
-            )
-            Divider()
+                FormEntry(
+                    title = stringResource(id = R.string.create_profile_last_name_hint),
+                    formEntryType = FormEntryType.TEXT_INPUT,
+                    initialItem = lastName.value,
+                    callback = { name, _ ->
+                        lastName.value = name
+                    }
+                )
+
+                Divider()
+
+                FormEntry(
+                    title = stringResource(id = R.string.create_profile_year_of_birth_hint),
+                    formEntryType = FormEntryType.SPINNER,
+                    initialItem = birthYear.value,
+                    items = viewModel.calendarYears,
+                    callback = { name, _ ->
+                        birthYear.value = name
+                    }
+                )
+
+                Divider()
+
+                FormEntry(
+                    title = stringResource(id = R.string.create_profile_gender_hint),
+                    formEntryType = FormEntryType.SPINNER,
+                    initialItem = gender.value.toGenderString(context),
+                    items = Gender.getGenderDisplayList(context),
+                    callback = { _, index ->
+                        gender.value = viewModel.genders.get(index ?: viewModel.genders.lastIndex)
+                    }
+                )
+            }
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -187,60 +214,74 @@ fun CreateProfileScreen(
 
             val countryDisplayNames = countries.value?.map { it.displayName ?: "" }
 
-            FormEntry(
-                title = stringResource(id = R.string.create_profile_country_title),
-                formEntryType = FormEntryType.SPINNER,
-                initialItem = country.value?.displayName ?: countryDisplayNames?.first() ?: "",
-                items = countryDisplayNames,
-                callback = { _, index ->
-                    if (index != null) {
-                        val selectedCountry = countries.value?.elementAt(index)
-                        country.value = selectedCountry
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .clip(shape = RoundedCornerShape(16.dp))) {
 
-                        city.value = null
-
-                        // load cities for selected country
-                        val countryId = selectedCountry?.id
-                        if (countryId != null) {
-                            viewModel.loadCitiesForSelectedCountry(selectedCountry.id)
-                        }
-                    }
-                }
-            )
-
-            val citiesFromCountry = viewModel.cities.observeAsState()
-            val citiesFromCountryNames = citiesFromCountry.value?.map { it.name }?.toMutableList()
-            citiesFromCountryNames?.add(stringResource(id = R.string.create_profile_city_drop_down_other_city))
-            if (citiesFromCountry.value?.isNotEmpty() == true) {
                 FormEntry(
-                    title = stringResource(id = R.string.create_profile_city_hint),
+                    title = stringResource(id = R.string.create_profile_country_title),
                     formEntryType = FormEntryType.SPINNER,
-                    initialItem = city.value?.name ?: "",
-                    items = citiesFromCountryNames,
-                    callback = { name, index ->
+                    initialItem = country.value?.displayName ?: countryDisplayNames?.first() ?: "",
+                    items = countryDisplayNames,
+                    callback = { _, index ->
+                        if (index != null) {
+                            val selectedCountry = countries.value?.elementAt(index)
+                            country.value = selectedCountry
 
-                        if(name == context.getString(R.string.create_profile_city_drop_down_other_city)){
                             city.value = null
-                        } else if (index != null) {
-                            val selectedCity = citiesFromCountry.value?.elementAt(index)
-                            city.value = selectedCity
+
+                            // load cities for selected country
+                            val countryId = selectedCountry?.id
+                            if (countryId != null) {
+                                viewModel.loadCitiesForSelectedCountry(selectedCountry.id)
+                            }
                         }
                     }
                 )
+
+                val citiesFromCountry = viewModel.cities.observeAsState()
+                val citiesFromCountryNames =
+                    citiesFromCountry.value?.map { it.name }?.toMutableList()
+                citiesFromCountryNames?.add(stringResource(id = R.string.create_profile_city_drop_down_other_city))
+                if (citiesFromCountry.value?.isNotEmpty() == true) {
+                    Divider()
+
+                    FormEntry(
+                        title = stringResource(id = R.string.create_profile_city_hint),
+                        formEntryType = FormEntryType.SPINNER,
+                        initialItem = city.value?.name ?: "",
+                        items = citiesFromCountryNames,
+                        callback = { name, index ->
+
+                            if (name == context.getString(R.string.create_profile_city_drop_down_other_city)) {
+                                city.value = null
+                            } else if (index != null) {
+                                val selectedCity = citiesFromCountry.value?.elementAt(index)
+                                city.value = selectedCity
+                            }
+                        }
+                    )
+                }
             }
 
+            Spacer(modifier = Modifier.height(4.dp))
+
             Text(
-                modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
+                modifier = Modifier.padding(horizontal = 16.dp),
                 text = stringResource(id = R.string.create_profile_country_selection_info),
-                style = MaterialTheme.typography.bodySmall,
-                textAlign = TextAlign.Start
+                style = MaterialTheme.typography.labelMedium,
+                textAlign = TextAlign.Start,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.heightIn(16.dp))
 
             Button(
                 modifier = Modifier
-                    .padding(horizontal = 32.dp).fillMaxWidth(),
+                    .padding(horizontal = 32.dp)
+                    .fillMaxWidth(),
                 shape = RoundedCornerShape(32.dp),
                 onClick = {
                     val countryId = country.value?.id
@@ -257,7 +298,7 @@ fun CreateProfileScreen(
                         val result = viewModel.createUser(user)
                             when(result){
                                 is TypedResult.Failure -> {
-                                    // TODO:
+                                    userFeedbackService.showSnackbar(R.string.login_create_profile_fail_message)
                                 }
                                 is TypedResult.Success -> {
                                     withContext(Dispatchers.Main){

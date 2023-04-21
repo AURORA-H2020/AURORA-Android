@@ -50,7 +50,8 @@ fun AURORAEnergyTrackerTheme(
     content: @Composable () -> Unit
 ) {
     val colorscheme = if (darkTheme) {
-        DarkColorPalette
+        LightColorPalette
+        // TODO:  
     } else {
         LightColorPalette
     }
