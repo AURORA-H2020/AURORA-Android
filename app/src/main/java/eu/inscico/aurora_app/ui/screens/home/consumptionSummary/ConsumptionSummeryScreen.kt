@@ -1,6 +1,5 @@
 package eu.inscico.aurora_app.ui.screens.home.consumptionSummary
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
@@ -21,7 +20,6 @@ import com.google.accompanist.pager.rememberPagerState
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptionSummary.ConsumptionSummary
 import eu.inscico.aurora_app.model.consumptions.ConsumptionType
-import eu.inscico.aurora_app.model.consumptions.ConsumptionType.Companion.getDisplayNameRes
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.ui.components.AppBar
 import eu.inscico.aurora_app.ui.components.consumptionSummery.ConsumptionSummaryLabel
@@ -151,7 +149,7 @@ fun ConsumptionSummaryScreen(
                     ConsumptionSummaryBarChart(
                         summary,
                         isCarbonEmission = isCarbonEmissions.value,
-                        barChartData = viewModel.getBarChartDataNewChart(
+                        barChartData = viewModel.getBarChartData(
                             summary,
                             isCarbonEmissions.value
                         )
