@@ -144,6 +144,30 @@
     <string name="home_add_consumption_transportation_start_of_travel_title">Start of travel</string>
     <string name="home_add_consumption_carbon_emissions_title">Carbon emissions</string>
 
+    <string name="home_your_carbon_emissions_labels_title">Your carbon emissions labels</string>
+    <string name="home_your_carbon_emissions_labels_tab_carbon_emission_title">Carbon emissions</string>
+    <string name="home_your_carbon_emissions_labels_tab_energy_used_title">Energy used</string>
+    <string name="home_your_carbon_emissions_labels_year_title">Year</string>
+    <string name="home_your_carbon_emissions_labels_overall_title">Overall</string>
+    <string name="home_your_carbon_emissions_labels_a_plus_title">Accomplisher (A+)</string>
+    <string name="home_your_carbon_emissions_labels_a_title">Ambassador (A)</string>
+    <string name="home_your_carbon_emissions_labels_b_title">Big Achiever (B)</string>
+    <string name="home_your_carbon_emissions_labels_c_title">Champion (C)</string>
+    <string name="home_your_carbon_emissions_labels_d_title">Driver (D)</string>
+    <string name="home_your_carbon_emissions_labels_e_title">Explorer (E)</string>
+    <string name="home_your_carbon_emissions_labels_f_title">First Mover (F)</string>
+    <string name="home_your_carbon_emissions_labels_g_title">Ground Breaker (G)</string>
+    <string name="home_your_carbon_emissions_labels_overall_used_title">used</string>
+    <string name="home_your_carbon_emissions_labels_overall_used_value_title">%1$s kWh</string>
+    <string name="home_your_carbon_emissions_labels_overall_produced_title">produced</string>
+    <string name="home_your_carbon_emissions_labels_overall_produced_value_title">%1$s kg CO₂</string>
+    <string name="home_your_carbon_emissions_info_title">How does it work?</string>
+    <string name="home_your_carbon_emissions_info_description">Your energy labels are calculated based on your tracked consumption and specific to your location. This means, as you enter data throughout the year, more of your carbon emission and energy budgets will be made available. For example: If you have only entered data for all of January and December, 2/12 of the total budget will be used to calculate your label. The only exception is transportation, which yields the full budget after a certain number of annual entries. Your overall budget is based on the sum of your electricity, heating and transportation budgets.</string>
+    <string name="home_your_carbon_emissions_labels_value_produced_with_year_title">%1$s kg CO₂ in %2$d</string>
+    <string name="home_your_carbon_emissions_bar_chart_label_carbon_emission_title">kg CO₂</string>
+    <string name="home_your_carbon_emissions_bar_chart_label_energy_expended_title">kWh</string>
+    <string name="home_your_carbon_emissions_labels_value_used_with_year_title">%1$s kWh in %2$d</string>
+    <string name="home_your_carbon_emissions_label_empty_title">No consumption entered yet (?)</string>
 
 
     <!-- Settings -->

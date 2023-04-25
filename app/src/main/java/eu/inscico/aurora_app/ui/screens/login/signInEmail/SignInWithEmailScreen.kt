@@ -100,7 +100,7 @@ fun SignInWithEmailScreen(
         }
 
         HorizontalPager(
-            count = 3,
+            count = 2,
             state = pagerState,
         ) { tabIndex ->
             when (tabIndex) {

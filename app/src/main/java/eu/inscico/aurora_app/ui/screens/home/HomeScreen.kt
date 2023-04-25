@@ -100,7 +100,7 @@ fun HomeScreen(
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.surface)
                             .clickable {
-                                userFeedbackService.showSnackbar("Not yet completed")
+                                navigationService.toConsumptionSummary()
                             },
                         headlineContent = { Text(stringResource(id = R.string.home_energy_lables_title)) },
                         leadingContent = {

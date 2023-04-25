@@ -28,6 +28,7 @@ fun SpinnerFormEntry(
     title: String,
     selectedEntry: SpinnerItem.Entry<*>? = null,
     allEntries: List<SpinnerItem>,
+    isRoundedDesign: Boolean = true,
     callback: (SpinnerItem.Entry<*>, SpinnerItem.Section<*>?) -> Unit
 ) {
 
@@ -57,13 +58,19 @@ fun SpinnerFormEntry(
         return null
     }
 
-    Column(
+    val modifier = if(isRoundedDesign){
         Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .clip(shape = RoundedCornerShape(16.dp))
-    ) {
+    } else {
+        Modifier
+            .fillMaxWidth()
+    }
 
+    Column(
+        modifier = modifier
+    ) {
         ListItem(
             modifier = Modifier
                 .fillMaxWidth()

@@ -1,7 +1,11 @@
 package eu.inscico.aurora_app.model.consumptions
 
 import android.content.Context
+import androidx.compose.ui.graphics.Color
 import eu.inscico.aurora_app.R
+import eu.inscico.aurora_app.ui.theme.electricityYellow
+import eu.inscico.aurora_app.ui.theme.heatingRed
+import eu.inscico.aurora_app.ui.theme.mobilityBlue
 
 enum class ConsumptionType {
     ELECTRICITY,
@@ -37,6 +41,22 @@ enum class ConsumptionType {
 
         fun ConsumptionType.getDisplayName(context: Context): String {
             return context.getString(getDisplayNameRes())
+        }
+
+        fun ConsumptionType.getIconRes(): Int {
+            return when(this){
+                ELECTRICITY -> R.drawable.outline_electric_bolt_24
+                HEATING -> R.drawable.outline_local_fire_department_24
+                TRANSPORTATION -> R.drawable.outline_directions_car_24
+            }
+        }
+
+        fun ConsumptionType.getColor(): Color {
+            return when(this){
+                ELECTRICITY -> electricityYellow
+                HEATING -> heatingRed
+                TRANSPORTATION -> mobilityBlue
+            }
         }
 
     }

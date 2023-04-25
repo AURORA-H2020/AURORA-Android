@@ -6,7 +6,9 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.toObject
+import eu.inscico.aurora_app.model.consumptionSummary.ConsumptionSummary
 import eu.inscico.aurora_app.model.user.User
 import eu.inscico.aurora_app.model.user.UserResponse
 import eu.inscico.aurora_app.utils.TypedResult
@@ -19,7 +21,8 @@ class UserService(
     private val _firestore: FirebaseFirestore,
     private val _firebaseAuth: FirebaseAuth,
     private val _countryService: CountriesService,
-    private val _consumptionsService: ConsumptionsService
+    private val _consumptionsService: ConsumptionsService,
+    private val _consumptionSummariesService: ConsumptionSummaryService
 ) {
 
     private val collectionName = "users"
@@ -27,16 +30,16 @@ class UserService(
     private val _userLive = MutableLiveData<User?>()
     val userLive: LiveData<User?> = _userLive
 
+    private var _listener: ListenerRegistration? = null
+
     init {
         val userId = _firebaseAuth.currentUser?.uid
         userId?.let {
             CoroutineScope(Dispatchers.IO).launch {
                 getUserByAuthId(userId)
-                _consumptionsService.setConsumptionsListener(collectionName, userId)
             }
         }
     }
-
 
     suspend fun getUserByAuthId(authId: String): TypedResult<User, Boolean> {
         // Get user
@@ -49,6 +52,9 @@ class UserService(
                     val user = User.from(userResponse)
                     if (user != null) {
                         _userLive.postValue(user)
+                        setUserListener(authId)
+
+                        _consumptionSummariesService.setConsumptionSummariesListener(authId, collectionName)
 
                         _countryService.getUserCountryById(user.country)
                         if (user.city != null) {
@@ -66,6 +72,23 @@ class UserService(
         } catch (e: FirebaseFirestoreException) {
             return TypedResult.Failure(true)
         }
+    }
+
+    private fun setUserListener(authId: String) {
+        _listener?.remove()
+
+        _listener = _firestore.collection(collectionName).document(authId)
+            .addSnapshotListener { value, error ->
+
+                if (value != null) {
+                    val userResponse = value.toObject<UserResponse>()
+                    val user = User.from(userResponse)
+                    if (user != null) {
+                        _userLive.postValue(user)
+                    }
+
+                }
+            }
     }
 
     suspend fun createUser(user: UserResponse): TypedResult<Boolean, String> {

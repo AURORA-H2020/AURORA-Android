@@ -97,4 +97,8 @@ dependencies {
     implementation "com.google.accompanist:accompanist-pager:0.25.0" // Pager
     implementation "com.google.accompanist:accompanist-pager-indicators:0.25.0" // Pager Indicators
 
+    // Bar Charts
+    // https://patrykandpatrick.com/vico/wiki/
+    implementation "com.patrykandpatrick.vico:compose-m3:1.6.5"
+
 }

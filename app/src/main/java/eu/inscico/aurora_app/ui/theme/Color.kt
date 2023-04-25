@@ -25,3 +25,12 @@ val mobilityBlue = Color(0xFF0047AB)
 val heatingRed = error
 val electricityYellow = tertiary
 
+val energyLabelAPlus = Color(0xFF306EB9)
+val energyLabelA = Color(0xFF42944C)
+val energyLabelB = Color(0xFF6BAE47)
+val energyLabelC = Color(0xFFCBD244)
+val energyLabelD = Color(0xFFFCEE47)
+val energyLabelE = Color(0xFFF0BD40)
+val energyLabelF = Color(0xFFDB6E2D)
+val energyLabelG = Color(0xFFD22D27)
+

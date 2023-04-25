@@ -15,6 +15,7 @@ import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.services.notification.NotificationCreationService
 import eu.inscico.aurora_app.services.notification.NotificationService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
+import eu.inscico.aurora_app.ui.screens.home.consumptionSummary.ConsumptionSummaryViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -66,7 +67,8 @@ val servicesModule = module {
             _firestore = get(),
             _firebaseAuth = get(),
             _countryService = get(),
-            _consumptionsService = get()
+            _consumptionsService = get(),
+            _consumptionSummariesService = get()
         )
     }
 
@@ -83,6 +85,12 @@ val servicesModule = module {
 
     single {
         ConsumptionsService(_firestore = get(), _firebaseAuth = get())
+    }
+
+    single {
+        ConsumptionSummaryService(
+            _firestore = get()
+        )
     }
 
 }

@@ -127,5 +127,10 @@ class NavigationService {
         navControllerTabHome?.navigate(navDirection)
     }
 
+    fun toConsumptionSummary() {
+        val navDirection = NavGraphDirections.ConsumptionSummary.getNavRoute()
+        navControllerTabHome?.navigate(navDirection)
+    }
+
     // endregion
 }

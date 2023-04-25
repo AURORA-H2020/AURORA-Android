@@ -13,9 +13,9 @@ data class User(
     val yearOfBirth: Int?
 ) {
     companion object {
-        fun from(item: UserResponse): User? {
+        fun from(item: UserResponse?): User? {
             return User(
-                id = item.id ?: return null,
+                id = item?.id ?: return null,
                 city = item.city,
                 country = item.country ?: return null,
                 firstName = item.firstName ?: return null,
