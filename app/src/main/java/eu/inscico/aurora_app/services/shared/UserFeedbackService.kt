@@ -98,6 +98,7 @@ class UserFeedbackService(private val _context: Context) {
     fun GetLoadingDialog(){
 
             Dialog(
+
                 onDismissRequest = { _showLoadingDialog.value = false },
                 DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
             ) {
@@ -105,7 +106,7 @@ class UserFeedbackService(private val _context: Context) {
                     contentAlignment= Center,
                     modifier = Modifier
                         .size(100.dp)
-                        .background(White, shape = RoundedCornerShape(8.dp))
+                        .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(8.dp))
                 ) {
                     CircularProgressIndicator()
                 }

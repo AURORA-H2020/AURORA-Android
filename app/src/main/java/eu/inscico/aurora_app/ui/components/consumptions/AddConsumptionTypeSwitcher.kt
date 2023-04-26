@@ -125,7 +125,8 @@ fun AddConsumptionTypeSwitcher(
                             }) {
                         Image(
                             painterResource(id = getIconRes(it)),
-                            contentDescription = ""
+                            contentDescription = "",
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
                         )
                         Text(
                             text = it.getDisplayName(context),

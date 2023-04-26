@@ -108,7 +108,6 @@ fun SettingsScreen(
                         ActionEntry(
                             title = stringResource(id = R.string.settings_profile_change_email_title),
                             iconRes = R.drawable.baseline_mail_outline_24,
-                            titleColor = MaterialTheme.colorScheme.primary,
                             isNavigation = true,
                             callback = {
                                 navigationService.toUpdateUserEmail()
@@ -120,7 +119,6 @@ fun SettingsScreen(
                         ActionEntry(
                             title = stringResource(id = R.string.settings_profile_change_password_title),
                             iconRes = R.drawable.outline_vpn_key_24,
-                            titleColor = MaterialTheme.colorScheme.primary,
                             isNavigation = true,
                             callback = {
                                 navigationService.toUpdateUserPassword()

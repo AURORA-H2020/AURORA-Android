@@ -14,6 +14,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -24,6 +25,8 @@ import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.services.navigation.NavGraphDirections
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
+import eu.inscico.aurora_app.ui.components.login.LoginForm
+import eu.inscico.aurora_app.ui.components.login.ResetPasswordForm
 import eu.inscico.aurora_app.utils.TypedResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,97 +42,40 @@ fun SignInWithEmailLoginScreen(
     userFeedbackService: UserFeedbackService = get()
 ) {
 
-    val email = remember {
-        mutableStateOf("")
-    }
+    val context = LocalContext.current
 
-    val password = remember {
-        mutableStateOf("")
+    val isResetPasswordFormShown = rememberSaveable {
+        mutableStateOf(false)
     }
-    val passwordVisible = rememberSaveable { mutableStateOf(false) }
-
 
     Column(
         Modifier.background(MaterialTheme.colorScheme.background)
     ) {
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            text = stringResource(id = R.string.login_email_sign_in_button_text),
-            color = MaterialTheme.colorScheme.primary,
-            style = MaterialTheme.typography.headlineSmall
-        )
-
         Column(
-            modifier = Modifier.fillMaxSize().padding(16.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Spacer(Modifier.height(32.dp))
-
-            OutlinedTextField(
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent,
-                    containerColor = MaterialTheme.colorScheme.surface
-                ),
-                shape = RoundedCornerShape(16.dp),
-                value = email.value,
-                label = {
-                    Text(text = stringResource(id = R.string.sign_in_with_email_email_title))
-                },
-                onValueChange = {
-                    email.value = it
-                })
-
-            Spacer(Modifier.height(8.dp))
-
-            OutlinedTextField(
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent,
-                    containerColor = MaterialTheme.colorScheme.surface
-                ),
-                shape = RoundedCornerShape(16.dp),
-                value = password.value,
-                label = {
-                    Text(text = stringResource(id = R.string.sign_in_with_email_password_title))
-                },
-                visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                trailingIcon = {
-                    val image = if (passwordVisible.value)
-                        R.drawable.outline_visibility_24
-                    else R.drawable.outline_visibility_off_24
-
-                    // Please provide localized description for accessibility services
-                    val description =
-                        if (passwordVisible.value) "Hide password" else "Show password"
-
-                    IconButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
-                        Icon(painterResource(id = image), description)
+            if(isResetPasswordFormShown.value){
+                ResetPasswordForm {
+                    userFeedbackService.showDialog(
+                        message = "Email versendet",
+                        confirmButtonText = context.getString(R.string.okay,)){
+                        isResetPasswordFormShown.value = false
                     }
-                },
-                onValueChange = {
-                    password.value = it
-                })
+                }
 
-            Spacer(Modifier.height(46.dp))
+            } else {
+                LoginForm(
+                    loginCallback = { email, password ->
 
-            Button(
-                modifier = Modifier
-                    .padding(horizontal = 32.dp)
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(32.dp),
-                onClick = {
                     CoroutineScope(Dispatchers.IO).launch {
                         val result = viewModel.loginWithEmailAndPassword(
-                            email = email.value,
-                            password = password.value
+                            email = email,
+                            password = password
                         )
                         when (result) {
                             is TypedResult.Failure -> {
@@ -145,18 +91,13 @@ fun SignInWithEmailLoginScreen(
                             }
                         }
                     }
-
-                }) {
-                Text(
-                    text = stringResource(id = R.string.sign_in_with_email_tab_bar_login),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = Color.White
+                },
+                    resetPasswordCallback = {
+                        isResetPasswordFormShown.value = true
+                    }
                 )
             }
 
-            Spacer(Modifier.height(16.dp))
-
-            Text(stringResource(id = R.string.sign_in_with_email_tab_login_forgot_password_title))
         }
     }
 }

@@ -88,9 +88,9 @@ fun HeatingConsumptionDetails(
         ) {
 
             val costsText = if (consumption.heating.costs != null) {
-                "${String.format("%.1f", consumption.heating.costs)} kWh"
+                "${String.format("%.1f", consumption.heating.costs)} €"
             } else {
-                "- kWh"
+                "- €"
             }
 
             ListItem(

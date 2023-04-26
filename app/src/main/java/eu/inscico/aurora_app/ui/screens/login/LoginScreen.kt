@@ -39,8 +39,7 @@ fun LoginScreen(
     val context = LocalContext.current
 
     val gradientColor = if (isSystemInDarkTheme()) {
-        Color.White//Color.Black
-        // TODO:  
+        Color.Black
     } else {
         Color.White
     }
@@ -175,7 +174,7 @@ fun LoginScreen(
                         iconColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurface,
                         onClick = {
                             isAppleButtonLoading.value = true
-                            //onClick()
+                            viewModel.loginWithApple(context as Activity)
                         }
                     )
 

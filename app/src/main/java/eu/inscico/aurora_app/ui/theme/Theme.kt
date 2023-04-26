@@ -12,7 +12,8 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorPalette = darkColorScheme(
-    primary = primaryLight,
+    primary = primaryDark,
+    onPrimary = primary,
     secondary = primaryDark,
     background = backgroundColorDark,
     onSecondary = whiteMediumEmphasis,
@@ -50,7 +51,7 @@ fun AURORAEnergyTrackerTheme(
     content: @Composable () -> Unit
 ) {
     val colorscheme = if (darkTheme) {
-        LightColorPalette
+        DarkColorPalette
         // TODO:  
     } else {
         LightColorPalette

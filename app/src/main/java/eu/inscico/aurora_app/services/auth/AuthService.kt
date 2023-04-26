@@ -1,26 +1,40 @@
 package eu.inscico.aurora_app.services.auth
 
 import android.app.Activity
+import android.content.ContentValues.TAG
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.user.UserSignInType
 import eu.inscico.aurora_app.services.firebase.CountriesService
 import eu.inscico.aurora_app.services.firebase.UserService
+import eu.inscico.aurora_app.services.navigation.NavGraphDirections
 import eu.inscico.aurora_app.utils.PrefsUtils
 import eu.inscico.aurora_app.utils.TypedResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.nio.ByteBuffer
+import java.nio.CharBuffer
+import java.nio.charset.CodingErrorAction
+import java.nio.charset.StandardCharsets
+import java.security.MessageDigest
+import java.security.SecureRandom
+import java.util.Locale
 
 
 class AuthService(
@@ -222,6 +236,82 @@ class AuthService(
         } catch (e: Exception) {
             TypedResult.Failure("${e.message}")
         }
+    }
+
+    // endregion
+
+
+    // region: Apple
+    // ---------------------------------------------------------------------------------------------
+
+    fun loginWithApple(activity: Activity){
+        val provider = OAuthProvider.newBuilder("apple.com")
+        provider.scopes = listOf("email", "name")
+        provider.addCustomParameter("locale", Locale.getDefault().toLanguageTag())
+
+        val pending = _firebaseAuth.pendingAuthResult
+        if (pending != null) {
+            pending.addOnSuccessListener { authResult ->
+
+                val i = authResult
+                // Get the user profile with authResult.getUser() and
+                // authResult.getAdditionalUserInfo(), and the ID
+                // token from Apple with authResult.getCredential().
+            }.addOnFailureListener { e ->
+                e.message
+            }
+        } else {
+
+        }
+
+        _firebaseAuth.startActivityForSignInWithProvider(activity, provider.build())
+            .addOnSuccessListener { authResult ->
+                // Sign-in successful!
+                Log.d(TAG, "activitySignIn:onSuccess:${authResult.user}")
+                val user = authResult.user
+                // ...
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "activitySignIn:onFailure", e)
+            }
+    }
+
+    fun connectFirebaseWithAppleAccount(authResult: AuthResult){
+        /*
+        _authService.googleAccount = account
+
+        val firebaseCredential = GoogleAuthProvider.getCredential(account.idToken, null)
+        _firebaseAuth.signInWithCredential(firebaseCredential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    _navigationService.navControllerAuth?.popBackStack(
+                        route = NavGraphDirections.Auth.getNavRoute(),
+                        inclusive = false
+                    )
+                } else {
+                    // If sign in fails, display a message to the user.
+
+                }
+            }
+
+         */
+    }
+
+    fun reAuthenticateWithApple(activity: Activity){
+        val provider = OAuthProvider.newBuilder("apple.com")
+        val firebaseUser = _firebaseAuth.currentUser
+
+        firebaseUser?.startActivityForReauthenticateWithProvider(activity, provider.build())
+            ?.addOnCompleteListener {
+                if(it.isSuccessful){
+                    // User is re-authenticated with fresh tokens and
+                    // should be able to perform sensitive operations
+                    // like account deletion and email or password
+                    // update.
+                } else {
+                    // Handle failure.
+                }
+            }
     }
 
     // endregion

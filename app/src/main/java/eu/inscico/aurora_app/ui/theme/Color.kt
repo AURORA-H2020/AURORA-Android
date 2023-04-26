@@ -4,13 +4,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
 
 val backgroundColorLight = Color(0xffF7F7F7)
-val backgroundColorDark = Color(0x14121212)
+val backgroundColorDark = Color(0xFF121212)
 val blackMediumEmphasis = Color(0x99000000)
 val whiteMediumEmphasis = Color(0x99ffffff)
 val surfacesLightTheme = Color(0xffffffff)
-val surfacesDarkTheme = Color(0x14121212)
+val surfacesDarkTheme = Color(0xFF323232)
 val primary = Color(0xff003449)
-val primaryDark = Color(0x14002230)
+val primaryDark = Color(0x99006B9C)
 val primaryLight = Color(0x14174961)
 val primaryOverlay12 = Color(0x1434491F)
 val outlineVariantLight = Color(0x29FFFFFF)
