@@ -4,4 +4,8 @@
     <style name="Theme.AURORAEnergyTracker" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">#00FFFFFF</item>
     </style>
+
+    <style name="Theme.Licenses" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:statusBarColor">#00FFFFFF</item>
+    </style>
 </resources>

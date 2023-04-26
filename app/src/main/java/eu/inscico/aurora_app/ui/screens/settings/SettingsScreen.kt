@@ -1,6 +1,7 @@
 package eu.inscico.aurora_app.ui.screens.settings
 
 import android.app.Activity
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,6 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.user.UserSignInType
 import eu.inscico.aurora_app.services.notification.NotificationCreationService
@@ -400,7 +402,8 @@ fun SettingsScreen(
                         iconRes = R.drawable.outline_receipt_24,
                         isNavigation = false,
                         callback = {
-                            userFeedbackService.showSnackbar("Not yet completed")
+                            OssLicensesMenuActivity.setActivityTitle(context.getString(R.string.settings_legal_information_licenses_title))
+                            context.startActivity(Intent(context, OssLicensesMenuActivity::class.java))
                         }
                     )
                 }

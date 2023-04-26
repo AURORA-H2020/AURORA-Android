@@ -29,6 +29,13 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/Theme.Licenses" />
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:theme="@style/Theme.Licenses" />
+
         <receiver
             android:name="eu.inscico.aurora_app.services.notification.RebootAndAppUpdateReceiver"
             android:enabled="true"
