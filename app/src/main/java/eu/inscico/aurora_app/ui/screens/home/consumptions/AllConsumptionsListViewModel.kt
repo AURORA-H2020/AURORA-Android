@@ -1,13 +1,11 @@
 package eu.inscico.aurora_app.ui.screens.home.consumptions
 
 import android.content.Context
-import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import eu.inscico.aurora_app.model.consumptions.Consumption
-import eu.inscico.aurora_app.model.consumptions.ConsumptionType
 import eu.inscico.aurora_app.model.consumptions.ConsumptionType.Companion.getDisplayName
-import eu.inscico.aurora_app.services.ConsumptionsService
+import eu.inscico.aurora_app.services.firebase.ConsumptionsService
 import eu.inscico.aurora_app.utils.CalendarUtils
 
 class AllConsumptionsListViewModel(

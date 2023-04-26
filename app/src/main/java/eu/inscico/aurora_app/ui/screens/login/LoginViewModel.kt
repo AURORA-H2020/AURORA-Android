@@ -3,7 +3,7 @@ package eu.inscico.aurora_app.ui.screens.login
 import android.app.Activity
 import androidx.lifecycle.ViewModel
 import eu.inscico.aurora_app.model.user.User
-import eu.inscico.aurora_app.services.UserService
+import eu.inscico.aurora_app.services.firebase.UserService
 import eu.inscico.aurora_app.services.auth.AuthService
 import eu.inscico.aurora_app.utils.TypedResult
 

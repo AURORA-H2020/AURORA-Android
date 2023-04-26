@@ -6,7 +6,7 @@ import com.patrykandpatrick.vico.core.entry.FloatEntry
 import com.patrykandpatrick.vico.core.entry.entryModelOf
 import eu.inscico.aurora_app.model.consumptionSummary.ConsumptionSummary
 import eu.inscico.aurora_app.model.consumptions.ConsumptionType
-import eu.inscico.aurora_app.services.ConsumptionSummaryService
+import eu.inscico.aurora_app.services.firebase.ConsumptionSummaryService
 
 class ConsumptionSummaryViewModel(
     private val _consumptionSummaryService: ConsumptionSummaryService

@@ -3,6 +3,8 @@ package eu.inscico.aurora_app.services.jsonParsing
 import com.squareup.moshi.*
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import eu.inscico.aurora_app.model.reminder.ReminderTime
+import retrofit2.Converter
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.*
@@ -17,6 +19,7 @@ class MoshiJsonParsingService(override val dateFormatPattern: String) : JsonPars
         .add(KotlinJsonAdapterFactory())
         .build()
 
+    override val converterFactory: Converter.Factory = MoshiConverterFactory.create(moshi)
     override fun <T : Any> toJson(input: T): String {
         val adapter = moshi.adapter<Any>(Object::class.java)
         return adapter.toJson(input)

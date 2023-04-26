@@ -26,15 +26,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
-import eu.inscico.aurora_app.services.UserService
+import eu.inscico.aurora_app.services.firebase.UserService
 import eu.inscico.aurora_app.services.auth.AuthService
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.AppBar
-import eu.inscico.aurora_app.ui.components.container.ScrollableContent
-import eu.inscico.aurora_app.ui.screens.login.signInEmail.validatePasswordConfirmation
-import eu.inscico.aurora_app.ui.screens.login.signInEmail.validatePasswordForm
-import eu.inscico.aurora_app.ui.theme.primary
 import org.koin.androidx.compose.get
 
 

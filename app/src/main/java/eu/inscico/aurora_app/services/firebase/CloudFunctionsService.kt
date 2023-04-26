@@ -1,4 +1,4 @@
-package eu.inscico.aurora_app.services
+package eu.inscico.aurora_app.services.firebase
 
 import android.content.Context
 import com.google.android.gms.tasks.Task

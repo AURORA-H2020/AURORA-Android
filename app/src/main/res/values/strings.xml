@@ -15,6 +15,7 @@
     <string name="updated">Updated</string>
     <string name="no_value_to_display">-</string>
     <string name="delete">delete</string>
+    <string name="reset">Reset</string>
 
     <!-- Login/Create Profile -->
     <string name="login_aurora_title">Welcome to AURORA</string>
@@ -240,6 +241,27 @@
     <string name="settings_section_support_title">Support</string>
     <string name="settings_section_support_about_the_app_title">About the app</string>
     <string name="settings_section_support_contact_title">Contact support</string>
+
+    <!-- Solar power -->
+    <string name="solar_power_title">Your solar power</string>
+    <string name="solar_power_description">You can soon reduce your carbon footprint by investing into your local AURORA photovoltaic installation. Until then, you can already test here, by how much your footprint would be reduced, depending on your potential investment.</string>
+    <string name="solar_power_investment_title">Investment</string>
+    <string name="solar_power_investment_button_calculate_title">Calculate</string>
+    <string name="solar_power_investment_description">Please note that all values displayed here are specific for your city, <b>%1$s</b>, and are merely for information.\nAll calculations are based on current plans for photovoltaic installations, and may need to be adjusted later.\nEstimated savings might be different from actual data, once the photovoltaic installations will be operational.\nYou obviously do not make any commitments by using this calculator.</string>
+    <string name="solar_power_investment_description_with_link">This calculator uses the <b>Photovoltaic Geographical</b> Information System (PVGIS) by the European Commission Joint Research Centre.</string>
+    <string name="solar_power_investment_result_emitted_title">CO₂ emitted if</string>
+    <string name="solar_power_investment_result_conventional_title">CO₂ emitted if\n<b>conventional</b></string>
+    <string name="solar_power_investment_result_conventional_info_text">This is the amount of C0₂ that would be emitted if you had drawn the produced energy from your local grid instead.</string>
+    <string name="solar_power_investment_result_photovoltaics_title">CO₂ emitted if\n<b>photovoltaics</b></string>
+    <string name="solar_power_investment_result_photovoltaics_info_text">Did you know? Even the use of photovoltaics emit some C0₂ - albeit significantly less than conventional sources of energy.</string>
+    <string name="solar_power_investment_result_reduction_title"><b>CO₂ reduction</b></string>
+    <string name="solar_power_investment_result_reduction_info_text">You would be reducing C0₂ emissions within your local community by this amount. Great job!</string>
+    <string name="solar_power_investment_result_learn_more_on_our_website_title">Learn more on our website</string>
+    <string name="solar_power_investment_result_value_unit_title">%1$s kg</string>
+    <string name="solar_power_investment_result_value_unit_kwh_title">%1$s kWh</string>
+    <string name="solar_power_investment_result_your_investment_title">Your investment</string>
+    <string name="solar_power_investment_result_annual_energy_production_title">Annual energy production</string>
+
 
     <!-- Dialogs -->
     <string name="dialog_settings_logout_title">Are you sure you want to logout?</string>

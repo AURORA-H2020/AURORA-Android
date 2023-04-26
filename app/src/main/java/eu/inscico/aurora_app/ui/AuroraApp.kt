@@ -1,9 +1,6 @@
 package eu.inscico.aurora_app.ui
 
-import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -11,17 +8,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import eu.inscico.aurora_app.services.UserService
+import eu.inscico.aurora_app.services.firebase.CountriesService
+import eu.inscico.aurora_app.services.firebase.UserService
 import eu.inscico.aurora_app.services.auth.AuthService
 import eu.inscico.aurora_app.services.navigation.NavGraphDirections
 import eu.inscico.aurora_app.services.navigation.NavTab
@@ -29,7 +25,6 @@ import eu.inscico.aurora_app.services.navigation.NavUtils
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.theme.AURORAEnergyTrackerTheme
-import eu.inscico.aurora_app.ui.theme.iconColorMedium
 import eu.inscico.aurora_app.ui.theme.semiTransparent
 import eu.inscico.aurora_app.utils.KeyboardState
 import eu.inscico.aurora_app.utils.keyboardAsState
@@ -40,10 +35,13 @@ fun AuroraApp(
     navigationService: NavigationService = get(),
     userFeedbackService: UserFeedbackService = get(),
     authService: AuthService = get(),
-    userService: UserService = get()
+    userService: UserService = get(),
+    countriesService: CountriesService = get()
 ) {
 
-    val tabItems = if (false) {
+    val userCity = countriesService.userCityLive.observeAsState()
+
+    val tabItems = if (userCity.value?.hasPhotovoltaics == true && userCity.value?.pvgisParams != null) {
         listOf(
             NavTab.Home,
             NavTab.Photovoltaic,

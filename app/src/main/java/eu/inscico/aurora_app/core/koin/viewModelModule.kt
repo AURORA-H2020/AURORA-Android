@@ -9,6 +9,7 @@ import eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption.AddCons
 import eu.inscico.aurora_app.ui.screens.login.createProfile.CreateProfileViewModel
 import eu.inscico.aurora_app.ui.screens.login.LoginViewModel
 import eu.inscico.aurora_app.ui.screens.login.signInEmail.SignInWithEmailViewModel
+import eu.inscico.aurora_app.ui.screens.photovoltaic.PhotovoltaicCalculatorViewModel
 import eu.inscico.aurora_app.ui.screens.settings.profile.EditProfileViewModel
 import eu.inscico.aurora_app.ui.screens.settings.SettingsViewModel
 import eu.inscico.aurora_app.ui.screens.settings.notifications.SettingsReminderViewModel
@@ -87,6 +88,13 @@ val viewModelModule = module {
     viewModel {
         ConsumptionSummaryViewModel(
             _consumptionSummaryService = get()
+        )
+    }
+
+    viewModel {
+        PhotovoltaicCalculatorViewModel(
+            countriesService = get(),
+            pvgisApiService = get()
         )
     }
 }

@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import eu.inscico.aurora_app.model.user.Gender
 import eu.inscico.aurora_app.model.user.UserResponse
 import eu.inscico.aurora_app.model.user.UserSignInType
-import eu.inscico.aurora_app.services.CountriesService
-import eu.inscico.aurora_app.services.UserService
+import eu.inscico.aurora_app.services.firebase.CountriesService
+import eu.inscico.aurora_app.services.firebase.UserService
 import eu.inscico.aurora_app.services.auth.AuthService
 import eu.inscico.aurora_app.utils.TypedResult
 import kotlinx.coroutines.CoroutineScope

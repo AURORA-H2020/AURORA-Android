@@ -5,10 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptions.*
-import eu.inscico.aurora_app.model.consumptions.PublicVehicleOccupancy.Companion.getDisplayName
 import eu.inscico.aurora_app.model.consumptions.TransportationType.Companion.getDisplayName
 import eu.inscico.aurora_app.model.consumptions.TransportationTypeSection.Companion.getDisplayName
-import eu.inscico.aurora_app.services.ConsumptionsService
+import eu.inscico.aurora_app.services.firebase.ConsumptionsService
 import eu.inscico.aurora_app.ui.components.forms.SpinnerItem
 import eu.inscico.aurora_app.utils.TypedResult
 

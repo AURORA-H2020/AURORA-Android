@@ -3,7 +3,7 @@ package eu.inscico.aurora_app.ui.screens.home
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import eu.inscico.aurora_app.services.UserService
+import eu.inscico.aurora_app.services.firebase.UserService
 import eu.inscico.aurora_app.services.navigation.NavUtils
 import eu.inscico.aurora_app.services.navigation.NavGraphDirections
 import eu.inscico.aurora_app.services.navigation.NavigationService

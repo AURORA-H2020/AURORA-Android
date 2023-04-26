@@ -1,4 +1,4 @@
-package eu.inscico.aurora_app.services
+package eu.inscico.aurora_app.services.firebase
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,7 +8,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.toObject
-import eu.inscico.aurora_app.model.consumptionSummary.ConsumptionSummary
 import eu.inscico.aurora_app.model.user.User
 import eu.inscico.aurora_app.model.user.UserResponse
 import eu.inscico.aurora_app.utils.TypedResult

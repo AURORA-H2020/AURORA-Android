@@ -1,13 +1,11 @@
 package eu.inscico.aurora_app.ui.screens.home.consumptions
 
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import eu.inscico.aurora_app.model.consumptions.Consumption
-import eu.inscico.aurora_app.model.consumptions.ConsumptionResponse
-import eu.inscico.aurora_app.services.ConsumptionsService
+import eu.inscico.aurora_app.services.firebase.ConsumptionsService
 import eu.inscico.aurora_app.utils.TypedResult
 
 class ConsumptionDetailViewModel(

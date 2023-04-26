@@ -3,10 +3,9 @@ package eu.inscico.aurora_app.ui.screens.settings
 import android.app.Activity
 import androidx.lifecycle.ViewModel
 import eu.inscico.aurora_app.model.user.UserSignInType
-import eu.inscico.aurora_app.services.CloudFunctionsService
-import eu.inscico.aurora_app.services.UserService
+import eu.inscico.aurora_app.services.firebase.CloudFunctionsService
+import eu.inscico.aurora_app.services.firebase.UserService
 import eu.inscico.aurora_app.services.auth.AuthService
-import eu.inscico.aurora_app.utils.TypedResult
 
 class SettingsViewModel(
     private val _userService: UserService,

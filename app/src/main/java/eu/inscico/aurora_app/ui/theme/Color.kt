@@ -34,3 +34,6 @@ val energyLabelE = Color(0xFFF0BD40)
 val energyLabelF = Color(0xFFDB6E2D)
 val energyLabelG = Color(0xFFD22D27)
 
+val investmentResultOrange = Color(0xFFFF9501)
+val investmentResultGreen = Color(0xFF34C85A)
+

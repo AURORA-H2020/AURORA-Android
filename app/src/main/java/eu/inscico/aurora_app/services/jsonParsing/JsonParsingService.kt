@@ -1,5 +1,6 @@
 package eu.inscico.aurora_app.services.jsonParsing
 
+import retrofit2.Converter
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
@@ -7,6 +8,8 @@ import java.lang.reflect.Type
 interface JsonParsingService {
 
     val dateFormatPattern: String
+
+    val converterFactory : Converter.Factory
 
     fun <T : Any> toJson(input: T): String
 

@@ -1,4 +1,4 @@
-package eu.inscico.aurora_app.services
+package eu.inscico.aurora_app.services.firebase
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

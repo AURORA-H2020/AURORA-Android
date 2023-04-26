@@ -92,6 +92,7 @@ dependencies {
     // https://github.com/square/moshi
     implementation 'com.squareup.moshi:moshi-kotlin:1.13.0'
     kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.13.0'
+    implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
 
     // Accompanist
     implementation "com.google.accompanist:accompanist-pager:0.25.0" // Pager
@@ -100,5 +101,11 @@ dependencies {
     // Bar Charts
     // https://patrykandpatrick.com/vico/wiki/
     implementation "com.patrykandpatrick.vico:compose-m3:1.6.5"
+
+    // Retrofit
+    // https://square.github.io/retrofit/
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.7'
 
 }
