@@ -242,6 +242,9 @@
     <string name="settings_section_support_title">Support</string>
     <string name="settings_section_support_about_the_app_title">About the app</string>
     <string name="settings_section_support_contact_title">Contact support</string>
+    <string name="settings_section_feature_preview_track_energy_description">Once our solar installations go live in each demo site you can track the energy production right from the app.</string>
+    <string name="settings_section_feature_preview_data_overview_description">Get an overview of your latest submitted data, pending entry requests, and how you can improve your carbon footprint accuracy.</string>
+    <string name="settings_section_feature_preview_profile_data_description">We are working on expanding your profile data with the addition of households, personalised vehicles, energy sources, and more.</string>
 
     <!-- Solar power -->
     <string name="solar_power_title">Your solar power</string>

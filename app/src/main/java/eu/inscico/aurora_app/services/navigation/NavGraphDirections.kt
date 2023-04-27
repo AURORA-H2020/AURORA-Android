@@ -14,6 +14,7 @@ import eu.inscico.aurora_app.ui.screens.login.signInEmail.SignInWithEmailScreen
 import eu.inscico.aurora_app.ui.screens.photovoltaic.PhotovoltaicCalculatorScreen
 import eu.inscico.aurora_app.ui.screens.settings.profile.EditProfileScreen
 import eu.inscico.aurora_app.ui.screens.settings.SettingsScreen
+import eu.inscico.aurora_app.ui.screens.settings.featurePreview.FeaturePreviewScreen
 import eu.inscico.aurora_app.ui.screens.settings.notifications.ElectricityBillNotificationScreen
 import eu.inscico.aurora_app.ui.screens.settings.notifications.HeatingBillNotificationScreen
 import eu.inscico.aurora_app.ui.screens.settings.notifications.MobilityNotificationScreen
@@ -238,6 +239,17 @@ sealed class NavGraphDirections(
         route = "mobilityReminder",
         content = {
             MobilityNotificationScreen()
+        }
+    ) {
+        fun getNavRoute(): String {
+            return route
+        }
+    }
+
+    object FeaturePreview : NavGraphDirections(
+        route = "featurePreview",
+        content = {
+            FeaturePreviewScreen()
         }
     ) {
         fun getNavRoute(): String {

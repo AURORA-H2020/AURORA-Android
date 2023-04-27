@@ -107,6 +107,11 @@ class NavigationService {
         navControllerTabSettings?.navigate(navDirection)
     }
 
+    fun toFeaturePreview() {
+        val navDirection = NavGraphDirections.FeaturePreview.getNavRoute()
+        navControllerTabSettings?.navigate(navDirection)
+    }
+
     // endregion
 
     // region: Home

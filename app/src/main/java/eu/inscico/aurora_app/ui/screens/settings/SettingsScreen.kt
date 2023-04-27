@@ -44,8 +44,6 @@ fun SettingsScreen(
     _notificationCreationService: NotificationCreationService = get()
 ) {
 
-    val context = LocalContext.current
-
     val showDeleteAccountDialog = remember { mutableStateOf(false) }
 
     Column(
@@ -361,7 +359,7 @@ fun SettingsScreen(
                         iconRes = R.drawable.outline_auto_fix_high_24,
                         isNavigation = false,
                         callback = {
-                            userFeedbackService.showSnackbar("Not yet completed")
+                            navigationService.toFeaturePreview()
                         }
                     )
 
