@@ -15,4 +15,8 @@ class SignInWithEmailViewModel(
     suspend fun loginWithEmailAndPassword(email: String, password: String): TypedResult<Boolean, String>{
         return _authService.loginWithEmailAndPassword(email, password)
     }
+
+    fun sendPasswordResetEmail(email: String){
+        return _authService.sendPasswordResetEmail(email)
+    }
 }

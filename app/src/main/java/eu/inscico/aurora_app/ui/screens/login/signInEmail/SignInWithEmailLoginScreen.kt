@@ -60,9 +60,10 @@ fun SignInWithEmailLoginScreen(
         ) {
 
             if(isResetPasswordFormShown.value){
-                ResetPasswordForm {
+                ResetPasswordForm { email ->
+                    viewModel.sendPasswordResetEmail(email = email)
                     userFeedbackService.showDialog(
-                        message = "Email versendet",
+                        message = context.getString(R.string.dialog_sign_in_with_email_tab_login_forgot_password_send_email),
                         confirmButtonText = context.getString(R.string.okay,)){
                         isResetPasswordFormShown.value = false
                     }

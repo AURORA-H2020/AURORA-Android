@@ -30,7 +30,7 @@ import kotlinx.coroutines.withContext
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ResetPasswordForm(
-    resetPasswordCallback: () -> Unit
+    resetPasswordCallback: (email: String) -> Unit
 ) {
 
     val emailInput = remember {
@@ -104,7 +104,7 @@ fun ResetPasswordForm(
                 shape = RoundedCornerShape(32.dp),
                 enabled = isEmailValid.value,
                 onClick = {
-                    resetPasswordCallback.invoke()
+                    resetPasswordCallback.invoke(emailInput.value)
                 }) {
                 Text(
                     text = stringResource(id = R.string.sign_in_with_email_tab_login_forgot_password_title),

@@ -141,6 +141,10 @@ class AuthService(
         // TODO: add apple login
     }
 
+    fun sendPasswordResetEmail(email: String){
+        _firebaseAuth.sendPasswordResetEmail(email)
+    }
+
     // region: Google
     // ---------------------------------------------------------------------------------------------
 
