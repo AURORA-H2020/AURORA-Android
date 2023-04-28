@@ -153,4 +153,10 @@ class CountriesService(
             return TypedResult.Failure(e.toString())
         }
     }
+
+    fun deleteCountriesData(){
+        _citiesFromCountryLive.postValue(null)
+        userCountryLive.postValue(null)
+        userCityLive.postValue(null)
+    }
 }

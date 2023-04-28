@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.user.UserSignInType
+import eu.inscico.aurora_app.services.firebase.AccountDeletionErrorType
 import eu.inscico.aurora_app.services.notification.NotificationCreationService
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
@@ -45,6 +46,7 @@ fun SettingsScreen(
 ) {
 
     val showDeleteAccountDialog = remember { mutableStateOf(false) }
+    val showReenterPasswordDialog = remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -247,25 +249,23 @@ fun SettingsScreen(
                     Divider()
 
                     val reenteredPasswordCallback: (String) -> Unit = { password ->
-                        userFeedbackService.showLoadingDialog()
-                        CoroutineScope(Dispatchers.IO).launch {
-                            viewModel.deleteUser(password, context as Activity){ isSuccess ->
-                                userFeedbackService.hideLoadingDialog()
-                                if(isSuccess){
-                                    viewModel.userLogout(context as Activity)
-                                } else {
-                                    userFeedbackService.showSnackbar(R.string.settings_delete_account_fail_message)
+                        viewModel.reAuthenticateAndDeleteUser(activity = context as Activity, password = password, resultCallback = { isSuccessful, _ ->
+                            if(isSuccessful){
+                                viewModel.userLogout(activity = context)
+                            } else {
+                                CoroutineScope(Dispatchers.Main).launch{
+                                    userFeedbackService.showSnackbar(
+                                        message = context.getString(R.string.settings_delete_account_fail_message))
                                 }
-
                             }
-                        }
+                        })
                     }
 
                     ReenterPasswordAndDeleteAccountDialog(
-                        showDialog = showDeleteAccountDialog.value,
+                        showDialog = showReenterPasswordDialog.value,
                         reenteredPasswordCallback = reenteredPasswordCallback,
                         dismissCallback = {
-                            showDeleteAccountDialog.value = false
+                            showReenterPasswordDialog.value = false
                         })
 
                     ActionEntry(
@@ -275,8 +275,27 @@ fun SettingsScreen(
                         titleColor = MaterialTheme.colorScheme.error,
                         isNavigation = false,
                         callback = {
-                            userFeedbackService.showSnackbar("Not yet completed")
-                            //showDeleteAccountDialog.value = true
+                            userFeedbackService.showDialog(
+                                title = context.getString(R.string.dialog_account_delete_title),
+                                message = context.getString(R.string.dialog_account_delete_reauthenticate_info_title),
+                                confirmButtonText = context.getString(R.string.delete),
+                                confirmButtonCallback = {
+                                    if(viewModel.userSignInType == UserSignInType.EMAIL){
+                                        showReenterPasswordDialog.value = true
+                                    } else {
+                                        viewModel.reAuthenticateAndDeleteUser(activity = context as Activity, password = null, resultCallback = { isSuccessful, _ ->
+                                            if(isSuccessful){
+                                                viewModel.userLogout(activity = context)
+                                            } else {
+                                                CoroutineScope(Dispatchers.Main).launch{
+                                                    userFeedbackService.showSnackbar(
+                                                        message = context.getString(R.string.settings_delete_account_fail_message))
+                                                }
+                                            }
+                                        })
+                                    }
+                                }
+                            )
                         }
                     )
                 }

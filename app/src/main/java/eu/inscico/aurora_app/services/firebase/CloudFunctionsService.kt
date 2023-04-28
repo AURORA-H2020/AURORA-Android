@@ -22,6 +22,17 @@ class CloudFunctionsService(
     private val _jsonParsingService: JsonParsingService
 ) {
 
+    fun deleteUserData(
+        resultCallback: (Boolean) -> Unit
+    ){
+
+
+        val result = _functions.getHttpsCallable("user.delete").call()
+        result.addOnCompleteListener { task ->
+            resultCallback.invoke(task.isSuccessful)
+        }
+    }
+
     fun downloadUserData(
         resultCallback: (Boolean, String?) -> Unit
     ) {

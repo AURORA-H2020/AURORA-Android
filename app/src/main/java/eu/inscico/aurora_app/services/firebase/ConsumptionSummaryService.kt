@@ -43,4 +43,8 @@ class ConsumptionSummaryService(
                     }
                 }
     }
+
+    fun deleteData(){
+        _consumptionSummaries.postValue(null)
+    }
 }

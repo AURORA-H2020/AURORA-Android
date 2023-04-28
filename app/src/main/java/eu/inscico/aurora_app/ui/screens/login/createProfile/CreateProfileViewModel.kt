@@ -69,7 +69,7 @@ class CreateProfileViewModel(
                 _authService.googleSignOut(activity)
             }
             UserSignInType.APPLE -> {
-                // TODO:
+                _authService.logout()
             }
             UserSignInType.EMAIL -> {
                 _authService.logout()

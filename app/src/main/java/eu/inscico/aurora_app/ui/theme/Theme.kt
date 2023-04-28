@@ -52,7 +52,6 @@ fun AURORAEnergyTrackerTheme(
 ) {
     val colorscheme = if (darkTheme) {
         DarkColorPalette
-        // TODO:  
     } else {
         LightColorPalette
     }

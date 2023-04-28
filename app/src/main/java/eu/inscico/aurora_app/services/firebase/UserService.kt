@@ -1,13 +1,15 @@
 package eu.inscico.aurora_app.services.firebase
 
+import android.R
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.auth.EmailAuthProvider
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.*
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
 import eu.inscico.aurora_app.model.user.User
 import eu.inscico.aurora_app.model.user.UserResponse
 import eu.inscico.aurora_app.utils.TypedResult
@@ -15,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+
 
 class UserService(
     private val _firestore: FirebaseFirestore,
@@ -121,8 +124,36 @@ class UserService(
         }
     }
 
-    suspend fun deleteUser(password: String , resultCallback: (Boolean)-> Unit) {
+    fun deleteUser( resultCallback: (Boolean, AccountDeletionErrorType?)-> Unit) {
+        val user = _firebaseAuth.currentUser ?: return
 
+        user.delete().addOnCompleteListener {task ->
+            if (task.isSuccessful) {
+                resultCallback.invoke(true, null)
+            } else {
+                if (!task.isSuccessful) {
+                    try {
+                        throw task.exception!!
+                    } catch (e: FirebaseAuthRecentLoginRequiredException) {
+                        resultCallback.invoke(false, AccountDeletionErrorType.REAUTHENTICATION)
+                    } catch (e: java.lang.Exception) {
+                        resultCallback.invoke(false, AccountDeletionErrorType.OTHER)
+                    }
+                }
+            }
+        }
+        /*
+        _firestore.collection(collectionName).document(user.uid).delete()
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    resultCallback.invoke(true)
+                } else {
+                    resultCallback.invoke(false)
+                }
+            }
+
+         */
+/*
         try {
             val user = _firebaseAuth.currentUser ?: return
 
@@ -148,6 +179,8 @@ class UserService(
         }catch (e: Exception) {
             resultCallback.invoke(false)
         }
+
+ */
     }
 
     fun updateUserPassword(
@@ -192,6 +225,7 @@ class UserService(
 
                 if (it.isSuccessful) {
                     user.updateEmail(newEmail).addOnCompleteListener {
+                        sendEmailVerification()
                         callback?.invoke(it.isSuccessful)
                     }
                 } else {
@@ -200,8 +234,31 @@ class UserService(
             }
     }
 
+    fun sendEmailVerification(
+        callback: ((isSuccessful: Boolean) -> Unit)? = null
+    ){
+        val user = _firebaseAuth.currentUser
+
+        user?.sendEmailVerification()
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    callback?.invoke(true)
+                } else {
+                    callback?.invoke(false)
+                }
+            }
+
+    }
+
     fun logout() {
         _userLive.postValue(null)
         _consumptionsService.deleteData()
+        _countryService.deleteCountriesData()
+        _consumptionSummariesService.deleteData()
     }
+}
+
+enum class AccountDeletionErrorType{
+    REAUTHENTICATION,
+    OTHER
 }
