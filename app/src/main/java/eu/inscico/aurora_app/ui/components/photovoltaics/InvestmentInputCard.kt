@@ -44,7 +44,7 @@ fun InvestmentInputCard(
         Text(
             modifier = Modifier.padding(16.dp),
             text = stringResource(id = R.string.solar_power_description),
-            style = MaterialTheme.typography.labelSmall,
+            style = MaterialTheme.typography.bodySmall,
             overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.Start,
             color = MaterialTheme.colorScheme.onSurfaceVariant

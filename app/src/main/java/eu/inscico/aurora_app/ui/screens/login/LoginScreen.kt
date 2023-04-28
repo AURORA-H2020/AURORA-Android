@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material3.*
@@ -20,14 +21,21 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.services.navigation.NavGraphDirections
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.SignInButton
+import eu.inscico.aurora_app.utils.ExternalUtils
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 
@@ -206,13 +214,61 @@ fun LoginScreen(
                             .verticalScroll(rememberScrollState()),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(
-                                text = "By continuing, you agree to AURORA's Terms of Service and Privacy Policy",
-                                modifier = Modifier.padding(horizontal = 32.dp),
-                                style = MaterialTheme.typography.labelSmall,
+
+                            val textStyle = TextStyle(
+                                color = MaterialTheme.colorScheme.onSecondary,
                                 textAlign = TextAlign.Center,
-                                color = MaterialTheme.colorScheme.onSecondary
+                                fontFamily = FontFamily.Default,
+                                fontWeight = FontWeight(500),
+                                fontSize = 11.sp,
+                                lineHeight = 13.sp,
+                                letterSpacing = 0.75.sp
                             )
+
+                            val annotatedString = buildAnnotatedString {
+
+                                append(stringResource(id = R.string.login_privacy_policy_text_first_part))
+                                append(" ")
+
+                                pushStringAnnotation(tag = stringResource(id = R.string.login_privacy_policy_text_terms_of_service_text), annotation = "https://www.aurora-h2020.eu/aurora/privacy-policy/")
+                                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                                    append(stringResource(id = R.string.login_privacy_policy_text_terms_of_service_text))
+                                }
+                                pop()
+
+                                append(" ")
+                                append(stringResource(id = R.string.login_privacy_policy_text_and_part))
+                                append(" ")
+                                pushStringAnnotation(tag = stringResource(id = R.string.login_privacy_policy_text_privacy_policy_text), annotation = "https://www.aurora-h2020.eu/aurora/privacy-policy/")
+                                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                                    append(stringResource(id = R.string.login_privacy_policy_text_privacy_policy_text))
+                                }
+
+                                pop()
+
+                                append(".")
+                            }
+
+                            ClickableText(
+                                modifier = Modifier.padding(horizontal = 32.dp).align(Alignment.CenterHorizontally),
+                                text = annotatedString,
+                                style = textStyle,
+                                onClick = { offset ->
+                                    annotatedString.getStringAnnotations(tag = context.getString(R.string.login_privacy_policy_text_terms_of_service_text), start = offset, end = offset).firstOrNull()?.let {
+                                        ExternalUtils.openBrowser(
+                                            context = context,
+                                            url = it.item
+                                        )
+                                    }
+
+                                    annotatedString.getStringAnnotations(tag = context.getString(R.string.login_privacy_policy_text_privacy_policy_text), start = offset, end = offset).firstOrNull()?.let {
+                                        ExternalUtils.openBrowser(
+                                            context = context,
+                                            url = it.item
+                                        )
+                                    }
+                                })
+
                             Spacer(modifier = Modifier.height(5.dp))
                         }
 

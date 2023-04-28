@@ -2,19 +2,34 @@ package eu.inscico.aurora_app.ui.screens.settings
 
 import android.app.Activity
 import android.content.Intent
+import android.text.Html
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.user.UserSignInType
@@ -425,6 +440,68 @@ fun SettingsScreen(
                             context.startActivity(Intent(context, OssLicensesMenuActivity::class.java))
                         }
                     )
+                }
+
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 16.dp)) {
+
+                    Image(
+                        painterResource(id = R.drawable.european_flag),
+                        modifier = Modifier,
+                        contentDescription = "",
+                    )
+                    Row(modifier = Modifier.padding(4.dp)) {
+
+                        val annotatedString = buildAnnotatedString {
+
+                            pushStringAnnotation(tag = stringResource(id = R.string.settings_section_project_text), annotation = "https://www.aurora-h2020.eu")
+                            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                                append(stringResource(id = R.string.settings_section_project_text))
+                            }
+                            pop()
+
+                            append(" ")
+
+                            append(stringResource(id = R.string.settings_section_project_info_text))
+
+                            pushStringAnnotation(tag = stringResource(id = R.string.settings_section_project_number_text), annotation = "https://cordis.europa.eu/project/id/101036418")
+                            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                                append(stringResource(id = R.string.settings_section_project_number_text))
+                            }
+
+                            pop()
+
+                            append(".")
+                        }
+
+                        val textStyle = TextStyle(
+                            color = MaterialTheme.colorScheme.onSecondary,
+                            textAlign = TextAlign.Start,
+                                fontFamily = FontFamily.Default,
+                                fontWeight = FontWeight(500),
+                                fontSize = 11.sp,
+                                lineHeight = 13.sp,
+                                letterSpacing = 0.75.sp
+                        )
+
+                        ClickableText(
+                            text = annotatedString,
+                            style = textStyle,
+                            onClick = { offset ->
+                            annotatedString.getStringAnnotations(tag = context.getString(R.string.settings_section_project_text), start = offset, end = offset).firstOrNull()?.let {
+                                ExternalUtils.openBrowser(
+                                    context = context,
+                                    url = it.item
+                                )
+                            }
+
+                            annotatedString.getStringAnnotations(tag = context.getString(R.string.settings_section_project_number_text), start = offset, end = offset).firstOrNull()?.let {
+                                ExternalUtils.openBrowser(
+                                    context = context,
+                                    url = it.item
+                                )
+                            }
+                        })
+                    }
                 }
             }
         }

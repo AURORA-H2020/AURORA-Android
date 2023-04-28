@@ -24,6 +24,10 @@
     <string name="login_apple_sign_in_button_text">Sign in with Apple</string>
     <string name="login_email_sign_in_button_text">Sign in with Email</string>
     <string name="login_sign_in_button_loading_text">Signing in …</string>
+    <string name="login_privacy_policy_text_first_part">By continuing, you agree to AURORA\'s</string>
+    <string name="login_privacy_policy_text_terms_of_service_text">Terms of Service</string>
+    <string name="login_privacy_policy_text_and_part">and</string>
+    <string name="login_privacy_policy_text_privacy_policy_text">Privacy policy</string>
 
     <string name="create_profile_title">Create your profile</string>
     <string name="profile_title">Profile</string>
@@ -245,6 +249,9 @@
     <string name="settings_section_feature_preview_track_energy_description">Once our solar installations go live in each demo site you can track the energy production right from the app.</string>
     <string name="settings_section_feature_preview_data_overview_description">Get an overview of your latest submitted data, pending entry requests, and how you can improve your carbon footprint accuracy.</string>
     <string name="settings_section_feature_preview_profile_data_description">We are working on expanding your profile data with the addition of households, personalised vehicles, energy sources, and more.</string>
+    <string name="settings_section_project_info_text"> has received funding from the European Union\'s Horizon 2020 research and innovation programme under grant agreement Nr. </string>
+    <string name="settings_section_project_text">This project</string>
+    <string name="settings_section_project_number_text" translatable="false">101036418</string>
 
     <!-- Solar power -->
     <string name="solar_power_title">Your solar power</string>
@@ -252,7 +259,9 @@
     <string name="solar_power_investment_title">Investment</string>
     <string name="solar_power_investment_button_calculate_title">Calculate</string>
     <string name="solar_power_investment_description">Please note that all values displayed here are specific for your city, <b>%1$s</b>, and are merely for information.\nAll calculations are based on current plans for photovoltaic installations, and may need to be adjusted later.\nEstimated savings might be different from actual data, once the photovoltaic installations will be operational.\nYou obviously do not make any commitments by using this calculator.</string>
-    <string name="solar_power_investment_description_with_link">This calculator uses the <b>Photovoltaic Geographical</b> Information System (PVGIS) by the European Commission Joint Research Centre.</string>
+    <string name="solar_power_investment_description_with_link_first_part">This calculator uses the</string>
+    <string name="solar_power_investment_description_with_link_second_part">Information System (PVGIS) by the European Commission Joint Research Centre.</string>
+    <string name="solar_power_investment_description_with_link_link_part">Photovoltaic Geographical</string>
     <string name="solar_power_investment_result_emitted_title">CO₂ emitted if</string>
     <string name="solar_power_investment_result_conventional_title">CO₂ emitted if\n<b>conventional</b></string>
     <string name="solar_power_investment_result_conventional_info_text">This is the amount of C0₂ that would be emitted if you had drawn the produced energy from your local grid instead.</string>
