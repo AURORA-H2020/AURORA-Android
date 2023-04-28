@@ -62,7 +62,8 @@ val viewModelModule = module {
 
     viewModel {
         HomeViewModel(
-            _consumptionService = get()
+            _consumptionService = get(),
+            _consumptionSummaryService = get()
         )
     }
 

@@ -24,6 +24,7 @@ import eu.inscico.aurora_app.model.consumptions.Consumption
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.AppBar
+import eu.inscico.aurora_app.ui.components.consumptionSummery.DashboardConsumptionSummaryLabel
 import eu.inscico.aurora_app.ui.components.consumptions.ConsumptionListItem
 import eu.inscico.aurora_app.ui.components.container.ScrollableContent
 import eu.inscico.aurora_app.utils.ExternalUtils
@@ -42,6 +43,9 @@ fun HomeScreen(
     val context = LocalContext.current
 
     val consumptions = viewModel.userConsumptions.observeAsState()
+    val consumptionSummaries = viewModel.consumptionSummaries.observeAsState()
+
+    val latestConsumptionSummary = consumptionSummaries.value?.maxByOrNull { it.year }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -80,6 +84,20 @@ fun HomeScreen(
                             .padding(16.dp)
                             .size(50.dp),
                         contentDescription = "",
+                    )
+                }
+
+                latestConsumptionSummary?.let {
+                    val carbonValue = it.carbonEmission.total
+                    val carbonLabel = it.carbonEmission.label ?: return@let
+                    val energyValue = it.energyExpended.total
+                    val energyLabel = it.energyExpended.label ?: return@let
+
+                    DashboardConsumptionSummaryLabel(
+                        carbonValue = carbonValue,
+                        carbonLabel = carbonLabel,
+                        energyValue = energyValue,
+                        energyLabel = energyLabel
                     )
                 }
 
