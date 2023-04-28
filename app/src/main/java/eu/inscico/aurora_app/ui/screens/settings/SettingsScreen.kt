@@ -249,7 +249,9 @@ fun SettingsScreen(
                     Divider()
 
                     val reenteredPasswordCallback: (String) -> Unit = { password ->
+                        userFeedbackService.showLoadingDialog()
                         viewModel.reAuthenticateAndDeleteUser(activity = context as Activity, password = password, resultCallback = { isSuccessful, _ ->
+                            userFeedbackService.hideLoadingDialog()
                             if(isSuccessful){
                                 viewModel.userLogout(activity = context)
                             } else {
@@ -283,7 +285,9 @@ fun SettingsScreen(
                                     if(viewModel.userSignInType == UserSignInType.EMAIL){
                                         showReenterPasswordDialog.value = true
                                     } else {
+                                        userFeedbackService.showLoadingDialog()
                                         viewModel.reAuthenticateAndDeleteUser(activity = context as Activity, password = null, resultCallback = { isSuccessful, _ ->
+                                            userFeedbackService.hideLoadingDialog()
                                             if(isSuccessful){
                                                 viewModel.userLogout(activity = context)
                                             } else {

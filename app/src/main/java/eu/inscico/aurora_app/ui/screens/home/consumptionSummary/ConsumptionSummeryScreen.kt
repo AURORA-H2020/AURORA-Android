@@ -1,5 +1,6 @@
 package eu.inscico.aurora_app.ui.screens.home.consumptionSummary
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
@@ -9,6 +10,8 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -144,7 +147,8 @@ fun ConsumptionSummaryScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                selectedConsumptionSummary.value?.let { summary ->
+                val summary = selectedConsumptionSummary.value
+                if(summary != null){
 
                     ConsumptionSummaryBarChart(
                         summary,
@@ -262,9 +266,39 @@ fun ConsumptionSummaryScreen(
                         style = MaterialTheme.typography.labelSmall,
                         overflow = TextOverflow.Ellipsis,
                         textAlign = TextAlign.Start,
-                        fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
+                } else {
+                    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+
+                        Image(
+                            modifier = Modifier.size(100.dp),
+                            painter = painterResource(id = R.drawable.outline_bar_chart_24),
+                            contentDescription = "",
+                            colorFilter = ColorFilter.tint(primary)
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Text(
+                            text = stringResource(id = R.string.home_your_carbon_footprint_title),
+                            style = MaterialTheme.typography.titleMedium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Start,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            modifier = Modifier.padding(horizontal = 16.dp),
+                            text = stringResource(id = R.string.consumption_summary_empty_list_info),
+                            style = MaterialTheme.typography.labelMedium,
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.onSecondary
+                        )
+                    }
                 }
             }
         }
