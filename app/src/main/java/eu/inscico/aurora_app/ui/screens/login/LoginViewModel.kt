@@ -22,7 +22,7 @@ class LoginViewModel(
         _authService.loginWithGoogle(activity)
     }
 
-    fun loginWithApple(activity: Activity){
-        _authService.loginWithApple(activity)
+    fun loginWithApple(activity: Activity, resultCallback: (Boolean) -> Unit){
+        _authService.loginWithApple(activity, resultCallback)
     }
 }

@@ -262,7 +262,7 @@ class AuthService(
 // region: Apple
 // ---------------------------------------------------------------------------------------------
 
-fun loginWithApple(activity: Activity) {
+fun loginWithApple(activity: Activity, resultCallback: (Boolean) -> Unit) {
     val provider = OAuthProvider.newBuilder("apple.com")
     provider.scopes = listOf("email", "name")
     provider.addCustomParameter("locale", Locale.getDefault().toLanguageTag())
@@ -270,15 +270,18 @@ fun loginWithApple(activity: Activity) {
     val pending = _firebaseAuth.pendingAuthResult
     if (pending != null) {
         pending.addOnCompleteListener {
-            val i = it
+            resultCallback.invoke(it.isSuccessful)
         }
     } else {
         _firebaseAuth.startActivityForSignInWithProvider(activity, provider.build())
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     val firebaseCredential = it.result.credential ?: return@addOnCompleteListener
-                    _firebaseAuth.signInWithCredential(firebaseCredential)
+                    _firebaseAuth.signInWithCredential(firebaseCredential).addOnCanceledListener {
+                        resultCallback.invoke(it.isSuccessful)
+                    }
                         .addOnCompleteListener(activity) { task ->
+                            resultCallback.invoke(it.isSuccessful)
                             if (task.isSuccessful) {
                                 _navigationService.navControllerAuth?.popBackStack(
                                     route = NavGraphDirections.Auth.getNavRoute(),

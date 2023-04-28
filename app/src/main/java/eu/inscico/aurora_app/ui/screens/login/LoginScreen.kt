@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.services.navigation.NavGraphDirections
 import eu.inscico.aurora_app.services.navigation.NavigationService
+import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.SignInButton
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
@@ -33,7 +34,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = koinViewModel(),
-    navigationService: NavigationService = get()
+    navigationService: NavigationService = get(),
+    userFeedbackService: UserFeedbackService = get()
 ) {
 
     val context = LocalContext.current
@@ -174,7 +176,12 @@ fun LoginScreen(
                         iconColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurface,
                         onClick = {
                             isAppleButtonLoading.value = true
-                            viewModel.loginWithApple(context as Activity)
+                            viewModel.loginWithApple(context as Activity){
+                                isAppleButtonLoading.value = false
+                                if(!it){
+                                    userFeedbackService.showSnackbar(context.getString(R.string.login_email_fail_message))
+                                }
+                            }
                         }
                     )
 

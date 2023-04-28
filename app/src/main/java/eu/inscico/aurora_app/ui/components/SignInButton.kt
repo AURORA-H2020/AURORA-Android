@@ -27,7 +27,7 @@ fun SignInButton(
     shape: Shape = ShapeDefaults.Medium,
     borderColor: Color = Color.LightGray,
     iconColor: Color = Color.Unspecified,
-    backgroundColor: Color = MaterialTheme.colorScheme.surface,
+    backgroundColor: Color = Color.Transparent,
     progressIndicatorColor: Color = MaterialTheme.colorScheme.primary,
     onClick: () -> Unit
 ) {
@@ -43,7 +43,7 @@ fun SignInButton(
                 indication = rememberRipple(true),
                 enabled = !isLoading,
                 onClick = onClick
-            ).clip(RoundedCornerShape(20.dp)),
+            ),
     ) {
 
         Row(
