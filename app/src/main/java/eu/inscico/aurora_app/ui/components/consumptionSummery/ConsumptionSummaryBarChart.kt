@@ -1,5 +1,7 @@
 package eu.inscico.aurora_app.ui.components.consumptionSummery
 
+import android.graphics.RectF
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -18,11 +20,14 @@ import com.patrykandpatrick.vico.compose.style.currentChartStyle
 import com.patrykandpatrick.vico.core.axis.AxisPosition
 import com.patrykandpatrick.vico.core.axis.formatter.AxisValueFormatter
 import com.patrykandpatrick.vico.core.chart.column.ColumnChart
+import com.patrykandpatrick.vico.core.chart.draw.ChartDrawContext
 import com.patrykandpatrick.vico.core.component.shape.LineComponent
 import com.patrykandpatrick.vico.core.component.shape.Shapes
 import com.patrykandpatrick.vico.core.component.text.TextComponent
+import com.patrykandpatrick.vico.core.context.MeasureContext
 import com.patrykandpatrick.vico.core.dimensions.MutableDimensions
 import com.patrykandpatrick.vico.core.entry.ChartEntryModel
+import com.patrykandpatrick.vico.core.legend.Legend
 import com.patrykandpatrick.vico.core.marker.Marker
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptionSummary.ConsumptionSummary
@@ -31,6 +36,7 @@ import eu.inscico.aurora_app.ui.theme.heatingRed
 import eu.inscico.aurora_app.ui.theme.mobilityBlue
 import eu.inscico.aurora_app.utils.CalendarUtils
 import java.util.*
+import kotlin.math.roundToInt
 
 @Composable
 fun ConsumptionSummaryBarChart(
@@ -47,7 +53,7 @@ fun ConsumptionSummaryBarChart(
 
     val yAxisValueFormatter: AxisValueFormatter<AxisPosition.Vertical.End> =
         AxisValueFormatter { value, _ ->
-            String.format("%.1f", value ?: 0F)
+            String.format("%d", value.roundToInt() ?: 0F)
         }
 
     val yAxisName = if(isCarbonEmission){
@@ -71,35 +77,41 @@ fun ConsumptionSummaryBarChart(
     guidelineTextComponent.color = MaterialTheme.colorScheme.outlineVariant.toArgb()
 
 
+    Column(Modifier.padding(bottom = 24.dp)) {
 
-    Chart(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        chart = columnChart(
-            spacing = 1.dp,
-            columns = listOf(
-                LineComponent(thicknessDp = 8F, color = heatingRed.toArgb()),
-                LineComponent(electricityYellow.toArgb(), thicknessDp = 8F),
-                LineComponent(mobilityBlue.toArgb(), thicknessDp = 8F,)),//shape = Shapes.roundedCornerShape(topLeftPercent = 16, topRightPercent = 16),),),
-            mergeMode = ColumnChart.MergeMode.Stack
-        ),
-        model = barChartData,
-        endAxis = endAxis(
-            label = axisTextComponent.build(),
-            tick = null,
-            tickLength = 0.dp,
-            guideline = null,
-            maxLabelCount = 5,
-            title = yAxisName,
-            titleComponent = labelTextComponent.build(),
-            valueFormatter = yAxisValueFormatter
-        ),
-        bottomAxis = bottomAxis(
-            tick = null,
-            label = labelTextComponent.build(),
-            guideline = axisGuidelineComponent(MaterialTheme.colorScheme.outlineVariant),
-            valueFormatter = xAxisValueFormatter
-        ),
-    )
+
+        Chart(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp),
+            chart = columnChart(
+                spacing = 1.dp,
+                columns = listOf(
+                    LineComponent(thicknessDp = 8F, color = heatingRed.toArgb()),
+                    LineComponent(electricityYellow.toArgb(), thicknessDp = 8F),
+                    LineComponent(mobilityBlue.toArgb(), thicknessDp = 8F,)
+                ),//shape = Shapes.roundedCornerShape(topLeftPercent = 16, topRightPercent = 16),),),
+                mergeMode = ColumnChart.MergeMode.Stack
+            ),
+            model = barChartData,
+            endAxis = endAxis(
+                label = axisTextComponent.build(),
+                tick = null,
+                tickLength = 0.dp,
+                guideline = null,
+                maxLabelCount = 5,
+                title = yAxisName,
+                titleComponent = labelTextComponent.build(),
+                valueFormatter = yAxisValueFormatter
+            ),
+            bottomAxis = bottomAxis(
+                tick = null,
+                label = labelTextComponent.build(),
+                guideline = axisGuidelineComponent(MaterialTheme.colorScheme.outlineVariant),
+                valueFormatter = xAxisValueFormatter
+            ),
+        )
+
+        ConsumptionSummaryBarChartLegend()
+    }
 }
