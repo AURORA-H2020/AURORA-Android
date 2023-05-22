@@ -21,6 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptions.Consumption
@@ -154,7 +155,9 @@ fun ConsumptionListItem(
                         text = description,
                         style = MaterialTheme.typography.labelSmall,
                         textAlign = TextAlign.Start,
-                        color = MaterialTheme.colorScheme.onSecondary
+                        color = MaterialTheme.colorScheme.onSecondary,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
