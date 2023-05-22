@@ -3,7 +3,7 @@
     <string name="google_auth_server_client_id" translatable="false">388054164645-sts6oh4kjnpb99onqdp62cpn964nhl9t.apps.googleusercontent.com</string>
 
     <string name="bottom_bar_tab_home" translatable="false">Home</string>
-    <string name="bottom_bar_tab_photovoltaic">Photovoltaic</string>
+    <string name="bottom_bar_tab_photovoltaic">Solar Power</string>
     <string name="bottom_bar_tab_settings">Settings</string>
 
     <!-- General -->

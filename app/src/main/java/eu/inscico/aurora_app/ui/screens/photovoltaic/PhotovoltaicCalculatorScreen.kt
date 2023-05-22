@@ -163,7 +163,7 @@ fun PhotovoltaicCalculatorScreen(
                         append(stringResource(id = R.string.solar_power_investment_description_with_link_first_part))
                         append(" ")
 
-                        pushStringAnnotation(tag = stringResource(id = R.string.solar_power_investment_description_with_link_link_part), annotation = "https://www.aurora-h2020.eu")
+                        pushStringAnnotation(tag = stringResource(id = R.string.solar_power_investment_description_with_link_link_part), annotation = "https://re.jrc.ec.europa.eu/pvg_tools/de/")
                         withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
                             append(stringResource(id = R.string.solar_power_investment_description_with_link_link_part))
                         }

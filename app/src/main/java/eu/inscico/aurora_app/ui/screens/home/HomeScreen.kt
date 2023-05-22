@@ -52,7 +52,7 @@ fun HomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AppBar(
-            title = stringResource(id = R.string.bottom_bar_tab_home),
+            title = stringResource(id = R.string.home_dashboard_title),
             hasBackNavigation = false
         )
 
