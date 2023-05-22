@@ -2,7 +2,7 @@
     <string name="app_name" translatable="false">AURORA Energy Tracker</string>
     <string name="google_auth_server_client_id" translatable="false">388054164645-sts6oh4kjnpb99onqdp62cpn964nhl9t.apps.googleusercontent.com</string>
 
-    <string name="bottom_bar_tab_home">Home</string>
+    <string name="bottom_bar_tab_home" translatable="false">Home</string>
     <string name="bottom_bar_tab_photovoltaic">Photovoltaic</string>
     <string name="bottom_bar_tab_settings">Settings</string>
 
@@ -20,7 +20,7 @@
     <!-- Login/Create Profile -->
     <string name="login_aurora_title">Welcome to AURORA</string>
     <string name="login_aurora_description">Empowering a new generation of near zero-emission citizens</string>
-    <string name="login_google_sign_in_button_text">Sign in with Goolge</string>
+    <string name="login_google_sign_in_button_text">Sign in with Google</string>
     <string name="login_apple_sign_in_button_text">Sign in with Apple</string>
     <string name="login_email_sign_in_button_text">Sign in with Email</string>
     <string name="login_sign_in_button_loading_text">Signing in …</string>
