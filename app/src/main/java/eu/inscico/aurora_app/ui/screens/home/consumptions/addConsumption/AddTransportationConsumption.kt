@@ -423,11 +423,14 @@ fun AddTransportationConsumption(
                         null -> null
                     }
 
+                    val descriptionValue = description.value.ifEmpty {
+                        null
+                    }
 
                     val consumptionResponse = ConsumptionResponse(
                         category = ConsumptionType.parseConsumptionTypeToString(ConsumptionType.TRANSPORTATION),
                         value = distance.value.replace(",",".").toDoubleOrNull(),
-                        description = description.value,
+                        description = descriptionValue,
                         createdAt = Timestamp(initialValues?.createdAt?.time ?: Date(System.currentTimeMillis())),
                         electricity = null,
                         heating = null,

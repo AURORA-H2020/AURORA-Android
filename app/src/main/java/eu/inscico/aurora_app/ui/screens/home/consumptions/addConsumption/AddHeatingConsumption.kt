@@ -355,10 +355,14 @@ fun AddHeatingConsumption(
                             districtHeatingSource = finalDistrictHeatingSource?.parseDistrictHeatingSourceToString(),
                         )
 
+                        val descriptionValue = description.value.ifEmpty {
+                            null
+                        }
+
                         val consumptionResponse = ConsumptionResponse(
                             category = ConsumptionType.parseConsumptionTypeToString(ConsumptionType.HEATING),
                             value = finalValue,
-                            description = description.value,
+                            description = descriptionValue,
                             createdAt = Timestamp(initialValue?.createdAt?.time ?: Date(System.currentTimeMillis())),
                             electricity = null,
                             heating = heatingConsumptionDataResponse,

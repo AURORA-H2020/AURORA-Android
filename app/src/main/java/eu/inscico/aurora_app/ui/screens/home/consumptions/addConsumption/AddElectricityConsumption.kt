@@ -280,10 +280,14 @@ fun AddElectricityConsumption(
                         householdSize = peopleInHousehold.value
                     )
 
+                    val descriptionValue = description.value.ifEmpty {
+                        null
+                    }
+
                     val consumptionResponse = ConsumptionResponse(
                         category = ConsumptionType.parseConsumptionTypeToString(ConsumptionType.ELECTRICITY),
                         value = consumption.value.replace(",",".").toDoubleOrNull(),
-                        description = description.value,
+                        description = descriptionValue,
                         createdAt = Timestamp(initialValues?.createdAt?.time ?: Date(System.currentTimeMillis())),
                         electricity = electricityConsumptionDataResponse,
                         heating = null,

@@ -9,6 +9,7 @@ import eu.inscico.aurora_app.model.consumptions.Consumption
 import eu.inscico.aurora_app.model.consumptions.ConsumptionResponse
 import eu.inscico.aurora_app.utils.TypedResult
 import kotlinx.coroutines.tasks.await
+import kotlin.reflect.full.declaredMemberProperties
 
 class ConsumptionsService(
     private val _firestore: FirebaseFirestore,
@@ -69,10 +70,12 @@ class ConsumptionsService(
     suspend fun createConsumption(consumptionResponse: ConsumptionResponse): TypedResult<Boolean, String> {
         try {
 
+            val consumptionResponseAsMap = parseConsumptionResponseToMap(consumptionResponse)
+
             val authId = _firebaseAuth.currentUser?.uid ?: return TypedResult.Failure("")
 
             _firestore.collection(usersCollectionName).document(authId)
-                .collection(collectionName).document().set(consumptionResponse).await()
+                .collection(collectionName).document().set(consumptionResponseAsMap).await()
 
             return TypedResult.Success(true)
         } catch (e: Exception) {
@@ -83,16 +86,42 @@ class ConsumptionsService(
     suspend fun updateConsumption(consumptionResponse: ConsumptionResponse): TypedResult<Boolean, String> {
         try {
 
+
             val authId = _firebaseAuth.currentUser?.uid ?: return TypedResult.Failure("")
             val docId = consumptionResponse.id ?: return TypedResult.Failure("")
+            val consumptionResponseAsMap = parseConsumptionResponseToMap(consumptionResponse).toMutableMap()
+            consumptionResponseAsMap.remove("id")
 
             _firestore.collection(usersCollectionName).document(authId)
-                .collection(collectionName).document(docId).set(consumptionResponse).await()
+                .collection(collectionName).document(docId).set(consumptionResponseAsMap).await()
 
             return TypedResult.Success(true)
         } catch (e: Exception) {
             return TypedResult.Failure(e.message ?: "")
         }
+    }
+
+    private fun parseConsumptionResponseToMap(consumptionResponse: ConsumptionResponse): Map<String, Any?>{
+        val consumptionAsMap = mutableMapOf<String, Any?>()
+        val consumptionDataAsMap = mutableMapOf<String, Any?>()
+
+        consumptionResponse.javaClass.kotlin.declaredMemberProperties.forEach {
+            val value = it.getValue(consumptionResponse, it)
+            if(value != null){
+                if(it.name == "heating" || it.name == "electricity" || it.name == "transportation"){
+                    value.javaClass.kotlin.declaredMemberProperties.forEach { data ->
+                        val dataValue = data.getValue(value, data)
+                        if(dataValue != null){
+                            consumptionDataAsMap[data.name] = dataValue
+                        }
+                    }
+                    consumptionAsMap[it.name] = consumptionDataAsMap
+                } else {
+                    consumptionAsMap[it.name] = value
+                }
+            }
+        }
+        return consumptionAsMap
     }
 
     suspend fun deleteConsumption(consumption: Consumption): TypedResult<Any, Any> {
