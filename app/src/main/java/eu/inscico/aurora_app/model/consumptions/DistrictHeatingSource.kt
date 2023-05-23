@@ -21,13 +21,11 @@ enum class DistrictHeatingSource {
     @Json(name = "biomass")
     BIOMASS,
     @Json(name = "wasteTreatment")
-    WASTE_TREATMENT,
-    @Json(name = "default")
-    DEFAULT;
+    WASTE_TREATMENT;
 
     companion object {
 
-        fun parseStringToDistrictHeatingSource(string: String?): DistrictHeatingSource {
+        fun parseStringToDistrictHeatingSource(string: String?): DistrictHeatingSource? {
             return when (string) {
                 "coal" -> COAL
                 "naturalGas" -> NATURAL_GAS
@@ -37,8 +35,7 @@ enum class DistrictHeatingSource {
                 "geothermal" -> GEO_THERMAL
                 "biomass" -> BIOMASS
                 "wasteTreatment" -> WASTE_TREATMENT
-                "default" -> DEFAULT
-                else -> DEFAULT
+                else -> null
             }
         }
 
@@ -52,7 +49,6 @@ enum class DistrictHeatingSource {
                 GEO_THERMAL -> "geothermal"
                 BIOMASS -> "biomass"
                 WASTE_TREATMENT -> "wasteTreatment"
-                DEFAULT -> "default"
                 else -> null
             }
         }
@@ -67,7 +63,6 @@ enum class DistrictHeatingSource {
                 GEO_THERMAL -> R.string.district_heating_source_type_geo_thermal_title
                 BIOMASS -> R.string.district_heating_source_type_biomass_title
                 WASTE_TREATMENT -> R.string.district_heating_source_type_waste_treatment_title
-                DEFAULT -> R.string.district_heating_source_type_default_title
             }
         }
 
@@ -84,8 +79,7 @@ enum class DistrictHeatingSource {
                 SOLAR_THERMAL,
                 GEO_THERMAL,
                 BIOMASS,
-                WASTE_TREATMENT,
-                DEFAULT
+                WASTE_TREATMENT
             )
         }
 

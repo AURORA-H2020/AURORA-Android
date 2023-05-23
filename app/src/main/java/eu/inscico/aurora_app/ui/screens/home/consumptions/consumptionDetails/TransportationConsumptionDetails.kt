@@ -65,19 +65,21 @@ fun TransportationConsumptionDetails(
             val carbonEmissionText = if (consumption.carbonEmissions != null) {
                 "${String.format("%.1f", consumption.carbonEmissions)} kWh"
             } else {
-                "- kWh"
+                null
             }
 
-            ListItem(
-                headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_carbon_emissions_title)) },
-                trailingContent = {
-                    Text(
-                        text = carbonEmissionText,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            )
+            if (carbonEmissionText != null) {
+                ListItem(
+                    headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_carbon_emissions_title)) },
+                    trailingContent = {
+                        Text(
+                            text = carbonEmissionText,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -162,47 +164,55 @@ fun TransportationConsumptionDetails(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .clip(shape = RoundedCornerShape(16.dp))) {
+        val createdText = if (consumption.createdAt != null) {
+            CalendarUtils.toDateString(consumption.createdAt)
+        } else {
+            null
+        }
 
-            val createdText = if (consumption.createdAt != null) {
-                CalendarUtils.toDateString(consumption.createdAt)
-            } else {
-                "-"
-            }
+        val updatedText = if (consumption.updatedAt != null) {
+            CalendarUtils.toDateString(consumption.updatedAt)
+        } else {
+            null
+        }
 
-            val updatedText = if (consumption.updatedAt != null) {
-                CalendarUtils.toDateString(consumption.updatedAt)
-            } else {
-                "-"
-            }
+        if(createdText != null || updatedText != null) {
 
-            ListItem(
-                headlineContent = { Text(text = stringResource(id = R.string.created)) },
-                trailingContent = {
-                    Text(
-                        text = createdText,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.bodyMedium
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .clip(shape = RoundedCornerShape(16.dp))
+            ) {
+
+                if (createdText != null) {
+                    ListItem(
+                        headlineContent = { Text(text = stringResource(id = R.string.created)) },
+                        trailingContent = {
+                            Text(
+                                text = createdText,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    )
+
+                    Divider()
+                }
+
+                if (updatedText != null) {
+                    ListItem(
+                        headlineContent = { Text(text = stringResource(id = R.string.updated)) },
+                        trailingContent = {
+                            Text(
+                                text = updatedText,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
                     )
                 }
-            )
-
-            Divider()
-
-            ListItem(
-                headlineContent = { Text(text = stringResource(id = R.string.updated)) },
-                trailingContent = {
-                    Text(
-                        text = updatedText,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            )
+            }
         }
     }
 

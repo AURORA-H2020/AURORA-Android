@@ -57,20 +57,21 @@ fun ElectricityConsumptionDetails(
             val carbonEmissionText = if (consumption.carbonEmissions != null) {
                 "${String.format("%.1f", consumption.carbonEmissions)} kWh"
             } else {
-                "- kWh"
+               null
             }
 
-            ListItem(
-                headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_carbon_emissions_title)) },
-                trailingContent = {
-                    Text(
-                        text = carbonEmissionText,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            )
-
+            if(carbonEmissionText != null) {
+                ListItem(
+                    headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_carbon_emissions_title)) },
+                    trailingContent = {
+                        Text(
+                            text = carbonEmissionText,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -85,21 +86,23 @@ fun ElectricityConsumptionDetails(
             val costsText = if (consumption.electricity.costs != null) {
                 "${String.format("%.1f", consumption.electricity.costs)} €"
             } else {
-                "- €"
+                null
             }
 
-            ListItem(
-                headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_form_costs_title)) },
-                trailingContent = {
-                    Text(
-                        text = costsText,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            )
+            if(costsText != null) {
+                ListItem(
+                    headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_form_costs_title)) },
+                    trailingContent = {
+                        Text(
+                            text = costsText,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                )
 
-            Divider()
+                Divider()
+            }
 
             ListItem(
                 headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_form_begin_title)) },
@@ -151,48 +154,55 @@ fun ElectricityConsumptionDetails(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        val createdText = if (consumption.createdAt != null) {
+            CalendarUtils.toDateString(consumption.createdAt)
+        } else {
+            null
+        }
 
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .clip(shape = RoundedCornerShape(16.dp))) {
+        val updatedText = if (consumption.updatedAt != null) {
+            CalendarUtils.toDateString(consumption.updatedAt)
+        } else {
+            null
+        }
 
-            val createdText = if (consumption.createdAt != null) {
-                CalendarUtils.toDateString(consumption.createdAt)
-            } else {
-                "-"
-            }
+        if(createdText != null || updatedText != null) {
 
-            val updatedText = if (consumption.updatedAt != null) {
-                CalendarUtils.toDateString(consumption.updatedAt)
-            } else {
-                "-"
-            }
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .clip(shape = RoundedCornerShape(16.dp))
+            ) {
 
-            ListItem(
-                headlineContent = { Text(text = stringResource(id = R.string.created)) },
-                trailingContent = {
-                    Text(
-                        text = createdText,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.bodyMedium
+                if (createdText != null) {
+                    ListItem(
+                        headlineContent = { Text(text = stringResource(id = R.string.created)) },
+                        trailingContent = {
+                            Text(
+                                text = createdText,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    )
+
+                    Divider()
+                }
+
+                if (updatedText != null) {
+                    ListItem(
+                        headlineContent = { Text(text = stringResource(id = R.string.updated)) },
+                        trailingContent = {
+                            Text(
+                                text = updatedText,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
                     )
                 }
-            )
-
-            Divider()
-
-            ListItem(
-                headlineContent = { Text(text = stringResource(id = R.string.updated)) },
-                trailingContent = {
-                    Text(
-                        text = updatedText,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            )
+            }
         }
     }
 
