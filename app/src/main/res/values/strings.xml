@@ -13,7 +13,7 @@
     <string name="search">Search</string>
     <string name="created">Created</string>
     <string name="updated">Updated</string>
-    <string name="no_value_to_display">-</string>
+    <string name="no_value_to_display" translatable="false">-</string>
     <string name="delete">delete</string>
     <string name="reset">Reset</string>
 
