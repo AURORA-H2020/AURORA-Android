@@ -84,7 +84,7 @@ fun ElectricityConsumptionDetails(
         ) {
 
             val costsText = if (consumption.electricity.costs != null) {
-                "${String.format("%.1f", consumption.electricity.costs)} €"
+                "${String.format("%.2f", consumption.electricity.costs)} €"
             } else {
                 null
             }

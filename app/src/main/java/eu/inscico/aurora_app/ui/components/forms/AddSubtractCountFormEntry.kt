@@ -30,12 +30,15 @@ fun AddSubtractCountFormEntry(
     titleRes: Int,
     isNullCountPossible: Boolean = false,
     initialValue: Int = if (isNullCountPossible) 0 else 1,
+    countLimit: Int = 100,
     callback: (Int) -> Unit
 ) {
 
     val count = remember {
         mutableStateOf(initialValue)
     }
+
+    count.value = initialValue
 
     Column(
         Modifier
@@ -52,24 +55,30 @@ fun AddSubtractCountFormEntry(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
-                    val buttonColor = if (isNullCountPossible) {
-                        if (count.value > 0) {
+                    val minusButtonColor = if (isNullCountPossible) {
+                        if (count.value > 0)  {
                             ColorFilter.tint(MaterialTheme.colorScheme.primary)
                         } else {
                             ColorFilter.tint(MaterialTheme.colorScheme.onSecondary)
                         }
                     } else {
-                        if (count.value > 1) {
+                        if (count.value > 1)  {
                             ColorFilter.tint(MaterialTheme.colorScheme.primary)
                         } else {
                             ColorFilter.tint(MaterialTheme.colorScheme.onSecondary)
                         }
                     }
 
+                    val plusButtonColor = if(count.value < countLimit){
+                        ColorFilter.tint(MaterialTheme.colorScheme.primary)
+                    } else {
+                        ColorFilter.tint(MaterialTheme.colorScheme.onSecondary)
+                    }
+
                     Image(
                         painter = painterResource(id = R.drawable.baseline_remove_circle_24),
                         contentDescription = "",
-                        colorFilter = buttonColor,
+                        colorFilter = minusButtonColor,
                         modifier = Modifier
                             .clickable {
                                 if (isNullCountPossible) {
@@ -96,11 +105,13 @@ fun AddSubtractCountFormEntry(
                     Image(
                         painter = painterResource(id = R.drawable.baseline_add_circle_24),
                         contentDescription = "",
-                        colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
+                        colorFilter = plusButtonColor,
                         modifier = Modifier
                             .clickable {
-                                count.value = count.value + 1
-                                callback.invoke(count.value)
+                                if(count.value < countLimit){
+                                    count.value = count.value + 1
+                                    callback.invoke(count.value)
+                                }
                             }
                             .padding(8.dp)
                     )

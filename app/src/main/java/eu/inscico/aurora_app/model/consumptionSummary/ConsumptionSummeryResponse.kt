@@ -1,5 +1,6 @@
 package eu.inscico.aurora_app.model.consumptionSummary
 
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId
 import eu.inscico.aurora_app.model.consumptions.ConsumptionType
 
@@ -10,7 +11,9 @@ data class ConsumptionSummaryResponse(
     var carbonEmission: LabeledConsumptionResponse? = null,
     var energyExpended: LabeledConsumptionResponse? = null,
     var months: List<ConsumptionSummaryMonthResponse>? = null,
-    var categories: List<ConsumptionSummaryCategoryResponse>? = null
+    var categories: List<ConsumptionSummaryCategoryResponse>? = null,
+    var dateLastUpdated: Timestamp? = null,
+    var version: String? = null
 ) {
     companion object {
         fun from(item: ConsumptionSummary): ConsumptionSummaryResponse {

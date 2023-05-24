@@ -1,5 +1,6 @@
 package eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption
 
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -43,6 +45,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
+import java.text.NumberFormat
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -91,7 +94,7 @@ fun AddElectricityConsumption(
     }
 
     val isSaveValid = remember {
-        mutableStateOf(consumption.value.replace(",", ".").toDoubleOrNull() != null)
+        mutableStateOf(viewModel.isDecimalInputValid(consumption.value) && consumption.value.replace(",", ".").toDoubleOrNull() != null)
     }
 
 
@@ -120,10 +123,19 @@ fun AddElectricityConsumption(
                 Text(text = stringResource(id = R.string.home_add_consumption_form_consumption_title))
             },
             onValueChange = {
-                consumption.value = it
-                isSaveValid.value = it.replace(",",".").toDoubleOrNull() != null
+                
+                val isValueInCorrectFormat = viewModel.isDecimalInputValid(it)
+                if(isValueInCorrectFormat || it.isEmpty()){
+                    val valueWithCorrectDecimalPoint = if(Locale.getDefault() == Locale.US || Locale.getDefault() == Locale.UK){
+                        it.replace(",",".")
+                    } else {
+                        it.replace(".",",")
+                    }
+                    consumption.value = valueWithCorrectDecimalPoint
+                }
+                isSaveValid.value = isValueInCorrectFormat && it.replace(",",".").toDoubleOrNull() != null
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             trailingIcon = {
                 Text(text = "kWh")
             }
@@ -201,9 +213,17 @@ fun AddElectricityConsumption(
                 Text(text = stringResource(id = R.string.home_add_consumption_form_costs_title))
             },
             onValueChange = {
-                costs.value = it
+                val isValueInCorrectFormat = viewModel.isDecimalInputValid(it)
+                if(isValueInCorrectFormat || it.isEmpty()){
+                    val valueWithCorrectDecimalPoint = if(Locale.getDefault() == Locale.US || Locale.getDefault() == Locale.UK){
+                        it.replace(",",".")
+                    } else {
+                        it.replace(".",",")
+                    }
+                    costs.value = valueWithCorrectDecimalPoint
+                }
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             trailingIcon = {
                 Text(text = "€")
             }
@@ -241,8 +261,14 @@ fun AddElectricityConsumption(
             label = {
                 Text(text = stringResource(id = R.string.home_add_consumption_form_description_title))
             },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done
+            ),
             onValueChange = {
-                description.value = it
+                if(it.length <= 5000){
+                    description.value = it
+                }
             }
         )
 

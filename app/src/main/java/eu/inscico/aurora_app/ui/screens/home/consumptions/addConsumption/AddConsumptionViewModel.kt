@@ -75,4 +75,8 @@ class AddConsumptionViewModel(
         return _consumptionService.updateConsumption(consumptionResponse)
     }
 
+    fun isDecimalInputValid(input: String): Boolean {
+        return input.matches(Regex("^(\\d+(?:,\\d{1,2})?)")) || input.matches(Regex("^(\\d+,)")) || input.matches(Regex("^(\\d+(?:.\\d{1,2})?)")) || input.matches(Regex("^(\\d+.)"))
+    }
+
 }

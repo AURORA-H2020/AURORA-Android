@@ -149,7 +149,15 @@ fun BeginEndPickerFormEntry(
                     endCalendar.timeInMillis = endCalendarAsLong.value
                     endCalendar.set(Calendar.HOUR_OF_DAY, 0)
                     endCalendar.set(Calendar.MINUTE, 0)
-                    it.timeInMillis <= endCalendar.timeInMillis
+
+                    val maxCalendar = Calendar.getInstance()
+                    maxCalendar.add(Calendar.YEAR, 10)
+                    val minCalendar = Calendar.getInstance()
+                    minCalendar.add(Calendar.YEAR, -10)
+
+                    it.timeInMillis in minCalendar.timeInMillis .. maxCalendar.timeInMillis && it.timeInMillis <= endCalendar.timeInMillis
+
+
                 }
             }
         )
@@ -169,7 +177,13 @@ fun BeginEndPickerFormEntry(
                     beginCalendar.timeInMillis = beginCalendarAsLong.value
                     beginCalendar.set(Calendar.HOUR_OF_DAY, 0)
                     beginCalendar.set(Calendar.MINUTE, 0)
-                    it.timeInMillis >= beginCalendar.timeInMillis
+
+                    val maxCalendar = Calendar.getInstance()
+                    maxCalendar.add(Calendar.YEAR, 10)
+                    val minCalendar = Calendar.getInstance()
+                    minCalendar.add(Calendar.YEAR, -10)
+
+                    it.timeInMillis in minCalendar.timeInMillis .. maxCalendar.timeInMillis && it.timeInMillis >= beginCalendar.timeInMillis
                 }
             }
         )

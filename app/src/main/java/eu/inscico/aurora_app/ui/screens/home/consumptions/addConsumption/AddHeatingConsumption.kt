@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -73,7 +74,7 @@ fun AddHeatingConsumption(
     }
 
     val initialCosts = if(initialValue?.heating?.costs != null){
-        String.format("%.1f",initialValue.heating.costs)
+        String.format("%.2f",initialValue.heating.costs)
     } else {
         ""
     }
@@ -264,9 +265,18 @@ fun AddHeatingConsumption(
                 Text(text = stringResource(id = R.string.home_add_consumption_form_costs_title))
             },
             onValueChange = {
-                costs.value = it
+
+                val isValueInCorrectFormat = viewModel.isDecimalInputValid(it)
+                if(isValueInCorrectFormat || it.isEmpty()){
+                    val valueWithCorrectDecimalPoint = if(Locale.getDefault() == Locale.US || Locale.getDefault() == Locale.UK){
+                        it.replace(",",".")
+                    } else {
+                        it.replace(".",",")
+                    }
+                    costs.value = valueWithCorrectDecimalPoint
+                }
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             trailingIcon = {
                 Text(text = "€")
             }
@@ -304,8 +314,14 @@ fun AddHeatingConsumption(
             label = {
                 Text(text = stringResource(id = R.string.home_add_consumption_form_description_title))
             },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done
+            ),
             onValueChange = {
-                description.value = it
+                if(it.length <= 5000){
+                    description.value = it
+                }
             }
         )
 

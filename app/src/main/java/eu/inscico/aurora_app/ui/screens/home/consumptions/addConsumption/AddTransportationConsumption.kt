@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -104,7 +105,7 @@ fun AddTransportationConsumption(
     }
 
     fun isSaveValid(): Boolean {
-        return distance.value.replace(",", ".").toDoubleOrNull() != null
+        return viewModel.isDecimalInputValid(distance.value) && distance.value.replace(",", ".").toDoubleOrNull() != null
                 && transportationType.value != null
                 && ((transportationSection.value != TransportationTypeSection.TRAINS_AND_TRAMS
                 || transportationSection.value != TransportationTypeSection.BUSSES) || occupancyApproximately.value != null)
@@ -224,7 +225,12 @@ fun AddTransportationConsumption(
                 startOfTravelAsLong.value = calendar.timeInMillis
             },
             dateValidator = {
-                true
+                val maxCalendar = Calendar.getInstance()
+                    maxCalendar.add(Calendar.YEAR, 10)
+                val minCalendar = Calendar.getInstance()
+                    minCalendar.add(Calendar.YEAR, -10)
+
+                it.timeInMillis in minCalendar.timeInMillis .. maxCalendar.timeInMillis
             }
         )
 
@@ -268,10 +274,24 @@ fun AddTransportationConsumption(
 
                 Spacer(Modifier.height(8.dp))
 
+                val occupancyLimit = when(transportationType.value){
+                    TransportationType.FUEL_CAR,
+                    TransportationType.ELECTRIC_CAR,
+                    TransportationType.HYBRID_CAR -> 15
+                    TransportationType.MOTORCYCLE,
+                    TransportationType.ELECTRIC_MOTORCYCLE -> 3
+                    else -> null
+                }
+
+                if(occupancyLimit != null && occupancyPrecisely.value >= occupancyLimit){
+                    occupancyPrecisely.value = occupancyLimit
+                }
+
                 AddSubtractCountFormEntry(
                     titleRes = R.string.home_add_consumption_transportation_public_occupancy_title,
                     initialValue = occupancyPrecisely.value,
-                    isNullCountPossible = false
+                    isNullCountPossible = false,
+                    countLimit = occupancyLimit ?: 100
                 ) {
                     occupancyPrecisely.value = it
                     isSaveValid.value = isSaveValid()
@@ -324,7 +344,16 @@ fun AddTransportationConsumption(
                 Text(text = stringResource(id = R.string.home_add_consumption_transportation_distance_title))
             },
             onValueChange = {
-                distance.value = it
+
+                val isValueInCorrectFormat = viewModel.isDecimalInputValid(it)
+                if(isValueInCorrectFormat || it.isEmpty()){
+                    val valueWithCorrectDecimalPoint = if(Locale.getDefault() == Locale.US || Locale.getDefault() == Locale.UK){
+                        it.replace(",",".")
+                    } else {
+                        it.replace(".",",")
+                    }
+                    distance.value = valueWithCorrectDecimalPoint
+                }
                 isSaveValid.value = isSaveValid()
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -366,8 +395,14 @@ fun AddTransportationConsumption(
             label = {
                 Text(text = stringResource(id = R.string.home_add_consumption_form_description_title))
             },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done
+            ),
             onValueChange = {
-                description.value = it
+                if(it.length <= 5000){
+                    description.value = it
+                }
             }
         )
 

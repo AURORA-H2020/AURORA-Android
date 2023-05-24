@@ -1,5 +1,6 @@
 package eu.inscico.aurora_app.ui.screens.home.consumptions.consumptionDetails
 
+import android.icu.text.NumberFormat
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -21,6 +22,7 @@ import eu.inscico.aurora_app.model.consumptions.DistrictHeatingSource.Companion.
 import eu.inscico.aurora_app.model.consumptions.HeatingFuelType.Companion.getDisplayName
 import eu.inscico.aurora_app.model.consumptions.HeatingFuelType.Companion.getDisplayNameRes
 import eu.inscico.aurora_app.utils.CalendarUtils
+import kotlin.text.*
 
 
 @Composable
@@ -59,7 +61,7 @@ fun HeatingConsumptionDetails(
             Divider()
 
             val carbonEmissionText = if (consumption.carbonEmissions != null) {
-                "${String.format("%.1f", consumption.carbonEmissions)} kWh"
+                "${String.format("%.2f", consumption.carbonEmissions)} kWh"
             } else {
                 null
             }

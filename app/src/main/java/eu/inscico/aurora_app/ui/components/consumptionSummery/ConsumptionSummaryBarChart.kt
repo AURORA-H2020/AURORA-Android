@@ -53,7 +53,16 @@ fun ConsumptionSummaryBarChart(
 
     val yAxisValueFormatter: AxisValueFormatter<AxisPosition.Vertical.End> =
         AxisValueFormatter { value, _ ->
-            String.format("%d", value.roundToInt() ?: 0F)
+            if(value > 2F){
+                String.format("%d", value.roundToInt() ?: 0F)
+            } else if(value > 1F){
+                String.format("%.1f", value ?: 0F)
+            } else if(value > 0.1){
+                String.format("%.2f", value ?: 0F)
+            }
+            else {
+                String.format("%.3f", value ?: 0F)
+            }
         }
 
     val yAxisName = if(isCarbonEmission){
