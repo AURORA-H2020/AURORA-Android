@@ -43,6 +43,7 @@
     <string name="create_profile_drop_down_please_choose">Please choose</string>
     <string name="create_profile_city_drop_down_other_city">Other city</string>
     <string name="create_profile_country_selection_info">This information helps us to more accurately calculate your carbon footprint. Please note that you can\'t change your country later.</string>
+    <string name="create_profile_newsletter_switch_description">I would like to receive updates about the App and AURORA project by email.</string>
     <string name="profile_gender_male">male</string>
     <string name="profile_gender_female">female</string>
     <string name="profile_gender_non_binary">non binary</string>

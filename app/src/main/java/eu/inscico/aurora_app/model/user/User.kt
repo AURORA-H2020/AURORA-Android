@@ -10,7 +10,8 @@ data class User(
     val firstName: String,
     val lastName: String,
     val gender: Gender?,
-    val yearOfBirth: Int?
+    val yearOfBirth: Int?,
+    val isMarketingConsentAllowed: Boolean?
 ) {
     companion object {
         fun from(item: UserResponse?): User? {
@@ -21,7 +22,8 @@ data class User(
                 firstName = item.firstName ?: return null,
                 lastName = item.lastName ?: return null,
                 gender = parseStringToGender(item.gender),
-                yearOfBirth = item.yearOfBirth
+                yearOfBirth = item.yearOfBirth,
+                isMarketingConsentAllowed = item.isMarketingConsentAllowed
             )
         }
     }

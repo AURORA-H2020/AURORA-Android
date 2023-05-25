@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlin.reflect.full.declaredMemberProperties
 
 
 class UserService(
@@ -97,9 +98,10 @@ class UserService(
         try {
 
             val authId = _firebaseAuth.currentUser?.uid ?: return TypedResult.Failure("")
+            val userAsMap = parseUserToMap(user)
 
             // Create user doc
-            _firestore.collection(collectionName).document(authId).set(user).await()
+            _firestore.collection(collectionName).document(authId).set(userAsMap).await()
 
             getUserByAuthId(authId)
 
@@ -115,13 +117,28 @@ class UserService(
         try {
             val authId = _firebaseAuth.currentUser?.uid ?: return TypedResult.Failure("")
 
-            _firestore.collection(collectionName).document(authId).set(user).await()
+            val userAsMap = parseUserToMap(user)
+            userAsMap.remove("id")
+            _firestore.collection(collectionName).document(authId).set(userAsMap).await()
 
             getUserByAuthId(authId)
             return TypedResult.Success(true)
         } catch (e: Exception) {
             return TypedResult.Failure(e.message ?: "")
         }
+    }
+
+    private fun parseUserToMap(user: UserResponse): MutableMap<String,Any?>{
+
+        val userAsMap = mutableMapOf<String, Any?>()
+
+        user.javaClass.kotlin.declaredMemberProperties.forEach {
+            val value = it.getValue(user, it)
+            if(value != null){
+                    userAsMap[it.name] = value
+                }
+        }
+        return userAsMap
     }
 
     fun deleteUser( resultCallback: (Boolean, AccountDeletionErrorType?)-> Unit) {

@@ -1,11 +1,17 @@
 package eu.inscico.aurora_app.model.user
 
 import com.google.firebase.firestore.DocumentId
+import com.google.firebase.firestore.PropertyName
 
 data class UserResponse(
 
     @DocumentId
     var id: String? = null,
+
+
+    @get:PropertyName("isMarketingConsentAllowed")
+    @set:PropertyName("isMarketingConsentAllowed")
+    var isMarketingConsentAllowed: Boolean? = null,
 
     var city: String? = null,
     var country: String? = null,
@@ -23,7 +29,8 @@ data class UserResponse(
                 firstName = item.firstName,
                 lastName = item.lastName,
                 gender = Gender.parseGenderToString(item.gender),
-                yearOfBirth = item.yearOfBirth
+                yearOfBirth = item.yearOfBirth,
+                isMarketingConsentAllowed = item.isMarketingConsentAllowed
             )
         }
     }

@@ -32,6 +32,7 @@ import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.AppBar
 import eu.inscico.aurora_app.ui.components.FormEntry
 import eu.inscico.aurora_app.ui.components.FormEntryType
+import eu.inscico.aurora_app.ui.components.SwitchWithLabel
 import eu.inscico.aurora_app.ui.theme.primary
 import eu.inscico.aurora_app.utils.TypedResult
 import kotlinx.coroutines.CoroutineScope
@@ -73,6 +74,10 @@ fun CreateProfileScreen(
 
     val city = remember {
         mutableStateOf(viewModel.cities.value?.first())
+    }
+
+    val newsletterSwitch = remember {
+        mutableStateOf(false)
     }
 
 
@@ -166,6 +171,7 @@ fun CreateProfileScreen(
                     title = stringResource(id = R.string.create_profile_last_name_hint),
                     formEntryType = FormEntryType.TEXT_INPUT,
                     initialItem = lastName.value,
+                    readOnly = false,
                     callback = { name, _ ->
                         lastName.value = name
                     }
@@ -278,6 +284,15 @@ fun CreateProfileScreen(
 
             Spacer(modifier = Modifier.heightIn(16.dp))
 
+            SwitchWithLabel(
+                label = stringResource(id = R.string.create_profile_newsletter_switch_description),
+                state = newsletterSwitch.value,
+                onStateChange = {
+                newsletterSwitch.value = it
+            })
+
+            Spacer(modifier = Modifier.heightIn(32.dp))
+
             Button(
                 modifier = Modifier
                     .padding(horizontal = 32.dp)
@@ -292,7 +307,8 @@ fun CreateProfileScreen(
                             firstName = firstName.value,
                             lastName = lastName.value,
                             gender = Gender.parseGenderToString(gender.value),
-                            yearOfBirth = birthYear.value.toIntOrNull()
+                            yearOfBirth = birthYear.value.toIntOrNull(),
+                            isMarketingConsentAllowed = newsletterSwitch.value
                         )
                         CoroutineScope(Dispatchers.IO).launch {
                         val result = viewModel.createUser(user)

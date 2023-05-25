@@ -193,7 +193,8 @@ fun EditProfileScreen(
                             firstName = firstName.value,
                             lastName = lastName.value,
                             gender = Gender.parseGenderToString(gender.value),
-                            yearOfBirth = birthYear.value.toIntOrNull()
+                            yearOfBirth = birthYear.value.toIntOrNull(),
+                            isMarketingConsentAllowed = currentUserLive.value?.isMarketingConsentAllowed
                         )
                         CoroutineScope(Dispatchers.IO).launch {
                             val result = viewModel.updateUser(updatedUser)
