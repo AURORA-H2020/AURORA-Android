@@ -24,6 +24,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+            multiDexEnabled true
+            applicationIdSuffix '.debug'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
