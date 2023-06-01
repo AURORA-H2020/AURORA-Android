@@ -86,8 +86,9 @@ val viewModelModule = module {
     )
     }
 
-    viewModel {
+    viewModel { (handle: SavedStateHandle) ->
         ConsumptionSummaryViewModel(
+            savedStateHandle = handle,
             _consumptionSummaryService = get()
         )
     }

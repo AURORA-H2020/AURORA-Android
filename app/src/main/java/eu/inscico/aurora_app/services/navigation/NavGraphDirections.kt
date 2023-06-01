@@ -140,10 +140,13 @@ sealed class NavGraphDirections(
         route = "consumptionSummary",
         content = {
             ConsumptionSummaryScreen()
-        }
+        },
+        args = listOf(
+            NavArg(name = "toEnergyExpendedTab", type = NavType.BoolType)
+        )
     ) {
-        fun getNavRoute(): String {
-            return route
+        fun getNavRoute(toEnergyExpendedTab: Boolean = false): String {
+            return "consumptionSummary/${toEnergyExpendedTab}"
         }
     }
 

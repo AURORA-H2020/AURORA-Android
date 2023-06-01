@@ -2,10 +2,7 @@ package eu.inscico.aurora_app.ui.components.consumptionSummery
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -86,8 +83,8 @@ fun OverallConsumptionSummaryLabel(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
+                        .height(IntrinsicSize.Min) //intrinsic measurements
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp)
                 ) {
 
                     Column(
@@ -99,28 +96,19 @@ fun OverallConsumptionSummaryLabel(
                         Text(
                             text = "$year",
                             style = MaterialTheme.typography.titleMedium,
-                            color = textColor
+                            color = textColor,
+                            textAlign = TextAlign.Center
                         )
                         Text(
                             text = stringResource(id = label?.getLabelNameRes() ?: R.string.home_your_carbon_emissions_label_empty_title),
                             style = MaterialTheme.typography.labelLarge,
-                            color = textColor
-                        )
-                    }
-
-
-                    Column(
-                        modifier = Modifier.weight(0.1F),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        Text(
-                            text = "|",
                             color = textColor,
-                            style = MaterialTheme.typography.headlineSmall,
-                            modifier = Modifier.padding(bottom = 6.dp)
+                            textAlign = TextAlign.Center
                         )
                     }
+
+                    Divider(modifier = Modifier.fillMaxHeight().padding(horizontal = 4.dp)
+                        .width(1.dp), thickness = 2.dp, color = textColor)
 
                     Column(
                         modifier = Modifier.weight(0.45F),

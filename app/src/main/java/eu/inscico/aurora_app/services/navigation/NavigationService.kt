@@ -132,8 +132,8 @@ class NavigationService {
         navControllerTabHome?.navigate(navDirection)
     }
 
-    fun toConsumptionSummary() {
-        val navDirection = NavGraphDirections.ConsumptionSummary.getNavRoute()
+    fun toConsumptionSummary(toEnergyExpendedTab: Boolean = false) {
+        val navDirection = NavGraphDirections.ConsumptionSummary.getNavRoute(toEnergyExpendedTab)
         navControllerTabHome?.navigate(navDirection)
     }
 

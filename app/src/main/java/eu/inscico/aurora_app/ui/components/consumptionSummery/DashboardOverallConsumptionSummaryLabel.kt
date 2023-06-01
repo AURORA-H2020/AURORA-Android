@@ -1,6 +1,7 @@
 package eu.inscico.aurora_app.ui.components.consumptionSummery
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -29,7 +30,8 @@ fun DashboardConsumptionSummaryLabel(
     carbonValue: Double,
     carbonLabel: EnergyLabel,
     energyValue: Double,
-    energyLabel: EnergyLabel
+    energyLabel: EnergyLabel,
+    onLabelClicked: (isEnergyLabelClicked: Boolean) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -69,7 +71,9 @@ fun DashboardConsumptionSummaryLabel(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .clip(RoundedCornerShape(16.dp))
-                .background(carbonLabel.getLabelColor()).weight(0.49F),
+                .background(carbonLabel.getLabelColor()).weight(0.49F).clickable {
+                    onLabelClicked.invoke(false)
+                }
         ) {
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -102,7 +106,9 @@ fun DashboardConsumptionSummaryLabel(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .clip(RoundedCornerShape(16.dp))
-                .background(energyLabel.getLabelColor()).weight(0.49F)
+                .background(energyLabel.getLabelColor()).weight(0.49F).clickable {
+                    onLabelClicked.invoke(true)
+                }
         ) {
             Spacer(modifier = Modifier.height(8.dp))
 

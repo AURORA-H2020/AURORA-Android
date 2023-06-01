@@ -1,5 +1,6 @@
 package eu.inscico.aurora_app.ui.screens.home.consumptionSummary
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.patrykandpatrick.vico.core.entry.ChartEntryModel
 import com.patrykandpatrick.vico.core.entry.FloatEntry
@@ -9,8 +10,11 @@ import eu.inscico.aurora_app.model.consumptions.ConsumptionType
 import eu.inscico.aurora_app.services.firebase.ConsumptionSummaryService
 
 class ConsumptionSummaryViewModel(
+    savedStateHandle: SavedStateHandle,
     private val _consumptionSummaryService: ConsumptionSummaryService
 ) : ViewModel() {
+
+    val isEnergyExpendedTab: Boolean = savedStateHandle["toEnergyExpendedTab"] ?: false
 
     val allConsumptionSummariesLive = _consumptionSummaryService.consumptionSummariesLive
 

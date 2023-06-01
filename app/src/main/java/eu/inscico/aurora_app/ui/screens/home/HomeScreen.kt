@@ -98,7 +98,9 @@ fun HomeScreen(
                         carbonLabel = carbonLabel,
                         energyValue = energyValue,
                         energyLabel = energyLabel
-                    )
+                    ) {
+                        navigationService.toConsumptionSummary(it)
+                    }
                 }
 
                 Column(

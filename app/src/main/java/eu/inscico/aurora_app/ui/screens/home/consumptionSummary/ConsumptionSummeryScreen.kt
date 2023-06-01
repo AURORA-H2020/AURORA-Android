@@ -45,7 +45,7 @@ fun ConsumptionSummaryScreen(
 ) {
 
     val coroutineScope = rememberCoroutineScope()
-    val pagerState = rememberPagerState(initialPage = 0)
+    val pagerState = rememberPagerState(initialPage = if(viewModel.isEnergyExpendedTab){ 1 } else { 0 })
 
     val allConsumptionSummaries = viewModel.allConsumptionSummariesLive.observeAsState()
 
@@ -60,7 +60,7 @@ fun ConsumptionSummaryScreen(
 
 
     val isCarbonEmissions = remember {
-        mutableStateOf(true)
+        mutableStateOf(!viewModel.isEnergyExpendedTab)
     }
 
     val isBarChartVisible = remember {

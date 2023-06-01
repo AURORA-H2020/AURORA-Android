@@ -95,7 +95,8 @@ fun ConsumptionSummaryLabel(
             Button(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Min),
                 enabled = label != null,
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = label?.getLabelColor() ?: MaterialTheme.colorScheme.surfaceVariant),
@@ -120,13 +121,10 @@ fun ConsumptionSummaryLabel(
                             colorFilter = ColorFilter.tint(textColor)
                         )
 
-                        Text(
-                            text = "|",
-                            color = textColor,
-                            style = MaterialTheme.typography.headlineSmall,
-                            modifier = Modifier.padding(bottom = 6.dp)
-                        )
                     }
+
+                    Divider(modifier = Modifier.fillMaxHeight().padding(horizontal = 4.dp)
+                        .width(1.dp), color = textColor)
 
                     Row(
                         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -137,7 +135,8 @@ fun ConsumptionSummaryLabel(
                             text = stringResource(id = label?.getLabelNameRes() ?: R.string.home_your_carbon_emissions_label_empty_title),
                             style = MaterialTheme.typography.labelLarge,
                             color = textColor,
-                            modifier = Modifier
+                            modifier = Modifier,
+                            textAlign = TextAlign.Center
                         )
                     }
                 }
