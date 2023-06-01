@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -109,7 +110,7 @@ fun UpdatePasswordScreen(
                         Text(text = stringResource(id = R.string.settings_change_password_old_password_title))
                     },
                     visualTransformation = if (oldPasswordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
                     trailingIcon = {
                         val image = if (oldPasswordVisible.value)
                             R.drawable.outline_visibility_24
@@ -141,7 +142,7 @@ fun UpdatePasswordScreen(
                         Text(text = stringResource(id = R.string.settings_change_password_new_password_title))
                     },
                     visualTransformation = if (newPasswordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
                     trailingIcon = {
                         val image = if (newPasswordVisible.value)
                             R.drawable.outline_visibility_24
@@ -199,7 +200,7 @@ fun UpdatePasswordScreen(
                         Text(text = stringResource(id = R.string.settings_change_password_new_password_confirm_title))
                     },
                     visualTransformation = if (newPasswordConfirmVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
                     trailingIcon = {
                         val image = if (newPasswordConfirmVisible.value)
                             R.drawable.outline_visibility_24

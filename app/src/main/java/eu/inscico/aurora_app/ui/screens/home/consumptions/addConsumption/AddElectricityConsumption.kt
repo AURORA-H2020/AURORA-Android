@@ -135,7 +135,7 @@ fun AddElectricityConsumption(
                 }
                 isSaveValid.value = isValueInCorrectFormat && it.replace(",",".").toDoubleOrNull() != null
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
             trailingIcon = {
                 Text(text = "kWh")
             }
@@ -223,7 +223,7 @@ fun AddElectricityConsumption(
                     costs.value = valueWithCorrectDecimalPoint
                 }
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
             trailingIcon = {
                 Text(text = "€")
             }

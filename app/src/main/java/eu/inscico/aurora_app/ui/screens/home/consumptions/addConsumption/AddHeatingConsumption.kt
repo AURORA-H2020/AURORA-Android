@@ -133,7 +133,7 @@ fun AddHeatingConsumption(
                 consumption.value = it
                 isSaveValid.value = isSaveValid()
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
             trailingIcon = { Text(text = "kWh") }
         )
 
@@ -276,7 +276,7 @@ fun AddHeatingConsumption(
                     costs.value = valueWithCorrectDecimalPoint
                 }
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
             trailingIcon = {
                 Text(text = "€")
             }
