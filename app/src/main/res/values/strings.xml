@@ -1,12 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="app_name" translatable="false">AURORA Energy Tracker</string>
     <string name="google_auth_server_client_id" translatable="false">388054164645-sts6oh4kjnpb99onqdp62cpn964nhl9t.apps.googleusercontent.com</string>
-
     <string name="bottom_bar_tab_home" translatable="false">Home</string>
     <string name="bottom_bar_tab_photovoltaic">Solar Power</string>
     <string name="bottom_bar_tab_settings">Settings</string>
-
-    <!-- General -->
+    <!--General-->
     <string name="cancel">Cancel</string>
     <string name="okay">Okay</string>
     <string name="form_spinner_item_please_chose">Please choose</string>
@@ -16,8 +15,7 @@
     <string name="no_value_to_display" translatable="false">-</string>
     <string name="delete">delete</string>
     <string name="reset">Reset</string>
-
-    <!-- Login/Create Profile -->
+    <!--Login/Create Profile-->
     <string name="login_aurora_title">Welcome to AURORA</string>
     <string name="login_aurora_description">Empowering a new generation of near zero-emission citizens</string>
     <string name="login_google_sign_in_button_text">Sign in with Google</string>
@@ -28,7 +26,6 @@
     <string name="login_privacy_policy_text_terms_of_service_text">Terms of Service</string>
     <string name="login_privacy_policy_text_and_part">and</string>
     <string name="login_privacy_policy_text_privacy_policy_text">Privacy policy</string>
-
     <string name="create_profile_title">Create your profile</string>
     <string name="profile_title">Profile</string>
     <string name="logout_button_title">Logout</string>
@@ -61,10 +58,9 @@
     <string name="sign_in_with_email_tab_register_password_requirement_at_least_one_number">- At least one number.</string>
     <string name="sign_in_with_email_tab_register_password_requirement_at_least_one_uppercase_letter">- At least one uppercase letter.</string>
     <string name="sign_in_with_email_tab_register_password_confirmation_doesnt_match">- Password confirmation does not match.</string>
-
-    <!-- Home -->
+    <!--Home-->
     <string name="home_dashboard_title">Dashboard</string>
-    <string name="home_your_carbon_footprint_title">Your carbon footprint</string>
+    <string name="home_your_carbon_footprint_title">Your performance</string>
     <string name="home_energy_lables_title">View your energy labels</string>
     <string name="home_add_consumption_button_title">Add a consumption</string>
     <string name="home_learn_more_title">Learn more</string>
@@ -78,7 +74,6 @@
     <string name="home_consumptions_show_all_entries_button_title">Show all entries</string>
     <string name="home_consumptions_all_entries_title">All consumption entries</string>
     <string name="home_add_consumption_title">Add consumption</string>
-
     <string name="home_add_consumption_form_consumption_title">Consumption</string>
     <string name="home_add_consumption_form_electricity_consumption_description_title">You can find this information in your electricity bill.</string>
     <string name="home_add_consumption_form_heating_consumption_description_title">You can find this information in your heating bill.</string>
@@ -92,8 +87,6 @@
     <string name="home_add_consumption_form_description_title">Description</string>
     <string name="home_add_consumption_form_description_info_text_title">You may add a description to your entry to help you find it later.</string>
     <string name="home_add_consumption_form_heating_fuel_type_title">Select your type of heating. You can find this information on your heating bill.</string>
-
-
     <string name="home_add_consumption_heating_fuel_title">Heating fuel</string>
     <string name="heating_fuel_type_oil_title">Oil</string>
     <string name="heating_fuel_type_natural_gas_title">Natural gas</string>
@@ -104,7 +97,6 @@
     <string name="heating_fuel_type_solar_thermal_title">Solar thermal</string>
     <string name="heating_fuel_type_district_title">District</string>
     <string name="heating_fuel_type_electric_title">Electric</string>
-
     <string name="home_add_consumption_district_heating_source_title">District heating source</string>
     <string name="district_heating_source_type_coal_title">Coal</string>
     <string name="district_heating_source_type_natural_gas_title">Natural gas</string>
@@ -115,7 +107,6 @@
     <string name="district_heating_source_type_biomass_title">Biomass</string>
     <string name="district_heating_source_type_waste_treatment_title">Waste treatment</string>
     <string name="district_heating_source_type_default_title">Default</string>
-
     <string name="home_add_consumption_transportation_type_title">Transportation type</string>
     <string name="home_add_consumption_transportation_type_section_cars_and_bikes_title">Cars &amp; Motorcycles</string>
     <string name="home_add_consumption_transportation_type_section_busses_title">Busses</string>
@@ -141,7 +132,6 @@
     <string name="home_add_consumption_transportation_type_item_electric_scooter_title">Electric scooter</string>
     <string name="home_add_consumption_transportation_type_item_bike_title">Bike</string>
     <string name="home_add_consumption_transportation_type_item_walking_title">Walking</string>
-
     <string name="home_add_consumption_transportation_public_occupancy_with_count_title">Occupancy: %1$d</string>
     <string name="home_add_consumption_transportation_public_occupancy_title">Occupancy</string>
     <string name="home_add_consumption_transportation_public_occupancy_almost_empty_title">Almost empty</string>
@@ -150,7 +140,6 @@
     <string name="home_add_consumption_transportation_distance_title">Distance</string>
     <string name="home_add_consumption_transportation_start_of_travel_title">Start of travel</string>
     <string name="home_add_consumption_carbon_emissions_title">Carbon emissions</string>
-
     <string name="home_your_carbon_emissions_labels_title">Your carbon emissions labels</string>
     <string name="home_your_carbon_emissions_labels_tab_carbon_emission_title">Carbon emissions</string>
     <string name="home_your_carbon_emissions_labels_tab_energy_used_title">Energy used</string>
@@ -175,12 +164,10 @@
     <string name="home_your_carbon_emissions_bar_chart_label_energy_expended_title">kWh</string>
     <string name="home_your_carbon_emissions_labels_value_used_with_year_title">%1$s kWh in %2$d</string>
     <string name="home_your_carbon_emissions_label_empty_title">No consumption entered yet (?)</string>
-
-
-    <!-- Settings -->
+    <!--Settings-->
     <string name="settings_app_bar_title">Settings</string>
     <string name="settings_profile_section_title">Account</string>
-    <string name="settings_profile_edit_profile_title">Edit profile </string>
+    <string name="settings_profile_edit_profile_title">"Edit profile "</string>
     <string name="settings_profile_change_password_title">Change password</string>
     <string name="settings_profile_change_email_title">Change email</string>
     <string name="settings_profile_logout_title">Logout</string>
@@ -233,7 +220,7 @@
     <string name="settings_notifications_month_september_title">September</string>
     <string name="settings_notifications_month_october_title">October</string>
     <string name="settings_notifications_month_november_title">November</string>
-    <string name="settings_notifications_time_display_title">Uhrzeit auswählen</string>
+    <string name="settings_notifications_time_display_title">Select time</string>
     <string name="settings_notifications_electricity_description">We can remind you to enter your electricity consumption based on your bill. Just let us know when you expect the next one.</string>
     <string name="settings_notifications_heating_description">We can remind you to enter your energy consumption based on your bill. Just let us know when you expect the next one.</string>
     <string name="settings_notifications_mobility_description">We can remind you to regulary enter your transportation data. Just let us know how frequently you travel.</string>
@@ -250,11 +237,10 @@
     <string name="settings_section_feature_preview_track_energy_description">Once our solar installations go live in each demo site you can track the energy production right from the app.</string>
     <string name="settings_section_feature_preview_data_overview_description">Get an overview of your latest submitted data, pending entry requests, and how you can improve your carbon footprint accuracy.</string>
     <string name="settings_section_feature_preview_profile_data_description">We are working on expanding your profile data with the addition of households, personalised vehicles, energy sources, and more.</string>
-    <string name="settings_section_project_info_text"> has received funding from the European Union\'s Horizon 2020 research and innovation programme under grant agreement Nr. </string>
+    <string name="settings_section_project_info_text">" has received funding from the European Union\'s Horizon 2020 research and innovation programme under grant agreement Nr. "</string>
     <string name="settings_section_project_text">This project</string>
     <string name="settings_section_project_number_text" translatable="false">101036418</string>
-
-    <!-- Solar power -->
+    <!--Solar power-->
     <string name="solar_power_title">Your solar power</string>
     <string name="solar_power_description">You can soon reduce your carbon footprint by investing into your local AURORA photovoltaic installation. Until then, you can already test here, by how much your footprint would be reduced, depending on your potential investment.</string>
     <string name="solar_power_investment_title">Investment</string>
@@ -275,17 +261,14 @@
     <string name="solar_power_investment_result_value_unit_kwh_title">%1$s kWh</string>
     <string name="solar_power_investment_result_your_investment_title">Your investment</string>
     <string name="solar_power_investment_result_annual_energy_production_title">Annual energy production</string>
-
-
-    <!-- Dialogs -->
+    <!--Dialogs-->
     <string name="dialog_settings_logout_title">Are you sure you want to logout?</string>
     <string name="dialog_consumption_delete_title">Are you sure you want to delete the entry?</string>
     <string name="dialog_account_delete_title">Are you sure you want to delete your account?</string>
     <string name="dialog_account_delete_reauthenticate_info_title">You may need to re-authenticate to perform this action.</string>
     <string name="dialog_account_delete_description">Please enter your password to delete your account.</string>
     <string name="dialog_sign_in_with_email_tab_login_forgot_password_send_email">You will shortly receive an email to reset your password.</string>
-
-    <!-- User Feedback -->
+    <!--User Feedback-->
     <string name="login_email_fail_message">An error occurred while trying to login. Please check your inputs and try again.</string>
     <string name="login_email_register_fail_message">An error occurred while trying to create a new account. Please check your inputs and try again.</string>
     <string name="login_create_profile_fail_message">An error occurred while trying to create a new profile. Please check your inputs and try again.</string>
