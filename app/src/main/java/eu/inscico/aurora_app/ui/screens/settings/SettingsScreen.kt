@@ -442,14 +442,14 @@ fun SettingsScreen(
                     )
                 }
 
-                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 16.dp)) {
+                Row(verticalAlignment = Alignment.Top, modifier = Modifier.padding(horizontal = 16.dp)) {
 
                     Image(
                         painterResource(id = R.drawable.european_flag),
-                        modifier = Modifier,
+                        modifier = Modifier.padding(top = 4.dp),
                         contentDescription = "",
                     )
-                    Row(modifier = Modifier.padding(4.dp)) {
+                    Row(modifier = Modifier.padding(start = 4.dp)) {
 
                         val annotatedString = buildAnnotatedString {
 
@@ -484,6 +484,7 @@ fun SettingsScreen(
                         )
 
                         ClickableText(
+                            modifier = Modifier.align(Alignment.Top),
                             text = annotatedString,
                             style = textStyle,
                             onClick = { offset ->
