@@ -256,10 +256,12 @@ fun HomeScreen(
                         Image(
                             modifier = Modifier
                                 .size(100.dp)
-                                .padding(vertical = 16.dp),
+                                .padding(vertical = 16.dp).clickable {
+                                    navigationService.toAddConsumption()
+                                },
                             painter = painterResource(id = R.drawable.outline_add_circle_outline_24),
                             contentDescription = "",
-                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.outlineVariant)
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.outline)
                         )
 
                         Text(
@@ -279,16 +281,6 @@ fun HomeScreen(
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
-
-                        Button(
-                            modifier = Modifier.padding(vertical = 24.dp),
-                            onClick = {
-                                navigationService.toAddConsumption()
-                            },
-                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.outline)
-                        ) {
-                            Text(text = stringResource(id = R.string.home_consumptions_add_first_title))
-                        }
                     }
                 }
             }
