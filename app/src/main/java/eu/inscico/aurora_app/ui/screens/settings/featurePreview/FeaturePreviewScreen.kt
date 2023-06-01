@@ -51,7 +51,7 @@ fun FeaturePreviewScreen(
     )
 
     val isDescriptionVisible = remember {
-        mutableStateOf(false)
+        mutableStateOf(true)
     }
 
     Column(
