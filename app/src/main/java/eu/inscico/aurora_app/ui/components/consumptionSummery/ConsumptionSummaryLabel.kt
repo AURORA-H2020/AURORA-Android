@@ -96,7 +96,8 @@ fun ConsumptionSummaryLabel(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .fillMaxWidth()
-                    .height(IntrinsicSize.Min),
+                    .defaultMinSize(minHeight = 50.dp)
+                    .height(IntrinsicSize.Max),
                 enabled = label != null,
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = label?.getLabelColor() ?: MaterialTheme.colorScheme.surfaceVariant),

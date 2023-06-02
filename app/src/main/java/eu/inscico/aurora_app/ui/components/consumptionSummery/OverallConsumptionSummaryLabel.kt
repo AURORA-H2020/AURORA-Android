@@ -64,7 +64,6 @@ fun OverallConsumptionSummaryLabel(
             )
         }
 
-
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
@@ -72,8 +71,10 @@ fun OverallConsumptionSummaryLabel(
 
             Button(
                 modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .fillMaxWidth(),
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Max)
+                    .defaultMinSize(minHeight = 80.dp),
                 enabled = label != null,
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = label?.getLabelColor() ?: MaterialTheme.colorScheme.surfaceVariant),
@@ -83,7 +84,6 @@ fun OverallConsumptionSummaryLabel(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .height(IntrinsicSize.Min) //intrinsic measurements
                         .fillMaxWidth()
                 ) {
 
