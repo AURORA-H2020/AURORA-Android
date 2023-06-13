@@ -33,17 +33,23 @@ class UserFeedbackService(private val _context: Context) {
     var dialogMessage: String? = null
     var dialogConfirmButtonText: String? = null
     var dialogConfirmButtonCallback: () -> Unit = {}
+    var dialogDismissButtonText: String? = null
+    var dialogDismissButtonCallback: () -> Unit = {}
 
     fun showDialog(
         message: String,
         title: String? = null,
         confirmButtonText: String? = null,
-        confirmButtonCallback: () -> Unit = {}
+        confirmButtonCallback: () -> Unit = {},
+        dismissButtonText: String? = null,
+        dismissButtonCallback: () -> Unit = {}
     ) {
         dialogTitle = title
         dialogMessage = message
         dialogConfirmButtonText = confirmButtonText
         dialogConfirmButtonCallback = confirmButtonCallback
+        dialogDismissButtonText = dismissButtonText
+        dialogDismissButtonCallback = dismissButtonCallback
 
         _showDialog.value = true
     }
@@ -77,10 +83,13 @@ class UserFeedbackService(private val _context: Context) {
                 }
             },
             dismissButton = {
-                TextButton(onClick = {
-                    _showDialog.value = false
-                }) {
-                    Text(text = stringResource(id = eu.inscico.aurora_app.R.string.cancel))
+                if (dialogDismissButtonText != null) {
+                    TextButton(onClick = {
+                        dialogDismissButtonCallback.invoke()
+                        _showDialog.value = false
+                    }) {
+                        Text(text = dialogDismissButtonText ?: "")
+                    }
                 }
             }
         )

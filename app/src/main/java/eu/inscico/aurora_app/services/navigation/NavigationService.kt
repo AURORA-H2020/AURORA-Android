@@ -148,5 +148,9 @@ class NavigationService {
         navControllerTabHome?.navigate(navDirection)
     }
 
+    fun toRecurringConsumptionDetails(id: String) {
+        val navDirection = NavGraphDirections.RecurringConsumptionDetails.getNavRoute(id)
+        navControllerTabHome?.navigate(navDirection)
+    }
     // endregion
 }

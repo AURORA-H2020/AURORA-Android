@@ -26,13 +26,14 @@ import eu.inscico.aurora_app.ui.components.forms.SpinnerItem
 
 @Composable
 fun FrequencySpinner(
+    initialValues: RecurringConsumptionFrequency?,
     callback: (RecurringConsumptionFrequency) -> Unit
 ) {
 
     val context = LocalContext.current
 
     val intervalUnit = rememberSaveable {
-        mutableStateOf(RecurringConsumptionIntervalUnit.DAILY)
+        mutableStateOf(initialValues?.unit ?: RecurringConsumptionIntervalUnit.DAILY)
     }
 
     val allWeekdays = rememberSaveable {
@@ -43,25 +44,24 @@ fun FrequencySpinner(
     }
 
     val selectedWeekdays = rememberSaveable {
-        mutableStateOf<List<MultiSelectEntry<*>>?>(null)
+        mutableStateOf<List<MultiSelectEntry<*>>?>(
+            initialValues?.weekdays?.sortedBy { it }?.map {
+                MultiSelectEntry(name = it.getDisplayName(context), data = it, isSelected = false)
+            })
     }
 
     val unitMonthlyDay = rememberSaveable {
-        mutableStateOf<Int?>(null)
+        mutableStateOf<Int?>(initialValues?.dayOfMonth)
     }
 
     val allSelectableUnits = RecurringConsumptionIntervalUnit.getIntervalUnitList().map {
         SpinnerItem.Entry(name = it.getDisplayName(context), data = it)
     }
 
-    val selectedUnit = if (intervalUnit.value != null) {
-        SpinnerItem.Entry(
-            name = intervalUnit.value!!.getDisplayName(context),
+    val selectedUnit = SpinnerItem.Entry(
+            name = intervalUnit.value.getDisplayName(context),
             data = intervalUnit.value
         )
-    } else {
-        null
-    }
 
     Column(
         Modifier

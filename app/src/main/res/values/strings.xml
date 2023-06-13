@@ -15,6 +15,7 @@
     <string name="no_value_to_display" translatable="false">-</string>
     <string name="delete">delete</string>
     <string name="reset">Reset</string>
+    <string name="discard">Discard</string>
     <!--Login/Create Profile-->
     <string name="login_aurora_title">Welcome to AURORA</string>
     <string name="login_aurora_description">Empowering a new generation of near zero-emission citizens</string>
@@ -174,6 +175,9 @@
     <string name="home_recurring_consumptions_frequency_weekly_title">Weekly</string>
     <string name="home_recurring_consumptions_frequency_monthly_title">Monthly</string>
     <string name="home_recurring_consumptions_frequency_weekly_weekday_title">Weekdays</string>
+    <string name="home_recurring_consumptions_list_item_enabled_title">Enabled</string>
+    <string name="home_recurring_consumptions_list_item_disabled_title">Disabled</string>
+    <string name="home_recurring_consumptions_update_title">Edit</string>
     <!--Settings-->
     <string name="settings_app_bar_title">Settings</string>
     <string name="settings_profile_section_title">Account</string>
@@ -288,6 +292,8 @@
     <string name="settings_delete_account_fail_message">An error occurred while trying to delete your account.</string>
     <string name="settings_delete_consumption_entry_fail_message">An error occurred while trying to delete this entry.</string>
     <string name="settings_add_consumption_entry_fail_message">An error occurred while trying to create this entry.</string>
+    <string name="recurring_consumption_update_entry_fail_message">An error occurred while trying to update this entry.</string>
     <string name="settings_update_profile_fail_message">An error occurred while trying to update your profile.</string>
     <string name="consumption_summary_empty_list_info">Your carbon emissions labels are currently not available.</string>
+    <string name="recurring_consumption_update_save_unsaved_changes_dialog_title">Do you want to exit edit mode? Changes that have not been saved will be lost.</string>
 </resources>

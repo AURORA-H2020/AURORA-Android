@@ -35,7 +35,7 @@ import eu.inscico.aurora_app.ui.components.forms.AddSubtractCountFormEntry
 import eu.inscico.aurora_app.ui.components.forms.SpinnerFormEntry
 import eu.inscico.aurora_app.ui.components.forms.SpinnerItem
 import eu.inscico.aurora_app.ui.components.timePicker.TimePickerDialog
-import eu.inscico.aurora_app.ui.screens.home.recurringConsumptions.AddRecurringConsumptionViewModel
+import eu.inscico.aurora_app.ui.screens.home.recurringConsumptions.AddOrUpdateRecurringConsumptionViewModel
 import eu.inscico.aurora_app.utils.CalendarUtils
 import org.koin.androidx.compose.koinViewModel
 import java.util.*
@@ -44,7 +44,7 @@ import java.util.*
 @Composable
 fun AddTransportationRecurringConsumptionScreen(
     initialValues: RecurringConsumptionTransportationData? = null,
-    viewModel: AddRecurringConsumptionViewModel = koinViewModel(),
+    viewModel: AddOrUpdateRecurringConsumptionViewModel = koinViewModel(),
     callback: (RecurringConsumptionTransportationData?) -> Unit
 ) {
 

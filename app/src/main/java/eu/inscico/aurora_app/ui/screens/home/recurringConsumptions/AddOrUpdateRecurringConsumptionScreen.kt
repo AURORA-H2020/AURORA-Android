@@ -1,6 +1,5 @@
 package eu.inscico.aurora_app.ui.screens.home.recurringConsumptions
 
-import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -27,11 +27,11 @@ import eu.inscico.aurora_app.model.recurringConsumption.*
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.AppBar
+import eu.inscico.aurora_app.ui.components.SwitchWithLabel
 import eu.inscico.aurora_app.ui.components.forms.SpinnerFormEntry
 import eu.inscico.aurora_app.ui.components.forms.SpinnerItem
 import eu.inscico.aurora_app.ui.components.recurringConsumptions.FrequencySpinner
 import eu.inscico.aurora_app.ui.screens.home.recurringConsumptions.transportation.AddTransportationRecurringConsumptionScreen
-import eu.inscico.aurora_app.utils.CalendarUtils
 import eu.inscico.aurora_app.utils.TypedResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,10 +43,9 @@ import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddRecurringConsumptionScreen(
-    initialValues: RecurringConsumption? = null,
+fun AddOrUpdateRecurringConsumptionScreen(
     navigationService: NavigationService = get(),
-    viewModel: AddRecurringConsumptionViewModel = koinViewModel(),
+    viewModel: AddOrUpdateRecurringConsumptionViewModel = koinViewModel(),
     userFeedbackService: UserFeedbackService = get()
 ) {
 
@@ -57,7 +56,7 @@ fun AddRecurringConsumptionScreen(
     }
 
     val isActive = remember {
-        mutableStateOf(initialValues?.isEnabled ?: false)
+        mutableStateOf(viewModel.initialValues?.isEnabled ?: false)
     }
 
     val showAddTransportationRecurringConsumption = rememberSaveable {
@@ -65,15 +64,15 @@ fun AddRecurringConsumptionScreen(
     }
 
     val description = remember {
-        mutableStateOf(initialValues?.description ?: "")
+        mutableStateOf(viewModel.initialValues?.description ?: "")
     }
 
     val transportationData = remember {
-        mutableStateOf(initialValues?.transportation)
+        mutableStateOf(viewModel.initialValues?.transportation)
     }
 
     val frequency = remember {
-        mutableStateOf(initialValues?.frequency)
+        mutableStateOf(viewModel.initialValues?.frequency)
     }
 
     val isInputSavable = remember {
@@ -90,14 +89,94 @@ fun AddRecurringConsumptionScreen(
         return frequency.value != null && transportationData.value != null && consumptionType.value != null
     }
 
-    when(consumptionType.value){
+    when (consumptionType.value) {
         ConsumptionType.ELECTRICITY -> {}
         ConsumptionType.HEATING -> {}
         ConsumptionType.TRANSPORTATION -> {
-            showAddTransportationRecurringConsumption.value = !showAddTransportationRecurringConsumption.value
+            showAddTransportationRecurringConsumption.value =
+                !showAddTransportationRecurringConsumption.value
         }
         null -> {}
     }
+
+    val errorMessage = if (viewModel.initialValues == null) {
+        stringResource(id = R.string.settings_add_consumption_entry_fail_message)
+    } else {
+        stringResource(id = R.string.recurring_consumption_update_entry_fail_message)
+    }
+
+    fun createRecurringConsumptionResponse(): RecurringConsumptionResponse? {
+        val descriptionValue = description.value.ifEmpty {
+            null
+        }
+        val categoryValue = ConsumptionType.parseConsumptionTypeToString(consumptionType.value)
+        val createdAtValue =
+            viewModel.initialValues?.createdAt ?: Timestamp(Date(System.currentTimeMillis()))
+        val transportationDataValue =
+            RecurringConsumptionTransportationDataResponse.from(transportationData.value)
+        val isActiveValue = isActive.value
+        val frequencyValue = RecurringConsumptionFrequencyResponse.from(frequency.value)
+
+
+        val recurringConsumptionResponse =
+            if (categoryValue != null && transportationDataValue != null && frequencyValue != null) {
+
+                RecurringConsumptionResponse(
+                    category = categoryValue,
+                    description = descriptionValue,
+                    createdAt = createdAtValue,
+                    transportation = transportationDataValue,
+                    isEnabled = isActiveValue,
+                    frequency = frequencyValue
+                )
+            } else {
+                null
+            }
+        return recurringConsumptionResponse
+    }
+
+    fun sendAddOrUpdateRecurringConsumptionRequest(recurringConsumptionResponse: RecurringConsumptionResponse?){
+        if (recurringConsumptionResponse != null) {
+            CoroutineScope(Dispatchers.IO).launch {
+
+                val result = if (viewModel.initialValues != null) {
+                    recurringConsumptionResponse.id = viewModel.initialValues.id
+                    viewModel.updateRecurringConsumption(
+                        recurringConsumptionResponse
+                    )
+                } else {
+                    viewModel.createRecurringConsumption(
+                        recurringConsumptionResponse
+                    )
+                }
+                when (result) {
+                    is TypedResult.Failure -> {
+                        userFeedbackService.showSnackbar(errorMessage)
+                    }
+                    is TypedResult.Success -> {
+                        withContext(Dispatchers.Main) {
+                            navigationService.navControllerTabHome?.popBackStack()
+                        }
+                    }
+                }
+            }
+        } else {
+            userFeedbackService.showSnackbar(errorMessage)
+        }
+    }
+
+    val appBarText = if (viewModel.initialValues != null) {
+        stringResource(id = R.string.home_recurring_consumptions_update_title)
+    } else {
+        stringResource(id = R.string.home_recurring_consumptions_add_button_title)
+    }
+
+    val toggleActivationTitle = if (isActive.value) {
+        stringResource(id = R.string.home_recurring_consumptions_list_item_enabled_title)
+    } else {
+        stringResource(id = R.string.home_recurring_consumptions_list_item_disabled_title)
+    }
+
 
     Column(
         Modifier
@@ -106,10 +185,25 @@ fun AddRecurringConsumptionScreen(
     ) {
 
         AppBar(
-            title = stringResource(id = R.string.home_recurring_consumptions_add_button_title),
+            title = appBarText,
             hasBackNavigation = true,
             backNavigationCallback = {
-                navigationService.navControllerTabHome?.popBackStack()
+                if(viewModel.initialValues != null) {
+                    userFeedbackService.showDialog(
+                        message = context.getString(R.string.recurring_consumption_update_save_unsaved_changes_dialog_title),
+                        confirmButtonText = context.getString(R.string.settings_edit_profile_submit_button_title),
+                        confirmButtonCallback = {
+                            val recurringConsumptionResponse = createRecurringConsumptionResponse()
+                            sendAddOrUpdateRecurringConsumptionRequest(recurringConsumptionResponse = recurringConsumptionResponse)
+                        },
+                        dismissButtonText = context.getString(R.string.discard),
+                        dismissButtonCallback = {
+                            navigationService.navControllerTabHome?.popBackStack()
+                        }
+                    )
+                } else {
+                    navigationService.navControllerTabHome?.popBackStack()
+                }
             }
         )
 
@@ -119,6 +213,24 @@ fun AddRecurringConsumptionScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.Start
         ) {
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .clip(shape = RoundedCornerShape(16.dp))
+            ) {
+                if (viewModel.initialValues != null) {
+                    SwitchWithLabel(
+                        label = toggleActivationTitle,
+                        state = isActive.value,
+                        onStateChange = {
+                            isActive.value = it
+                        })
+                }
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -192,14 +304,18 @@ fun AddRecurringConsumptionScreen(
             }
 
 
-            FrequencySpinner {
+            FrequencySpinner(
+                initialValues = frequency.value
+            ) {
                 frequency.value = it
                 isInputSavable.value = areInputsValid()
             }
 
             Spacer(Modifier.height(16.dp))
 
-            AddTransportationRecurringConsumptionScreen() {
+            AddTransportationRecurringConsumptionScreen(
+                initialValues = transportationData.value
+            ) {
                 transportationData.value = it
                 isInputSavable.value = areInputsValid()
             }
@@ -251,7 +367,7 @@ fun AddRecurringConsumptionScreen(
 
             Text(
                 text = stringResource(id = R.string.home_add_consumption_form_description_info_text_title),
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(horizontal = 32.dp),
                 style = MaterialTheme.typography.labelSmall,
                 textAlign = TextAlign.Start,
                 color = MaterialTheme.colorScheme.onSecondary
@@ -262,78 +378,20 @@ fun AddRecurringConsumptionScreen(
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 Button(
                     modifier = Modifier
-                        .padding(horizontal = 32.dp).fillMaxWidth(),
-                    enabled = isInputSavable.value,
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth(),
+                    enabled = if (viewModel.initialValues != null) {
+                        true
+                    } else {
+                        isInputSavable.value
+                    },
                     shape = RoundedCornerShape(32.dp),
                     onClick = {
-
-                        val descriptionValue = description.value.ifEmpty {
-                            null
-                        }
-                        val categoryValue = ConsumptionType.parseConsumptionTypeToString(consumptionType.value)
-                        val createdAtValue = initialValues?.createdAt ?: Timestamp(Date(System.currentTimeMillis()))
-                        val transportationDataValue = RecurringConsumptionTransportationDataResponse.from(transportationData.value)
-                        val isActiveValue = isActive.value
-                        val frequencyValue = RecurringConsumptionFrequencyResponse.from(frequency.value)
-
-
-                        val recurringConsumptionResponse = if(categoryValue != null && transportationDataValue != null && frequencyValue != null){
-
-                            RecurringConsumptionResponse(
-                                category = categoryValue,
-                                description = descriptionValue,
-                                createdAt = createdAtValue,
-                                transportation = transportationDataValue,
-                                isEnabled = isActiveValue,
-                                frequency = frequencyValue
-                            )
-                        } else {
-                            null
-                        }
-
-                        val calendar = Calendar.getInstance()
-                        calendar.timeInMillis = createdAtValue.toDate().time
-
-                        val transportationString = "transportationType: ${transportationDataValue?.transportationType}\n" +
-                                "privateVehicleOccupancy: ${transportationDataValue?.privateVehicleOccupancy}\n" +
-                                "publicVehicleOccupancy: ${transportationDataValue?.publicVehicleOccupancy}\n" +
-                                "hourOfTravel: ${transportationDataValue?.hourOfTravel}\n" +
-                                "minuteOfTravel: ${transportationDataValue?.minuteOfTravel}\n" +
-                                "distance: ${transportationDataValue?.distance}"
-
-                        Log.e("AddRecurringConsumptionScreen", "" +
-                                "category: ${recurringConsumptionResponse?.category}\n" +
-                                "description: $descriptionValue\n" +
-                                "createdAt: ${CalendarUtils.toDateString(calendar, "dd.MM.yyyy, HH:mm")}\n" +
-                                "transportation: $transportationString")
-
-
-                        if(recurringConsumptionResponse != null){
-                            CoroutineScope(Dispatchers.IO).launch {
-
-                                val result = if(initialValues != null){
-                                    recurringConsumptionResponse.id = initialValues.id
-                                    viewModel.updateRecurringConsumption(recurringConsumptionResponse)
-                                } else {
-                                    viewModel.createRecurringConsumption(recurringConsumptionResponse)
-                                }
-                                when (result) {
-                                    is TypedResult.Failure -> {
-                                        userFeedbackService.showSnackbar(R.string.settings_add_consumption_entry_fail_message)
-                                    }
-                                    is TypedResult.Success -> {
-                                        withContext(Dispatchers.Main) {
-                                            navigationService.navControllerTabHome?.popBackStack()
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            userFeedbackService.showSnackbar(R.string.settings_add_consumption_entry_fail_message)
-                        }
-
+                        val recurringConsumptionResponse = createRecurringConsumptionResponse()
+                        sendAddOrUpdateRecurringConsumptionRequest(recurringConsumptionResponse = recurringConsumptionResponse)
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = buttonColor)) {
+                    colors = ButtonDefaults.buttonColors(containerColor = buttonColor)
+                ) {
                     Text(
                         text = stringResource(id = R.string.settings_edit_profile_submit_button_title),
                         style = MaterialTheme.typography.labelLarge,

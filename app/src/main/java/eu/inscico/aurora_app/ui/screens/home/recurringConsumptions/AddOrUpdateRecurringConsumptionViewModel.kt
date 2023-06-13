@@ -7,15 +7,22 @@ import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptions.*
 import eu.inscico.aurora_app.model.consumptions.TransportationType.Companion.getDisplayName
 import eu.inscico.aurora_app.model.consumptions.TransportationTypeSection.Companion.getDisplayName
+import eu.inscico.aurora_app.model.recurringConsumption.RecurringConsumption
 import eu.inscico.aurora_app.model.recurringConsumption.RecurringConsumptionResponse
 import eu.inscico.aurora_app.services.firebase.RecurringConsumptionsService
 import eu.inscico.aurora_app.ui.components.forms.SpinnerItem
 import eu.inscico.aurora_app.utils.TypedResult
 
-class AddRecurringConsumptionViewModel(
+class AddOrUpdateRecurringConsumptionViewModel(
     savedStateHandle: SavedStateHandle,
     private val _recurringConsumptionService: RecurringConsumptionsService
 ): ViewModel() {
+
+    private val allRecurringConsumptions = _recurringConsumptionService.recurringConsumptionsLive
+
+    val initialValues: RecurringConsumption? = allRecurringConsumptions.value?.firstOrNull {
+        (savedStateHandle["id"] ?: "") == it.id
+    }
 
     val consumptionType: ConsumptionType? = ConsumptionType.TRANSPORTATION//ConsumptionType.parseStringToConsumptionType(savedStateHandle["consumptionType"])
 

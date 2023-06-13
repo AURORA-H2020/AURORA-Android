@@ -6,14 +6,16 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
@@ -23,8 +25,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
+import eu.inscico.aurora_app.model.consumptions.Consumption
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.ui.components.AppBar
+import eu.inscico.aurora_app.ui.components.consumptions.ConsumptionListItem
+import eu.inscico.aurora_app.ui.components.recurringConsumptions.RecurringConsumptionListItem
 import org.koin.androidx.compose.get
 
 @Composable
@@ -35,6 +40,7 @@ fun RecurringConsumptionsListScreen(
     val context = LocalContext.current
 
     val recurringConsumptions = viewModel.recurringConsumptionsLive.observeAsState()
+    val state = rememberLazyListState()
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -124,13 +130,28 @@ fun RecurringConsumptionsListScreen(
                     .fillMaxWidth()
                     .weight(1f),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Top
             ) {
-                Text(
-                    text = "${recurringConsumptions.value?.size} items",
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = Color.Blue
-                )
+                recurringConsumptions.value?.sortedByDescending { it.createdAt }?.let { recurringConsumptions ->
+                    LazyColumn(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                            .clip(shape = RoundedCornerShape(16.dp)),
+                        state = state,
+                    ) {
+                        items(recurringConsumptions) { item ->
+
+                            RecurringConsumptionListItem(recurringConsumption = item) {
+                                val id = item.id
+                                navigationService.toRecurringConsumptionDetails(id)
+                            }
+                            if (recurringConsumptions.indexOf(item) != recurringConsumptions.lastIndex) {
+                                Divider()
+                            }
+                        }
+                    }
+                }
             }
         }
 

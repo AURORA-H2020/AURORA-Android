@@ -2,13 +2,12 @@ package eu.inscico.aurora_app.services.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.*
-import eu.inscico.aurora_app.model.consumptions.ConsumptionType
 import eu.inscico.aurora_app.ui.screens.home.consumptions.AllConsumptionsListScreen
 import eu.inscico.aurora_app.ui.screens.home.HomeScreen
 import eu.inscico.aurora_app.ui.screens.home.consumptionSummary.ConsumptionSummaryScreen
 import eu.inscico.aurora_app.ui.screens.home.consumptions.ConsumptionDetailScreen
 import eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption.AddConsumptionScreen
-import eu.inscico.aurora_app.ui.screens.home.recurringConsumptions.AddRecurringConsumptionScreen
+import eu.inscico.aurora_app.ui.screens.home.recurringConsumptions.AddOrUpdateRecurringConsumptionScreen
 import eu.inscico.aurora_app.ui.screens.home.recurringConsumptions.RecurringConsumptionsListScreen
 import eu.inscico.aurora_app.ui.screens.login.createProfile.CreateProfileScreen
 import eu.inscico.aurora_app.ui.screens.login.AuthScreen
@@ -128,7 +127,7 @@ sealed class NavGraphDirections(
     object AddRecurringConsumption : NavGraphDirections(
         route = "addRecurringConsumption",
         content = {
-            AddRecurringConsumptionScreen()
+            AddOrUpdateRecurringConsumptionScreen()
         }
     ) {
         fun getNavRoute(): String {
@@ -172,6 +171,20 @@ sealed class NavGraphDirections(
     ) {
         fun getNavRoute(toEnergyExpendedTab: Boolean = false): String {
             return "consumptionSummary/${toEnergyExpendedTab}"
+        }
+    }
+
+    object RecurringConsumptionDetails : NavGraphDirections(
+        route = "recurringConsumptionDetails",
+        content = {
+            AddOrUpdateRecurringConsumptionScreen()
+        },
+        args = listOf(
+            NavArg(name = "id", type = NavType.StringType)
+        )
+    ) {
+        fun getNavRoute(id: String): String {
+            return "recurringConsumptionDetails/${id}"
         }
     }
 
