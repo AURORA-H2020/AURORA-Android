@@ -138,13 +138,12 @@ class RecurringConsumptionsService(
         return recurringConsumptionAsMap
     }
 
-    suspend fun deleteConsumption(recurringConsumption: RecurringConsumption): TypedResult<Any, Any> {
+    suspend fun deleteConsumption(recurringConsumptionId: String): TypedResult<Any, Any> {
         val authId = _firebaseAuth.currentUser?.uid ?: return TypedResult.Failure("")
-        val consumptionId = recurringConsumption.id
 
         try {
             _firestore.collection(usersCollectionName).document(authId)
-                .collection(collectionName).document(consumptionId)
+                .collection(collectionName).document(recurringConsumptionId)
                 .delete()
 
             return TypedResult.Success(true)

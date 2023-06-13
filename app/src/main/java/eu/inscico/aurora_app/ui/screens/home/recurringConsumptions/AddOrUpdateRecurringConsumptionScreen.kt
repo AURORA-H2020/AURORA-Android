@@ -13,7 +13,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -135,7 +137,7 @@ fun AddOrUpdateRecurringConsumptionScreen(
         return recurringConsumptionResponse
     }
 
-    fun sendAddOrUpdateRecurringConsumptionRequest(recurringConsumptionResponse: RecurringConsumptionResponse?){
+    fun sendAddOrUpdateRecurringConsumptionRequest(recurringConsumptionResponse: RecurringConsumptionResponse?) {
         if (recurringConsumptionResponse != null) {
             CoroutineScope(Dispatchers.IO).launch {
 
@@ -188,7 +190,7 @@ fun AddOrUpdateRecurringConsumptionScreen(
             title = appBarText,
             hasBackNavigation = true,
             backNavigationCallback = {
-                if(viewModel.initialValues != null) {
+                if (viewModel.initialValues != null) {
                     userFeedbackService.showDialog(
                         message = context.getString(R.string.recurring_consumption_update_save_unsaved_changes_dialog_title),
                         confirmButtonText = context.getString(R.string.settings_edit_profile_submit_button_title),
@@ -204,6 +206,44 @@ fun AddOrUpdateRecurringConsumptionScreen(
                 } else {
                     navigationService.navControllerTabHome?.popBackStack()
                 }
+            },
+            actionButton = {
+                if (viewModel.initialValues != null) {
+                    Image(
+                        painter = painterResource(id = R.drawable.outline_delete_outline_24),
+                        modifier = Modifier
+                            .padding(horizontal = 7.dp)
+                            .clickable {
+                                userFeedbackService.showDialog(
+                                    message = context.getString(R.string.dialog_consumption_delete_title),
+                                    confirmButtonText = context.getString(R.string.delete),
+                                    confirmButtonCallback = {
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            val id = viewModel.initialValues.id ?: return@launch
+                                            val result =
+                                                viewModel.deleteRecurringConsumption(id)
+                                            when (result) {
+                                                is TypedResult.Failure -> {
+                                                    userFeedbackService.showSnackbar(R.string.settings_delete_consumption_entry_fail_message)
+                                                }
+                                                is TypedResult.Success -> {
+                                                    withContext(Dispatchers.Main) {
+                                                        navigationService.navControllerTabHome?.popBackStack()
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                    },
+                                    dismissButtonText = context.getString(R.string.cancel),
+                                    dismissButtonCallback = {
+                                    }
+                                )
+                            },
+                        contentDescription = "",
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.error)
+                    )
+                }
             }
         )
 
@@ -214,7 +254,6 @@ fun AddOrUpdateRecurringConsumptionScreen(
             horizontalAlignment = Alignment.Start
         ) {
 
-            Spacer(modifier = Modifier.height(16.dp))
 
             Column(
                 Modifier
@@ -223,6 +262,7 @@ fun AddOrUpdateRecurringConsumptionScreen(
                     .clip(shape = RoundedCornerShape(16.dp))
             ) {
                 if (viewModel.initialValues != null) {
+                    Spacer(modifier = Modifier.height(16.dp))
                     SwitchWithLabel(
                         label = toggleActivationTitle,
                         state = isActive.value,

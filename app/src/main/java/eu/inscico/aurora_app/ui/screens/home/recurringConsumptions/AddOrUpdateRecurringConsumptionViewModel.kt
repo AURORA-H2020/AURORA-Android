@@ -87,8 +87,13 @@ class AddOrUpdateRecurringConsumptionViewModel(
         return _recurringConsumptionService.createRecurringConsumption(recurringConsumptionResponse)
     }
 
-    suspend fun updateRecurringConsumption(recurringConsumptionResponse: RecurringConsumptionResponse): TypedResult<Boolean, String> {
+    suspend fun
+            updateRecurringConsumption(recurringConsumptionResponse: RecurringConsumptionResponse): TypedResult<Boolean, String> {
         return _recurringConsumptionService.updateConsumption(recurringConsumptionResponse)
+    }
+
+    suspend fun deleteRecurringConsumption(recurringConsumptionId: String): TypedResult<Any, Any> {
+        return _recurringConsumptionService.deleteConsumption(recurringConsumptionId)
     }
 
 }
