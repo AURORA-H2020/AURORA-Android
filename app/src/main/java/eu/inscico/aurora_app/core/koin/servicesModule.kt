@@ -66,7 +66,8 @@ val servicesModule = module {
             _firebaseAuth = get(),
             _countryService = get(),
             _consumptionsService = get(),
-            _consumptionSummariesService = get()
+            _consumptionSummariesService = get(),
+            _recurringConsumptionsService = get()
         )
     }
 
@@ -88,6 +89,14 @@ val servicesModule = module {
     single {
         ConsumptionSummaryService(
             _firestore = get()
+        )
+    }
+
+
+    single {
+        RecurringConsumptionsService(
+            _firestore = get(),
+            _firebaseAuth = get(),
         )
     }
 

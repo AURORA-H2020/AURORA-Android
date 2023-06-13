@@ -148,6 +148,23 @@ fun HomeScreen(
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.surface)
                             .clickable {
+                                       navigationService.toRecurringConsumptions()
+                            },
+                        headlineContent = { Text(stringResource(id = R.string.home_recurring_consumptions_button_title)) },
+                        leadingContent = {
+                            Image(
+                                painterResource(id = R.drawable.outline_settings_backup_restore_24),
+                                contentDescription = "",
+                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+                                alignment = Alignment.CenterEnd
+                            )
+                        }
+                    )
+                    Divider()
+                    ListItem(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.surface)
+                            .clickable {
                                 ExternalUtils.openBrowser(
                                     context = context,
                                     url = "https://www.aurora-h2020.eu"

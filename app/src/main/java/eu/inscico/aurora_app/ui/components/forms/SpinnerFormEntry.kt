@@ -1,6 +1,7 @@
 package eu.inscico.aurora_app.ui.components.forms
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -12,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,6 +31,7 @@ fun SpinnerFormEntry(
     selectedEntry: SpinnerItem.Entry<*>? = null,
     allEntries: List<SpinnerItem>,
     isRoundedDesign: Boolean = true,
+    isReadOnly: Boolean = false,
     callback: (SpinnerItem.Entry<*>, SpinnerItem.Section<*>?) -> Unit
 ) {
 
@@ -68,14 +71,26 @@ fun SpinnerFormEntry(
             .fillMaxWidth()
     }
 
+    val colors: ListItemColors =
+        if(isReadOnly){
+            ListItemDefaults.colors(
+                containerColor = MaterialTheme.colorScheme.secondary
+            )
+        } else {
+            ListItemDefaults.colors()
+        }
+
     Column(
         modifier = modifier
     ) {
         ListItem(
+            colors = colors,
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    openDropDown.value = !openDropDown.value
+                    if (!isReadOnly) {
+                        openDropDown.value = !openDropDown.value
+                    }
                 },
             headlineContent = {
                 Text(
@@ -161,7 +176,6 @@ sealed class SpinnerItem {
 
     data class Entry<T>(
         val name: String,
-        val data: T,
-
+        val data: T
         ) : SpinnerItem()
 }

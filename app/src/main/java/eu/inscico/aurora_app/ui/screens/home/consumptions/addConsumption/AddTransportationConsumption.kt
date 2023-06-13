@@ -410,15 +410,15 @@ fun AddTransportationConsumption(
             }
         )
 
-        Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
-        Text(
-            text = stringResource(id = R.string.home_add_consumption_form_description_info_text_title),
-            modifier = Modifier.padding(horizontal = 16.dp),
-            style = MaterialTheme.typography.labelSmall,
-            textAlign = TextAlign.Start,
-            color = MaterialTheme.colorScheme.onSecondary
-        )
+            Text(
+                text = stringResource(id = R.string.home_add_consumption_form_description_info_text_title),
+                modifier = Modifier.padding(horizontal = 16.dp),
+                style = MaterialTheme.typography.labelSmall,
+                textAlign = TextAlign.Start,
+                color = MaterialTheme.colorScheme.onSecondary
+            )
 
         val buttonColor = if (isSaveValid.value) {
             MaterialTheme.colorScheme.primary

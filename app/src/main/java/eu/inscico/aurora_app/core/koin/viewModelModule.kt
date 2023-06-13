@@ -6,6 +6,8 @@ import eu.inscico.aurora_app.ui.screens.home.consumptionSummary.ConsumptionSumma
 import eu.inscico.aurora_app.ui.screens.home.consumptions.AllConsumptionsListViewModel
 import eu.inscico.aurora_app.ui.screens.home.consumptions.ConsumptionDetailViewModel
 import eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption.AddConsumptionViewModel
+import eu.inscico.aurora_app.ui.screens.home.recurringConsumptions.AddRecurringConsumptionViewModel
+import eu.inscico.aurora_app.ui.screens.home.recurringConsumptions.RecurringConsumptionsListViewModel
 import eu.inscico.aurora_app.ui.screens.login.createProfile.CreateProfileViewModel
 import eu.inscico.aurora_app.ui.screens.login.LoginViewModel
 import eu.inscico.aurora_app.ui.screens.login.signInEmail.SignInWithEmailViewModel
@@ -90,6 +92,19 @@ val viewModelModule = module {
         ConsumptionSummaryViewModel(
             savedStateHandle = handle,
             _consumptionSummaryService = get()
+        )
+    }
+
+    viewModel { (handle: SavedStateHandle) ->
+        AddRecurringConsumptionViewModel(
+            savedStateHandle = handle,
+            _recurringConsumptionService = get()
+        )
+    }
+
+    viewModel {
+        RecurringConsumptionsListViewModel(
+            _recurringConsumptionsService = get()
         )
     }
 

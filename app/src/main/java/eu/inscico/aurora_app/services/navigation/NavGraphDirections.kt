@@ -2,11 +2,14 @@ package eu.inscico.aurora_app.services.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.*
+import eu.inscico.aurora_app.model.consumptions.ConsumptionType
 import eu.inscico.aurora_app.ui.screens.home.consumptions.AllConsumptionsListScreen
 import eu.inscico.aurora_app.ui.screens.home.HomeScreen
 import eu.inscico.aurora_app.ui.screens.home.consumptionSummary.ConsumptionSummaryScreen
 import eu.inscico.aurora_app.ui.screens.home.consumptions.ConsumptionDetailScreen
 import eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption.AddConsumptionScreen
+import eu.inscico.aurora_app.ui.screens.home.recurringConsumptions.AddRecurringConsumptionScreen
+import eu.inscico.aurora_app.ui.screens.home.recurringConsumptions.RecurringConsumptionsListScreen
 import eu.inscico.aurora_app.ui.screens.login.createProfile.CreateProfileScreen
 import eu.inscico.aurora_app.ui.screens.login.AuthScreen
 import eu.inscico.aurora_app.ui.screens.login.LoginScreen
@@ -104,6 +107,28 @@ sealed class NavGraphDirections(
         route = "consumptionsList",
         content = {
             AllConsumptionsListScreen()
+        }
+    ) {
+        fun getNavRoute(): String {
+            return route
+        }
+    }
+
+    object RecurringConsumptionsList : NavGraphDirections(
+        route = "recurringConsumptionsList",
+        content = {
+            RecurringConsumptionsListScreen()
+        }
+    ) {
+        fun getNavRoute(): String {
+            return route
+        }
+    }
+
+    object AddRecurringConsumption : NavGraphDirections(
+        route = "addRecurringConsumption",
+        content = {
+            AddRecurringConsumptionScreen()
         }
     ) {
         fun getNavRoute(): String {

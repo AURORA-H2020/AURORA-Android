@@ -3,6 +3,7 @@ package eu.inscico.aurora_app.services.navigation
 import androidx.activity.OnBackPressedDispatcherOwner
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import eu.inscico.aurora_app.model.consumptions.ConsumptionType
 import kotlinx.coroutines.*
 
 class NavigationService {
@@ -119,6 +120,16 @@ class NavigationService {
 
     fun toConsumptionsList() {
         val navDirection = NavGraphDirections.ConsumptionsList.getNavRoute()
+        navControllerTabHome?.navigate(navDirection)
+    }
+
+    fun toRecurringConsumptions() {
+        val navDirection = NavGraphDirections.RecurringConsumptionsList.getNavRoute()
+        navControllerTabHome?.navigate(navDirection)
+    }
+
+    fun toAddRecurringConsumption() {
+        val navDirection = NavGraphDirections.AddRecurringConsumption.getNavRoute()
         navControllerTabHome?.navigate(navDirection)
     }
 

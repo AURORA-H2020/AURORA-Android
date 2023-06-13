@@ -31,6 +31,7 @@ fun AddSubtractCountFormEntry(
     isNullCountPossible: Boolean = false,
     initialValue: Int = if (isNullCountPossible) 0 else 1,
     countLimit: Int = 100,
+    isRoundedDesign: Boolean = true,
     callback: (Int) -> Unit
 ) {
 
@@ -40,11 +41,18 @@ fun AddSubtractCountFormEntry(
 
     count.value = initialValue
 
-    Column(
+    val modifier = if(isRoundedDesign){
         Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .clip(shape = RoundedCornerShape(16.dp))
+    } else {
+        Modifier
+            .fillMaxWidth()
+    }
+
+    Column(
+        modifier
     ) {
         ListItem(
             modifier = Modifier

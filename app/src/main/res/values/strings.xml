@@ -164,6 +164,16 @@
     <string name="home_your_carbon_emissions_bar_chart_label_energy_expended_title">kWh</string>
     <string name="home_your_carbon_emissions_labels_value_used_with_year_title">%1$s kWh in %2$d</string>
     <string name="home_your_carbon_emissions_label_empty_title">No consumption entered yet (?)</string>
+    <string name="home_recurring_consumptions_button_title">Recurring consumptions</string>
+    <string name="home_recurring_consumptions_description">Here you can add regulary repeating consumptions, such as your commute. Recurring consumptions automatically add consumptions for you based on a custom interval.</string>
+    <string name="home_recurring_consumptions_add_button_title">Add</string>
+    <string name="home_recurring_consumptions_category_title">Category</string>
+    <string name="home_recurring_consumptions_category_transportation_info_title">Only Transport is supported as a recurring consumption.</string>
+    <string name="home_recurring_consumptions_frequency_title">Frequency</string>
+    <string name="home_recurring_consumptions_frequency_daily_title">Daily</string>
+    <string name="home_recurring_consumptions_frequency_weekly_title">Weekly</string>
+    <string name="home_recurring_consumptions_frequency_monthly_title">Monthly</string>
+    <string name="home_recurring_consumptions_frequency_weekly_weekday_title">Weekdays</string>
     <!--Settings-->
     <string name="settings_app_bar_title">Settings</string>
     <string name="settings_profile_section_title">Account</string>

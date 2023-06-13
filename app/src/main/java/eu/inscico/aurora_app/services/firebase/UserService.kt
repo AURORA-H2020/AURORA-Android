@@ -25,7 +25,8 @@ class UserService(
     private val _firebaseAuth: FirebaseAuth,
     private val _countryService: CountriesService,
     private val _consumptionsService: ConsumptionsService,
-    private val _consumptionSummariesService: ConsumptionSummaryService
+    private val _consumptionSummariesService: ConsumptionSummaryService,
+    private val _recurringConsumptionsService: RecurringConsumptionsService
 ) {
 
     private val collectionName = "users"
@@ -65,6 +66,8 @@ class UserService(
                         }
 
                         _consumptionsService.setConsumptionsListener(collectionName, authId)
+                        _recurringConsumptionsService.setRecurringConsumptionsListener(collectionName, authId)
+
 
                         return TypedResult.Success(user)
                     }
