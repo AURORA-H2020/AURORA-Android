@@ -59,5 +59,13 @@ enum class ConsumptionType {
             }
         }
 
+        fun getConsumptionTypeList(): List<ConsumptionType> {
+            return listOf(
+                TRANSPORTATION,
+                HEATING,
+                ELECTRICITY
+            )
+        }
+
     }
 }
