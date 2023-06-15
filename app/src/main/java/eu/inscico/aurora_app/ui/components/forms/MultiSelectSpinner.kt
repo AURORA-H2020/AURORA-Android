@@ -25,8 +25,7 @@ import eu.inscico.aurora_app.ui.components.recurringConsumptions.getSelectedEntr
 @Composable
 fun MultiSelectSpinner(
     title: String,
-    selectedEntries: List<MultiSelectEntry<*>>? = null,
-    allEntries: List<MultiSelectEntry<*>>? = null,
+    entries: List<MultiSelectEntry<*>>? = null,
     isRoundedDesign: Boolean = true,
     isReadOnly: Boolean = false,
     callback: (List<MultiSelectEntry<*>>?) -> Unit
@@ -38,11 +37,11 @@ fun MultiSelectSpinner(
     }
 
     val selectedItems = remember {
-        mutableStateOf(selectedEntries)
+        mutableStateOf(entries?.filter { it.isSelected })
     }
 
     val allItems = remember {
-        mutableStateOf(allEntries)
+        mutableStateOf(entries)
     }
 
     val modifier = if (isRoundedDesign) {

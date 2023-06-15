@@ -36,18 +36,21 @@ fun FrequencySpinner(
         mutableStateOf(initialValues?.unit ?: RecurringConsumptionIntervalUnit.DAILY)
     }
 
-    val allWeekdays = rememberSaveable {
-        mutableStateOf<List<MultiSelectEntry<*>>?>(
-            RecurringConsumptionIntervalWeekday.getWeekdayList().map {
-                MultiSelectEntry(name = it.getDisplayName(context), data = it, isSelected = false)
-            })
+    val updatedWeekdays = RecurringConsumptionIntervalWeekday.getWeekdayList().map {
+        MultiSelectEntry(name = it.getDisplayName(context), data = it, isSelected = false)
     }
+    updatedWeekdays.forEach { weekday ->
+        initialValues?.weekdays?.forEach { selectedWeekday ->
+            if (selectedWeekday.name == weekday.data.name) {
+                weekday.isSelected = true
+            }
+        }
+    }
+    val weekdayEntries =
+        rememberSaveable { mutableStateOf<List<MultiSelectEntry<*>>?>(updatedWeekdays) }
 
     val selectedWeekdays = rememberSaveable {
-        mutableStateOf<List<MultiSelectEntry<*>>?>(
-            initialValues?.weekdays?.sortedBy { it }?.map {
-                MultiSelectEntry(name = it.getDisplayName(context), data = it, isSelected = false)
-            })
+        mutableStateOf(weekdayEntries.value?.filter { it.isSelected })
     }
 
     val unitMonthlyDay = rememberSaveable {
@@ -59,15 +62,16 @@ fun FrequencySpinner(
     }
 
     val selectedUnit = SpinnerItem.Entry(
-            name = intervalUnit.value.getDisplayName(context),
-            data = intervalUnit.value
-        )
+        name = intervalUnit.value.getDisplayName(context),
+        data = intervalUnit.value
+    )
 
     Column(
         Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .clip(shape = RoundedCornerShape(16.dp))) {
+            .clip(shape = RoundedCornerShape(16.dp))
+    ) {
 
 
         SpinnerFormEntry(
@@ -95,10 +99,9 @@ fun FrequencySpinner(
 
                 MultiSelectSpinner(
                     title = stringResource(id = R.string.home_recurring_consumptions_frequency_weekly_weekday_title),
-                    selectedEntries = selectedWeekdays.value,
-                    allEntries = allWeekdays.value,
+                    entries = weekdayEntries.value,
                     callback = { items ->
-                        allWeekdays.value = items as List<MultiSelectEntry<*>>
+                        weekdayEntries.value = items as List<MultiSelectEntry<*>>
                         selectedWeekdays.value = getSelectedEntries(items)
 
                         val frequency = RecurringConsumptionFrequency(
@@ -151,8 +154,7 @@ fun FrequencySpinner(
 }
 
 
-
-fun getSelectedEntries(entries: List<MultiSelectEntry<*>>?): List<MultiSelectEntry<*>>?{
+fun getSelectedEntries(entries: List<MultiSelectEntry<*>>?): List<MultiSelectEntry<*>>? {
     return entries?.filter {
         it.isSelected
     }
