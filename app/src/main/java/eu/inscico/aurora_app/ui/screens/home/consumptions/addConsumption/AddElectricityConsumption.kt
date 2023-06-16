@@ -52,6 +52,7 @@ import java.util.*
 @Composable
 fun AddElectricityConsumption(
     initialValues: Consumption.ElectricityConsumption? = null,
+    isDuplicate: Boolean? = false,
     viewModel: AddConsumptionViewModel = koinViewModel(),
     navigationService: NavigationService = get(),
     userFeedbackService: UserFeedbackService = get()
@@ -100,8 +101,7 @@ fun AddElectricityConsumption(
 
     Column(
         Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.Start
     ) {
 
@@ -323,7 +323,7 @@ fun AddElectricityConsumption(
                     if(consumptionResponse.value != null){
                         CoroutineScope(Dispatchers.IO).launch {
 
-                            val result = if(initialValues != null){
+                            val result = if(initialValues != null && isDuplicate == false){
                                 consumptionResponse.id = initialValues.id
                                 consumptionResponse.updatedAt = Timestamp(Calendar.getInstance().time)
                                 viewModel.updateConsumption(consumptionResponse)

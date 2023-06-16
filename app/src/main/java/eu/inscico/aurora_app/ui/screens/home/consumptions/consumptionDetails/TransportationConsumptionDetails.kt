@@ -2,9 +2,7 @@ package eu.inscico.aurora_app.ui.screens.home.consumptions.consumptionDetails
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
@@ -15,13 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptions.Consumption
-import eu.inscico.aurora_app.model.consumptions.DistrictHeatingSource.Companion.getDisplayNameRes
-import eu.inscico.aurora_app.model.consumptions.HeatingFuelType.Companion.getDisplayNameRes
 import eu.inscico.aurora_app.model.consumptions.PublicVehicleOccupancy.Companion.getDisplayName
-import eu.inscico.aurora_app.model.consumptions.PublicVehicleOccupancy.Companion.getDisplayRes
 import eu.inscico.aurora_app.model.consumptions.TransportationType.Companion.getDisplayNameRes
 import eu.inscico.aurora_app.utils.CalendarUtils
 
@@ -29,15 +25,14 @@ import eu.inscico.aurora_app.utils.CalendarUtils
 @Composable
 fun TransportationConsumptionDetails(
     consumption: Consumption.TransportationConsumption
-){
+) {
 
     val context = LocalContext.current
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .verticalScroll(rememberScrollState()),
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -47,7 +42,8 @@ fun TransportationConsumptionDetails(
             Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
-                .clip(shape = RoundedCornerShape(16.dp))) {
+                .clip(shape = RoundedCornerShape(16.dp))
+        ) {
 
             ListItem(
                 headlineContent = { Text(text = stringResource(id = R.string.home_consumptions_type_transportation_title)) },
@@ -89,7 +85,8 @@ fun TransportationConsumptionDetails(
             Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
-                .clip(shape = RoundedCornerShape(16.dp))) {
+                .clip(shape = RoundedCornerShape(16.dp))
+        ) {
 
             ListItem(
                 headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_transportation_start_of_travel_title)) },
@@ -142,22 +139,23 @@ fun TransportationConsumptionDetails(
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        if (consumption.description?.isNotEmpty() == true) {
+            Spacer(modifier = Modifier.height(16.dp))
 
-
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .clip(shape = RoundedCornerShape(16.dp))) {
-
-            if (consumption.description?.isNotEmpty() == true) {
-                ListItem(headlineContent = {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = consumption.description
-                    )
-                },)
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .clip(shape = RoundedCornerShape(16.dp))
+            ) {
+                ListItem(
+                    headlineContent = {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = consumption.description
+                        )
+                    },
+                )
 
             }
         }
@@ -176,7 +174,7 @@ fun TransportationConsumptionDetails(
             null
         }
 
-        if(createdText != null || updatedText != null) {
+        if (createdText != null || updatedText != null) {
 
             Column(
                 Modifier
@@ -212,6 +210,17 @@ fun TransportationConsumptionDetails(
                         }
                     )
                 }
+            }
+
+            if (consumption.generatedByRecurringConsumptionId != null) {
+
+                Text(
+                    text = stringResource(id = R.string.consumption_detail_recurring_consumption_automatically_generated_text),
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    style = MaterialTheme.typography.labelSmall,
+                    textAlign = TextAlign.Start,
+                    color = MaterialTheme.colorScheme.onSecondary
+                )
             }
         }
     }

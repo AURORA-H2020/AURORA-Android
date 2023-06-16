@@ -44,6 +44,7 @@ import java.util.*
 @Composable
 fun AddHeatingConsumption(
     initialValue: Consumption.HeatingConsumption? = null,
+    isDuplicate: Boolean? = false,
     viewModel: AddConsumptionViewModel = koinViewModel(),
     navigationService: NavigationService = get(),
     userFeedbackService: UserFeedbackService = get()
@@ -108,8 +109,7 @@ fun AddHeatingConsumption(
 
     Column(
         Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.Start
     ) {
 
@@ -386,7 +386,7 @@ fun AddHeatingConsumption(
                         )
 
                         CoroutineScope(Dispatchers.IO).launch {
-                            val result = if(initialValue != null){
+                            val result = if(initialValue != null && isDuplicate == false){
                                 consumptionResponse.id = initialValue.id
                                 consumptionResponse.updatedAt = Timestamp(Calendar.getInstance().time)
                                 viewModel.updateConsumption(consumptionResponse)

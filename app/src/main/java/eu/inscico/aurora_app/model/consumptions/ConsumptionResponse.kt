@@ -7,7 +7,7 @@ import eu.inscico.aurora_app.model.consumptions.HeatingFuelType.Companion.parseH
 import eu.inscico.aurora_app.model.consumptions.PublicVehicleOccupancy.Companion.parsePublicVehicleOccupancyToString
 import eu.inscico.aurora_app.model.consumptions.TransportationType.Companion.parseTransportationTypeToString
 
-class ConsumptionResponse (
+class ConsumptionResponse(
 
     @DocumentId
     var id: String? = null,
@@ -23,34 +23,37 @@ class ConsumptionResponse (
 
     var electricity: ElectricityConsumptionDataResponse? = null,
     var heating: HeatingConsumptionDataResponse? = null,
-    var transportation: TransportationConsumptionDataResponse? = null
-    ) {
+    var transportation: TransportationConsumptionDataResponse? = null,
+
+    var generatedByRecurringConsumptionId: String? = null
+) {
 
     companion object {
         fun from(item: Consumption): ConsumptionResponse {
 
-            return when(item){
+            return when (item) {
                 is Consumption.ElectricityConsumption -> {
 
                     val electricity = ElectricityConsumptionDataResponse(
                         costs = item.electricity.costs,
-                    endDate = Timestamp(item.electricity.endDate.time),
-                    startDate = Timestamp(item.electricity.startDate.time),
-                    householdSize = item.electricity.householdSize
+                        endDate = Timestamp(item.electricity.endDate.time),
+                        startDate = Timestamp(item.electricity.startDate.time),
+                        householdSize = item.electricity.householdSize
                     )
                     ConsumptionResponse(
                         id = item.id,
                         carbonEmissions = item.carbonEmissions,
-                    category = ConsumptionType.parseConsumptionTypeToString(item.category),
-                    createdAt = if (item.createdAt?.time != null) Timestamp(item.createdAt.time) else null,
-                    energyExpended = item.energyExpended,
-                    updatedAt = if (item.updatedAt?.time != null) Timestamp(item.updatedAt.time) else null,
-                    value = item.value,
-                    version = item.version,
+                        category = ConsumptionType.parseConsumptionTypeToString(item.category),
+                        createdAt = if (item.createdAt?.time != null) Timestamp(item.createdAt.time) else null,
+                        energyExpended = item.energyExpended,
+                        updatedAt = if (item.updatedAt?.time != null) Timestamp(item.updatedAt.time) else null,
+                        value = item.value,
+                        version = item.version,
                         description = item.description,
-                    electricity = electricity,
-                    heating = null,
-                    transportation = null
+                        electricity = electricity,
+                        heating = null,
+                        transportation = null,
+                        generatedByRecurringConsumptionId = item.generatedByRecurringConsumptionId
                     )
                 }
                 is Consumption.HeatingConsumption -> {
@@ -60,7 +63,7 @@ class ConsumptionResponse (
                         startDate = Timestamp(item.heating.startDate.time),
                         householdSize = item.heating.householdSize,
                         heatingFuel = item.heating.heatingFuel.parseHeatingFuelToString(),
-                    districtHeatingSource = item.heating.districtHeatingSource?.parseDistrictHeatingSourceToString(),
+                        districtHeatingSource = item.heating.districtHeatingSource?.parseDistrictHeatingSourceToString(),
                     )
                     ConsumptionResponse(
                         id = item.id,
@@ -74,7 +77,8 @@ class ConsumptionResponse (
                         description = item.description,
                         electricity = null,
                         heating = heating,
-                        transportation = null
+                        transportation = null,
+                        generatedByRecurringConsumptionId = item.generatedByRecurringConsumptionId
                     )
 
                 }
@@ -82,9 +86,9 @@ class ConsumptionResponse (
                     val transportation = TransportationConsumptionDataResponse(
                         dateOfTravel = Timestamp(item.transportation.dateOfTravel.time),
                         privateVehicleOccupancy = item.transportation.privateVehicleOccupancy,
-                                publicVehicleOccupancy = item.transportation.publicVehicleOccupancy?.parsePublicVehicleOccupancyToString(),
-                                transportationType = item.transportation.transportationType.parseTransportationTypeToString()
-                        )
+                        publicVehicleOccupancy = item.transportation.publicVehicleOccupancy?.parsePublicVehicleOccupancyToString(),
+                        transportationType = item.transportation.transportationType.parseTransportationTypeToString()
+                    )
                     ConsumptionResponse(
                         id = item.id,
                         carbonEmissions = item.carbonEmissions,
@@ -97,7 +101,8 @@ class ConsumptionResponse (
                         description = item.description,
                         electricity = null,
                         heating = null,
-                        transportation = transportation
+                        transportation = transportation,
+                        generatedByRecurringConsumptionId = item.generatedByRecurringConsumptionId
                     )
                 }
             }

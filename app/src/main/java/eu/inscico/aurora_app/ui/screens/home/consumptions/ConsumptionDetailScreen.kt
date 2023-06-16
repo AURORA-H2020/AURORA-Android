@@ -24,6 +24,7 @@ import eu.inscico.aurora_app.model.consumptions.Consumption
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.AppBar
+import eu.inscico.aurora_app.ui.components.consumptions.DuplicateConsumptionButton
 import eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption.AddElectricityConsumption
 import eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption.AddHeatingConsumption
 import eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption.AddTransportationConsumption
@@ -43,7 +44,7 @@ fun ConsumptionDetailScreen(
     viewModel: ConsumptionDetailViewModel = koinViewModel(),
     navigationService: NavigationService = get(),
     userFeedbackService: UserFeedbackService = get()
-){
+) {
 
     val context = LocalContext.current
 
@@ -53,112 +54,170 @@ fun ConsumptionDetailScreen(
         mutableStateOf(false)
     }
 
-    val editIconRes = if(editModeOn.value){
+    val editIconRes = if (editModeOn.value) {
         R.drawable.outline_edit_off_24
     } else {
         R.drawable.outline_edit_24
     }
 
+    val showDuplicateConsumptionContent = remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    if (showDuplicateConsumptionContent.value) {
+        Column() {
 
-        val consumptionNameRes = when(consumption.value){
-            is Consumption.ElectricityConsumption -> R.string.home_consumptions_type_electricity_title
-            is Consumption.HeatingConsumption -> R.string.home_consumptions_type_heating_title
-            is Consumption.TransportationConsumption -> R.string.home_consumptions_type_transportation_title
-            null -> R.string.no_value_to_display
+
+            AppBar(
+                title = stringResource(id = R.string.home_duplicate_consumption_button_title),
+                hasBackNavigation = true,
+                backNavigationCallback = {
+                    showDuplicateConsumptionContent.value = false
+                }
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+
+                val castConsumption = consumption.value
+                when (castConsumption) {
+                    is Consumption.ElectricityConsumption -> {
+                        AddElectricityConsumption(
+                            initialValues = castConsumption,
+                            isDuplicate = true
+                        )
+                    }
+                    is Consumption.HeatingConsumption -> {
+                        AddHeatingConsumption(
+                            initialValue = castConsumption,
+                            isDuplicate = true
+                        )
+                    }
+                    is Consumption.TransportationConsumption -> {
+                        AddTransportationConsumption(
+                            initialValues = castConsumption,
+                            isDuplicate = true
+                        )
+                    }
+                    null -> {}
+                }
+            }
         }
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            val consumptionNameRes = when (consumption.value) {
+                is Consumption.ElectricityConsumption -> R.string.home_consumptions_type_electricity_title
+                is Consumption.HeatingConsumption -> R.string.home_consumptions_type_heating_title
+                is Consumption.TransportationConsumption -> R.string.home_consumptions_type_transportation_title
+                null -> R.string.no_value_to_display
+            }
 
 
-        AppBar(
-            title = stringResource(id = consumptionNameRes),
-            hasBackNavigation = true,
-            backNavigationCallback = {
-                navigationService.navControllerTabHome?.popBackStack()
-            },
-            actionButton = {
-                Row() {
-                    Image(
-                        painter = painterResource(id = editIconRes),
-                        modifier = Modifier
-                            .size(38.dp)
-                            .padding(horizontal = 7.dp)
-                            .clickable {
-                                editModeOn.value = !editModeOn.value
-                            },
-                        contentDescription = "",
-                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
-                    )
-                    Image(
-                        painter = painterResource(id = R.drawable.outline_delete_outline_24),
-                        modifier = Modifier
-                            .size(38.dp)
-                            .padding(horizontal = 7.dp)
-                            .clickable {
-                                userFeedbackService.showDialog(
-                                    message = context.getString(R.string.dialog_consumption_delete_title),
-                                    confirmButtonText = context.getString(R.string.delete),
-                                    confirmButtonCallback = {
-                                        if (consumption.value != null) {
-                                            CoroutineScope(Dispatchers.IO).launch {
-                                                val result =
-                                                    viewModel.deleteConsumption(consumption.value!!)
-                                                when (result) {
-                                                    is TypedResult.Failure -> {
-                                                        userFeedbackService.showSnackbar(R.string.settings_delete_consumption_entry_fail_message)
-                                                    }
-                                                    is TypedResult.Success -> {
-                                                        withContext(Dispatchers.Main){
-                                                            navigationService.navControllerTabHome?.popBackStack()
+            AppBar(
+                title = stringResource(id = consumptionNameRes),
+                hasBackNavigation = true,
+                backNavigationCallback = {
+                    navigationService.navControllerTabHome?.popBackStack()
+                },
+                actionButton = {
+                    Row() {
+                        Image(
+                            painter = painterResource(id = editIconRes),
+                            modifier = Modifier
+                                .size(38.dp)
+                                .padding(horizontal = 7.dp)
+                                .clickable {
+                                    editModeOn.value = !editModeOn.value
+                                },
+                            contentDescription = "",
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
+                        )
+                        Image(
+                            painter = painterResource(id = R.drawable.outline_delete_outline_24),
+                            modifier = Modifier
+                                .size(38.dp)
+                                .padding(horizontal = 7.dp)
+                                .clickable {
+                                    userFeedbackService.showDialog(
+                                        message = context.getString(R.string.dialog_consumption_delete_title),
+                                        confirmButtonText = context.getString(R.string.delete),
+                                        confirmButtonCallback = {
+                                            if (consumption.value != null) {
+                                                CoroutineScope(Dispatchers.IO).launch {
+                                                    val result =
+                                                        viewModel.deleteConsumption(consumption.value!!)
+                                                    when (result) {
+                                                        is TypedResult.Failure -> {
+                                                            userFeedbackService.showSnackbar(R.string.settings_delete_consumption_entry_fail_message)
+                                                        }
+                                                        is TypedResult.Success -> {
+                                                            withContext(Dispatchers.Main) {
+                                                                navigationService.navControllerTabHome?.popBackStack()
+                                                            }
                                                         }
                                                     }
                                                 }
+                                            } else {
+                                                userFeedbackService.showSnackbar(R.string.settings_delete_consumption_entry_fail_message)
                                             }
-                                        } else {
-                                            userFeedbackService.showSnackbar(R.string.settings_delete_consumption_entry_fail_message)
                                         }
-                                    }
-                                )
-                            },
-                        contentDescription = "",
-                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.error)
-                    )
+                                    )
+                                },
+                            contentDescription = "",
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.error)
+                        )
+                    }
                 }
-            }
-        )
+            )
 
-        if(editModeOn.value){
-            when(consumption.value){
-                is Consumption.ElectricityConsumption -> {
-                    AddElectricityConsumption(initialValues = consumption.value as Consumption.ElectricityConsumption)
-                }
-                is Consumption.HeatingConsumption -> {
-                    AddHeatingConsumption(initialValue = consumption.value as Consumption.HeatingConsumption)
-                }
-                is Consumption.TransportationConsumption -> {
-                    AddTransportationConsumption(initialValues = consumption.value as Consumption.TransportationConsumption)
-                }
-                null -> {}
-            }
-        } else {
-            when(consumption.value){
-                is Consumption.ElectricityConsumption -> {
-                    ElectricityConsumptionDetails(consumption.value as Consumption.ElectricityConsumption)
-                }
-                is Consumption.HeatingConsumption -> {
-                    HeatingConsumptionDetails(consumption.value as Consumption.HeatingConsumption)
-                }
-                is Consumption.TransportationConsumption -> {
-                    TransportationConsumptionDetails(consumption.value as Consumption.TransportationConsumption)
-                }
-                null -> {}
-            }
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
 
+                if (editModeOn.value) {
+                    when (consumption.value) {
+                        is Consumption.ElectricityConsumption -> {
+                            AddElectricityConsumption(initialValues = consumption.value as Consumption.ElectricityConsumption)
+                        }
+                        is Consumption.HeatingConsumption -> {
+                            AddHeatingConsumption(initialValue = consumption.value as Consumption.HeatingConsumption)
+                        }
+                        is Consumption.TransportationConsumption -> {
+                            AddTransportationConsumption(initialValues = consumption.value as Consumption.TransportationConsumption)
+                        }
+                        null -> {}
+                    }
+                } else {
+
+                    when (consumption.value) {
+                        is Consumption.ElectricityConsumption -> {
+                            ElectricityConsumptionDetails(consumption.value as Consumption.ElectricityConsumption)
+                        }
+                        is Consumption.HeatingConsumption -> {
+                            HeatingConsumptionDetails(consumption.value as Consumption.HeatingConsumption)
+                        }
+                        is Consumption.TransportationConsumption -> {
+                            TransportationConsumptionDetails(consumption.value as Consumption.TransportationConsumption)
+                        }
+                        null -> {}
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    DuplicateConsumptionButton(modifier = Modifier.padding(horizontal = 16.dp)) {
+                        showDuplicateConsumptionContent.value =
+                            !showDuplicateConsumptionContent.value
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+            }
         }
     }
-
 }

@@ -57,6 +57,7 @@ import java.util.*
 @Composable
 fun AddTransportationConsumption(
     initialValues: Consumption.TransportationConsumption? = null,
+    isDuplicate: Boolean? = false,
     viewModel: AddConsumptionViewModel = koinViewModel(),
     navigationService: NavigationService = get(),
     userFeedbackService: UserFeedbackService = get()
@@ -121,8 +122,7 @@ fun AddTransportationConsumption(
 
     Column(
         Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.Start
     ) {
 
@@ -479,7 +479,7 @@ fun AddTransportationConsumption(
                     if(consumptionResponse.value != null){
                         CoroutineScope(Dispatchers.IO).launch {
 
-                            val result = if(initialValues != null){
+                            val result = if(initialValues != null && isDuplicate == false){
                                 consumptionResponse.id = initialValues.id
                                 viewModel.updateConsumption(consumptionResponse)
                             } else {

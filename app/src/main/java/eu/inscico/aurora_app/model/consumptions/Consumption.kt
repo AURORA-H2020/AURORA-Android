@@ -14,7 +14,8 @@ sealed class Consumption {
         val value: Double,
         val version: String?,
         val description: String?,
-        val electricity: ElectricityConsumptionData
+        val electricity: ElectricityConsumptionData,
+        val generatedByRecurringConsumptionId: String? = null
     ) : Consumption()
 
     data class HeatingConsumption(
@@ -27,7 +28,8 @@ sealed class Consumption {
         val value: Double,
         val description: String?,
         val version: String?,
-        val heating: HeatingConsumptionData
+        val heating: HeatingConsumptionData,
+        val generatedByRecurringConsumptionId: String? = null
     ) : Consumption()
 
     data class TransportationConsumption(
@@ -40,7 +42,8 @@ sealed class Consumption {
         val value: Double,
         val description: String?,
         val version: String?,
-        val transportation: TransportationConsumptionData
+        val transportation: TransportationConsumptionData,
+        val generatedByRecurringConsumptionId: String? = null
     ) : Consumption()
 
     companion object {
@@ -97,7 +100,8 @@ sealed class Consumption {
                         description = item.description,
                         value = item.value ?: return null,
                         version = item.version,
-                        electricity = electricity
+                        electricity = electricity,
+                        generatedByRecurringConsumptionId = item.generatedByRecurringConsumptionId
                     )
                 }
                 ConsumptionType.HEATING -> {
@@ -157,7 +161,8 @@ sealed class Consumption {
                         value = item.value ?: return null,
                         version = item.version,
                         description = item.description,
-                        heating = heating
+                        heating = heating,
+                        generatedByRecurringConsumptionId = item.generatedByRecurringConsumptionId
                     )
                 }
                 ConsumptionType.TRANSPORTATION -> {
@@ -245,7 +250,8 @@ sealed class Consumption {
                         value = item.value ?: return null,
                         version = item.version,
                         description = item.description,
-                        transportation = transportation
+                        transportation = transportation,
+                        generatedByRecurringConsumptionId = item.generatedByRecurringConsumptionId
                     )
                 }
                 null -> return null
