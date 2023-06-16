@@ -311,7 +311,7 @@ fun AddHeatingConsumption(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             value = description.value,
-            label = {
+            placeholder = {
                 Text(text = stringResource(id = R.string.home_add_consumption_form_description_title))
             },
             keyboardOptions = KeyboardOptions(

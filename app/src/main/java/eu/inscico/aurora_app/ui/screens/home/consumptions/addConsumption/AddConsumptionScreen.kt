@@ -51,19 +51,32 @@ fun AddConsumptionScreen(
 
         when (selectedConsumptionEntry.value) {
             ConsumptionType.ELECTRICITY -> {
-                AddElectricityConsumption()
+                Column(
+                    Modifier.verticalScroll(rememberScrollState()),
+                ) {
+                    AddElectricityConsumption()
+                }
             }
             ConsumptionType.HEATING -> {
-                AddHeatingConsumption()
+                Column(
+                    Modifier.verticalScroll(rememberScrollState()),
+                ) {
+                    AddHeatingConsumption()
+                }
             }
             ConsumptionType.TRANSPORTATION -> {
-                AddTransportationConsumption()
+                Column(
+                    Modifier.verticalScroll(rememberScrollState()),
+                ) {
+                    AddTransportationConsumption()
+                }
             }
             null -> {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(32.dp),
+                        .padding(32.dp)
+                        .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
