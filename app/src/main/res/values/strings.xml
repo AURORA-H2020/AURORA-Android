@@ -178,6 +178,7 @@
     <string name="home_recurring_consumptions_list_item_enabled_title">Enabled</string>
     <string name="home_recurring_consumptions_list_item_disabled_title">Disabled</string>
     <string name="home_recurring_consumptions_update_title">Edit</string>
+    <string name="home_duplicate_consumption_button_title">Duplicate</string>
     <!--Settings-->
     <string name="settings_app_bar_title">Settings</string>
     <string name="settings_profile_section_title">Account</string>
@@ -296,4 +297,6 @@
     <string name="settings_update_profile_fail_message">An error occurred while trying to update your profile.</string>
     <string name="consumption_summary_empty_list_info">Your carbon emissions labels are currently not available.</string>
     <string name="recurring_consumption_update_save_unsaved_changes_dialog_title">Do you want to exit edit mode? Changes that have not been saved will be lost.</string>
+    <string name="settings_export_data_share_dialog">Your data has been successfully downloaded.Do you want to export it?</string>
+    <string name="consumption_detail_recurring_consumption_automatically_generated_text">This entry was automatically added via recurring consumptions.</string>
 </resources>

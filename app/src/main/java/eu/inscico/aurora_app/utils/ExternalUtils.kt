@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import eu.inscico.aurora_app.BuildConfig
+import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.core.MainActivity
 import java.io.File
 import java.io.FileWriter
@@ -65,7 +66,7 @@ object ExternalUtils {
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.type = "text/plain"
         shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
-        ContextCompat.startActivity(context, Intent.createChooser(shareIntent, "Your data has been successfully downloaded.Do you want to export it?"), null)
+        ContextCompat.startActivity(context, Intent.createChooser(shareIntent, context.getString(R.string.settings_export_data_share_dialog)), null)
 
     }
 
