@@ -9,7 +9,6 @@ import eu.inscico.aurora_app.services.navigation.NavTab
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.services.notification.NotificationService.Companion.BEHAVIOUR_CHANGED_POPUP_INTERVAL
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
-import eu.inscico.aurora_app.ui.components.dialogs.ChangeBehaviourPopupDialog
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.*

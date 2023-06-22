@@ -26,7 +26,6 @@ import com.patrykandpatrick.vico.compose.component.shapeComponent
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.core.MainActivity
 import eu.inscico.aurora_app.model.push.PushNotificationType
-import eu.inscico.aurora_app.ui.components.dialogs.ChangeBehaviourPopupDialog
 import org.json.JSONObject
 import java.util.*
 
