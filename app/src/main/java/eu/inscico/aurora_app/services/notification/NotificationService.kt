@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import eu.inscico.aurora_app.model.consumptions.ConsumptionType
 import eu.inscico.aurora_app.model.reminder.ReminderTime
 import eu.inscico.aurora_app.services.jsonParsing.JsonParsingService
@@ -21,6 +22,10 @@ class NotificationService(
     private val context: Context,
     private val _jsonParsingService: JsonParsingService
 ) {
+
+    companion object {
+        const val BEHAVIOUR_CHANGED_POPUP_INTERVAL = 1209600000
+    }
 
     var notificationPermissionHandler: NotificationPermissionHandler? = null
 
@@ -46,6 +51,18 @@ class NotificationService(
         }
         set(value) {
             PrefsUtils.save(context, "mobilityReminderActive", value)
+        }
+
+    val behaviourChangesPopupActivePrefsLive = MutableLiveData<Boolean>()
+    var behaviourChangesPopupActivePrefs: Boolean
+        get() {
+            val isActive = PrefsUtils.get(context, "behaviourChangesPopupActive", false)
+            behaviourChangesPopupActivePrefsLive.postValue(isActive)
+            return isActive
+        }
+        set(value) {
+            PrefsUtils.save(context, "behaviourChangesPopupActive", value)
+            behaviourChangesPopupActivePrefsLive.postValue(value)
         }
 
     var electricityReminder: ReminderTime?
@@ -107,6 +124,17 @@ class NotificationService(
             if (value != null) {
                 val reminderAsJson = _jsonParsingService.toJson(value)
                 PrefsUtils.save(context, "mobilityReminder", reminderAsJson)
+            }
+
+        }
+
+    var behaviourChangeReminder: Long?
+        get() {
+            return PrefsUtils.get(context, "behaviourChangeReminder", 0)
+        }
+        set(value) {
+            if (value != null) {
+                PrefsUtils.save(context, "behaviourChangeReminder", value)
             }
 
         }
@@ -185,6 +213,26 @@ class NotificationService(
                 calendar.set(Calendar.MINUTE, reminderTime.time.get(Calendar.MINUTE))
                 return calendar
             }
+        }
+    }
+
+    fun updateBehaviourChangePopup(time: Long, isEnabled: Boolean = true) {
+
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val receiver = RecurringConsumptionsBehaviourChangedPopupReceiver::class.java
+        val intent = Intent(context, receiver)
+
+        val pendingIntent = IntentUtils.getCorrectPendingIntent(
+            context = context,
+            id = 333,
+            intent = intent,
+            flag = PendingIntent.FLAG_CANCEL_CURRENT,
+            category = PendingIntentCategory.BROADCAST
+        )
+
+        alarmManager.cancel(pendingIntent)
+        if(isEnabled){
+            alarmManager.set(AlarmManager.RTC_WAKEUP, time, pendingIntent)
         }
     }
 

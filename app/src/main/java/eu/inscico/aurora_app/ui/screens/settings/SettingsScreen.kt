@@ -12,6 +12,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,15 +33,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import eu.inscico.aurora_app.R
+import eu.inscico.aurora_app.model.consumptions.ConsumptionType
 import eu.inscico.aurora_app.model.user.UserSignInType
 import eu.inscico.aurora_app.services.firebase.AccountDeletionErrorType
 import eu.inscico.aurora_app.services.notification.NotificationCreationService
 import eu.inscico.aurora_app.services.navigation.NavigationService
+import eu.inscico.aurora_app.services.notification.NotificationService.Companion.BEHAVIOUR_CHANGED_POPUP_INTERVAL
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.ActionEntry
 import eu.inscico.aurora_app.ui.components.AppBar
+import eu.inscico.aurora_app.ui.components.SwitchWithLabel
 import eu.inscico.aurora_app.ui.components.container.ScrollableContent
 import eu.inscico.aurora_app.ui.components.dialogs.ReenterPasswordAndDeleteAccountDialog
+import eu.inscico.aurora_app.ui.screens.settings.notifications.SettingsReminderViewModel
 import eu.inscico.aurora_app.ui.theme.electricityYellow
 import eu.inscico.aurora_app.ui.theme.heatingRed
 import eu.inscico.aurora_app.ui.theme.mobilityBlue
@@ -51,10 +56,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
+import java.util.*
 
 @Composable
 fun SettingsScreen(
     viewModel: SettingsViewModel = koinViewModel(),
+    reminderViewModel: SettingsReminderViewModel = koinViewModel(),
     navigationService: NavigationService = get(),
     userFeedbackService: UserFeedbackService = get(),
     _notificationCreationService: NotificationCreationService = get()
@@ -62,6 +69,8 @@ fun SettingsScreen(
 
     val showDeleteAccountDialog = remember { mutableStateOf(false) }
     val showReenterPasswordDialog = remember { mutableStateOf(false) }
+
+    val behaviourChangeSwitch = reminderViewModel.behaviourChangesPopupActiveLive.observeAsState()
 
     Column(
         modifier = Modifier
@@ -220,6 +229,27 @@ fun SettingsScreen(
                             navigationService.toMobilityReminder()
                         }
                     )
+
+                    Divider()
+
+                    SwitchWithLabel(
+                        label = stringResource(id = R.string.settings_recurring_consumptions_changed_behaviour_popup_switch),
+                        state = behaviourChangeSwitch.value ?: false,
+                        onStateChange = {
+                            //behaviourChangeSwitch.value = it
+
+                            if(it) {
+                                val now = Calendar.getInstance()
+                                val twoWeeksInterval = BEHAVIOUR_CHANGED_POPUP_INTERVAL
+                                val nextPopup = now.timeInMillis + twoWeeksInterval
+                                reminderViewModel.updateBehaviourChangeTime(nextPopup)
+                            }
+
+                            reminderViewModel.updateBehaviourChangePopupActive(it)
+                            reminderViewModel.updateBehaviourChangePopupShowing(
+                                isEnabled = it
+                            )
+                        })
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))

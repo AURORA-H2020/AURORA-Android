@@ -31,5 +31,10 @@ class RebootAndAppUpdateReceiver : BroadcastReceiver(), KoinComponent {
             _notificationService.updateNotificationAlarm(ConsumptionType.TRANSPORTATION, nextNotificationTime)
         }
 
+        val behaviourChangePopupTime = _notificationService.behaviourChangeReminder
+        val behaviourChangePopupActive = _notificationService.behaviourChangesPopupActivePrefs
+        if (behaviourChangePopupTime != null){
+            _notificationService.updateBehaviourChangePopup(time = behaviourChangePopupTime, isEnabled = behaviourChangePopupActive)
+        }
     }
 }

@@ -23,6 +23,8 @@ import eu.inscico.aurora_app.services.navigation.NavGraphDirections
 import eu.inscico.aurora_app.services.navigation.NavTab
 import eu.inscico.aurora_app.services.navigation.NavUtils
 import eu.inscico.aurora_app.services.navigation.NavigationService
+import eu.inscico.aurora_app.services.notification.NotificationCreationService
+import eu.inscico.aurora_app.services.notification.NotificationService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.theme.AURORAEnergyTrackerTheme
 import eu.inscico.aurora_app.ui.theme.semiTransparent
@@ -36,7 +38,9 @@ fun AuroraApp(
     userFeedbackService: UserFeedbackService = get(),
     authService: AuthService = get(),
     userService: UserService = get(),
-    countriesService: CountriesService = get()
+    countriesService: CountriesService = get(),
+    notificationCreationService: NotificationCreationService = get(),
+    notificationService: NotificationService = get()
 ) {
 
     val userCity = countriesService.userCityLive.observeAsState()
@@ -157,6 +161,11 @@ fun AuroraApp(
         val showDialog = remember { userFeedbackService._showDialog }
         if (showDialog.value) {
             userFeedbackService.getDialog()
+        }
+
+        val showBehaviorChangeDialog = remember { notificationCreationService._showChangeBehaviorDialog }
+        if (showBehaviorChangeDialog.value) {
+            notificationCreationService.getChangeBehaviorPopupDialog()
         }
 
         val showLoadingDialog = remember { userFeedbackService._showLoadingDialog }

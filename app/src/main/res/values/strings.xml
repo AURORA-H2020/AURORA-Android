@@ -16,6 +16,10 @@
     <string name="delete">Delete</string>
     <string name="reset">Reset</string>
     <string name="discard">Discard</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="dont_ask_again">Don\'t ask me again</string>
+
     <!--Login/Create Profile-->
     <string name="login_aurora_title">Welcome to AURORA</string>
     <string name="login_aurora_description">Empowering a new generation of near zero-emission citizens</string>
@@ -255,6 +259,8 @@
     <string name="settings_section_project_info_text">" has received funding from the European Union\'s Horizon 2020 research and innovation programme under grant agreement Nr. "</string>
     <string name="settings_section_project_text">This project</string>
     <string name="settings_section_project_number_text" translatable="false">101036418</string>
+    <string name="settings_recurring_consumptions_changed_behaviour_popup_switch">Regular energy behaviour changes</string>
+
     <!--Solar power-->
     <string name="solar_power_title">Your solar power</string>
     <string name="solar_power_description">You can soon reduce your carbon footprint by investing into your local AURORA photovoltaic installation. Until then, you can already test here, by how much your footprint would be reduced, depending on your potential investment.</string>
@@ -299,4 +305,5 @@
     <string name="recurring_consumption_update_save_unsaved_changes_dialog_title">Do you want to exit edit mode? Changes that have not been saved will be lost.</string>
     <string name="settings_export_data_share_dialog">Your data has been successfully downloaded.Do you want to export it?</string>
     <string name="consumption_detail_recurring_consumption_automatically_generated_text">This entry was automatically added via recurring consumptions.</string>
+    <string name="recurring_consumptions_changed_behaviour_popup_text">Has your regular energy behaviour changed?</string>
 </resources>

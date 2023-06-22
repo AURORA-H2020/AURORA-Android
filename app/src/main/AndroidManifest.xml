@@ -65,6 +65,12 @@
             android:exported="false">
         </receiver>
 
+        <receiver
+            android:name="eu.inscico.aurora_app.services.notification.RecurringConsumptionsBehaviourChangedPopupReceiver"
+            android:enabled="true"
+            android:exported="false">
+        </receiver>
+
         <!-- Provider -->
         <provider
             android:name="androidx.core.content.FileProvider"

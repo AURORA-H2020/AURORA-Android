@@ -32,7 +32,7 @@ class NavigationService {
         switchTabTo(NavTab.Settings)
     }
 
-    private fun switchTabTo(navigationTab: NavTab, then: () -> Unit = {}) {
+    fun switchTabTo(navigationTab: NavTab, then: () -> Unit = {}) {
         navControllerTabs?.let {
             it.navigate(navigationTab.route) {
                 // Pop up to the start destination of the graph to

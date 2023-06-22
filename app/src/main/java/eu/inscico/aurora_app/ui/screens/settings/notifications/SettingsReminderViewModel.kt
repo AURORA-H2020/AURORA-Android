@@ -12,6 +12,8 @@ class SettingsReminderViewModel(
     var electricityReminderActive = _notificationService.electricityReminderActivePrefs
     var heatingReminderActive = _notificationService.heatingReminderActivePrefs
     var mobilityReminderActive = _notificationService.mobilityReminderActivePrefs
+    var behaviourChangesPopupActive = _notificationService.behaviourChangesPopupActivePrefs
+    var behaviourChangesPopupActiveLive = _notificationService.behaviourChangesPopupActivePrefsLive
 
 
     fun updateElectricityReminderActive(isActive: Boolean){
@@ -38,11 +40,26 @@ class SettingsReminderViewModel(
         _notificationService.mobilityReminder = mobilityReminder
     }
 
+    fun updateBehaviourChangePopupActive(isActive: Boolean){
+        _notificationService.behaviourChangesPopupActivePrefs = isActive
+    }
+
+    fun updateBehaviourChangeTime(time: Long){
+        _notificationService.behaviourChangeReminder = time
+    }
+
     fun updateNotificationAlarm(isEnabled: Boolean, type: ConsumptionType){
         val electricityReminderTime = _notificationService.electricityReminder
         if(electricityReminderTime != null){
             val nextNotificationTime = _notificationService.getNextNotificationTime(electricityReminderTime)
             _notificationService.updateNotificationAlarm(isEnabled = isEnabled, notificationType = type, nextNotificationTime = nextNotificationTime)
+        }
+    }
+
+    fun updateBehaviourChangePopupShowing(isEnabled: Boolean){
+        val time = _notificationService.behaviourChangeReminder
+        if(time != null) {
+            _notificationService.updateBehaviourChangePopup(time = time, isEnabled = isEnabled)
         }
     }
 
