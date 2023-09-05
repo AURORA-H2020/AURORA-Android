@@ -11,7 +11,9 @@ data class User(
     val lastName: String,
     val gender: Gender?,
     val yearOfBirth: Int?,
-    val isMarketingConsentAllowed: Boolean?
+    val isMarketingConsentAllowed: Boolean?,
+    val homeEnergyLabel: HomeEnergyLabel?,
+    val householdProfile: HouseholdProfileEnum?
 ) {
     companion object {
         fun from(item: UserResponse?): User? {
@@ -23,7 +25,9 @@ data class User(
                 lastName = item.lastName ?: return null,
                 gender = parseStringToGender(item.gender),
                 yearOfBirth = item.yearOfBirth,
-                isMarketingConsentAllowed = item.isMarketingConsentAllowed
+                isMarketingConsentAllowed = item.isMarketingConsentAllowed,
+                homeEnergyLabel = HomeEnergyLabel.parseStringToHomeLabel(item.homeEnergyLabel),
+                householdProfile = HouseholdProfileEnum.parseStringToHouseholdProfile(item.householdProfile)
             )
         }
     }

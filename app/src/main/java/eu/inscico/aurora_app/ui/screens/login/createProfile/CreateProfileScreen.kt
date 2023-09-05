@@ -25,6 +25,10 @@ import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.City
 import eu.inscico.aurora_app.model.user.Gender
 import eu.inscico.aurora_app.model.user.Gender.Companion.toGenderString
+import eu.inscico.aurora_app.model.user.HomeEnergyLabel
+import eu.inscico.aurora_app.model.user.HomeEnergyLabel.Companion.toHomeLabelString
+import eu.inscico.aurora_app.model.user.HouseholdProfileEnum
+import eu.inscico.aurora_app.model.user.HouseholdProfileEnum.Companion.toHouseholdProfileString
 import eu.inscico.aurora_app.model.user.UserResponse
 import eu.inscico.aurora_app.services.navigation.NavGraphDirections
 import eu.inscico.aurora_app.services.navigation.NavigationService
@@ -66,6 +70,14 @@ fun CreateProfileScreen(
 
     val gender = remember {
         mutableStateOf<Gender?>(Gender.OTHER)
+    }
+
+    val homeEnergyLabel = remember {
+        mutableStateOf<HomeEnergyLabel?>(null)
+    }
+
+    val householdProfile = remember {
+        mutableStateOf<HouseholdProfileEnum?>(null)
     }
 
     val country = remember {
@@ -204,20 +216,6 @@ fun CreateProfileScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.Start
-            ) {
-                Text(
-                    style = MaterialTheme.typography.labelLarge,
-                    text = stringResource(id = R.string.create_profile_country_title),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Start
-                )
-            }
-
             val countryDisplayNames = countries.value?.map { it.displayName ?: "" }
 
             Column(
@@ -284,12 +282,48 @@ fun CreateProfileScreen(
 
             Spacer(modifier = Modifier.heightIn(16.dp))
 
-            SwitchWithLabel(
-                label = stringResource(id = R.string.create_profile_newsletter_switch_description),
-                state = newsletterSwitch.value,
-                onStateChange = {
-                newsletterSwitch.value = it
-            })
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .clip(shape = RoundedCornerShape(16.dp))) {
+
+                FormEntry(
+                    title = stringResource(id = R.string.create_profile_home_energy_level_title),
+                    formEntryType = FormEntryType.SPINNER,
+                    initialItem = homeEnergyLabel.value.toHomeLabelString(context),
+                    items = HomeEnergyLabel.getHomeLabelDisplayList(context),
+                    callback = { _, index ->
+                        homeEnergyLabel.value = viewModel.homeEnergyLabels.get(index ?: viewModel.homeEnergyLabels.lastIndex)
+                    }
+                )
+
+                FormEntry(
+                    title = stringResource(id = R.string.create_profile_household_profile_title),
+                    formEntryType = FormEntryType.SPINNER,
+                    initialItem = householdProfile.value.toHouseholdProfileString(context),
+                    items = HouseholdProfileEnum.getHouseholdProfileDisplayList(context),
+                    callback = { _, index ->
+                        householdProfile.value = viewModel.householdProfiles.get(index ?: viewModel.householdProfiles.lastIndex)
+                    }
+                )
+            }
+
+            Spacer(modifier = Modifier.heightIn(16.dp))
+
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .clip(shape = RoundedCornerShape(16.dp))) {
+
+                SwitchWithLabel(
+                    label = stringResource(id = R.string.create_profile_newsletter_switch_description),
+                    state = newsletterSwitch.value,
+                    onStateChange = {
+                        newsletterSwitch.value = it
+                    })
+            }
 
             Spacer(modifier = Modifier.heightIn(32.dp))
 
@@ -308,7 +342,9 @@ fun CreateProfileScreen(
                             lastName = lastName.value,
                             gender = Gender.parseGenderToString(gender.value),
                             yearOfBirth = birthYear.value.toIntOrNull(),
-                            isMarketingConsentAllowed = newsletterSwitch.value
+                            isMarketingConsentAllowed = newsletterSwitch.value,
+                            householdProfile = HouseholdProfileEnum.parseHouseholdProfileToString(householdProfile.value),
+                            homeEnergyLabel = HomeEnergyLabel.parseHomeLabelToString(homeEnergyLabel.value)
                         )
                         CoroutineScope(Dispatchers.IO).launch {
                         val result = viewModel.createUser(user)

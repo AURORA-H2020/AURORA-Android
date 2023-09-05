@@ -19,6 +19,10 @@ import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.user.Gender
 import eu.inscico.aurora_app.model.user.Gender.Companion.toGenderString
+import eu.inscico.aurora_app.model.user.HomeEnergyLabel
+import eu.inscico.aurora_app.model.user.HomeEnergyLabel.Companion.toHomeLabelString
+import eu.inscico.aurora_app.model.user.HouseholdProfileEnum
+import eu.inscico.aurora_app.model.user.HouseholdProfileEnum.Companion.toHouseholdProfileString
 import eu.inscico.aurora_app.model.user.UserResponse
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
@@ -60,9 +64,19 @@ fun EditProfileScreen(
         mutableStateOf<Gender?>(currentUserLive.value?.gender)
     }
 
+    val homeEnergyLabel = remember {
+        mutableStateOf<HomeEnergyLabel?>(currentUserLive.value?.homeEnergyLabel)
+    }
+
+    val householdProfile = remember {
+        mutableStateOf<HouseholdProfileEnum?>(currentUserLive.value?.householdProfile)
+    }
+
     fun validateSaveAllowed(): Boolean {
         return (firstName.value != currentUserLive.value?.firstName
                 || lastName.value != currentUserLive.value?.lastName
+                || homeEnergyLabel.value != currentUserLive.value?.homeEnergyLabel
+                || householdProfile.value != currentUserLive.value?.householdProfile
                 || birthYear.value != currentUserLive.value?.yearOfBirth.toString()
                 || gender.value != currentUserLive.value?.gender)
     }
@@ -150,6 +164,32 @@ fun EditProfileScreen(
                 Divider()
 
                 FormEntry(
+                    title = stringResource(id = R.string.create_profile_home_energy_level_title),
+                    formEntryType = FormEntryType.SPINNER,
+                    initialItem = homeEnergyLabel.value.toHomeLabelString(context),
+                    items = HomeEnergyLabel.getHomeLabelDisplayList(context),
+                    callback = { _, index ->
+                        homeEnergyLabel.value = viewModel.homeEnergyLabels.get(index ?: viewModel.homeEnergyLabels.lastIndex)
+                        isSaveValid.value = validateSaveAllowed()
+                    }
+                )
+
+                Divider()
+
+                FormEntry(
+                    title = stringResource(id = R.string.create_profile_household_profile_title),
+                    formEntryType = FormEntryType.SPINNER,
+                    initialItem = householdProfile.value.toHouseholdProfileString(context),
+                    items = HouseholdProfileEnum.getHouseholdProfileDisplayList(context),
+                    callback = { _, index ->
+                        householdProfile.value = viewModel.householdProfiles.get(index ?: viewModel.householdProfiles.lastIndex)
+                        isSaveValid.value = validateSaveAllowed()
+                    }
+                )
+
+                Divider()
+
+                FormEntry(
                     title = stringResource(id = R.string.create_profile_country_title),
                     formEntryType = FormEntryType.SPINNER,
                     initialItem = viewModel.currentCountry.value?.displayName ?: "",
@@ -194,7 +234,9 @@ fun EditProfileScreen(
                             lastName = lastName.value,
                             gender = Gender.parseGenderToString(gender.value),
                             yearOfBirth = birthYear.value.toIntOrNull(),
-                            isMarketingConsentAllowed = currentUserLive.value?.isMarketingConsentAllowed
+                            isMarketingConsentAllowed = currentUserLive.value?.isMarketingConsentAllowed,
+                            householdProfile = HouseholdProfileEnum.parseHouseholdProfileToString(householdProfile.value),
+                            homeEnergyLabel = HomeEnergyLabel.parseHomeLabelToString(homeEnergyLabel.value)
                         )
                         CoroutineScope(Dispatchers.IO).launch {
                             val result = viewModel.updateUser(updatedUser)

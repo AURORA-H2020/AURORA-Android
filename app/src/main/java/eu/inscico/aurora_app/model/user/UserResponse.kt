@@ -8,7 +8,6 @@ data class UserResponse(
     @DocumentId
     var id: String? = null,
 
-
     @get:PropertyName("isMarketingConsentAllowed")
     @set:PropertyName("isMarketingConsentAllowed")
     var isMarketingConsentAllowed: Boolean? = null,
@@ -18,7 +17,9 @@ data class UserResponse(
     var firstName: String? = null,
     var lastName: String? = null,
     var gender: String? = null,
-    var yearOfBirth: Int? = null
+    var yearOfBirth: Int? = null,
+    var homeEnergyLabel: String? = null,
+    var householdProfile: String? = null
 ){
     companion object {
         fun from(item: User): UserResponse? {
@@ -30,7 +31,9 @@ data class UserResponse(
                 lastName = item.lastName,
                 gender = Gender.parseGenderToString(item.gender),
                 yearOfBirth = item.yearOfBirth,
-                isMarketingConsentAllowed = item.isMarketingConsentAllowed
+                isMarketingConsentAllowed = item.isMarketingConsentAllowed,
+                homeEnergyLabel = HomeEnergyLabel.parseHomeLabelToString(item.homeEnergyLabel),
+                householdProfile = HouseholdProfileEnum.parseHouseholdProfileToString(item.householdProfile)
             )
         }
     }

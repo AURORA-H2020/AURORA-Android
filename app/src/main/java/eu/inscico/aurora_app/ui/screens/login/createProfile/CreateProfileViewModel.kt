@@ -2,9 +2,7 @@ package eu.inscico.aurora_app.ui.screens.login.createProfile
 
 import android.app.Activity
 import androidx.lifecycle.ViewModel
-import eu.inscico.aurora_app.model.user.Gender
-import eu.inscico.aurora_app.model.user.UserResponse
-import eu.inscico.aurora_app.model.user.UserSignInType
+import eu.inscico.aurora_app.model.user.*
 import eu.inscico.aurora_app.services.firebase.CountriesService
 import eu.inscico.aurora_app.services.firebase.UserService
 import eu.inscico.aurora_app.services.auth.AuthService
@@ -26,6 +24,8 @@ class CreateProfileViewModel(
     val cities = _countriesService.citiesFromCountryLive
 
     val genders = listOf(Gender.MALE, Gender.FEMALE, Gender.NON_BINARY, Gender.OTHER, null)
+    val homeEnergyLabels = listOf(HomeEnergyLabel.A_PLUS, HomeEnergyLabel.A, HomeEnergyLabel.B, HomeEnergyLabel.C, HomeEnergyLabel.D, HomeEnergyLabel.E, HomeEnergyLabel.F, HomeEnergyLabel.G, HomeEnergyLabel.UNSURE, null)
+    val householdProfiles = listOf(HouseholdProfileEnum.RETIRED_INDIVIDUALS, HouseholdProfileEnum.HOME_BASED_WORKERS_STUDENTS, HouseholdProfileEnum.HOMEMAKERS, HouseholdProfileEnum.WORKERS_STUDENTS_OUTSIDE_THE_HOME, null)
 
     val calendarYears = getCalendarYearsEntries()
 
