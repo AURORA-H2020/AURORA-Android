@@ -25,7 +25,7 @@ class CreateProfileViewModel(
     val countries = _countriesService.countriesLive
     val cities = _countriesService.citiesFromCountryLive
 
-    val genders = listOf(Gender.MALE, Gender.FEMALE, Gender.NON_BINARY, Gender.OTHER)
+    val genders = listOf(Gender.MALE, Gender.FEMALE, Gender.NON_BINARY, Gender.OTHER, null)
 
     val calendarYears = getCalendarYearsEntries()
 

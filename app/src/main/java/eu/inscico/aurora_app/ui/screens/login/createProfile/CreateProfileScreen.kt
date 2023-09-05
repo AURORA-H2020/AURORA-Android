@@ -65,7 +65,7 @@ fun CreateProfileScreen(
     }
 
     val gender = remember {
-        mutableStateOf(Gender.OTHER)
+        mutableStateOf<Gender?>(Gender.OTHER)
     }
 
     val country = remember {

@@ -38,6 +38,7 @@
     <string name="profile_gender_male">Männlich</string>
     <string name="profile_gender_female">Weiblich</string>
     <string name="profile_gender_non_binary">Nicht binär</string>
+    <string name="create_profile_drop_down_other">Andere</string>
     <string name="profile_gender_generic">Keine Angabe</string>
     <string name="profile_submit">Bestätigen</string>
     <string name="sign_in_with_email_tab_bar_login">Anmelden</string>

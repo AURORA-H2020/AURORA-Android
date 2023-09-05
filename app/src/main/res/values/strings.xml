@@ -42,6 +42,7 @@
     <string name="create_profile_city_hint">City</string>
     <string name="create_profile_description">Enter your information to create your personal AURORA profile.</string>
     <string name="create_profile_drop_down_prefer_not_to_say">Prefer not to say</string>
+    <string name="create_profile_drop_down_other">Other</string>
     <string name="create_profile_drop_down_please_choose">Please choose</string>
     <string name="create_profile_city_drop_down_other_city">Other city</string>
     <string name="create_profile_country_selection_info">This information helps us to more accurately calculate your carbon footprint. Please note that you can\'t change your country later.</string>

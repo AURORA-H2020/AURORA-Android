@@ -57,7 +57,7 @@ fun EditProfileScreen(
     }
 
     val gender = remember {
-        mutableStateOf(currentUserLive.value?.gender ?: Gender.OTHER)
+        mutableStateOf<Gender?>(currentUserLive.value?.gender)
     }
 
     fun validateSaveAllowed(): Boolean {
