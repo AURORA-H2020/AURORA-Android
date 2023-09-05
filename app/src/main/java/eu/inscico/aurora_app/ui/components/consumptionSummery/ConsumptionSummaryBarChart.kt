@@ -59,6 +59,8 @@ fun ConsumptionSummaryBarChart(
                 String.format("%.1f", value ?: 0F)
             } else if(value > 0.1){
                 String.format("%.2f", value ?: 0F)
+            } else if(value == 0F){
+                String.format("%.0f", value ?: 0F)
             }
             else {
                 String.format("%.3f", value ?: 0F)
