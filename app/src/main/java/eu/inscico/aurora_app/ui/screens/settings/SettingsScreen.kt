@@ -423,17 +423,6 @@ fun SettingsScreen(
                         .clip(shape = RoundedCornerShape(16.dp))) {
 
                     ActionEntry(
-                        title = stringResource(id = R.string.settings_legal_information_feature_preview_title),
-                        iconRes = R.drawable.outline_auto_fix_high_24,
-                        isNavigation = false,
-                        callback = {
-                            navigationService.toFeaturePreview()
-                        }
-                    )
-
-                    Divider()
-
-                    ActionEntry(
                         title = stringResource(id = R.string.settings_legal_information_imprint_title),
                         iconRes = R.drawable.outline_info_24,
                         isNavigation = false,
