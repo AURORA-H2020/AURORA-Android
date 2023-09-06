@@ -12,8 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
@@ -29,17 +27,14 @@ import androidx.compose.ui.unit.sp
 import com.google.firebase.Timestamp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptions.*
-import eu.inscico.aurora_app.model.consumptions.HeatingFuelType.Companion.getDisplayName
 import eu.inscico.aurora_app.model.consumptions.PublicVehicleOccupancy.Companion.getDisplayName
 import eu.inscico.aurora_app.model.consumptions.PublicVehicleOccupancy.Companion.parsePublicVehicleOccupancyToString
 import eu.inscico.aurora_app.model.consumptions.TransportationType.Companion.getDisplayName
 import eu.inscico.aurora_app.model.consumptions.TransportationType.Companion.parseTransportationTypeToString
-import eu.inscico.aurora_app.services.navigation.NavGraphDirections
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.datePicker.MaterialDatePickerDialog
 import eu.inscico.aurora_app.ui.components.forms.AddSubtractCountFormEntry
-import eu.inscico.aurora_app.ui.components.forms.BeginEndPickerFormEntry
 import eu.inscico.aurora_app.ui.components.forms.SpinnerFormEntry
 import eu.inscico.aurora_app.ui.components.forms.SpinnerItem
 import eu.inscico.aurora_app.ui.components.timePicker.TimePickerDialog
@@ -61,15 +56,19 @@ fun AddTransportationConsumption(
     viewModel: AddConsumptionViewModel = koinViewModel(),
     navigationService: NavigationService = get(),
     userFeedbackService: UserFeedbackService = get()
-){
+) {
 
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    val initialDistance = if(initialValues?.value != null){
-        String.format("%.1f",initialValues.value)
+    val initialDistance = if (initialValues?.value != null) {
+        String.format("%.1f", initialValues.value)
     } else {
         ""
+    }
+
+    val endOfTravelVisible = remember {
+        mutableStateOf(false)
     }
 
     val distance = remember {
@@ -77,7 +76,16 @@ fun AddTransportationConsumption(
     }
 
     val startOfTravelAsLong = remember {
-        mutableStateOf(initialValues?.transportation?.dateOfTravel?.timeInMillis ?: Calendar.getInstance().timeInMillis)
+        mutableStateOf(
+            initialValues?.transportation?.dateOfTravel?.timeInMillis
+                ?: Calendar.getInstance().timeInMillis
+        )
+    }
+
+    val endOfTravelAsLong = remember {
+        mutableStateOf(
+            startOfTravelAsLong.value
+        )
     }
 
     val transportationType = remember {
@@ -85,7 +93,12 @@ fun AddTransportationConsumption(
     }
 
     val transportationSection = remember {
-        mutableStateOf<TransportationTypeSection?>(viewModel.getSectionForSelectedTransportType(context, transportationType.value))
+        mutableStateOf<TransportationTypeSection?>(
+            viewModel.getSectionForSelectedTransportType(
+                context,
+                transportationType.value
+            )
+        )
     }
 
     val occupancyApproximately = remember {
@@ -100,16 +113,25 @@ fun AddTransportationConsumption(
         mutableStateOf(initialValues?.description ?: "")
     }
 
-    val openDatePicker = remember {
+    val openDatePickerForStartDate = remember {
         mutableStateOf(false)
     }
 
-    val openTimePicker = remember {
+    val openTimePickerForStartDate = remember {
+        mutableStateOf(false)
+    }
+
+    val openDatePickerForEndDate = remember {
+        mutableStateOf(false)
+    }
+
+    val openTimePickerForEndDate = remember {
         mutableStateOf(false)
     }
 
     fun isSaveValid(): Boolean {
-        return viewModel.isDecimalInputValid(distance.value) && distance.value.replace(",", ".").toDoubleOrNull() != null
+        return viewModel.isDecimalInputValid(distance.value) && distance.value.replace(",", ".")
+            .toDoubleOrNull() != null
                 && transportationType.value != null
                 && ((transportationSection.value != TransportationTypeSection.TRAINS_AND_TRAMS
                 || transportationSection.value != TransportationTypeSection.BUSSES) || occupancyApproximately.value != null)
@@ -148,7 +170,8 @@ fun AddTransportationConsumption(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
                                 .clickable {
-                                    openDatePicker.value = !openDatePicker.value
+                                    openDatePickerForStartDate.value =
+                                        !openDatePickerForStartDate.value
                                 }
                                 .defaultMinSize(minWidth = 90.dp, minHeight = 35.dp)
                         ) {
@@ -180,7 +203,8 @@ fun AddTransportationConsumption(
                         Row(
                             modifier = Modifier
                                 .clickable {
-                                    openTimePicker.value = !openTimePicker.value
+                                    openTimePickerForStartDate.value =
+                                        !openTimePickerForStartDate.value
                                 }
                                 .defaultMinSize(minWidth = 90.dp, minHeight = 35.dp),
                             verticalAlignment = Alignment.CenterVertically,
@@ -211,6 +235,104 @@ fun AddTransportationConsumption(
                     }
                 }
             )
+
+            ListItem(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        endOfTravelVisible.value = !endOfTravelVisible.value
+                    },
+                headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_transportation_end_of_travel_title)) },
+                trailingContent = {
+
+                    if (endOfTravelVisible.value) {
+                        Row(
+                            horizontalArrangement = Arrangement.End,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .clickable {
+                                        openDatePickerForEndDate.value =
+                                            !openDatePickerForEndDate.value
+                                    }
+                                    .defaultMinSize(minWidth = 90.dp, minHeight = 35.dp)
+                            ) {
+
+                                val calendar = Calendar.getInstance()
+                                calendar.timeInMillis = endOfTravelAsLong.value
+
+                                Text(
+                                    text = CalendarUtils.toDateString(calendar),
+                                    style = TextStyle(
+                                        color = MaterialTheme.colorScheme.onSecondary,
+                                        fontSize = 15.sp,
+                                        textAlign = TextAlign.End,
+
+                                        ),
+                                    textAlign = TextAlign.End
+                                )
+
+                                Image(
+                                    painter = painterResource(id = R.drawable.outline_arrow_drop_down_24),
+                                    contentDescription = "",
+                                    colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSecondary)
+                                )
+
+                            }
+
+                            Spacer(modifier = Modifier.width(4.dp))
+
+                            Row(
+                                modifier = Modifier
+                                    .clickable {
+                                        openTimePickerForEndDate.value =
+                                            !openTimePickerForEndDate.value
+                                    }
+                                    .defaultMinSize(minWidth = 90.dp, minHeight = 35.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.End
+                            ) {
+
+                                val calendar = Calendar.getInstance()
+                                calendar.timeInMillis = endOfTravelAsLong.value
+
+                                Text(
+                                    text = CalendarUtils.toDateString(calendar, "HH:mm"),
+                                    style = TextStyle(
+                                        color = MaterialTheme.colorScheme.onSecondary,
+                                        fontSize = 15.sp,
+                                        textAlign = TextAlign.End,
+
+                                        ),
+                                    textAlign = TextAlign.End
+                                )
+
+                                Image(
+                                    painter = painterResource(id = R.drawable.outline_arrow_drop_down_24),
+                                    contentDescription = "",
+                                    colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSecondary)
+                                )
+
+                            }
+                        }
+                    } else {
+                        Row(
+                            horizontalArrangement = Arrangement.End,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.choose),
+                                color = MaterialTheme.colorScheme.primary,
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                        }
+                    }
+                }
+            )
+
+
         }
 
         val startOfTravelAsCalendar = Calendar.getInstance()
@@ -218,28 +340,34 @@ fun AddTransportationConsumption(
 
         MaterialDatePickerDialog(
             modifier = Modifier,
-            showDialog = openDatePicker,
+            showDialog = openDatePickerForStartDate,
             confirmButtonCallback = {
                 val calendar = Calendar.getInstance()
                 calendar.timeInMillis = it.timeInMillis
-                calendar.set(Calendar.HOUR_OF_DAY, startOfTravelAsCalendar.get(Calendar.HOUR_OF_DAY))
+                calendar.set(
+                    Calendar.HOUR_OF_DAY,
+                    startOfTravelAsCalendar.get(Calendar.HOUR_OF_DAY)
+                )
                 calendar.set(Calendar.MINUTE, startOfTravelAsCalendar.get(Calendar.MINUTE))
 
                 startOfTravelAsLong.value = calendar.timeInMillis
+                if (startOfTravelAsLong.value > endOfTravelAsLong.value) {
+                    endOfTravelAsLong.value = startOfTravelAsLong.value
+                }
             },
             dateValidator = {
                 val maxCalendar = Calendar.getInstance()
-                    maxCalendar.add(Calendar.YEAR, 10)
+                maxCalendar.add(Calendar.YEAR, 10)
                 val minCalendar = Calendar.getInstance()
-                    minCalendar.add(Calendar.YEAR, -10)
+                minCalendar.add(Calendar.YEAR, -10)
 
-                it.timeInMillis in minCalendar.timeInMillis .. maxCalendar.timeInMillis
+                it.timeInMillis in minCalendar.timeInMillis..maxCalendar.timeInMillis
             }
         )
 
 
         TimePickerDialog(
-            showDialog = openTimePicker,
+            showDialog = openTimePickerForStartDate,
             time = startOfTravelAsCalendar,
             onTimeChanged = {
                 val calendar = Calendar.getInstance()
@@ -253,10 +381,54 @@ fun AddTransportationConsumption(
             }
         )
 
+        val endOfTravelAsCalendar = Calendar.getInstance()
+        endOfTravelAsCalendar.timeInMillis = endOfTravelAsLong.value
+
+        MaterialDatePickerDialog(
+            modifier = Modifier,
+            showDialog = openDatePickerForEndDate,
+            confirmButtonCallback = {
+                val calendar = Calendar.getInstance()
+                calendar.timeInMillis = it.timeInMillis
+                calendar.set(
+                    Calendar.HOUR_OF_DAY,
+                    endOfTravelAsCalendar.get(Calendar.HOUR_OF_DAY)
+                )
+                calendar.set(Calendar.MINUTE, endOfTravelAsCalendar.get(Calendar.MINUTE))
+
+                endOfTravelAsLong.value = calendar.timeInMillis
+            },
+            dateValidator = {
+                val maxCalendar = Calendar.getInstance()
+                maxCalendar.add(Calendar.YEAR, 10)
+
+                it.timeInMillis >= startOfTravelAsLong.value && it.timeInMillis <= maxCalendar.timeInMillis
+            }
+        )
+
+
+        TimePickerDialog(
+            showDialog = openTimePickerForEndDate,
+            time = endOfTravelAsCalendar,
+            onTimeChanged = {
+                val calendar = Calendar.getInstance()
+                calendar.timeInMillis = endOfTravelAsLong.value
+                calendar.set(Calendar.HOUR_OF_DAY, it.get(Calendar.HOUR_OF_DAY))
+                calendar.set(Calendar.MINUTE, it.get(Calendar.MINUTE))
+                endOfTravelAsLong.value = calendar.timeInMillis
+            },
+            validator = {
+                it.timeInMillis >= startOfTravelAsLong.value
+            }
+        )
+
         Spacer(modifier = Modifier.height(16.dp))
 
-        val selectedTransportationType = if(transportationType.value != null){
-            SpinnerItem.Entry(name = transportationType.value!!.getDisplayName(context) , data = transportationType.value)
+        val selectedTransportationType = if (transportationType.value != null) {
+            SpinnerItem.Entry(
+                name = transportationType.value!!.getDisplayName(context),
+                data = transportationType.value
+            )
         } else {
             null
         }
@@ -272,12 +444,12 @@ fun AddTransportationConsumption(
             }
         )
 
-        when(transportationSection.value){
+        when (transportationSection.value) {
             TransportationTypeSection.CARS_AND_MOTORCYCLES -> {
 
                 Spacer(Modifier.height(8.dp))
 
-                val occupancyLimit = when(transportationType.value){
+                val occupancyLimit = when (transportationType.value) {
                     TransportationType.FUEL_CAR,
                     TransportationType.ELECTRIC_CAR,
                     TransportationType.HYBRID_CAR -> 15
@@ -286,7 +458,7 @@ fun AddTransportationConsumption(
                     else -> null
                 }
 
-                if(occupancyLimit != null && occupancyPrecisely.value >= occupancyLimit){
+                if (occupancyLimit != null && occupancyPrecisely.value >= occupancyLimit) {
                     occupancyPrecisely.value = occupancyLimit
                 }
 
@@ -309,8 +481,11 @@ fun AddTransportationConsumption(
                     SpinnerItem.Entry(name = it.getDisplayName(context), data = it)
                 }
 
-                val selectedOccupancy = if(occupancyApproximately.value != null){
-                    SpinnerItem.Entry(name = occupancyApproximately.value!!.getDisplayName(context), data = occupancyApproximately.value)
+                val selectedOccupancy = if (occupancyApproximately.value != null) {
+                    SpinnerItem.Entry(
+                        name = occupancyApproximately.value!!.getDisplayName(context),
+                        data = occupancyApproximately.value
+                    )
                 } else {
                     null
                 }
@@ -319,7 +494,7 @@ fun AddTransportationConsumption(
                     title = stringResource(id = R.string.home_add_consumption_transportation_public_occupancy_title),
                     selectedEntry = selectedOccupancy,
                     allEntries = allOccupanciesSpinnerItems,
-                    callback = { item , _ ->
+                    callback = { item, _ ->
                         occupancyApproximately.value = item.data as PublicVehicleOccupancy
                         isSaveValid.value = isSaveValid()
                     }
@@ -327,7 +502,8 @@ fun AddTransportationConsumption(
             }
             TransportationTypeSection.AVIATION,
             TransportationTypeSection.OTHER,
-            null -> {}
+            null -> {
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -349,17 +525,21 @@ fun AddTransportationConsumption(
             onValueChange = {
 
                 val isValueInCorrectFormat = viewModel.isDecimalInputValid(it)
-                if(isValueInCorrectFormat || it.isEmpty()){
-                    val valueWithCorrectDecimalPoint = if(Locale.getDefault() == Locale.US || Locale.getDefault() == Locale.UK){
-                        it.replace(",",".")
-                    } else {
-                        it.replace(".",",")
-                    }
+                if (isValueInCorrectFormat || it.isEmpty()) {
+                    val valueWithCorrectDecimalPoint =
+                        if (Locale.getDefault() == Locale.US || Locale.getDefault() == Locale.UK) {
+                            it.replace(",", ".")
+                        } else {
+                            it.replace(".", ",")
+                        }
                     distance.value = valueWithCorrectDecimalPoint
                 }
                 isSaveValid.value = isSaveValid()
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Decimal,
+                imeAction = ImeAction.Done
+            ),
 
             trailingIcon = {
                 Text(text = "km")
@@ -404,21 +584,21 @@ fun AddTransportationConsumption(
                 imeAction = ImeAction.Done
             ),
             onValueChange = {
-                if(it.length <= 5000){
+                if (it.length <= 5000) {
                     description.value = it
                 }
             }
         )
 
-            Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
-            Text(
-                text = stringResource(id = R.string.home_add_consumption_form_description_info_text_title),
-                modifier = Modifier.padding(horizontal = 16.dp),
-                style = MaterialTheme.typography.labelSmall,
-                textAlign = TextAlign.Start,
-                color = MaterialTheme.colorScheme.onSecondary
-            )
+        Text(
+            text = stringResource(id = R.string.home_add_consumption_form_description_info_text_title),
+            modifier = Modifier.padding(horizontal = 16.dp),
+            style = MaterialTheme.typography.labelSmall,
+            textAlign = TextAlign.Start,
+            color = MaterialTheme.colorScheme.onSecondary
+        )
 
         val buttonColor = if (isSaveValid.value) {
             MaterialTheme.colorScheme.primary
@@ -431,24 +611,34 @@ fun AddTransportationConsumption(
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             Button(
                 modifier = Modifier
-                    .padding(horizontal = 32.dp).fillMaxWidth(),
+                    .padding(horizontal = 32.dp)
+                    .fillMaxWidth(),
                 enabled = isSaveValid.value,
                 shape = RoundedCornerShape(32.dp),
                 onClick = {
 
-                    val transportationConsumptionDataResponse = when(transportationSection.value){
+                    val dateOfTravelEnd = if (endOfTravelVisible.value) {
+                        Timestamp(Date(endOfTravelAsLong.value))
+                    } else {
+                        null
+                    }
+
+                    val transportationConsumptionDataResponse = when (transportationSection.value) {
                         TransportationTypeSection.CARS_AND_MOTORCYCLES -> {
                             TransportationConsumptionDataResponse(
                                 dateOfTravel = Timestamp(Date(startOfTravelAsLong.value)),
+                                dateOfTravelEnd = dateOfTravelEnd,
                                 privateVehicleOccupancy = occupancyPrecisely.value,
-                                transportationType = transportationType.value?.parseTransportationTypeToString()
-                            )
+                                transportationType = transportationType.value?.parseTransportationTypeToString(),
+
+                                )
                         }
                         TransportationTypeSection.BUSSES,
                         TransportationTypeSection.TRAINS_AND_TRAMS -> {
                             TransportationConsumptionDataResponse(
                                 publicVehicleOccupancy = occupancyApproximately.value?.parsePublicVehicleOccupancyToString(),
                                 dateOfTravel = Timestamp(Date(startOfTravelAsLong.value)),
+                                dateOfTravelEnd = dateOfTravelEnd,
                                 transportationType = transportationType.value?.parseTransportationTypeToString()
                             )
                         }
@@ -456,6 +646,7 @@ fun AddTransportationConsumption(
                         TransportationTypeSection.OTHER -> {
                             TransportationConsumptionDataResponse(
                                 dateOfTravel = Timestamp(Date(startOfTravelAsLong.value)),
+                                dateOfTravelEnd = dateOfTravelEnd,
                                 transportationType = transportationType.value?.parseTransportationTypeToString()
                             )
                         }
@@ -468,15 +659,17 @@ fun AddTransportationConsumption(
 
                     val consumptionResponse = ConsumptionResponse(
                         category = ConsumptionType.parseConsumptionTypeToString(ConsumptionType.TRANSPORTATION),
-                        value = distance.value.replace(",",".").toDoubleOrNull(),
+                        value = distance.value.replace(",", ".").toDoubleOrNull(),
                         description = descriptionValue,
-                        createdAt = Timestamp(initialValues?.createdAt?.time ?: Date(System.currentTimeMillis())),
+                        createdAt = Timestamp(
+                            initialValues?.createdAt?.time ?: Date(System.currentTimeMillis())
+                        ),
                         electricity = null,
                         heating = null,
                         transportation = transportationConsumptionDataResponse
                     )
 
-                    if(consumptionResponse.value != null){
+                    if (consumptionResponse.value != null) {
                         CoroutineScope(Dispatchers.IO).launch {
 
                             val result = if(initialValues != null && isDuplicate == false){
@@ -501,7 +694,8 @@ fun AddTransportationConsumption(
                     }
 
                 },
-                colors = ButtonDefaults.buttonColors(containerColor = buttonColor)) {
+                colors = ButtonDefaults.buttonColors(containerColor = buttonColor)
+            ) {
                 Text(
                     text = stringResource(id = R.string.settings_edit_profile_submit_button_title),
                     style = MaterialTheme.typography.labelLarge,

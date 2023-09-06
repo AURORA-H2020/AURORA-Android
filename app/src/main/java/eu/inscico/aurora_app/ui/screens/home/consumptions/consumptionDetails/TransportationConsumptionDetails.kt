@@ -102,6 +102,25 @@ fun TransportationConsumptionDetails(
                 }
             )
 
+            if(consumption.transportation.dateOfTravelEnd != null){
+
+                Divider()
+
+                ListItem(
+                    headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_transportation_end_of_travel_title)) },
+                    trailingContent = {
+                        Text(
+                            text = CalendarUtils.toDateString(
+                                consumption.transportation.dateOfTravelEnd,
+                                "dd.MM.yyyy, HH:mm"
+                            ),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                )
+            }
+
             Divider()
 
             ListItem(

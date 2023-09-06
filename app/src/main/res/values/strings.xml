@@ -19,6 +19,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="dont_ask_again">Don\'t ask me again</string>
+    <string name="choose">Choose</string>
 
     <!--Login/Create Profile-->
     <string name="login_aurora_title">Welcome to AURORA</string>
@@ -160,6 +161,7 @@
     <string name="home_add_consumption_transportation_public_occupancy_nearly_full_title">Nearly full</string>
     <string name="home_add_consumption_transportation_distance_title">Distance</string>
     <string name="home_add_consumption_transportation_start_of_travel_title">Start of travel</string>
+    <string name="home_add_consumption_transportation_end_of_travel_title">End of travel</string>
     <string name="home_add_consumption_carbon_emissions_title">Carbon emissions</string>
     <string name="home_your_carbon_emissions_labels_title">Your carbon emissions labels</string>
     <string name="home_your_carbon_emissions_labels_tab_carbon_emission_title">Carbon emissions</string>

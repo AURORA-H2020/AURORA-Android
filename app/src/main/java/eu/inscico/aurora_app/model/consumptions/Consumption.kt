@@ -174,6 +174,14 @@ sealed class Consumption {
                         return null
                     }
 
+                    val dateOfTravelEnd = if (item.transportation?.dateOfTravelEnd != null) {
+                        Calendar.getInstance().apply {
+                            time = item.transportation?.dateOfTravelEnd!!.toDate()
+                        }
+                    } else {
+                        null
+                    }
+
                     val createdAt = if (item.createdAt != null) {
                         Calendar.getInstance().apply {
                             time = item.createdAt!!.toDate()
@@ -203,6 +211,7 @@ sealed class Consumption {
                         TransportationType.ELECTRIC_MOTORCYCLE -> {
                             TransportationConsumptionData(
                                 dateOfTravel = dateOfTravel,
+                                dateOfTravelEnd = dateOfTravelEnd,
                                 privateVehicleOccupancy = item.transportation?.privateVehicleOccupancy ?: return null,
                                 transportationType = transportationType,
                                 publicVehicleOccupancy = null
@@ -219,6 +228,7 @@ sealed class Consumption {
                         TransportationType.HIGH_SPEED_TRAIN -> {
                             TransportationConsumptionData(
                                 dateOfTravel = dateOfTravel,
+                                dateOfTravelEnd = dateOfTravelEnd,
                                 publicVehicleOccupancy = publicVehicleOccupancy ?: return null,
                                 transportationType = transportationType,
                                 privateVehicleOccupancy = null
@@ -231,6 +241,7 @@ sealed class Consumption {
                         TransportationType.WALKING -> {
                             TransportationConsumptionData(
                                 dateOfTravel = dateOfTravel,
+                                dateOfTravelEnd = dateOfTravelEnd,
                                 publicVehicleOccupancy = null,
                                 transportationType = transportationType,
                                 privateVehicleOccupancy = null
@@ -279,6 +290,7 @@ data class HeatingConsumptionData(
 
 data class TransportationConsumptionData(
     val dateOfTravel: Calendar,
+    val dateOfTravelEnd: Calendar?,
     val privateVehicleOccupancy: Int?,
     val publicVehicleOccupancy: PublicVehicleOccupancy?,
     val transportationType: TransportationType

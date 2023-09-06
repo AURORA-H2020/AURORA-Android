@@ -83,8 +83,14 @@ class ConsumptionResponse(
 
                 }
                 is Consumption.TransportationConsumption -> {
+                    val dateOfTravelEnd = if(item.transportation.dateOfTravelEnd?.time != null){
+                        Timestamp(item.transportation.dateOfTravelEnd.time)
+                    } else {
+                        null
+                    }
                     val transportation = TransportationConsumptionDataResponse(
                         dateOfTravel = Timestamp(item.transportation.dateOfTravel.time),
+                        dateOfTravelEnd = dateOfTravelEnd,
                         privateVehicleOccupancy = item.transportation.privateVehicleOccupancy,
                         publicVehicleOccupancy = item.transportation.publicVehicleOccupancy?.parsePublicVehicleOccupancyToString(),
                         transportationType = item.transportation.transportationType.parseTransportationTypeToString()
@@ -128,6 +134,7 @@ data class HeatingConsumptionDataResponse(
 
 data class TransportationConsumptionDataResponse(
     var dateOfTravel: Timestamp? = null,
+    var dateOfTravelEnd: Timestamp? = null,
     var privateVehicleOccupancy: Int? = null,
     var publicVehicleOccupancy: String? = null,
     var transportationType: String? = null
