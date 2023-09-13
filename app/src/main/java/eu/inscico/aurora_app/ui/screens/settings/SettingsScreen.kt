@@ -50,6 +50,7 @@ import eu.inscico.aurora_app.ui.theme.electricityYellow
 import eu.inscico.aurora_app.ui.theme.heatingRed
 import eu.inscico.aurora_app.ui.theme.mobilityBlue
 import eu.inscico.aurora_app.utils.ExternalUtils
+import eu.inscico.aurora_app.utils.LocaleUtils
 import eu.inscico.aurora_app.utils.TypedResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -60,12 +61,18 @@ import java.util.*
 
 @Composable
 fun SettingsScreen(
+    language: Locale = Locale.getDefault(),
     viewModel: SettingsViewModel = koinViewModel(),
     reminderViewModel: SettingsReminderViewModel = koinViewModel(),
     navigationService: NavigationService = get(),
     userFeedbackService: UserFeedbackService = get(),
     _notificationCreationService: NotificationCreationService = get()
 ) {
+
+    val context = LocalContext.current
+
+    // set language, only necessary for screenshot ui tests
+    LocaleUtils.updateLocale(context, language)
 
     val showDeleteAccountDialog = remember { mutableStateOf(false) }
     val showReenterPasswordDialog = remember { mutableStateOf(false) }

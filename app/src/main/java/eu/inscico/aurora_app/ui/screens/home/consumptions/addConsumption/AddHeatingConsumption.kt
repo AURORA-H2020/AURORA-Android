@@ -31,6 +31,7 @@ import eu.inscico.aurora_app.ui.components.forms.AddSubtractCountFormEntry
 import eu.inscico.aurora_app.ui.components.forms.BeginEndPickerFormEntry
 import eu.inscico.aurora_app.ui.components.forms.SpinnerFormEntry
 import eu.inscico.aurora_app.ui.components.forms.SpinnerItem
+import eu.inscico.aurora_app.utils.LocaleUtils
 import eu.inscico.aurora_app.utils.TypedResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,6 +44,7 @@ import java.util.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddHeatingConsumption(
+    language: Locale = Locale.getDefault(),
     initialValue: Consumption.HeatingConsumption? = null,
     isDuplicate: Boolean? = false,
     viewModel: AddConsumptionViewModel = koinViewModel(),
@@ -51,6 +53,9 @@ fun AddHeatingConsumption(
 ){
 
     val context = LocalContext.current
+
+    // set language, only necessary for screenshot ui tests
+    LocaleUtils.updateLocale(context, language)
 
     val initialConsumption = if(initialValue?.value != null){
         String.format("%.1f",initialValue.value)

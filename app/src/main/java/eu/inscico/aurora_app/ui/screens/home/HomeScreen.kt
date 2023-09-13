@@ -1,5 +1,6 @@
 package eu.inscico.aurora_app.ui.screens.home
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -7,12 +8,16 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,13 +33,14 @@ import eu.inscico.aurora_app.ui.components.consumptionSummery.DashboardConsumpti
 import eu.inscico.aurora_app.ui.components.consumptions.ConsumptionListItem
 import eu.inscico.aurora_app.ui.components.container.ScrollableContent
 import eu.inscico.aurora_app.utils.ExternalUtils
+import eu.inscico.aurora_app.utils.LocaleUtils.updateLocale
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 import java.util.*
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
+    language: Locale = Locale.getDefault(),
     viewModel: HomeViewModel = koinViewModel(),
     navigationService: NavigationService = get(),
     userFeedbackService: UserFeedbackService = get()
@@ -46,6 +52,9 @@ fun HomeScreen(
     val consumptionSummaries = viewModel.consumptionSummaries.observeAsState()
 
     val latestConsumptionSummary = consumptionSummaries.value?.maxByOrNull { it.year }
+
+    // set language, only necessary for screenshot ui tests
+    updateLocale(context, language)
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -129,6 +138,7 @@ fun HomeScreen(
                     Divider()
                     ListItem(
                         modifier = Modifier
+                            .testTag("Add_a_consumption")
                             .background(MaterialTheme.colorScheme.surface)
                             .clickable {
                                 navigationService.toAddConsumption()

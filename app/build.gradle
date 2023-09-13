@@ -58,12 +58,11 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
-    implementation 'androidx.activity:activity-compose:1.7.0'
+    implementation 'androidx.activity:activity-compose:1.7.2'
     implementation "androidx.compose.ui:ui:$compose_ui_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
-    implementation 'androidx.core:core-ktx:+'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -75,7 +74,7 @@ dependencies {
     implementation 'androidx.compose.material3:material3:1.1.0-alpha08'
 
     implementation "androidx.compose.runtime:runtime-livedata:$compose_ui_version"
-    implementation "androidx.navigation:navigation-compose:2.5.3"
+    implementation "androidx.navigation:navigation-compose:2.7.1"
 
     // Firebase
     // Import the BoM for the Firebase platform
@@ -118,5 +117,10 @@ dependencies {
 
     //Licenses
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.1'
-
+    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+    // Koin testing tools
+    androidTestImplementation "io.insert-koin:koin-test:3.2.1"
+    // Needed JUnit version
+    androidTestImplementation "io.insert-koin:koin-test-junit4:3.2.1"
+    androidTestImplementation project(':app')
 }

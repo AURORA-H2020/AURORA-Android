@@ -11,6 +11,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,6 +33,7 @@ import eu.inscico.aurora_app.ui.components.container.ScrollableContent
 import eu.inscico.aurora_app.ui.components.forms.SpinnerFormEntry
 import eu.inscico.aurora_app.ui.components.forms.SpinnerItem
 import eu.inscico.aurora_app.ui.theme.*
+import eu.inscico.aurora_app.utils.LocaleUtils
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
@@ -40,9 +42,15 @@ import java.util.*
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ConsumptionSummaryScreen(
+    language: Locale = Locale.getDefault(),
     navigationService: NavigationService = get(),
     viewModel: ConsumptionSummaryViewModel = koinViewModel()
 ) {
+
+    val context = LocalContext.current
+
+    // set language, only necessary for screenshot ui tests
+    LocaleUtils.updateLocale(context, language)
 
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(initialPage = if(viewModel.isEnergyExpendedTab){ 1 } else { 0 })

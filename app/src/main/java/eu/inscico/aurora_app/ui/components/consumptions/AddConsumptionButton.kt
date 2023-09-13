@@ -1,5 +1,6 @@
 package eu.inscico.aurora_app.ui.components.consumptions
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +24,7 @@ import eu.inscico.aurora_app.ui.theme.mobilityBlue
 
 @Composable
 fun AddConsumptionButton(
+    modifier: Modifier = Modifier,
     consumptionType: ConsumptionType,
     callback: (ConsumptionType) -> Unit
 ){
@@ -40,7 +42,7 @@ fun AddConsumptionButton(
     }
 
         Button(
-            modifier = Modifier
+            modifier = modifier
                 .padding(horizontal = 32.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(32.dp),
