@@ -33,6 +33,7 @@ import eu.inscico.aurora_app.ui.components.consumptionSummery.DashboardConsumpti
 import eu.inscico.aurora_app.ui.components.consumptions.ConsumptionListItem
 import eu.inscico.aurora_app.ui.components.container.ScrollableContent
 import eu.inscico.aurora_app.utils.ExternalUtils
+import eu.inscico.aurora_app.utils.LINK_AURORA_PROJECT_DESCRIPTION
 import eu.inscico.aurora_app.utils.LocaleUtils.updateLocale
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
@@ -177,7 +178,7 @@ fun HomeScreen(
                             .clickable {
                                 ExternalUtils.openBrowser(
                                     context = context,
-                                    url = "https://www.aurora-h2020.eu"
+                                    url = LINK_AURORA_PROJECT_DESCRIPTION
                                 )
                             },
                         headlineContent = { Text(stringResource(id = R.string.home_learn_more_title)) },

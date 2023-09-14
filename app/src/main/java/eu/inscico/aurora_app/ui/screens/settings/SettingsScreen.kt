@@ -49,9 +49,7 @@ import eu.inscico.aurora_app.ui.screens.settings.notifications.SettingsReminderV
 import eu.inscico.aurora_app.ui.theme.electricityYellow
 import eu.inscico.aurora_app.ui.theme.heatingRed
 import eu.inscico.aurora_app.ui.theme.mobilityBlue
-import eu.inscico.aurora_app.utils.ExternalUtils
-import eu.inscico.aurora_app.utils.LocaleUtils
-import eu.inscico.aurora_app.utils.TypedResult
+import eu.inscico.aurora_app.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -385,7 +383,7 @@ fun SettingsScreen(
                         callback = {
                             ExternalUtils.openBrowser(
                                 context,
-                                "https://www.aurora-h2020.eu/aurora/ourapp/"
+                                LINK_AURORA_APP
                             )
                         }
                     )
@@ -436,7 +434,7 @@ fun SettingsScreen(
                         callback = {
                             ExternalUtils.openBrowser(
                                 context,
-                                "https://www.aurora-h2020.eu/aurora/privacy-policy/"
+                                LINK_IMPRINT
                             )
                         }
                     )
@@ -450,7 +448,21 @@ fun SettingsScreen(
                         callback = {
                             ExternalUtils.openBrowser(
                                 context,
-                                "https://www.aurora-h2020.eu/aurora/privacy-policy/"
+                                LINK_PRIVACY_POLICY
+                            )
+                        }
+                    )
+
+                    Divider()
+
+                    ActionEntry(
+                        title = stringResource(id = R.string.settings_legal_information_terms_of_service_title),
+                        iconRes = R.drawable.outline_text_snippet_24,
+                        isNavigation = false,
+                        callback = {
+                            ExternalUtils.openBrowser(
+                                context,
+                                LINK_TERMS_OF_SERVICE
                             )
                         }
                     )
@@ -479,7 +491,7 @@ fun SettingsScreen(
 
                         val annotatedString = buildAnnotatedString {
 
-                            pushStringAnnotation(tag = stringResource(id = R.string.settings_section_project_text), annotation = "https://www.aurora-h2020.eu")
+                            pushStringAnnotation(tag = stringResource(id = R.string.settings_section_project_text), annotation = LINK_AURORA_PROJECT_DESCRIPTION)
                             withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
                                 append(stringResource(id = R.string.settings_section_project_text))
                             }
@@ -489,7 +501,7 @@ fun SettingsScreen(
 
                             append(stringResource(id = R.string.settings_section_project_info_text))
 
-                            pushStringAnnotation(tag = stringResource(id = R.string.settings_section_project_number_text), annotation = "https://cordis.europa.eu/project/id/101036418")
+                            pushStringAnnotation(tag = stringResource(id = R.string.settings_section_project_number_text), annotation = LINK_EUROPEAN_HORIZON_RESEARCH_PROGRAM)
                             withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
                                 append(stringResource(id = R.string.settings_section_project_number_text))
                             }

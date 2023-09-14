@@ -36,6 +36,8 @@ import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.SignInButton
 import eu.inscico.aurora_app.utils.ExternalUtils
+import eu.inscico.aurora_app.utils.LINK_PRIVACY_POLICY
+import eu.inscico.aurora_app.utils.LINK_TERMS_OF_SERVICE
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 
@@ -188,7 +190,7 @@ fun LoginScreen(
 
                     pushStringAnnotation(
                         tag = stringResource(id = R.string.login_privacy_policy_text_terms_of_service_text),
-                        annotation = "https://www.aurora-h2020.eu/aurora/privacy-policy/"
+                        annotation = LINK_TERMS_OF_SERVICE
                     )
                     withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
                         append(stringResource(id = R.string.login_privacy_policy_text_terms_of_service_text))
@@ -200,7 +202,7 @@ fun LoginScreen(
                     append(" ")
                     pushStringAnnotation(
                         tag = stringResource(id = R.string.login_privacy_policy_text_privacy_policy_text),
-                        annotation = "https://www.aurora-h2020.eu/aurora/privacy-policy/"
+                        annotation = LINK_PRIVACY_POLICY
                     )
                     withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
                         append(stringResource(id = R.string.login_privacy_policy_text_privacy_policy_text))

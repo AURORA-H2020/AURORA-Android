@@ -219,6 +219,7 @@
     <string name="settings_legal_information_feature_preview_title">Feature preview</string>
     <string name="settings_legal_information_imprint_title">Imprint</string>
     <string name="settings_legal_information_privacy_policy_title">Privacy policy</string>
+    <string name="settings_legal_information_terms_of_service_title">Terms of service</string>
     <string name="settings_legal_information_licenses_title">Licenses</string>
     <string name="settings_edit_profile_submit_button_title">Save</string>
     <string name="settings_change_password_title">Change password</string>

@@ -37,9 +37,7 @@ import eu.inscico.aurora_app.ui.components.AppBar
 import eu.inscico.aurora_app.ui.components.container.ScrollableContent
 import eu.inscico.aurora_app.ui.components.photovoltaics.InvestmentInputCard
 import eu.inscico.aurora_app.ui.components.photovoltaics.InvestmentResultCard
-import eu.inscico.aurora_app.utils.ExternalUtils
-import eu.inscico.aurora_app.utils.KeyboardState
-import eu.inscico.aurora_app.utils.keyboardAsState
+import eu.inscico.aurora_app.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -87,7 +85,7 @@ fun PhotovoltaicCalculatorScreen(
                         learnMoreCallback = {
                             ExternalUtils.openBrowser(
                                 context = context,
-                                url = "https://www.aurora-h2020.eu"
+                                url = LINK_AURORA_PROJECT_DESCRIPTION
                             )
                         })
                 } else {
@@ -163,7 +161,7 @@ fun PhotovoltaicCalculatorScreen(
                         append(stringResource(id = R.string.solar_power_investment_description_with_link_first_part))
                         append(" ")
 
-                        pushStringAnnotation(tag = stringResource(id = R.string.solar_power_investment_description_with_link_link_part), annotation = "https://re.jrc.ec.europa.eu/pvg_tools/de/")
+                        pushStringAnnotation(tag = stringResource(id = R.string.solar_power_investment_description_with_link_link_part), annotation = LINK_PHOTOVOLTAIC_GEOGRAPHICAL_INFOS)
                         withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
                             append(stringResource(id = R.string.solar_power_investment_description_with_link_link_part))
                         }
