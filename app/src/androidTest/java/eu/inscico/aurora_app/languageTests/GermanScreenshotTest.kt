@@ -1,9 +1,10 @@
-package eu.inscico.aurora_app
+package eu.inscico.aurora_app.languageTests
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import eu.inscico.aurora_app.ScreenshotTestUtils.takeScreenshot
+import eu.inscico.aurora_app.testEnviroment.ScreenshotTestUtils.takeScreenshot
 import eu.inscico.aurora_app.model.consumptions.ConsumptionType
+import eu.inscico.aurora_app.testModule
 import eu.inscico.aurora_app.ui.screens.home.HomeScreen
 import eu.inscico.aurora_app.ui.screens.home.consumptionSummary.ConsumptionSummaryScreen
 import eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption.AddConsumptionScreen
@@ -18,12 +19,10 @@ import org.koin.test.KoinTest
 import java.io.File
 import java.util.*
 
-
 @RunWith(AndroidJUnit4::class)
-class EnglishScreenshotTest : KoinTest {
-
-    private val filePath = "storage/emulated/0/Pictures/english"
-    private val languageCode = "en"
+class GermanScreenshotTest : KoinTest {
+    private val filePath = "storage/emulated/0/Pictures/german"
+    private val languageCode = "de"
 
     @get:Rule
     val composeTestRule = createComposeRule()

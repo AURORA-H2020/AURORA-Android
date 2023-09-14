@@ -1,5 +1,6 @@
 package eu.inscico.aurora_app
 
+import eu.inscico.aurora_app.languageTests.*
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 

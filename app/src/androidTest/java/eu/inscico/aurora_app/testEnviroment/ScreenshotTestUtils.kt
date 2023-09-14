@@ -1,4 +1,4 @@
-package eu.inscico.aurora_app
+package eu.inscico.aurora_app.testEnviroment
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
