@@ -12,6 +12,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,7 +28,6 @@ import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.ui.components.AppBar
 import eu.inscico.aurora_app.ui.components.AuroraSearchBar
 import eu.inscico.aurora_app.ui.components.consumptions.ConsumptionListItem
-import eu.inscico.aurora_app.ui.screens.home.HomeViewModel
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 
@@ -39,8 +40,14 @@ fun AllConsumptionsListScreen(
 
     val context = LocalContext.current
 
-    val userConsumptions = viewModel.searchResults.observeAsState(viewModel.userConsumptions.value)
+    val allConsumptions = viewModel.userConsumptions.observeAsState()
+    val searchResults = viewModel.searchResults.observeAsState()
+    val searchString = remember {
+        mutableStateOf("")
+    }
     val state = rememberLazyListState()
+
+    viewModel.searchForResults(allConsumptions.value, context, searchString.value)
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -71,11 +78,12 @@ fun AllConsumptionsListScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         AuroraSearchBar {
-            viewModel.searchForResults(context, it)
+            searchString.value = it
+            viewModel.searchForResults(allConsumptions.value, context, searchString.value)
         }
         Spacer(modifier = Modifier.height(8.dp))
 
-        userConsumptions.value?.let { consumptions ->
+        searchResults.value?.let { consumptions ->
             LazyColumn(
                 Modifier
                     .fillMaxWidth()

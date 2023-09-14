@@ -3,6 +3,7 @@ package eu.inscico.aurora_app.ui.screens.home.consumptions
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import eu.inscico.aurora_app.model.consumptions.Consumption
 import eu.inscico.aurora_app.model.consumptions.ConsumptionType.Companion.getDisplayName
 import eu.inscico.aurora_app.services.firebase.ConsumptionsService
@@ -12,20 +13,28 @@ class AllConsumptionsListViewModel(
     private val _consumptionService: ConsumptionsService
 ): ViewModel() {
 
-    val userConsumptions = _consumptionService.userConsumptionsLive
+    val userConsumptions = _consumptionService.userConsumptionsLive.map {
+        it?.sortedByDescending {
+           when(it){
+               is Consumption.ElectricityConsumption -> it.updatedAt
+               is Consumption.HeatingConsumption -> it.updatedAt
+               is Consumption.TransportationConsumption -> it.updatedAt
+           }
+        }
+    }
 
     val searchResults = MutableLiveData<List<Consumption>?>()
 
-    fun searchForResults(context: Context, query: String = ""){
+    fun searchForResults(allConsumptions: List<Consumption>?, context: Context, query: String = ""){
         val searchQuery = query.toLowerCase()
 
         val results = mutableListOf<Consumption>()
         if(searchQuery.isEmpty()){
-            searchResults.postValue(userConsumptions.value)
+            searchResults.postValue(allConsumptions)
             return
         }
 
-        userConsumptions.value?.let { userConsumptions ->
+        allConsumptions?.let { userConsumptions ->
             for(consumption in userConsumptions){
 
                 when(consumption){
@@ -99,7 +108,14 @@ class AllConsumptionsListViewModel(
                 }
             }
         }
-        searchResults.postValue(results)
+        val sortedResults = results.sortedByDescending {
+            when (it) {
+                is Consumption.ElectricityConsumption -> it.updatedAt
+                is Consumption.HeatingConsumption -> it.updatedAt
+                is Consumption.TransportationConsumption -> it.updatedAt
+            }
+        }
+        searchResults.postValue(sortedResults)
     }
 
     private fun getConsumptionTimeString(consumption: Consumption): String {
