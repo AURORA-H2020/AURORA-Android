@@ -11,7 +11,8 @@ import org.junit.runners.Suite
     SpanishScreenshotTest::class,
     PortugueseScreenshotTest::class,
     DanishScreenshotTest::class,
-    SlovenianScreenshotTest::class
+    SlovenianScreenshotTest::class,
+    GermanScreenshotTest::class
 )
 
 class ComposeTestSuite
