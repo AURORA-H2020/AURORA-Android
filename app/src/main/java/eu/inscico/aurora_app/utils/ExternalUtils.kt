@@ -70,4 +70,32 @@ object ExternalUtils {
 
     }
 
+    fun Context?.sendMail(
+        email: String? = null,
+        subject: String? = null,
+        message: String? = null,
+    ) {
+
+        // create intent
+        val intent = Intent(Intent.ACTION_SENDTO)
+
+        intent.data = Uri.parse("mailto:")
+        // apply given data
+        if (!email.isNullOrEmpty()) {
+            val stringArray = arrayOf(email)
+            intent.putExtra(Intent.EXTRA_EMAIL, stringArray)
+        }
+
+        if (!subject.isNullOrEmpty()) {
+            intent.putExtra(Intent.EXTRA_SUBJECT, subject)
+        }
+
+        if (!message.isNullOrEmpty()) {
+            intent.putExtra(Intent.EXTRA_TEXT, message)
+        }
+
+        // start intent chooser
+        this?.startActivity(Intent.createChooser(intent, ""))
+    }
+
 }

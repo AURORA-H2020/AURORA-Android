@@ -36,6 +36,8 @@ import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.SignInButton
 import eu.inscico.aurora_app.utils.ExternalUtils
+import eu.inscico.aurora_app.utils.ExternalUtils.sendMail
+import eu.inscico.aurora_app.utils.LINK_EUROPEAN_HORIZON_RESEARCH_PROGRAM
 import eu.inscico.aurora_app.utils.LINK_PRIVACY_POLICY
 import eu.inscico.aurora_app.utils.LINK_TERMS_OF_SERVICE
 import org.koin.androidx.compose.get
@@ -178,38 +180,65 @@ fun LoginScreen(
                     textAlign = TextAlign.Center,
                     fontFamily = FontFamily.Default,
                     fontWeight = FontWeight(500),
-                    fontSize = 11.sp,
+                    fontSize = 14.sp,
                     lineHeight = 13.sp,
                     letterSpacing = 0.75.sp
                 )
 
                 val annotatedString = buildAnnotatedString {
 
-                    append(stringResource(id = R.string.login_privacy_policy_text_first_part))
+                    append(stringResource(id = R.string.login_privacy_policy_consent_text_first_part))
                     append(" ")
 
                     pushStringAnnotation(
-                        tag = stringResource(id = R.string.login_privacy_policy_text_terms_of_service_text),
-                        annotation = LINK_TERMS_OF_SERVICE
+                        tag = stringResource(id = R.string.login_privacy_policy_consent_text_second_part),
+                        annotation = LINK_EUROPEAN_HORIZON_RESEARCH_PROGRAM
                     )
                     withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-                        append(stringResource(id = R.string.login_privacy_policy_text_terms_of_service_text))
+                        append(stringResource(id = R.string.login_privacy_policy_consent_text_second_part))
                     }
                     pop()
 
                     append(" ")
-                    append(stringResource(id = R.string.login_privacy_policy_text_and_part))
+                    append(stringResource(id = R.string.login_privacy_policy_consent_text_third_part))
                     append(" ")
                     pushStringAnnotation(
-                        tag = stringResource(id = R.string.login_privacy_policy_text_privacy_policy_text),
+                        tag = stringResource(id = R.string.login_privacy_policy_consent_text_fourth_part),
                         annotation = LINK_PRIVACY_POLICY
                     )
                     withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-                        append(stringResource(id = R.string.login_privacy_policy_text_privacy_policy_text))
+                        append(stringResource(id = R.string.login_privacy_policy_consent_text_fourth_part))
                     }
 
                     pop()
 
+                    append(" ")
+                    append(stringResource(id = R.string.login_privacy_policy_consent_text_fiths_part))
+                    append(" ")
+
+                    pushStringAnnotation(
+                        tag = stringResource(id = R.string.login_privacy_policy_consent_text_terms_of_service_text),
+                        annotation = LINK_TERMS_OF_SERVICE
+                    )
+                    withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                        append(stringResource(id = R.string.login_privacy_policy_consent_text_terms_of_service_text))
+                    }
+
+                    pop()
+
+                    append(" ")
+                    append(stringResource(id = R.string.login_privacy_policy_consent_text_sixth_part))
+                    append(" ")
+
+                    pushStringAnnotation(
+                        tag = stringResource(id = R.string.login_privacy_policy_consent_text_privacy_policy_text),
+                        annotation = LINK_PRIVACY_POLICY
+                    )
+                    withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                        append(stringResource(id = R.string.login_privacy_policy_consent_text_privacy_policy_text))
+                    }
+
+                    pop()
                     append(".")
                 }
 
@@ -220,8 +249,9 @@ fun LoginScreen(
                     text = annotatedString,
                     style = textStyle,
                     onClick = { offset ->
+
                         annotatedString.getStringAnnotations(
-                            tag = context.getString(R.string.login_privacy_policy_text_terms_of_service_text),
+                            tag = context.getString(R.string.login_privacy_policy_consent_text_second_part),
                             start = offset,
                             end = offset
                         ).firstOrNull()?.let {
@@ -232,7 +262,26 @@ fun LoginScreen(
                         }
 
                         annotatedString.getStringAnnotations(
-                            tag = context.getString(R.string.login_privacy_policy_text_privacy_policy_text),
+                            tag = context.getString(R.string.login_privacy_policy_consent_text_fourth_part),
+                            start = offset,
+                            end = offset
+                        ).firstOrNull()?.let {
+                            context.sendMail(context.getString(R.string.login_privacy_policy_consent_text_fourth_part))
+                        }
+
+                        annotatedString.getStringAnnotations(
+                            tag = context.getString(R.string.login_privacy_policy_consent_text_terms_of_service_text),
+                            start = offset,
+                            end = offset
+                        ).firstOrNull()?.let {
+                            ExternalUtils.openBrowser(
+                                context = context,
+                                url = it.item
+                            )
+                        }
+
+                        annotatedString.getStringAnnotations(
+                            tag = context.getString(R.string.login_privacy_policy_consent_text_privacy_policy_text),
                             start = offset,
                             end = offset
                         ).firstOrNull()?.let {

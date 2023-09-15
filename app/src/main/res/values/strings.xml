@@ -28,10 +28,19 @@
     <string name="login_apple_sign_in_button_text">Sign in with Apple</string>
     <string name="login_email_sign_in_button_text">Sign in with Email</string>
     <string name="login_sign_in_button_loading_text">Signing in …</string>
-    <string name="login_privacy_policy_text_first_part">By continuing, you agree to AURORA\'s</string>
-    <string name="login_privacy_policy_text_terms_of_service_text">Terms of Service</string>
-    <string name="login_privacy_policy_text_and_part">and</string>
-    <string name="login_privacy_policy_text_privacy_policy_text">Privacy policy</string>
+
+    <string name="login_privacy_policy_consent_text_first_part">This app was developed by the AURORA Horizon 2020 EU-funded project (No. </string>
+    <string name="login_privacy_policy_consent_text_second_part">101036418</string>
+    <string name="login_privacy_policy_consent_text_third_part">). Your data is processed by members of the project consortium and securely stored in Google Firebase. Your data will only be used for research purposes in an anonymised format and never commercially without your explicit consent. You can modify, download or delete your data at any time or reach out to our support under </string>
+    <string name="login_privacy_policy_consent_text_fourth_part">app-support@aurora-h2020.eu</string>
+    <string name="login_privacy_policy_consent_text_fiths_part">. By proceeding you agree to the AURORA’s </string>
+    <string name="login_privacy_policy_consent_text_terms_of_service_text">Terms of Service</string>
+    <string name="login_privacy_policy_consent_text_sixth_part">and</string>
+    <string name="login_privacy_policy_consent_text_privacy_policy_text">Privacy policy</string>
+    <string name="login_privacy_policy_consent_text_seventh_text">.</string>
+
+
+
     <string name="create_profile_title">Create your profile</string>
     <string name="profile_title">Profile</string>
     <string name="logout_button_title">Logout</string>
