@@ -22,8 +22,9 @@ import java.util.*
 @RunWith(AndroidJUnit4::class)
 class SpanishScreenshotTest : KoinTest {
 
-    private val filePath = "storage/emulated/0/Pictures/spanish"
+    private val filePath = "storage/emulated/0/Pictures/es-ES"
     private val languageCode = "es"
+    private val deviceName = "Google Pixel 5 Just Black"
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -54,7 +55,7 @@ class SpanishScreenshotTest : KoinTest {
             }
         }
 
-        val screenshotPath = "${filePath}/dashboard-${languageCode}.png"
+        val screenshotPath = "${filePath}/${deviceName}-0_Dashboard.png"
 
         try {
             Thread.sleep(10000) // Sleep for 5 seconds
@@ -73,7 +74,7 @@ class SpanishScreenshotTest : KoinTest {
             }
         }
 
-        val screenshotPath = "${filePath}/consumption_summary-${languageCode}.png"
+        val screenshotPath = "${filePath}/${deviceName}-1_EnergyLabels.png"
 
         takeScreenshot(screenshotPath)
     }
@@ -95,7 +96,7 @@ class SpanishScreenshotTest : KoinTest {
         }
 
         // Pfad, um den Screenshot zu speichern
-        val screenshotPath = "${filePath}/add_heating_consumption-${languageCode}.png"
+        val screenshotPath = "${filePath}/${deviceName}-2_AddConsumption.png"
 
         takeScreenshot(screenshotPath)
     }
@@ -109,7 +110,7 @@ class SpanishScreenshotTest : KoinTest {
             }
         }
 
-        val screenshotPath = "${filePath}/settings-${languageCode}.png"
+        val screenshotPath = "${filePath}/${deviceName}-3_Settings.png"
 
         takeScreenshot(screenshotPath)
     }
