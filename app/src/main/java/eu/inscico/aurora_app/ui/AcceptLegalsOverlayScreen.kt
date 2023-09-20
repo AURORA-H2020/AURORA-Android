@@ -25,7 +25,6 @@ import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.user.*
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
-import eu.inscico.aurora_app.ui.components.dialogs.OnLegalsAcceptClicked
 import eu.inscico.aurora_app.ui.components.dialogs.ReenterPasswordAndDeleteAccountDialog
 import eu.inscico.aurora_app.utils.ExternalUtils
 import eu.inscico.aurora_app.utils.LINK_PRIVACY_POLICY
@@ -288,4 +287,9 @@ fun AcceptLegalsOverlayScreen(
             )
         }
     }
+}
+
+interface OnLegalsAcceptClicked {
+    fun onAccept()
+    fun onReject()
 }
