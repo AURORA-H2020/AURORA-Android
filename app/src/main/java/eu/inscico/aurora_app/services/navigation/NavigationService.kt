@@ -11,6 +11,7 @@ class NavigationService {
     var navControllerApp: NavController? = null
     var navControllerAuth: NavController? = null
     var navControllerTabs: NavController? = null
+    var navControllerLegals: NavController? = null
 
     var navControllerTabHome: NavController? = null
     var navControllerTabSettings: NavController? = null
@@ -74,6 +75,11 @@ class NavigationService {
         navControllerAuth?.navigate(navDirection)
     }
     // endregion
+
+    fun toAcceptLegals() {
+        val navDirection = NavGraphDirections.AcceptLegals.getNavRoute()
+        navControllerLegals?.navigate(navDirection)
+    }
 
     // region: Settings
     // ---------------------------------------------------------------------------------------------

@@ -19,7 +19,8 @@ data class UserResponse(
     var gender: String? = null,
     var yearOfBirth: Int? = null,
     var homeEnergyLabel: String? = null,
-    var householdProfile: String? = null
+    var householdProfile: String? = null,
+    var acceptedLegalDocumentVersion: Long? = null
 ){
     companion object {
         fun from(item: User): UserResponse? {

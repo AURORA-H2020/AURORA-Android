@@ -39,6 +39,17 @@
     <string name="login_privacy_policy_consent_text_privacy_policy_text">Privacy policy</string>
     <string name="login_privacy_policy_consent_text_seventh_text">.</string>
 
+    <string name="legal_consent_dialog_title">Important</string>
+    <string name="legal_consent_dialog_description_part_1">We have updated our </string>
+    <string name="legal_consent_dialog_description_part_3"> and </string>
+    <string name="legal_consent_dialog_description_part_5">. Please review and accept the latest version to continue using the app.</string>
+    <string name="legal_consent_dialog_button_confirm">Accept</string>
+    <string name="legal_consent_dialog_button_reject">Reject</string>
+
+    <string name="legal_consent_rejected_dialog_title">Warning</string>
+    <string name="legal_consent_rejected_dialog_description">Rejecting the latest Privacy Policy and Terms of Services requires us to delete your account. Note that we cannot recover your account after deleting it.</string>
+    <string name="legal_consent_rejected_dialog_button_go_back">Go back</string>
+    <string name="legal_consent_rejected_dialog_button_delete_forever">Delete forever</string>
 
 
     <string name="create_profile_title">Create your profile</string>

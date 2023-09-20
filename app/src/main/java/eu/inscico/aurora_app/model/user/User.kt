@@ -13,7 +13,8 @@ data class User(
     val yearOfBirth: Int?,
     val isMarketingConsentAllowed: Boolean?,
     val homeEnergyLabel: HomeEnergyLabel?,
-    val householdProfile: HouseholdProfileEnum?
+    val householdProfile: HouseholdProfileEnum?,
+    val acceptedLegalDocumentVersion: Long?
 ) {
     companion object {
         fun from(item: UserResponse?): User? {
@@ -27,7 +28,8 @@ data class User(
                 yearOfBirth = item.yearOfBirth,
                 isMarketingConsentAllowed = item.isMarketingConsentAllowed,
                 homeEnergyLabel = HomeEnergyLabel.parseStringToHomeLabel(item.homeEnergyLabel),
-                householdProfile = HouseholdProfileEnum.parseStringToHouseholdProfile(item.householdProfile)
+                householdProfile = HouseholdProfileEnum.parseStringToHouseholdProfile(item.householdProfile),
+                acceptedLegalDocumentVersion = item.acceptedLegalDocumentVersion
             )
         }
     }

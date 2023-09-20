@@ -1,6 +1,7 @@
 package eu.inscico.aurora_app.core.koin
 
 import androidx.lifecycle.SavedStateHandle
+import eu.inscico.aurora_app.ui.AcceptLegalsOverlayViewModel
 import eu.inscico.aurora_app.ui.screens.home.HomeViewModel
 import eu.inscico.aurora_app.ui.screens.home.consumptionSummary.ConsumptionSummaryViewModel
 import eu.inscico.aurora_app.ui.screens.home.consumptions.AllConsumptionsListViewModel
@@ -112,6 +113,15 @@ val viewModelModule = module {
         PhotovoltaicCalculatorViewModel(
             countriesService = get(),
             pvgisApiService = get()
+        )
+    }
+
+    viewModel {  (handle: SavedStateHandle) ->
+        AcceptLegalsOverlayViewModel(
+            savedStateHandle = handle,
+            _cloudFunctionsService = get(),
+            _authService = get(),
+            _userService = get()
         )
     }
 }

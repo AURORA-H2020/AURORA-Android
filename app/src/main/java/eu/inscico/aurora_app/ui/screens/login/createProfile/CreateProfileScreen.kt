@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.City
 import eu.inscico.aurora_app.model.user.Gender
@@ -51,7 +52,8 @@ import org.koin.androidx.compose.koinViewModel
 fun CreateProfileScreen(
     viewModel: CreateProfileViewModel = koinViewModel(),
     navigationService: NavigationService = get(),
-    userFeedbackService: UserFeedbackService = get()
+    userFeedbackService: UserFeedbackService = get(),
+    firebaseRemoteConfig: FirebaseRemoteConfig = get()
 ) {
 
     val countries = viewModel.countries.observeAsState()
@@ -344,7 +346,8 @@ fun CreateProfileScreen(
                             yearOfBirth = birthYear.value.toIntOrNull(),
                             isMarketingConsentAllowed = newsletterSwitch.value,
                             householdProfile = HouseholdProfileEnum.parseHouseholdProfileToString(householdProfile.value),
-                            homeEnergyLabel = HomeEnergyLabel.parseHomeLabelToString(homeEnergyLabel.value)
+                            homeEnergyLabel = HomeEnergyLabel.parseHomeLabelToString(homeEnergyLabel.value),
+                            acceptedLegalDocumentVersion = firebaseRemoteConfig.getLong("latestLegalDocumentsVersion")
                         )
                         CoroutineScope(Dispatchers.IO).launch {
                         val result = viewModel.createUser(user)

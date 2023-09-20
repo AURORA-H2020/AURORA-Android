@@ -2,6 +2,7 @@ package eu.inscico.aurora_app.services.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.*
+import eu.inscico.aurora_app.ui.AcceptLegalsOverlayScreen
 import eu.inscico.aurora_app.ui.screens.home.consumptions.AllConsumptionsListScreen
 import eu.inscico.aurora_app.ui.screens.home.HomeScreen
 import eu.inscico.aurora_app.ui.screens.home.consumptionSummary.ConsumptionSummaryScreen
@@ -87,6 +88,20 @@ sealed class NavGraphDirections(
     }
 
     // endregion
+
+    object AcceptLegals : NavGraphDirections(
+        route = "acceptLegals",
+        content = {
+            AcceptLegalsOverlayScreen()
+        },
+        args = listOf(
+            NavArg(name = "legalsVersion", type = NavType.LongType)
+        )
+    ) {
+        fun getNavRoute(legalsVersion: Long = 1L): String {
+            return "acceptLegals/${legalsVersion}"
+        }
+    }
 
     // region: HomeTab
     // ---------------------------------------------------------------------------------------------

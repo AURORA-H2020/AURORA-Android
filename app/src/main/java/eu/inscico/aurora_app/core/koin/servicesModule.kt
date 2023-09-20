@@ -4,6 +4,8 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.functions.FirebaseFunctions
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import eu.inscico.aurora_app.services.auth.AuthService
 import eu.inscico.aurora_app.services.firebase.*
 import eu.inscico.aurora_app.services.jsonParsing.JsonParsingService
@@ -29,6 +31,10 @@ val servicesModule = module {
 
     factory<FirebaseFirestore> {
         FirebaseFirestore.getInstance()
+    }
+
+    factory<FirebaseRemoteConfig> {
+        FirebaseRemoteConfig.getInstance()
     }
 
     factory<FirebaseFunctions> {
