@@ -173,77 +173,41 @@ fun AcceptLegalsOverlayScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            val annotatedString = buildAnnotatedString {
+            Text(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                text = stringResource(id = R.string.legal_consent_dialog_description_full_text),
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
 
-                append(stringResource(id = R.string.legal_consent_dialog_description_part_1))
-                append(" ")
+            Spacer(modifier = Modifier.height(8.dp))
 
-                pushStringAnnotation(
-                    tag = stringResource(id = R.string.login_privacy_policy_consent_text_privacy_policy_text),
-                    annotation = LINK_PRIVACY_POLICY
-                )
-                withStyle(
-                    style = SpanStyle(
+            Row(modifier = Modifier.fillMaxWidth().padding(16.dp),
+                horizontalArrangement = Arrangement.Center) {
+                TextButton(onClick = {
+                    ExternalUtils.openBrowser(context, LINK_TERMS_OF_SERVICE)
+                }) {
+                    Text(
+                        stringResource(id = R.string.settings_legal_information_terms_of_service_title),
+                        style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.SemiBold
                     )
-                ) {
-                    append(stringResource(id = R.string.login_privacy_policy_consent_text_privacy_policy_text))
                 }
-                pop()
-
-                append(" ")
-                append(stringResource(id = R.string.legal_consent_dialog_description_part_3))
-                append(" ")
-                pushStringAnnotation(
-                    tag = stringResource(id = R.string.login_privacy_policy_consent_text_terms_of_service_text),
-                    annotation = LINK_TERMS_OF_SERVICE
-                )
-                withStyle(
-                    style = SpanStyle(
+                TextButton(onClick = {
+                    ExternalUtils.openBrowser(context, LINK_PRIVACY_POLICY)
+                }) {
+                    Text(
+                        stringResource(id = R.string.settings_legal_information_privacy_policy_title),
+                        style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.SemiBold
                     )
-                ) {
-                    append(stringResource(id = R.string.login_privacy_policy_consent_text_terms_of_service_text))
                 }
-
-                pop()
-
-                append(" ")
-                append(stringResource(id = R.string.legal_consent_dialog_description_part_5))
             }
 
-            ClickableText(
-                modifier = Modifier
-                    .padding(horizontal = 32.dp)
-                    .align(Alignment.CenterHorizontally),
-                text = annotatedString,
-                style = textStyle,
-                onClick = { offset ->
-
-                    annotatedString.getStringAnnotations(
-                        tag = context.getString(R.string.login_privacy_policy_consent_text_terms_of_service_text),
-                        start = offset,
-                        end = offset
-                    ).firstOrNull()?.let {
-                        ExternalUtils.openBrowser(
-                            context = context,
-                            url = it.item
-                        )
-                    }
-
-                    annotatedString.getStringAnnotations(
-                        tag = context.getString(R.string.login_privacy_policy_consent_text_privacy_policy_text),
-                        start = offset,
-                        end = offset
-                    ).firstOrNull()?.let {
-                        ExternalUtils.openBrowser(
-                            context = context,
-                            url = it.item
-                        )
-                    }
-                })
+            Spacer(modifier = Modifier.height(16.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),

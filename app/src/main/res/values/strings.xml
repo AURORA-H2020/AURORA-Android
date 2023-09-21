@@ -29,22 +29,16 @@
     <string name="login_email_sign_in_button_text">Sign in with Email</string>
     <string name="login_sign_in_button_loading_text">Signing in …</string>
 
-    <string name="login_privacy_policy_consent_text_first_part">This app was developed by the AURORA Horizon 2020 EU-funded project (No. </string>
-    <string name="login_privacy_policy_consent_text_second_part">101036418</string>
-    <string name="login_privacy_policy_consent_text_third_part">). Your data is processed by members of the project consortium and securely stored in Google Firebase. Your data will only be used for research purposes in an anonymised format and never commercially without your explicit consent. You can modify, download or delete your data at any time or reach out to our support under </string>
-    <string name="login_privacy_policy_consent_text_fourth_part">app-support@aurora-h2020.eu</string>
-    <string name="login_privacy_policy_consent_text_fiths_part">. By proceeding you agree to the AURORA’s </string>
-    <string name="login_privacy_policy_consent_text_terms_of_service_text">Terms of Service</string>
-    <string name="login_privacy_policy_consent_text_sixth_part">and</string>
-    <string name="login_privacy_policy_consent_text_privacy_policy_text">Privacy policy</string>
-    <string name="login_privacy_policy_consent_text_seventh_text">.</string>
+    <string name="login_privacy_policy_consent_text_full_text">This app was developed by the AURORA Horizon 2020 EU-funded project (No. 101036418). Your data is processed by members of the project consortium and securely stored in Google Firebase. Your data will only be used for research purposes in an anonymised format and never commercially without your explicit consent. You can modify, download or delete your data at any time or reach out to our support under app-support@aurora-h2020.eu. By proceeding you agree to the AURORA’s Terms of Service and Privacy policy.</string>
+    <string name="login_privacy_policy_consent_button_email">Support E-Mail</string>
+    <string name="login_privacy_policy_consent_button_project">Proj.Nr. 101036418</string>
+    <string name="login_privacy_policy_consent_text_support_email">app-support@aurora-h2020.eu</string>
 
     <string name="legal_consent_dialog_title">Important</string>
-    <string name="legal_consent_dialog_description_part_1">We have updated our </string>
-    <string name="legal_consent_dialog_description_part_3"> and </string>
-    <string name="legal_consent_dialog_description_part_5">. Please review and accept the latest version to continue using the app.</string>
     <string name="legal_consent_dialog_button_confirm">Accept</string>
     <string name="legal_consent_dialog_button_reject">Reject</string>
+
+    <string name="legal_consent_dialog_description_full_text">We have updated our Terms of Services and Privacy Policy. Please review and accept the latest version to continue using the app.</string>
 
     <string name="legal_consent_rejected_dialog_title">Warning</string>
     <string name="legal_consent_rejected_dialog_description">Rejecting the latest Privacy Policy and Terms of Services requires us to delete your account. Note that we cannot recover your account after deleting it.</string>

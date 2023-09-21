@@ -185,112 +185,75 @@ fun LoginScreen(
                     letterSpacing = 0.75.sp
                 )
 
-                val annotatedString = buildAnnotatedString {
+                Spacer(modifier = Modifier.height(4.dp))
 
-                    append(stringResource(id = R.string.login_privacy_policy_consent_text_first_part))
-                    append(" ")
+                Text(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    text = stringResource(id = R.string.login_privacy_policy_consent_text_full_text),
+                    style = textStyle,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center
+                )
 
-                    pushStringAnnotation(
-                        tag = stringResource(id = R.string.login_privacy_policy_consent_text_second_part),
-                        annotation = LINK_EUROPEAN_HORIZON_RESEARCH_PROGRAM
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        modifier = Modifier.clickable {
+                            ExternalUtils.openBrowser(context, LINK_EUROPEAN_HORIZON_RESEARCH_PROGRAM)
+                        },
+                        text = stringResource(id = R.string.login_privacy_policy_consent_button_project),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.SemiBold
                     )
-                    withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-                        append(stringResource(id = R.string.login_privacy_policy_consent_text_second_part))
-                    }
-                    pop()
 
-                    append(" ")
-                    append(stringResource(id = R.string.login_privacy_policy_consent_text_third_part))
-                    append(" ")
-                    pushStringAnnotation(
-                        tag = stringResource(id = R.string.login_privacy_policy_consent_text_fourth_part),
-                        annotation = LINK_PRIVACY_POLICY
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    Text(
+                        modifier = Modifier.clickable {
+                            context.sendMail(context.getString(R.string.login_privacy_policy_consent_text_support_email))
+                        },
+                        text = stringResource(id = R.string.login_privacy_policy_consent_button_email),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.SemiBold
                     )
-                    withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-                        append(stringResource(id = R.string.login_privacy_policy_consent_text_fourth_part))
-                    }
-
-                    pop()
-
-                    append(" ")
-                    append(stringResource(id = R.string.login_privacy_policy_consent_text_fiths_part))
-                    append(" ")
-
-                    pushStringAnnotation(
-                        tag = stringResource(id = R.string.login_privacy_policy_consent_text_terms_of_service_text),
-                        annotation = LINK_TERMS_OF_SERVICE
-                    )
-                    withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-                        append(stringResource(id = R.string.login_privacy_policy_consent_text_terms_of_service_text))
-                    }
-
-                    pop()
-
-                    append(" ")
-                    append(stringResource(id = R.string.login_privacy_policy_consent_text_sixth_part))
-                    append(" ")
-
-                    pushStringAnnotation(
-                        tag = stringResource(id = R.string.login_privacy_policy_consent_text_privacy_policy_text),
-                        annotation = LINK_PRIVACY_POLICY
-                    )
-                    withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-                        append(stringResource(id = R.string.login_privacy_policy_consent_text_privacy_policy_text))
-                    }
-
-                    pop()
-                    append(".")
                 }
 
-                ClickableText(
+                Row(
                     modifier = Modifier
-                        .padding(horizontal = 32.dp)
-                        .align(Alignment.CenterHorizontally),
-                    text = annotatedString,
-                    style = textStyle,
-                    onClick = { offset ->
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        modifier = Modifier.clickable {
+                            ExternalUtils.openBrowser(context, LINK_TERMS_OF_SERVICE)
+                        },
+                        text = stringResource(id = R.string.settings_legal_information_terms_of_service_title),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.SemiBold
+                    )
 
-                        annotatedString.getStringAnnotations(
-                            tag = context.getString(R.string.login_privacy_policy_consent_text_second_part),
-                            start = offset,
-                            end = offset
-                        ).firstOrNull()?.let {
-                            ExternalUtils.openBrowser(
-                                context = context,
-                                url = it.item
-                            )
-                        }
+                    Spacer(modifier = Modifier.width(16.dp))
 
-                        annotatedString.getStringAnnotations(
-                            tag = context.getString(R.string.login_privacy_policy_consent_text_fourth_part),
-                            start = offset,
-                            end = offset
-                        ).firstOrNull()?.let {
-                            context.sendMail(context.getString(R.string.login_privacy_policy_consent_text_fourth_part))
-                        }
+                    Text(
+                        modifier = Modifier.clickable {
+                            ExternalUtils.openBrowser(context, LINK_PRIVACY_POLICY)
+                        },
+                        text = stringResource(id = R.string.settings_legal_information_privacy_policy_title),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
 
-                        annotatedString.getStringAnnotations(
-                            tag = context.getString(R.string.login_privacy_policy_consent_text_terms_of_service_text),
-                            start = offset,
-                            end = offset
-                        ).firstOrNull()?.let {
-                            ExternalUtils.openBrowser(
-                                context = context,
-                                url = it.item
-                            )
-                        }
-
-                        annotatedString.getStringAnnotations(
-                            tag = context.getString(R.string.login_privacy_policy_consent_text_privacy_policy_text),
-                            start = offset,
-                            end = offset
-                        ).firstOrNull()?.let {
-                            ExternalUtils.openBrowser(
-                                context = context,
-                                url = it.item
-                            )
-                        }
-                    })
+                Spacer(modifier = Modifier.height(4.dp))
 
                 Spacer(modifier = Modifier.height(5.dp))
             }
