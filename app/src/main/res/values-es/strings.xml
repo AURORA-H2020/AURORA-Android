@@ -21,9 +21,6 @@
     <string name="login_apple_sign_in_button_text">Iniciar sesión con Apple</string>
     <string name="login_email_sign_in_button_text">Iniciar sesión con email</string>
     <string name="login_sign_in_button_loading_text">Iniciando sesión ...</string>
-    <string name="login_privacy_policy_consent_text_first_part">Al continuar, acepta que AURORA</string>
-    <string name="login_privacy_policy_consent_text_terms_of_service_text">Términos de Servicio</string>
-    <string name="login_privacy_policy_consent_text_privacy_policy_text">Política de privacidad</string>
     <string name="create_profile_title">Cree su perfil</string>
     <string name="profile_title">Perfil</string>
     <string name="logout_button_title">Cierre de sesión</string>

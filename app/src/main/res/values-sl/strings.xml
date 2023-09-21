@@ -21,9 +21,6 @@
     <string name="login_apple_sign_in_button_text">Vpiši se z Applom</string>
     <string name="login_email_sign_in_button_text">Vpiši se z e-pošto</string>
     <string name="login_sign_in_button_loading_text">Vpisovanje...</string>
-    <string name="login_privacy_policy_consent_text_first_part">Z nadaljevanjem se strinjate z AURORInimi</string>
-    <string name="login_privacy_policy_consent_text_terms_of_service_text">Pogoji storitve</string>
-    <string name="login_privacy_policy_consent_text_privacy_policy_text">Politika zasebnosti</string>
     <string name="create_profile_title">Ustvari svoj profil</string>
     <string name="profile_title">Profil</string>
     <string name="logout_button_title">Odjava</string>
@@ -38,6 +35,7 @@
     <string name="create_profile_drop_down_other">Drugo</string>
     <string name="create_profile_drop_down_please_choose">Izberi</string>
     <string name="create_profile_city_drop_down_other_city">Drugo mesto</string>
+    <string name="create_profile_home_energy_level_title">Energijska nalepka za dom</string>
     <string name="create_profile_home_energy_level_A_plus">A+</string>
     <string name="create_profile_home_energy_level_A">A</string>
     <string name="create_profile_home_energy_level_B">B</string>
@@ -47,8 +45,10 @@
     <string name="create_profile_home_energy_level_F">F</string>
     <string name="create_profile_home_energy_level_G">G</string>
     <string name="create_profile_home_energy_level_unsure">Nisem prepričan</string>
+    <string name="create_profile_household_profile_title">Profil gospodinjstva</string>
     <string name="create_profile_household_profile_retired_individuals">Upokojenci</string>
     <string name="create_profile_household_profile_home_based_workers_students">Doma bivajoči zaposleni / študentje</string>
+    <string name="create_profile_household_profile_homemakers">Domačini</string>
     <string name="create_profile_household_profile_workers_students_outside_home">Zaposleni / študentje, ki ne bivajo doma</string>
     <string name="create_profile_country_selection_info">Te informacije nam pomagajo natančneje izračunati ogljični odtis. Upoštevaj, da svoje države kasneje ne moreš spremeniti.</string>
     <string name="create_profile_newsletter_switch_description">Obvestila o posodobitvah aplikacije in o projektu AURORA želim prejemati po e-pošti.</string>
@@ -206,6 +206,7 @@
     <string name="settings_legal_information_feature_preview_title">Predogled funkcij</string>
     <string name="settings_legal_information_imprint_title">Odtis</string>
     <string name="settings_legal_information_privacy_policy_title">Politika zasebnosti</string>
+    <string name="settings_legal_information_terms_of_service_title">Pogoji storitve</string>
     <string name="settings_legal_information_licenses_title">Licence</string>
     <string name="settings_edit_profile_submit_button_title">Shrani</string>
     <string name="settings_change_password_title">Sprememba gesla</string>
@@ -263,6 +264,7 @@
     <string name="settings_section_feature_preview_profile_data_description">Podatke o tvojem profilu dopolnjujemo z dodajanjem podatkov o gospodinjstvih, osebnih vozilih, virih energije in še več.</string>
     <string name="settings_section_project_info_text">"financira program Evropske unije za raziskave in inovacije Obzorje 2020 v okviru sporazuma o dodelitvi sredstev št. [101036418](https://cordis.europa.eu/project/id/101036418)."</string>
     <string name="settings_section_project_text">"Ta projekt "</string>
+    <string name="settings_recurring_consumptions_changed_behaviour_popup_switch">Redne spremembe energetskega vedenja</string>
     <string name="solar_power_title">Tvoja sončna energija</string>
     <string name="solar_power_description">Kmalu lahko zmanjšaš svoj ogljični odtis z naložbo v lokalno sončno elektrarno AURORA. Do takrat pa lahko tukaj preizkusiš, za koliko bi se tvoj ogljični odtis zmanjšal glede na morebitno naložbo.</string>
     <string name="solar_power_investment_title">Naložba</string>
