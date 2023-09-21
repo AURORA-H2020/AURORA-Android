@@ -236,7 +236,8 @@ fun EditProfileScreen(
                             yearOfBirth = birthYear.value.toIntOrNull(),
                             isMarketingConsentAllowed = currentUserLive.value?.isMarketingConsentAllowed,
                             householdProfile = HouseholdProfileEnum.parseHouseholdProfileToString(householdProfile.value),
-                            homeEnergyLabel = HomeEnergyLabel.parseHomeLabelToString(homeEnergyLabel.value)
+                            homeEnergyLabel = HomeEnergyLabel.parseHomeLabelToString(homeEnergyLabel.value),
+                            acceptedLegalDocumentVersion = currentUserLive.value?.acceptedLegalDocumentVersion
                         )
                         CoroutineScope(Dispatchers.IO).launch {
                             val result = viewModel.updateUser(updatedUser)
