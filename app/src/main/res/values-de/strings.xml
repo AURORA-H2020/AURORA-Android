@@ -107,7 +107,7 @@
     <string name="home_add_consumption_form_heating_beginning_end_description_title">Wählen Sie den Beginn und das Ende dieses Verbrauchs. Diese Informationen finden Sie auf Ihrer Heizkostenabrechnung.</string>
     <string name="home_add_consumption_form_costs_title">Kosten</string>
     <string name="home_add_consumption_form_description_title">Beschreibung</string>
-    <string name="home_add_consumption_form_description_info_text_title">Sie können Ihrem Eintrag eine Beschreibung hinzufügen, damit Sie ihn später leichter finden.</string>
+    <string name="home_add_consumption_form_description_info_text_title">Sie können Ihrem Eintrag eine Beschreibung hinzufügen um ihn später leichter zu finden.</string>
     <string name="home_add_consumption_form_heating_fuel_type_title">Wählen Sie Ihre Heizungsart. Diese Information finden Sie auf Ihrer Heizkostenabrechnung.</string>
     <string name="home_add_consumption_heating_fuel_title">Heizmittel</string>
     <string name="heating_fuel_type_oil_title">Öl</string>

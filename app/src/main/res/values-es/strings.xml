@@ -21,6 +21,18 @@
     <string name="login_apple_sign_in_button_text">Iniciar sesión con Apple</string>
     <string name="login_email_sign_in_button_text">Iniciar sesión con email</string>
     <string name="login_sign_in_button_loading_text">Iniciando sesión ...</string>
+    <string name="login_privacy_policy_consent_text_full_text">Esta aplicación ha sido desarrollada por el proyecto Horizonte 2020 AURORA financiado por la UE (n.º 101036418). Sus datos son procesados por miembros del consorcio del proyecto y almacenados de forma segura en Google Firebase. Sus datos solo se utilizarán con fines de investigación en un formato anonimizado y nunca comercialmente sin su consentimiento explícito. Puede modificar, descargar o eliminar sus datos en cualquier momento o ponerse en contacto con nuestro servicio de asistencia en app-support@aurora-h2020.eu. Al continuar, acepta las condiciones de servicio y la política de privacidad de AURORA.</string>
+    <string name="login_privacy_policy_consent_button_email">Correo electrónico de asistencia</string>
+    <string name="login_privacy_policy_consent_button_project">Proy.Nº. 101036418</string>
+    <string name="login_privacy_policy_consent_text_support_email">app-support@aurora-h2020.eu</string>
+    <string name="legal_consent_dialog_title">Importante</string>
+    <string name="legal_consent_dialog_button_confirm">Aceptar</string>
+    <string name="legal_consent_dialog_button_reject">Rechazar</string>
+    <string name="legal_consent_dialog_description_full_text">Hemos actualizado nuestras Condiciones de servicio y Política de privacidad. Revise y acepte la última versión para seguir utilizando la aplicación.</string>
+    <string name="legal_consent_rejected_dialog_title">Aviso</string>
+    <string name="legal_consent_rejected_dialog_description">Rechazar la Política de privacidad y las Condiciones de servicio más recientes nos obliga a eliminar su cuenta. Tenga en cuenta que no podemos recuperar su cuenta después de eliminarla.</string>
+    <string name="legal_consent_rejected_dialog_button_go_back">Volver atrás</string>
+    <string name="legal_consent_rejected_dialog_button_delete_forever">Eliminar definitivamente</string>
     <string name="create_profile_title">Cree su perfil</string>
     <string name="profile_title">Perfil</string>
     <string name="logout_button_title">Cierre de sesión</string>
@@ -206,6 +218,7 @@
     <string name="settings_legal_information_feature_preview_title">"Previsualización "</string>
     <string name="settings_legal_information_imprint_title">Autobús híbrido eléctrico</string>
     <string name="settings_legal_information_privacy_policy_title">Política de privacidad</string>
+    <string name="settings_legal_information_terms_of_service_title">Condiciones de servicio</string>
     <string name="settings_legal_information_licenses_title">Licencias</string>
     <string name="settings_edit_profile_submit_button_title">Guardar</string>
     <string name="settings_change_password_title">Cambiar contraseña</string>
