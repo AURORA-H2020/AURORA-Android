@@ -15,6 +15,7 @@ class PhotovoltaicCalculatorViewModel(
 ): ViewModel() {
 
     val userCity = countriesService.userCityLive
+    val userCountry = countriesService.userCountryLive
 
     val investmentResultLive = pvgisApiService.investmentResultLive
 
