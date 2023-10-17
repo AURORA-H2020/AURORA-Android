@@ -1,5 +1,6 @@
 package eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption
 
+import android.app.LocaleConfig
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -40,6 +42,7 @@ import eu.inscico.aurora_app.ui.components.forms.SpinnerItem
 import eu.inscico.aurora_app.ui.components.timePicker.TimePickerDialog
 import eu.inscico.aurora_app.utils.CalendarUtils
 import eu.inscico.aurora_app.utils.TypedResult
+import eu.inscico.aurora_app.utils.UnitUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -59,10 +62,11 @@ fun AddTransportationConsumption(
 ) {
 
     val context = LocalContext.current
+    val configuration = LocalConfiguration.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
     val initialDistance = if (initialValues?.value != null) {
-        String.format("%.1f", initialValues.value)
+        "${UnitUtils.getConvertedDistance(distanceInKm = initialValues.value, locale = configuration.locales[0], decimals = 1)}"
     } else {
         ""
     }
@@ -542,7 +546,7 @@ fun AddTransportationConsumption(
             ),
 
             trailingIcon = {
-                Text(text = "km")
+                Text(text = UnitUtils.getSystemDistanceUnit(LocalConfiguration.current))
             }
         )
 
@@ -657,9 +661,12 @@ fun AddTransportationConsumption(
                         null
                     }
 
+                    val distanceValue = distance.value.replace(",", ".").toDoubleOrNull()
+                    val distanceValueKm = UnitUtils.getDistanceValueMetric(distanceValue ?: 0.0 , configuration.locales[0])
+
                     val consumptionResponse = ConsumptionResponse(
                         category = ConsumptionType.parseConsumptionTypeToString(ConsumptionType.TRANSPORTATION),
-                        value = distance.value.replace(",", ".").toDoubleOrNull(),
+                        value = distanceValueKm,
                         description = descriptionValue,
                         createdAt = Timestamp(
                             initialValues?.createdAt?.time ?: Date(System.currentTimeMillis())

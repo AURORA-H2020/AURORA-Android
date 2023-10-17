@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,6 +30,7 @@ import eu.inscico.aurora_app.model.consumptions.ConsumptionType
 import eu.inscico.aurora_app.model.consumptions.ConsumptionType.Companion.getDisplayName
 import eu.inscico.aurora_app.ui.theme.*
 import eu.inscico.aurora_app.utils.CalendarUtils
+import eu.inscico.aurora_app.utils.UnitUtils
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,16 +62,15 @@ fun ConsumptionListItem(
     }
 
     val carbonEmissionText = when (consumption) {
-        is Consumption.ElectricityConsumption -> "${
-            String.format("%.1f", consumption.carbonEmissions)} kg"
-        is Consumption.HeatingConsumption -> "${String.format("%.1f", consumption.carbonEmissions)} kg"
-        is Consumption.TransportationConsumption -> "${String.format("%.1f", consumption.carbonEmissions)} kg"
+        is Consumption.ElectricityConsumption -> UnitUtils.getConvertedWeight(consumption.carbonEmissions, locale = LocalConfiguration.current.locales[0], decimals = 1)
+        is Consumption.HeatingConsumption -> UnitUtils.getConvertedWeight(consumption.carbonEmissions, locale = LocalConfiguration.current.locales[0], decimals = 1)
+        is Consumption.TransportationConsumption -> UnitUtils.getConvertedWeight(consumption.carbonEmissions, locale = LocalConfiguration.current.locales[0], decimals = 1)
     }
 
     val consumptionValue = when (consumption) {
         is Consumption.ElectricityConsumption -> "${String.format("%.0f", consumption.value)} kWh"
         is Consumption.HeatingConsumption -> "${String.format("%.0f", consumption.value)} kWh"
-        is Consumption.TransportationConsumption -> "${String.format("%.0f", consumption.value)} km"
+        is Consumption.TransportationConsumption -> UnitUtils.getConvertedDistanceWithUnit(consumption.value, locale = LocalConfiguration.current.locales[0], decimals = 1)
     }
 
     val red = heatingRed
