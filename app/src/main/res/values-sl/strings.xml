@@ -179,11 +179,11 @@
     <string name="home_your_carbon_emissions_labels_overall_used_title">uporabljen</string>
     <string name="home_your_carbon_emissions_labels_overall_used_value_title">%1$s kWh</string>
     <string name="home_your_carbon_emissions_labels_overall_produced_title">izdelano</string>
-    <string name="home_your_carbon_emissions_labels_overall_produced_value_title">%1$s kg CO₂</string>
+    <string name="home_your_carbon_emissions_labels_overall_produced_value_title">%1$s CO₂</string>
     <string name="home_your_carbon_emissions_info_title">Kako to deluje?</string>
     <string name="home_your_carbon_emissions_info_description">Tvoje energetske nalepke so izračunane na podlagi spremljane porabe in glede na tvojo lokacijo. To pomeni, da bo z vnašanjem podatkov med letom na voljo več podatkov o tvojih emisijah ogljika in energetskih računih. Na primer: Če si vnesli podatke samo za vse dni v januarju in decembru, bo za izračun tvoje nalepke uporabljena 2/12 celotnega obsega proračuna. Edina izjema je prevoz, pri katerem se po določenem številu letnih vnosov pridobi celoten izračun. Tvoj skupni znesek temelji na vsoti računov za električno energijo, ogrevanje in prevoz.</string>
-    <string name="home_your_carbon_emissions_labels_value_produced_with_year_title">%1$s kg CO₂ v %2$d</string>
-    <string name="home_your_carbon_emissions_bar_chart_label_carbon_emission_title">kg CO₂</string>
+    <string name="home_your_carbon_emissions_labels_value_produced_with_year_title">%1$s CO₂ v %2$d</string>
+    <string name="home_your_carbon_emissions_bar_chart_label_carbon_emission_title">%1$s CO₂</string>
     <string name="home_your_carbon_emissions_bar_chart_label_energy_expended_title">kWh</string>
     <string name="home_your_carbon_emissions_labels_value_used_with_year_title">%1$s kWh v %2$d</string>
     <string name="home_your_carbon_emissions_label_empty_title">Poraba še ni vnesena (?)</string>

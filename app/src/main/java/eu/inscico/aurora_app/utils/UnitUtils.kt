@@ -37,7 +37,7 @@ object UnitUtils {
             LocaleData.MeasurementSystem.UK,
             LocaleData.MeasurementSystem.US -> {
                 val formattedDistance = if(decimals != null){
-                    String.format("%.${decimals}f", distanceInKm * 0.62137).toDouble()
+                    String.format("%.${decimals}f", distanceInKm * 0.62137).replace(",", ".").toDouble()
                 } else {
                     distanceInKm * 0.62137
                 }
@@ -45,7 +45,7 @@ object UnitUtils {
             }
             else -> {
                 val formattedDistance = if(decimals != null){
-                    String.format("%.${decimals}f", distanceInKm).toDouble()
+                    String.format("%.${decimals}f", distanceInKm).replace(",", ".").toDouble()
                 } else {
                     distanceInKm
                 }
@@ -90,10 +90,10 @@ object UnitUtils {
         }
     }
 
-    fun getConvertedWeight(weightInKg: Double?, locale: Locale, decimals: Int? = null): String {
+    fun getConvertedWeight(weightInKg: Double?, locale: Locale, decimals: Int? = null): Double {
 
         if (weightInKg == null || weightInKg == 0.0) {
-            return "0.0 ${getWeightUnit(locale)}"
+            return 0.0
         }
 
         val measurementSystem = LocaleData.getMeasurementSystem(ULocale.forLocale(locale))
@@ -101,21 +101,25 @@ object UnitUtils {
             LocaleData.MeasurementSystem.UK,
             LocaleData.MeasurementSystem.US -> {
                 val formattedWeight = if(decimals != null){
-                    String.format("%.${decimals}f", weightInKg * 2.2046).toDouble()
+                    String.format("%.${decimals}f", weightInKg * 2.2046).replace(",", ".").toDouble()
                 } else {
                     weightInKg * 2.2046
                 }
-                "$formattedWeight ${getWeightUnit(locale)}"
+                formattedWeight
             }
             else -> {
                 val formattedWeight = if(decimals != null){
-                    String.format("%.${decimals}f", weightInKg).toDouble()
+                    String.format("%.${decimals}f", weightInKg).replace(",", ".").toDouble()
                 } else {
                     weightInKg
                 }
-                "$formattedWeight ${getWeightUnit(locale)}"
+                formattedWeight
             }
         }
+    }
+
+    fun getConvertedWeightWithUnit(weightInKg: Double?, locale: Locale, decimals: Int? = 0): String {
+        return "${getConvertedWeight(weightInKg, locale, decimals)} ${getWeightUnit(locale)}"
     }
 
     // endregion

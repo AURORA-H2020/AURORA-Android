@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,6 +25,7 @@ import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptionSummary.EnergyLabel
 import eu.inscico.aurora_app.model.consumptionSummary.EnergyLabel.Companion.getLabelColor
 import eu.inscico.aurora_app.model.consumptionSummary.EnergyLabel.Companion.getLabelNameRes
+import eu.inscico.aurora_app.utils.UnitUtils
 
 @Composable
 fun DashboardConsumptionSummaryLabel(
@@ -34,6 +36,7 @@ fun DashboardConsumptionSummaryLabel(
     onLabelClicked: (isEnergyLabelClicked: Boolean) -> Unit
 ) {
     val context = LocalContext.current
+    val configuration = LocalConfiguration.current
 
     val carbonTextColor = when (carbonLabel) {
         EnergyLabel.A_PLUS,
@@ -92,7 +95,7 @@ fun DashboardConsumptionSummaryLabel(
             Text(
                 text = context.getString(
                     R.string.home_your_carbon_emissions_labels_overall_produced_value_title,
-                    String.format("%.1f", carbonValue)
+                    UnitUtils.getConvertedWeightWithUnit(weightInKg = carbonValue, locale = configuration.locales[0], decimals = 1),
                 ),
                 style = MaterialTheme.typography.labelSmall,
                 color = carbonTextColor

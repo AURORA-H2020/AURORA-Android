@@ -179,11 +179,11 @@
     <string name="home_your_carbon_emissions_labels_overall_used_title">usado</string>
     <string name="home_your_carbon_emissions_labels_overall_used_value_title">%1$s kWh</string>
     <string name="home_your_carbon_emissions_labels_overall_produced_title">produzido</string>
-    <string name="home_your_carbon_emissions_labels_overall_produced_value_title">%1$s kg CO₂</string>
+    <string name="home_your_carbon_emissions_labels_overall_produced_value_title">%1$s CO₂</string>
     <string name="home_your_carbon_emissions_info_title">Como funciona?</string>
     <string name="home_your_carbon_emissions_info_description">As tuas etiquetas energéticas são calculadas com base no teu consumo de energia rastreado e específico da tua localização. Isto significa que, à medida que introduza dados ao longo do ano, mais das tuas emissões de carbono e balanços de energia serão disponibilizados. Por exemplo: Se tiveres introduzido dados apenas para todos os dias de Janeiro e Dezembro, 2/12 do balanço total será utilizado para calcular a tua etiqueta. A única excepção é o transporte, que produz o balanço completo após um certo número de entradas anuais. O teu balanço global é baseado na soma dos seus balanços de eletricidade, aquecimento e transporte.</string>
-    <string name="home_your_carbon_emissions_labels_value_produced_with_year_title">%1$s kg CO₂ em %2$d</string>
-    <string name="home_your_carbon_emissions_bar_chart_label_carbon_emission_title">kg CO₂</string>
+    <string name="home_your_carbon_emissions_labels_value_produced_with_year_title">%1$s CO₂ em %2$d</string>
+    <string name="home_your_carbon_emissions_bar_chart_label_carbon_emission_title">%1$s CO₂</string>
     <string name="home_your_carbon_emissions_bar_chart_label_energy_expended_title">kWh</string>
     <string name="home_your_carbon_emissions_labels_value_used_with_year_title">%1$s kWh em %2$d</string>
     <string name="home_your_carbon_emissions_label_empty_title">Ainda não foi registado nenhum consumo (?)</string>

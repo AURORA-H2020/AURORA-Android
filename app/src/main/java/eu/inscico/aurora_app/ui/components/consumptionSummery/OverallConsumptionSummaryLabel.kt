@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -17,6 +18,7 @@ import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptionSummary.EnergyLabel
 import eu.inscico.aurora_app.model.consumptionSummary.EnergyLabel.Companion.getLabelColor
 import eu.inscico.aurora_app.model.consumptionSummary.EnergyLabel.Companion.getLabelNameRes
+import eu.inscico.aurora_app.utils.UnitUtils
 
 
 @Composable
@@ -27,6 +29,7 @@ fun OverallConsumptionSummaryLabel(
     isCarbonEmissions: Boolean
 ) {
     val context = LocalContext.current
+    val configuration = LocalConfiguration.current
 
     val textColor = when (label) {
         EnergyLabel.A_PLUS,
@@ -119,12 +122,12 @@ fun OverallConsumptionSummaryLabel(
                         val valueText = if (isCarbonEmissions) {
                             context.getString(
                                 R.string.home_your_carbon_emissions_labels_overall_produced_value_title,
-                                String.format("%.1f", value ?: 0F)
+                                UnitUtils.getConvertedWeightWithUnit(weightInKg = value, locale = configuration.locales[0], decimals = 1),
                             )
                         } else {
                             context.getString(
                                 R.string.home_your_carbon_emissions_labels_overall_used_value_title,
-                                String.format("%.1f", value ?: 0F)
+                                UnitUtils.getConvertedWeightWithUnit(weightInKg = value, locale = configuration.locales[0], decimals = 1),
                             )
                         }
 

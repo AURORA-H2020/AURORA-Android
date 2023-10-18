@@ -62,9 +62,9 @@ fun ConsumptionListItem(
     }
 
     val carbonEmissionText = when (consumption) {
-        is Consumption.ElectricityConsumption -> UnitUtils.getConvertedWeight(consumption.carbonEmissions, locale = LocalConfiguration.current.locales[0], decimals = 1)
-        is Consumption.HeatingConsumption -> UnitUtils.getConvertedWeight(consumption.carbonEmissions, locale = LocalConfiguration.current.locales[0], decimals = 1)
-        is Consumption.TransportationConsumption -> UnitUtils.getConvertedWeight(consumption.carbonEmissions, locale = LocalConfiguration.current.locales[0], decimals = 1)
+        is Consumption.ElectricityConsumption -> UnitUtils.getConvertedWeightWithUnit(consumption.carbonEmissions, locale = LocalConfiguration.current.locales[0], decimals = 1)
+        is Consumption.HeatingConsumption -> UnitUtils.getConvertedWeightWithUnit(consumption.carbonEmissions, locale = LocalConfiguration.current.locales[0], decimals = 1)
+        is Consumption.TransportationConsumption -> UnitUtils.getConvertedWeightWithUnit(consumption.carbonEmissions, locale = LocalConfiguration.current.locales[0], decimals = 1)
     }
 
     val consumptionValue = when (consumption) {

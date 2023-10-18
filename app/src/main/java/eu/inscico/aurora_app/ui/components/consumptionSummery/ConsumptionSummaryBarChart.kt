@@ -8,6 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -35,6 +37,7 @@ import eu.inscico.aurora_app.ui.theme.electricityYellow
 import eu.inscico.aurora_app.ui.theme.heatingRed
 import eu.inscico.aurora_app.ui.theme.mobilityBlue
 import eu.inscico.aurora_app.utils.CalendarUtils
+import eu.inscico.aurora_app.utils.UnitUtils
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -44,6 +47,10 @@ fun ConsumptionSummaryBarChart(
     barChartData: ChartEntryModel,
     isCarbonEmission: Boolean
 ){
+
+    val context = LocalContext.current
+    val configuration = LocalConfiguration.current
+
     val xAxisValueFormatter: AxisValueFormatter<AxisPosition.Horizontal.Bottom> =
         AxisValueFormatter { value, _ ->
             val month = Calendar.getInstance()
@@ -53,22 +60,31 @@ fun ConsumptionSummaryBarChart(
 
     val yAxisValueFormatter: AxisValueFormatter<AxisPosition.Vertical.End> =
         AxisValueFormatter { value, _ ->
-            if(value > 2F){
-                String.format("%d", value.roundToInt() ?: 0F)
-            } else if(value > 1F){
-                String.format("%.1f", value ?: 0F)
-            } else if(value > 0.1){
-                String.format("%.2f", value ?: 0F)
-            } else if(value == 0F){
-                String.format("%.0f", value ?: 0F)
+            val convertedValue = if(isCarbonEmission){
+                UnitUtils.getConvertedWeight(weightInKg = value.toDouble(), locale = configuration.locales[0]).toFloat()
+            } else {
+                value
+            }
+
+            if(convertedValue > 2F){
+                String.format("%d", convertedValue.roundToInt())
+            } else if(convertedValue > 1F){
+                String.format("%.1f", convertedValue)
+            } else if(convertedValue > 0.1){
+                String.format("%.2f", convertedValue)
+            } else if(convertedValue == 0F){
+                String.format("%.0f", convertedValue)
             }
             else {
-                String.format("%.3f", value ?: 0F)
+                String.format("%.3f", convertedValue)
             }
         }
 
     val yAxisName = if(isCarbonEmission){
-        stringResource(id = R.string.home_your_carbon_emissions_bar_chart_label_carbon_emission_title)
+        context.getString(
+            R.string.home_your_carbon_emissions_bar_chart_label_carbon_emission_title,
+            UnitUtils.getWeightUnit(locale = configuration.locales[0]),
+        )
     } else {
         stringResource(id = R.string.home_your_carbon_emissions_bar_chart_label_energy_expended_title)
     }

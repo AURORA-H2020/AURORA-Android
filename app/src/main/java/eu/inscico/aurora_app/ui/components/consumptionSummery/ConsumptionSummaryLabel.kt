@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -23,6 +24,7 @@ import eu.inscico.aurora_app.model.consumptionSummary.EnergyLabel.Companion.getL
 import eu.inscico.aurora_app.model.consumptions.ConsumptionType
 import eu.inscico.aurora_app.model.consumptions.ConsumptionType.Companion.getDisplayNameRes
 import eu.inscico.aurora_app.model.consumptions.ConsumptionType.Companion.getIconRes
+import eu.inscico.aurora_app.utils.UnitUtils
 
 @Composable
 fun ConsumptionSummaryLabel(
@@ -34,6 +36,7 @@ fun ConsumptionSummaryLabel(
 ) {
 
     val context = LocalContext.current
+    val configuration = LocalConfiguration.current
 
     val textColor = when (label) {
         EnergyLabel.A_PLUS,
@@ -68,7 +71,7 @@ fun ConsumptionSummaryLabel(
             val valueText = if(isCarbonEmission){
                 context.getString(
                     R.string.home_your_carbon_emissions_labels_value_produced_with_year_title,
-                    String.format("%.1f", value ?: 0F),
+                    UnitUtils.getConvertedWeightWithUnit(weightInKg = value, locale = configuration.locales[0], decimals = 1),
                     year
                 )
             } else {
