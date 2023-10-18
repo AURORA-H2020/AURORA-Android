@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -17,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
+import eu.inscico.aurora_app.utils.UnitUtils
 
 @Composable
 fun InvestmentResultLabel(
@@ -27,7 +29,7 @@ fun InvestmentResultLabel(
 ){
 
     val context = LocalContext.current
-
+    val configuration = LocalConfiguration.current
 
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Row(
@@ -74,10 +76,7 @@ fun InvestmentResultLabel(
                     ) {
 
                         Text(
-                            text = context.getString(
-                                R.string.solar_power_investment_result_value_unit_title,
-                                String.format("%.1f", value)
-                            ),
+                            text = UnitUtils.getConvertedWeightWithUnit(weightInKg = value, locale = configuration.locales[0], decimals = 1),
                             style = MaterialTheme.typography.headlineSmall,
                             color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Bold,
