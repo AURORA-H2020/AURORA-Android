@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -37,6 +38,7 @@ import eu.inscico.aurora_app.ui.components.forms.SpinnerItem
 import eu.inscico.aurora_app.ui.components.timePicker.TimePickerDialog
 import eu.inscico.aurora_app.ui.screens.home.recurringConsumptions.AddOrUpdateRecurringConsumptionViewModel
 import eu.inscico.aurora_app.utils.CalendarUtils
+import eu.inscico.aurora_app.utils.UnitUtils
 import org.koin.androidx.compose.koinViewModel
 import java.util.*
 
@@ -49,6 +51,7 @@ fun AddTransportationRecurringConsumptionScreen(
 ) {
 
     val context = LocalContext.current
+    val configuration = LocalConfiguration.current
 
     val transportationType = remember {
         mutableStateOf<TransportationType?>(initialValues?.transportationType)
@@ -79,7 +82,7 @@ fun AddTransportationRecurringConsumptionScreen(
     }
 
     val initialDistance = if(initialValues?.distance != null){
-        String.format("%.1f",initialValues.distance)
+        "${UnitUtils.getConvertedDistance(distanceInKm = initialValues.distance, locale = configuration.locales[0], decimals = 1)}"
     } else {
         ""
     }
@@ -93,6 +96,9 @@ fun AddTransportationRecurringConsumptionScreen(
         val timeOfTravel = Calendar.getInstance()
         timeOfTravel.timeInMillis = startOfTravelAsLong.value
 
+        val distanceValue = distance.value.replace(",", ".").toDoubleOrNull()
+        val distanceValueKm = UnitUtils.getDistanceValueMetric(distanceValue ?: 0.0 , configuration.locales[0])
+
         return when(transportationSection.value){
             TransportationTypeSection.CARS_AND_MOTORCYCLES -> {
                 RecurringConsumptionTransportationData(
@@ -100,7 +106,7 @@ fun AddTransportationRecurringConsumptionScreen(
                     privateVehicleOccupancy = occupancyPrecisely.value,
                     transportationType = transportationType.value ?: return null,
                     publicVehicleOccupancy = null,
-                    distance = distance.value.replace(",",".").toDoubleOrNull() ?: return null,
+                    distance = distanceValueKm,
                 )
             }
             TransportationTypeSection.BUSSES,
@@ -110,7 +116,7 @@ fun AddTransportationRecurringConsumptionScreen(
                     privateVehicleOccupancy = null,
                     transportationType = transportationType.value ?: return null,
                     publicVehicleOccupancy = occupancyApproximately.value ?: return null,
-                    distance = distance.value.replace(",",".").toDoubleOrNull() ?: return null,
+                    distance = distanceValueKm,
                 )
             }
             TransportationTypeSection.AVIATION,
@@ -120,7 +126,7 @@ fun AddTransportationRecurringConsumptionScreen(
                     privateVehicleOccupancy = null,
                     transportationType = transportationType.value ?: return null,
                     publicVehicleOccupancy = null,
-                    distance = distance.value.replace(",",".").toDoubleOrNull() ?: return null,
+                    distance = distanceValueKm,
                 )
             }
             null -> return null
@@ -325,7 +331,7 @@ fun AddTransportationRecurringConsumptionScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
 
             trailingIcon = {
-                Text(modifier = Modifier.padding(end = 32.dp), text = "km")
+                Text(modifier = Modifier.padding(end = 32.dp), text = UnitUtils.getDistanceUnit(configuration.locales[0]))
             }
         )
 

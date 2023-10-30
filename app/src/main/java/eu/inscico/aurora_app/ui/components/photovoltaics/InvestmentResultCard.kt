@@ -20,10 +20,12 @@ import eu.inscico.aurora_app.ui.components.FormEntryType
 import eu.inscico.aurora_app.ui.theme.investmentResultGreen
 import eu.inscico.aurora_app.ui.theme.investmentResultOrange
 import eu.inscico.aurora_app.utils.ExternalUtils
+import eu.inscico.aurora_app.utils.UnitUtils
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InvestmentResultCard(
+    currency: String,
     investmentResult: PhotovoltaicInvestmentResult,
     resetCallback: () -> Unit,
     learnMoreCallback: () -> Unit
@@ -43,7 +45,7 @@ fun InvestmentResultCard(
             FormEntry(
                 title = stringResource(id = R.string.solar_power_investment_result_your_investment_title),
                 formEntryType = FormEntryType.TEXT_INPUT,
-                initialItem = "${investmentResult.amount} €",
+                initialItem = "${investmentResult.amount} $currency",
                 readOnly = true
             )
 

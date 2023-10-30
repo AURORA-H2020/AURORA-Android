@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -20,6 +21,7 @@ import eu.inscico.aurora_app.model.consumptions.Consumption
 import eu.inscico.aurora_app.model.consumptions.PublicVehicleOccupancy.Companion.getDisplayName
 import eu.inscico.aurora_app.model.consumptions.TransportationType.Companion.getDisplayNameRes
 import eu.inscico.aurora_app.utils.CalendarUtils
+import eu.inscico.aurora_app.utils.UnitUtils
 
 
 @Composable
@@ -49,7 +51,7 @@ fun TransportationConsumptionDetails(
                 headlineContent = { Text(text = stringResource(id = R.string.home_consumptions_type_transportation_title)) },
                 trailingContent = {
                     Text(
-                        text = "${String.format("%.1f", consumption.value)} km",
+                        text = UnitUtils.getConvertedDistanceWithUnit(consumption.value, locale = LocalConfiguration.current.locales[0], decimals = 1),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium
                     )

@@ -179,11 +179,11 @@
     <string name="home_your_carbon_emissions_labels_overall_used_title">brugt</string>
     <string name="home_your_carbon_emissions_labels_overall_used_value_title">%1$s kWh</string>
     <string name="home_your_carbon_emissions_labels_overall_produced_title">produceret</string>
-    <string name="home_your_carbon_emissions_labels_overall_produced_value_title">%1$s kg CO₂</string>
+    <string name="home_your_carbon_emissions_labels_overall_produced_value_title">%1$s CO₂</string>
     <string name="home_your_carbon_emissions_info_title">Hvordan fungerer det?</string>
     <string name="home_your_carbon_emissions_info_description">Dine energimærker beregnes ud fra dit forbrug og specifikt for din by. Det betyder, at efterhånden som du indtaster data i løbet af året, vil flere af dine CO₂-udledning og energibudgetter blive gjort tilgængelige. For eksempel: Hvis du kun har indtastet data for alle dage i januar og december, vil 2/12 af det samlede budget blive brugt til at beregne din mærker. Den eneste undtagelse er transport, som giver det fulde budget efter et vist antal årlige indlæg. Dit samlede CO₂ budget er baseret på summen af dine el-, varme- og transport forbrug.</string>
-    <string name="home_your_carbon_emissions_labels_value_produced_with_year_title">%1$s kg CO₂ i %2$d</string>
-    <string name="home_your_carbon_emissions_bar_chart_label_carbon_emission_title">kg CO₂</string>
+    <string name="home_your_carbon_emissions_labels_value_produced_with_year_title">%1$s CO₂ i %2$d</string>
+    <string name="home_your_carbon_emissions_bar_chart_label_carbon_emission_title">%1$s CO₂</string>
     <string name="home_your_carbon_emissions_bar_chart_label_energy_expended_title">kWh</string>
     <string name="home_your_carbon_emissions_labels_value_used_with_year_title">%1$s kWh i %2$d</string>
     <string name="home_your_carbon_emissions_label_empty_title">Der er endnu ikke registreret noget forbrug (?)</string>

@@ -179,11 +179,11 @@
     <string name="home_your_carbon_emissions_labels_overall_used_title">verbraucht</string>
     <string name="home_your_carbon_emissions_labels_overall_used_value_title">%1$s kWh</string>
     <string name="home_your_carbon_emissions_labels_overall_produced_title">produziert</string>
-    <string name="home_your_carbon_emissions_labels_overall_produced_value_title">%1$s kg CO₂</string>
+    <string name="home_your_carbon_emissions_labels_overall_produced_value_title">%1$s CO₂</string>
     <string name="home_your_carbon_emissions_info_title">Wie funktioniert das?</string>
     <string name="home_your_carbon_emissions_info_description">Ihre Energieabzeichen werden auf der Grundlage Ihres erfassten Verbrauchs und speziell für Ihren Standort berechnet. Das heißt, je mehr Daten Sie im Laufe des Jahres eingeben, desto mehr Ihrer Kohlenstoffemissionen und Ihres Energiebudgets stehen zur Vefügung. Ein Beispiel: Wenn Sie nur Daten für alle Tage im Januar und Dezember eingegeben haben, werden 2/12 des Gesamtbudgets für die Berechnung Ihres Abzeichens verwendet. Die einzige Ausnahme ist der Transport, der nach einer bestimmten Anzahl von jährlichen Einträgen das volle Budget erreicht. Ihr Gesamtbudget ergibt sich aus der Summe Ihrer Budgets für Strom, Heizung und Transport.</string>
-    <string name="home_your_carbon_emissions_labels_value_produced_with_year_title">%1$s kg CO₂ in %2$d</string>
-    <string name="home_your_carbon_emissions_bar_chart_label_carbon_emission_title">kg CO₂</string>
+    <string name="home_your_carbon_emissions_labels_value_produced_with_year_title">%1$s CO₂ in %2$d</string>
+    <string name="home_your_carbon_emissions_bar_chart_label_carbon_emission_title">%1$s CO₂</string>
     <string name="home_your_carbon_emissions_bar_chart_label_energy_expended_title">kWh</string>
     <string name="home_your_carbon_emissions_labels_value_used_with_year_title">%1$s kWh in %2$d</string>
     <string name="home_your_carbon_emissions_label_empty_title">Noch kein Verbrauch eingegeben (?)</string>

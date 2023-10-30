@@ -2,21 +2,19 @@ package eu.inscico.aurora_app.ui.screens.home.consumptions.consumptionDetails
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptions.Consumption
-import eu.inscico.aurora_app.ui.components.FormEntry
-import eu.inscico.aurora_app.ui.components.FormEntryType
 import eu.inscico.aurora_app.utils.CalendarUtils
+import eu.inscico.aurora_app.utils.UnitUtils
 
 @Composable
 fun ElectricityConsumptionDetails(
@@ -83,7 +81,9 @@ fun ElectricityConsumptionDetails(
         ) {
 
             val costsText = if (consumption.electricity.costs != null) {
-                "${String.format("%.2f", consumption.electricity.costs)} €"
+                "${String.format("%.2f", consumption.electricity.costs)} ${
+                    UnitUtils.getSystemCurrencyUnit(
+                        LocalConfiguration.current)}"
             } else {
                 null
             }

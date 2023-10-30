@@ -56,6 +56,7 @@ fun PhotovoltaicCalculatorScreen(
     val context = LocalContext.current
 
     val userCity = viewModel.userCity.observeAsState()
+    val userCountry = viewModel.userCountry.observeAsState()
 
     val investmentResultLive = viewModel.investmentResultLive.observeAsState()
 
@@ -75,9 +76,13 @@ fun PhotovoltaicCalculatorScreen(
 
             ScrollableContent(background = MaterialTheme.colorScheme.background) {
 
+                val countryCurrency = userCountry.value?.currencyCode ?: "EUR"
+                val currencySymbol = UnitUtils.getCurrencyUnitByLocale(countryCurrency)
                 val result = investmentResultLive.value
+
                 if (result != null) {
                     InvestmentResultCard(
+                        currency = currencySymbol,
                         investmentResult = result,
                         resetCallback = {
                             viewModel.updateInvestmentResult(null)
@@ -89,7 +94,9 @@ fun PhotovoltaicCalculatorScreen(
                             )
                         })
                 } else {
-                    InvestmentInputCard { investmentInput ->
+                    InvestmentInputCard(
+                        currency = currencySymbol
+                    ) { investmentInput ->
 
                         keyboardController?.hide()
 

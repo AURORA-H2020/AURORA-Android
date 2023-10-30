@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.City
 import eu.inscico.aurora_app.model.photovoltaics.PhotovoltaicInvestmentResult
+import eu.inscico.aurora_app.utils.UnitUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,6 +29,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InvestmentInputCard(
+    currency: String,
     onCalculateCallback: (investmentInput: Int) -> Unit
 ){
 
@@ -72,7 +74,7 @@ fun InvestmentInputCard(
             investmentInput.value = it
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
-        trailingIcon = { Text(text = "€") }
+        trailingIcon = { Text(text = currency) }
     )
 
     Spacer(modifier = Modifier.height(16.dp))

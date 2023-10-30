@@ -179,11 +179,11 @@
     <string name="home_your_carbon_emissions_labels_overall_used_title">utilizado</string>
     <string name="home_your_carbon_emissions_labels_overall_used_value_title">%1$s kWh</string>
     <string name="home_your_carbon_emissions_labels_overall_produced_title">producido</string>
-    <string name="home_your_carbon_emissions_labels_overall_produced_value_title">" %1$s kg CO₂"</string>
+    <string name="home_your_carbon_emissions_labels_overall_produced_value_title">" %1$s CO₂"</string>
     <string name="home_your_carbon_emissions_info_title">¿Cómo funciona?</string>
     <string name="home_your_carbon_emissions_info_description">Sus etiquetas energéticas se calculan en función de su consumo rastreado y son específicas de su ubicación. Esto significa que, a medida que vaya introduciendo datos a lo largo del año, se irán conociendo más datos sobre sus emisiones de carbono y sus presupuestos energéticos. Por ejemplo: Si sólo ha introducido los datos de todos los días de enero y diciembre, se utilizarán 2/12 del presupuesto total para calcular su etiqueta. La única excepción es el transporte, que permite obtener el presupuesto completo a partir de un determinado número de entradas anuales. Su presupuesto global se basa en la suma de sus presupuestos de electricidad, calefacción y transporte.</string>
-    <string name="home_your_carbon_emissions_labels_value_produced_with_year_title">%1$s kg CO₂ en %2$d</string>
-    <string name="home_your_carbon_emissions_bar_chart_label_carbon_emission_title">"kg CO₂ "</string>
+    <string name="home_your_carbon_emissions_labels_value_produced_with_year_title">%1$s CO₂ en %2$d</string>
+    <string name="home_your_carbon_emissions_bar_chart_label_carbon_emission_title">"%1$s CO₂"</string>
     <string name="home_your_carbon_emissions_bar_chart_label_energy_expended_title">kWh</string>
     <string name="home_your_carbon_emissions_labels_value_used_with_year_title">%1$s kWh en %2$d</string>
     <string name="home_your_carbon_emissions_label_empty_title">Aún no se ha introducido ningún consumo (?)</string>
