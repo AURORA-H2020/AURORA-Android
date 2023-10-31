@@ -209,9 +209,9 @@ fun HomeScreen(
 
                 val sortedConsumptions = consumptions.value?.sortedByDescending {
                     when (it) {
-                        is Consumption.ElectricityConsumption -> it.updatedAt ?: it.createdAt
-                        is Consumption.HeatingConsumption -> it.updatedAt ?: it.createdAt
-                        is Consumption.TransportationConsumption -> it.updatedAt ?: it.createdAt
+                        is Consumption.ElectricityConsumption -> it.electricity.startDate
+                        is Consumption.HeatingConsumption -> it.heating.startDate
+                        is Consumption.TransportationConsumption -> it.transportation.dateOfTravel
                     }
                 }
 

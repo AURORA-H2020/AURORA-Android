@@ -91,7 +91,13 @@ fun AllConsumptionsListScreen(
                     .clip(shape = RoundedCornerShape(16.dp)),
                 state = state,
             ) {
-                items(consumptions) { item ->
+                items(consumptions.sortedByDescending {
+                    when(it){
+                        is Consumption.ElectricityConsumption -> it.electricity.startDate
+                        is Consumption.HeatingConsumption -> it.heating.startDate
+                        is Consumption.TransportationConsumption -> it.transportation.dateOfTravel
+                    }
+                     }) { item ->
 
                     ConsumptionListItem(consumption = item) {
                         val id = when(it){
