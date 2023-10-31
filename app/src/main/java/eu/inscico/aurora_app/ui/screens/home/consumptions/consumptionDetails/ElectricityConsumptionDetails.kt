@@ -9,10 +9,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptions.Consumption
+import eu.inscico.aurora_app.model.consumptions.ElectricitySource
+import eu.inscico.aurora_app.model.consumptions.ElectricitySource.Companion.getDisplayName
 import eu.inscico.aurora_app.utils.CalendarUtils
 import eu.inscico.aurora_app.utils.UnitUtils
 
@@ -20,6 +23,8 @@ import eu.inscico.aurora_app.utils.UnitUtils
 fun ElectricityConsumptionDetails(
     consumption: Consumption.ElectricityConsumption
 ) {
+
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -121,6 +126,19 @@ fun ElectricityConsumptionDetails(
                 trailingContent = {
                     Text(
                         text = CalendarUtils.toDateString(consumption.electricity.endDate),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            )
+
+            Divider()
+
+            ListItem(
+                headlineContent = { Text(text = stringResource(id = R.string.electricity_source_title)) },
+                trailingContent = {
+                    Text(
+                        text = consumption.electricity.electricitySource.getDisplayName(context),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium
                     )

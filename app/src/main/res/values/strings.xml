@@ -124,6 +124,10 @@
     <string name="home_add_consumption_form_description_info_text_title">You may add a description to your entry to help you find it later.</string>
     <string name="home_add_consumption_form_heating_fuel_type_title">Select your type of heating. You can find this information on your heating bill.</string>
     <string name="home_add_consumption_heating_fuel_title">Heating fuel</string>
+    <string name="electricity_source_title">Electricity source</string>
+    <string name="electricity_source_description">Select the appropriate electricity source.</string>
+    <string name="electricity_source_default">Default</string>
+    <string name="electricity_source_home_photovoltaics">Home photovoltaics</string>
     <string name="heating_fuel_type_oil_title">Oil</string>
     <string name="heating_fuel_type_natural_gas_title">Natural gas</string>
     <string name="heating_fuel_type_lpg_title">LPG</string>

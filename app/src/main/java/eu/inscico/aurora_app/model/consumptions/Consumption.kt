@@ -15,7 +15,8 @@ sealed class Consumption {
         val version: String?,
         val description: String?,
         val electricity: ElectricityConsumptionData,
-        val generatedByRecurringConsumptionId: String? = null
+        val generatedByRecurringConsumptionId: String? = null,
+        val electricitySource: ElectricitySource = ElectricitySource.DEFAULT
     ) : Consumption()
 
     data class HeatingConsumption(
@@ -84,11 +85,16 @@ sealed class Consumption {
                     } else {
                         null
                     }
+
+                    val electricitySource =
+                        ElectricitySource.parseStringToElectricitySource(item.electricity?.electricitySource)
+
                     val electricity = ElectricityConsumptionData(
                         costs = item.electricity?.costs,
                         endDate = endDate,
                         startDate = startDate,
-                        householdSize = item.electricity?.householdSize ?: return null
+                        householdSize = item.electricity?.householdSize ?: return null,
+                        electricitySource = electricitySource
                     )
                     ElectricityConsumption(
                         id = item.id ?: return null,
@@ -277,6 +283,7 @@ data class ElectricityConsumptionData(
     val endDate: Calendar,
     val startDate: Calendar,
     val householdSize: Int,
+    val electricitySource: ElectricitySource
 )
 
 data class HeatingConsumptionData(
