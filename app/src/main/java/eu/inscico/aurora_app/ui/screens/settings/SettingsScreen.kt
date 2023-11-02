@@ -133,6 +133,17 @@ fun SettingsScreen(
 
                     Divider()
 
+                    ActionEntry(
+                        title = stringResource(id = R.string.settings_profile_select_region_title),
+                        iconRes = R.drawable.outline_public_24,
+                        isNavigation = true,
+                        callback = {
+                            navigationService.toSelectRegion()
+                        }
+                    )
+
+                    Divider()
+
                     if (viewModel.userSignInType == UserSignInType.EMAIL) {
                         ActionEntry(
                             title = stringResource(id = R.string.settings_profile_change_email_title),

@@ -1,10 +1,10 @@
 package eu.inscico.aurora_app.core.koin
 
+import android.content.res.Configuration
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.functions.FirebaseFunctions
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import eu.inscico.aurora_app.services.auth.AuthService
 import eu.inscico.aurora_app.services.firebase.*
@@ -15,6 +15,7 @@ import eu.inscico.aurora_app.services.notification.NotificationCreationService
 import eu.inscico.aurora_app.services.notification.NotificationService
 import eu.inscico.aurora_app.services.pvgis.PVGISAPIService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
+import eu.inscico.aurora_app.services.shared.UnitService
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -109,6 +110,12 @@ val servicesModule = module {
     single {
         PVGISAPIService(
             _jsonParsingService = get()
+        )
+    }
+
+    single {
+        UnitService(
+            context = androidContext()
         )
     }
 

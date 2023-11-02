@@ -10,7 +10,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -20,26 +19,27 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptions.Consumption
-import eu.inscico.aurora_app.model.consumptions.ConsumptionType
 import eu.inscico.aurora_app.model.consumptions.ConsumptionType.Companion.getDisplayName
 import eu.inscico.aurora_app.ui.theme.*
 import eu.inscico.aurora_app.utils.CalendarUtils
-import eu.inscico.aurora_app.utils.UnitUtils
+import eu.inscico.aurora_app.services.shared.UnitService
+import org.koin.androidx.compose.get
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConsumptionListItem(
+    unitService: UnitService = get(),
     consumption: Consumption,
-    callback: (Consumption) -> Unit
+    callback: (Consumption) -> Unit,
 ) {
 
     val context = LocalContext.current
+    val config = LocalConfiguration.current
 
     val headlineText = when (consumption) {
         is Consumption.ElectricityConsumption -> consumption.category.getDisplayName(context)
@@ -48,10 +48,10 @@ fun ConsumptionListItem(
     }
 
     val consumptionTime = when (consumption) {
-        is Consumption.ElectricityConsumption -> "${CalendarUtils.toDateString(consumption.electricity.startDate)} - ${CalendarUtils.toDateString(consumption.electricity.endDate)}"
-        is Consumption.HeatingConsumption -> "${CalendarUtils.toDateString(consumption.heating.startDate, "dd.MM.yy")} - ${CalendarUtils.toDateString(consumption.heating.endDate, "dd.MM.yy")}"
+        is Consumption.ElectricityConsumption -> "${CalendarUtils.toDateString(consumption.electricity.startDate, unitService.getDateFormat(config))} - ${CalendarUtils.toDateString(consumption.electricity.endDate, unitService.getDateFormat(config))}"
+        is Consumption.HeatingConsumption -> "${CalendarUtils.toDateString(consumption.heating.startDate, unitService.getDateFormat(config))} - ${CalendarUtils.toDateString(consumption.heating.endDate, unitService.getDateFormat(config))}"
         is Consumption.TransportationConsumption -> {
-            CalendarUtils.toDateString(consumption.transportation.dateOfTravel, "dd.MM.yyyy, HH:mm")
+            CalendarUtils.toDateString(consumption.transportation.dateOfTravel, unitService.getDateFormat(config, withTime = true))
         }
     }
 
@@ -62,15 +62,15 @@ fun ConsumptionListItem(
     }
 
     val carbonEmissionText = when (consumption) {
-        is Consumption.ElectricityConsumption -> UnitUtils.getConvertedWeightWithUnit(consumption.carbonEmissions, locale = LocalConfiguration.current.locales[0], decimals = 1)
-        is Consumption.HeatingConsumption -> UnitUtils.getConvertedWeightWithUnit(consumption.carbonEmissions, locale = LocalConfiguration.current.locales[0], decimals = 1)
-        is Consumption.TransportationConsumption -> UnitUtils.getConvertedWeightWithUnit(consumption.carbonEmissions, locale = LocalConfiguration.current.locales[0], decimals = 1)
+        is Consumption.ElectricityConsumption -> unitService.getConvertedWeightWithUnit(config, consumption.carbonEmissions, decimals = 1)
+        is Consumption.HeatingConsumption -> unitService.getConvertedWeightWithUnit(config, consumption.carbonEmissions, decimals = 1)
+        is Consumption.TransportationConsumption -> unitService.getConvertedWeightWithUnit(config, consumption.carbonEmissions, decimals = 1)
     }
 
     val consumptionValue = when (consumption) {
         is Consumption.ElectricityConsumption -> "${String.format("%.0f", consumption.value)} kWh"
         is Consumption.HeatingConsumption -> "${String.format("%.0f", consumption.value)} kWh"
-        is Consumption.TransportationConsumption -> UnitUtils.getConvertedDistanceWithUnit(consumption.value, locale = LocalConfiguration.current.locales[0], decimals = 1)
+        is Consumption.TransportationConsumption -> unitService.getConvertedDistanceWithUnit(config, consumption.value, decimals = 1)
     }
 
     val red = heatingRed
@@ -95,7 +95,9 @@ fun ConsumptionListItem(
                             .size(30.dp)
                     ){
                         Image(
-                            modifier = Modifier.matchParentSize().padding(6.dp),
+                            modifier = Modifier
+                                .matchParentSize()
+                                .padding(6.dp),
                             painter = painterResource(id = R.drawable.outline_electric_bolt_24),
                             contentDescription = "",
                             colorFilter = ColorFilter.tint(color = yellow),
@@ -114,7 +116,9 @@ fun ConsumptionListItem(
                             .size(30.dp)
                     ){
                         Image(
-                            modifier = Modifier.matchParentSize().padding(6.dp),
+                            modifier = Modifier
+                                .matchParentSize()
+                                .padding(6.dp),
                             painter = painterResource(id = R.drawable.outline_local_fire_department_24),
                             contentDescription = "",
                             colorFilter = ColorFilter.tint(color = red),
@@ -133,7 +137,9 @@ fun ConsumptionListItem(
                             .size(30.dp)
                     ){
                         Image(
-                            modifier = Modifier.matchParentSize().padding(6.dp),
+                            modifier = Modifier
+                                .matchParentSize()
+                                .padding(6.dp),
                             painter = painterResource(id = R.drawable.outline_directions_car_24),
                             contentDescription = "",
                             colorFilter = ColorFilter.tint(color = blue),

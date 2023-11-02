@@ -32,7 +32,7 @@ import eu.inscico.aurora_app.ui.components.forms.SpinnerFormEntry
 import eu.inscico.aurora_app.ui.components.forms.SpinnerItem
 import eu.inscico.aurora_app.utils.LocaleUtils
 import eu.inscico.aurora_app.utils.TypedResult
-import eu.inscico.aurora_app.utils.UnitUtils
+import eu.inscico.aurora_app.services.shared.UnitService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,16 +49,18 @@ fun AddHeatingConsumption(
     isDuplicate: Boolean? = false,
     viewModel: AddConsumptionViewModel = koinViewModel(),
     navigationService: NavigationService = get(),
-    userFeedbackService: UserFeedbackService = get()
+    userFeedbackService: UserFeedbackService = get(),
+    unitService: UnitService = get()
 ){
 
     val context = LocalContext.current
+    val config = LocalConfiguration.current
 
     // set language, only necessary for screenshot ui tests
     LocaleUtils.updateLocale(context, language)
 
     val initialConsumption = if(initialValue?.value != null){
-        String.format("%.1f",initialValue.value)
+        unitService.getValueInCorrectNumberFormat(config, String.format("%.1f",initialValue.value).replace(",",".").toDouble())
     } else {
         ""
     }
@@ -283,7 +285,7 @@ fun AddHeatingConsumption(
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
             trailingIcon = {
-                Text(text = UnitUtils.getSystemCurrencyUnit(LocalConfiguration.current))
+                Text(text = unitService.getCurrencyUnit(LocalConfiguration.current))
             }
         )
 

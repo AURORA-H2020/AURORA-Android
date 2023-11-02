@@ -21,6 +21,7 @@ import eu.inscico.aurora_app.ui.screens.settings.featurePreview.FeaturePreviewSc
 import eu.inscico.aurora_app.ui.screens.settings.notifications.ElectricityBillNotificationScreen
 import eu.inscico.aurora_app.ui.screens.settings.notifications.HeatingBillNotificationScreen
 import eu.inscico.aurora_app.ui.screens.settings.notifications.MobilityNotificationScreen
+import eu.inscico.aurora_app.ui.screens.settings.profile.SelectRegionScreen
 import eu.inscico.aurora_app.ui.screens.settings.profile.UpdateEmailScreen
 import eu.inscico.aurora_app.ui.screens.settings.profile.UpdatePasswordScreen
 
@@ -240,6 +241,17 @@ sealed class NavGraphDirections(
         route = "editProfile",
         content = {
             EditProfileScreen()
+        }
+    ) {
+        fun getNavRoute(): String {
+            return route
+        }
+    }
+
+    object SelectRegion : NavGraphDirections(
+        route = "selectRegion",
+        content = {
+            SelectRegionScreen()
         }
     ) {
         fun getNavRoute(): String {

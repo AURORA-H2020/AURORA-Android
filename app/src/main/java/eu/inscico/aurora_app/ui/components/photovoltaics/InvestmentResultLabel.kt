@@ -17,15 +17,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import eu.inscico.aurora_app.R
-import eu.inscico.aurora_app.utils.UnitUtils
+import eu.inscico.aurora_app.services.shared.UnitService
+import org.koin.androidx.compose.get
 
 @Composable
 fun InvestmentResultLabel(
     value: Double,
     infoTextRes: Int,
     labelTextRes: Int,
-    buttonColor: Color
+    buttonColor: Color,
+    unitService: UnitService = get()
 ){
 
     val context = LocalContext.current
@@ -76,7 +77,7 @@ fun InvestmentResultLabel(
                     ) {
 
                         Text(
-                            text = UnitUtils.getConvertedWeightWithUnit(weightInKg = value, locale = configuration.locales[0], decimals = 1),
+                            text = unitService.getConvertedWeightWithUnit(config = configuration, weightInKg = value, decimals = 1),
                             style = MaterialTheme.typography.headlineSmall,
                             color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Bold,

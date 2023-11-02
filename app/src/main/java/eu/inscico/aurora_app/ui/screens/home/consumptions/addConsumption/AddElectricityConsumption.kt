@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import com.google.firebase.Timestamp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptions.*
-import eu.inscico.aurora_app.model.consumptions.DistrictHeatingSource.Companion.getDisplayName
 import eu.inscico.aurora_app.model.consumptions.ElectricitySource.Companion.getDisplayName
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
@@ -30,7 +29,7 @@ import eu.inscico.aurora_app.ui.components.forms.BeginEndPickerFormEntry
 import eu.inscico.aurora_app.ui.components.forms.SpinnerFormEntry
 import eu.inscico.aurora_app.ui.components.forms.SpinnerItem
 import eu.inscico.aurora_app.utils.TypedResult
-import eu.inscico.aurora_app.utils.UnitUtils
+import eu.inscico.aurora_app.services.shared.UnitService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,13 +45,15 @@ fun AddElectricityConsumption(
     isDuplicate: Boolean? = false,
     viewModel: AddConsumptionViewModel = koinViewModel(),
     navigationService: NavigationService = get(),
-    userFeedbackService: UserFeedbackService = get()
+    userFeedbackService: UserFeedbackService = get(),
+    unitService: UnitService = get()
 ) {
 
     val context = LocalContext.current
+    val config = LocalConfiguration.current
 
     val initialConsumption = if(initialValues?.value != null){
-        String.format("%.1f",initialValues.value)
+        unitService.getValueInCorrectNumberFormat(config, String.format("%.1f",initialValues.value).replace(",",".").toDouble())
     } else {
         ""
     }
@@ -254,7 +255,7 @@ fun AddElectricityConsumption(
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
             trailingIcon = {
-                Text(text = UnitUtils.getSystemCurrencyUnit(LocalConfiguration.current))
+                Text(text = unitService.getCurrencyUnit(LocalConfiguration.current))
             }
         )
 
