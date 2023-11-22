@@ -110,6 +110,10 @@
     <string name="home_add_consumption_form_description_info_text_title">Vpisu lahko dodaš opis, da ga kasneje lažje najdeš.</string>
     <string name="home_add_consumption_form_heating_fuel_type_title">Izberi vrsto ogrevanja. Te podatke lahko najdeš na računu za ogrevanje.</string>
     <string name="home_add_consumption_heating_fuel_title">Gorivo za ogrevanje</string>
+    <string name="electricity_source_title">Vir električne energije</string>
+    <string name="electricity_source_description">Izberite ustrezen vir električne energije.</string>
+    <string name="electricity_source_default">Privzeto</string>
+    <string name="electricity_source_home_photovoltaics">Domača sončna elektrarna</string>
     <string name="heating_fuel_type_oil_title">Nafta</string>
     <string name="heating_fuel_type_natural_gas_title">Zemeljski plin</string>
     <string name="heating_fuel_type_lpg_title">Avtoplin LPG</string>
@@ -178,7 +182,7 @@
     <string name="home_your_carbon_emissions_labels_g_title">Gradnja temeljev</string>
     <string name="home_your_carbon_emissions_labels_overall_used_title">uporabljen</string>
     <string name="home_your_carbon_emissions_labels_overall_used_value_title">%1$s kWh</string>
-    <string name="home_your_carbon_emissions_labels_overall_produced_title">izdelano</string>
+    <string name="home_your_carbon_emissions_labels_overall_produced_title">izpustov</string>
     <string name="home_your_carbon_emissions_labels_overall_produced_value_title">%1$s CO₂</string>
     <string name="home_your_carbon_emissions_info_title">Kako to deluje?</string>
     <string name="home_your_carbon_emissions_info_description">Tvoje energetske nalepke so izračunane na podlagi spremljane porabe in glede na tvojo lokacijo. To pomeni, da bo z vnašanjem podatkov med letom na voljo več podatkov o tvojih emisijah ogljika in energetskih računih. Na primer: Če si vnesli podatke samo za vse dni v januarju in decembru, bo za izračun tvoje nalepke uporabljena 2/12 celotnega obsega proračuna. Edina izjema je prevoz, pri katerem se po določenem številu letnih vnosov pridobi celoten izračun. Tvoj skupni znesek temelji na vsoti računov za električno energijo, ogrevanje in prevoz.</string>
@@ -203,7 +207,15 @@
     <string name="home_duplicate_consumption_button_title">Podvoji</string>
     <string name="settings_app_bar_title">Nastavitve</string>
     <string name="settings_profile_section_title">Račun</string>
-    <string name="settings_profile_edit_profile_title">"Urejanje profila"</string>
+    <string name="settings_profile_edit_profile_title">Urejanje profila</string>
+    <string name="settings_profile_select_region_title">Izberite regijo</string>
+    <string name="settings_profile_select_region_germany_title">Nemčija</string>
+    <string name="settings_profile_select_region_portugal_title">Portugalska</string>
+    <string name="settings_profile_select_region_slovenia_title">Slovenija</string>
+    <string name="settings_profile_select_region_denmark_title">Danska</string>
+    <string name="settings_profile_select_region_united_kingdom_title">Združeno kraljestvo</string>
+    <string name="settings_profile_select_region_usa_title">ZDA</string>
+    <string name="settings_profile_select_region_system_title">Sistem</string>
     <string name="settings_profile_change_password_title">Sprememba gesla</string>
     <string name="settings_profile_change_email_title">Sprememba e-pošte</string>
     <string name="settings_profile_logout_title">Odjava</string>
