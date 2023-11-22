@@ -1,6 +1,5 @@
 package eu.inscico.aurora_app.ui.components.consumptionSummery
 
-import android.graphics.RectF
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -10,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.patrykandpatrick.vico.compose.axis.axisGuidelineComponent
@@ -18,26 +16,21 @@ import com.patrykandpatrick.vico.compose.axis.horizontal.bottomAxis
 import com.patrykandpatrick.vico.compose.axis.vertical.endAxis
 import com.patrykandpatrick.vico.compose.chart.Chart
 import com.patrykandpatrick.vico.compose.chart.column.columnChart
-import com.patrykandpatrick.vico.compose.style.currentChartStyle
 import com.patrykandpatrick.vico.core.axis.AxisPosition
 import com.patrykandpatrick.vico.core.axis.formatter.AxisValueFormatter
 import com.patrykandpatrick.vico.core.chart.column.ColumnChart
-import com.patrykandpatrick.vico.core.chart.draw.ChartDrawContext
 import com.patrykandpatrick.vico.core.component.shape.LineComponent
-import com.patrykandpatrick.vico.core.component.shape.Shapes
 import com.patrykandpatrick.vico.core.component.text.TextComponent
-import com.patrykandpatrick.vico.core.context.MeasureContext
 import com.patrykandpatrick.vico.core.dimensions.MutableDimensions
 import com.patrykandpatrick.vico.core.entry.ChartEntryModel
-import com.patrykandpatrick.vico.core.legend.Legend
-import com.patrykandpatrick.vico.core.marker.Marker
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptionSummary.ConsumptionSummary
 import eu.inscico.aurora_app.ui.theme.electricityYellow
 import eu.inscico.aurora_app.ui.theme.heatingRed
 import eu.inscico.aurora_app.ui.theme.mobilityBlue
 import eu.inscico.aurora_app.utils.CalendarUtils
-import eu.inscico.aurora_app.utils.UnitUtils
+import eu.inscico.aurora_app.services.shared.UnitService
+import org.koin.androidx.compose.get
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -45,7 +38,8 @@ import kotlin.math.roundToInt
 fun ConsumptionSummaryBarChart(
     summary: ConsumptionSummary,
     barChartData: ChartEntryModel,
-    isCarbonEmission: Boolean
+    isCarbonEmission: Boolean,
+    unitService: UnitService = get()
 ){
 
     val context = LocalContext.current
@@ -61,7 +55,7 @@ fun ConsumptionSummaryBarChart(
     val yAxisValueFormatter: AxisValueFormatter<AxisPosition.Vertical.End> =
         AxisValueFormatter { value, _ ->
             val convertedValue = if(isCarbonEmission){
-                UnitUtils.getConvertedWeight(weightInKg = value.toDouble(), locale = configuration.locales[0]).toFloat()
+                unitService.getConvertedWeight(configuration, weightInKg = value.toDouble()).toFloat()
             } else {
                 value
             }
@@ -83,7 +77,7 @@ fun ConsumptionSummaryBarChart(
     val yAxisName = if(isCarbonEmission){
         context.getString(
             R.string.home_your_carbon_emissions_bar_chart_label_carbon_emission_title,
-            UnitUtils.getWeightUnit(locale = configuration.locales[0]),
+            unitService.getWeightUnit(configuration),
         )
     } else {
         stringResource(id = R.string.home_your_carbon_emissions_bar_chart_label_energy_expended_title)

@@ -4,8 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,23 +15,22 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptionSummary.EnergyLabel
 import eu.inscico.aurora_app.model.consumptionSummary.EnergyLabel.Companion.getLabelColor
 import eu.inscico.aurora_app.model.consumptionSummary.EnergyLabel.Companion.getLabelNameRes
-import eu.inscico.aurora_app.utils.UnitUtils
+import eu.inscico.aurora_app.services.shared.UnitService
+import org.koin.androidx.compose.get
 
 @Composable
 fun DashboardConsumptionSummaryLabel(
+    unitService: UnitService = get(),
     carbonValue: Double,
     carbonLabel: EnergyLabel,
     energyValue: Double,
     energyLabel: EnergyLabel,
-    onLabelClicked: (isEnergyLabelClicked: Boolean) -> Unit
+    onLabelClicked: (isEnergyLabelClicked: Boolean) -> Unit,
 ) {
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
@@ -95,7 +92,7 @@ fun DashboardConsumptionSummaryLabel(
             Text(
                 text = context.getString(
                     R.string.home_your_carbon_emissions_labels_overall_produced_value_title,
-                    UnitUtils.getConvertedWeightWithUnit(weightInKg = carbonValue, locale = configuration.locales[0], decimals = 1),
+                    unitService.getConvertedWeightWithUnit(config = configuration, weightInKg = carbonValue, decimals = 1),
                 ),
                 style = MaterialTheme.typography.labelSmall,
                 color = carbonTextColor
@@ -128,10 +125,11 @@ fun DashboardConsumptionSummaryLabel(
 
             )
 
+            val usedEnergyValueFormatted = String.format("%.1f", energyValue).replace(",", ".").toDouble()
             Text(
                 text = context.getString(
                     R.string.home_your_carbon_emissions_labels_overall_used_value_title,
-                    String.format("%.1f", energyValue)
+                    unitService.getValueInCorrectNumberFormat(configuration, usedEnergyValueFormatted)
                 ),
                 style = MaterialTheme.typography.labelSmall,
                 color = energyTextColor,

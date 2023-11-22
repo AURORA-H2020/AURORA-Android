@@ -24,6 +24,7 @@ class AddConsumptionViewModel(
     val allHeatingFuels = HeatingFuelType.getHeatingFuelList()
 
     val allDistrictHeatingSource = DistrictHeatingSource.getDistrictHeatingSourceList()
+    val allElectricitySources = ElectricitySource.getElectricitySourceList()
 
     val allPublicVehicleOccupancyTypes = PublicVehicleOccupancy.getAll()
 

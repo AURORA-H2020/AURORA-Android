@@ -124,6 +124,10 @@
     <string name="home_add_consumption_form_description_info_text_title">You may add a description to your entry to help you find it later.</string>
     <string name="home_add_consumption_form_heating_fuel_type_title">Select your type of heating. You can find this information on your heating bill.</string>
     <string name="home_add_consumption_heating_fuel_title">Heating fuel</string>
+    <string name="electricity_source_title">Electricity source</string>
+    <string name="electricity_source_description">Select the appropriate electricity source.</string>
+    <string name="electricity_source_default">Default</string>
+    <string name="electricity_source_home_photovoltaics">Home photovoltaics</string>
     <string name="heating_fuel_type_oil_title">Oil</string>
     <string name="heating_fuel_type_natural_gas_title">Natural gas</string>
     <string name="heating_fuel_type_lpg_title">LPG</string>
@@ -218,7 +222,15 @@
     <!--Settings-->
     <string name="settings_app_bar_title">Settings</string>
     <string name="settings_profile_section_title">Account</string>
-    <string name="settings_profile_edit_profile_title">"Edit profile "</string>
+    <string name="settings_profile_edit_profile_title">Edit profile</string>
+    <string name="settings_profile_select_region_title">Select region</string>
+    <string name="settings_profile_select_region_germany_title">Germany</string>
+    <string name="settings_profile_select_region_portugal_title">Portugal</string>
+    <string name="settings_profile_select_region_slovenia_title">Slovenia</string>
+    <string name="settings_profile_select_region_denmark_title">Denmark</string>
+    <string name="settings_profile_select_region_united_kingdom_title">United Kingdom</string>
+    <string name="settings_profile_select_region_usa_title">USA</string>
+    <string name="settings_profile_select_region_system_title">System</string>
     <string name="settings_profile_change_password_title">Change password</string>
     <string name="settings_profile_change_email_title">Change email</string>
     <string name="settings_profile_logout_title">Logout</string>

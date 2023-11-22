@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -19,18 +20,21 @@ import eu.inscico.aurora_app.model.reminder.CalendarMonthItem
 import eu.inscico.aurora_app.model.reminder.CalendarWeekItem
 import eu.inscico.aurora_app.model.reminder.ReminderTime
 import eu.inscico.aurora_app.services.notification.NotificationService
+import eu.inscico.aurora_app.services.shared.UnitService
 import eu.inscico.aurora_app.utils.CalendarUtils
 import org.koin.androidx.compose.get
 import java.util.*
 
 @Composable
 fun ReminderSelector(
+    unitService: UnitService = get(),
     reminderTime: ReminderTime?,
     notificationService: NotificationService = get(),
     callback: (ReminderTime) -> Unit
 ){
 
     val context = LocalContext.current
+    val config = LocalConfiguration.current
     val currentCalendar = Calendar.getInstance()
 
     val addTimeSelector = remember {
@@ -197,7 +201,7 @@ fun ReminderSelector(
         Text(
             text = context.getString(
                 R.string.settings_notifications_next_reminder_send_info,
-                CalendarUtils.toDateString(notificationService.getNextNotificationTime(it), "dd.MM.yyyy, HH:mm")),
+                CalendarUtils.toDateString(notificationService.getNextNotificationTime(it), unitService.getDateFormat(config, true))),
             style = MaterialTheme.typography.labelSmall,
             textAlign = TextAlign.Start,
             color = MaterialTheme.colorScheme.onSecondary,

@@ -110,6 +110,10 @@
     <string name="home_add_consumption_form_description_info_text_title">Puede añadir una descripción a su entrada para ayudarle a encontrarla más tarde.</string>
     <string name="home_add_consumption_form_heating_fuel_type_title">Seleccione su tipo de calefacción. Puede encontrar esta información en su factura de calefacción.</string>
     <string name="home_add_consumption_heating_fuel_title">"Combustible para calefacción "</string>
+    <string name="electricity_source_title">Fuente de electricidad</string>
+    <string name="electricity_source_description">Seleccione la fuente de electricidad adecuada.</string>
+    <string name="electricity_source_default">Por defecto</string>
+    <string name="electricity_source_home_photovoltaics">Fotovoltaica doméstica</string>
     <string name="heating_fuel_type_oil_title">Gasolina</string>
     <string name="heating_fuel_type_natural_gas_title">Gas natural</string>
     <string name="heating_fuel_type_lpg_title">GLP</string>
@@ -183,7 +187,7 @@
     <string name="home_your_carbon_emissions_info_title">¿Cómo funciona?</string>
     <string name="home_your_carbon_emissions_info_description">Sus etiquetas energéticas se calculan en función de su consumo rastreado y son específicas de su ubicación. Esto significa que, a medida que vaya introduciendo datos a lo largo del año, se irán conociendo más datos sobre sus emisiones de carbono y sus presupuestos energéticos. Por ejemplo: Si sólo ha introducido los datos de todos los días de enero y diciembre, se utilizarán 2/12 del presupuesto total para calcular su etiqueta. La única excepción es el transporte, que permite obtener el presupuesto completo a partir de un determinado número de entradas anuales. Su presupuesto global se basa en la suma de sus presupuestos de electricidad, calefacción y transporte.</string>
     <string name="home_your_carbon_emissions_labels_value_produced_with_year_title">%1$s CO₂ en %2$d</string>
-    <string name="home_your_carbon_emissions_bar_chart_label_carbon_emission_title">"%1$s CO₂"</string>
+    <string name="home_your_carbon_emissions_bar_chart_label_carbon_emission_title">%1$s CO₂</string>
     <string name="home_your_carbon_emissions_bar_chart_label_energy_expended_title">kWh</string>
     <string name="home_your_carbon_emissions_labels_value_used_with_year_title">%1$s kWh en %2$d</string>
     <string name="home_your_carbon_emissions_label_empty_title">Aún no se ha introducido ningún consumo (?)</string>
@@ -203,7 +207,15 @@
     <string name="home_duplicate_consumption_button_title">Duplicar</string>
     <string name="settings_app_bar_title">Ajustes</string>
     <string name="settings_profile_section_title">Cuenta</string>
-    <string name="settings_profile_edit_profile_title">"Editar perfil"</string>
+    <string name="settings_profile_edit_profile_title">Editar perfil</string>
+    <string name="settings_profile_select_region_title">Seleccionar región</string>
+    <string name="settings_profile_select_region_germany_title">Alemania</string>
+    <string name="settings_profile_select_region_portugal_title">Portugal</string>
+    <string name="settings_profile_select_region_slovenia_title">Eslovenia</string>
+    <string name="settings_profile_select_region_denmark_title">Dinamarca</string>
+    <string name="settings_profile_select_region_united_kingdom_title">Reino Unido</string>
+    <string name="settings_profile_select_region_usa_title">EEUU</string>
+    <string name="settings_profile_select_region_system_title">Sistema</string>
     <string name="settings_profile_change_password_title">Cambiar contraseña</string>
     <string name="settings_profile_change_email_title">Cambiar email</string>
     <string name="settings_profile_logout_title">Cierre de sesión</string>
@@ -216,7 +228,7 @@
     <string name="settings_data_privacy_delete_account_title">Eliminar mi cuenta</string>
     <string name="settings_legal_information_section_title">Información jurídica</string>
     <string name="settings_legal_information_feature_preview_title">"Previsualización "</string>
-    <string name="settings_legal_information_imprint_title">Autobús híbrido eléctrico</string>
+    <string name="settings_legal_information_imprint_title">Aviso legal</string>
     <string name="settings_legal_information_privacy_policy_title">Política de privacidad</string>
     <string name="settings_legal_information_terms_of_service_title">Condiciones de servicio</string>
     <string name="settings_legal_information_licenses_title">Licencias</string>
@@ -293,7 +305,7 @@
     <string name="solar_power_investment_result_reduction_title"><b>reducción de CO₂</b></string>
     <string name="solar_power_investment_result_reduction_info_text">Estarías reduciendo las emisiones de CO₂ de tu comunidad local en esta cantidad. ¡Buen trabajo!</string>
     <string name="solar_power_investment_result_learn_more_on_our_website_title">Más información en nuestra web</string>
-    <string name="solar_power_investment_result_value_unit_title">%1$s Kg</string>
+    <string name="solar_power_investment_result_value_unit_title">%1$s kg</string>
     <string name="solar_power_investment_result_value_unit_kwh_title">%1$s kWh</string>
     <string name="solar_power_investment_result_your_investment_title">Su inversión</string>
     <string name="solar_power_investment_result_annual_energy_production_title">Producción anual de energía</string>

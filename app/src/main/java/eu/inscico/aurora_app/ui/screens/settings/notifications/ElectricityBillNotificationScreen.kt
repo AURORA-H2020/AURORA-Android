@@ -93,7 +93,7 @@ fun ElectricityBillNotificationScreen(
                 val reminder = notificationService.electricityReminder
 
 
-                    ReminderSelector(reminder) {
+                    ReminderSelector(reminderTime = reminder) {
                         //notificationReminder.value = it
                         viewModel.updateElectricityReminder(it)
                         viewModel.updateNotificationAlarm(

@@ -9,17 +9,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptions.Consumption
+import eu.inscico.aurora_app.model.consumptions.ElectricitySource.Companion.getDisplayName
 import eu.inscico.aurora_app.utils.CalendarUtils
-import eu.inscico.aurora_app.utils.UnitUtils
+import eu.inscico.aurora_app.services.shared.UnitService
+import org.koin.androidx.compose.get
 
 @Composable
 fun ElectricityConsumptionDetails(
-    consumption: Consumption.ElectricityConsumption
+    consumption: Consumption.ElectricityConsumption,
+    unitService: UnitService = get()
 ) {
+
+    val context = LocalContext.current
+    val config = LocalConfiguration.current
 
     Column(
         modifier = Modifier
@@ -38,11 +45,12 @@ fun ElectricityConsumptionDetails(
                 .clip(shape = RoundedCornerShape(16.dp))
         ) {
 
+            val formattedConsumptionValue = unitService.getValueInCorrectNumberFormat(config, String.format("%.1f", consumption.value).replace(",",".").toDouble())
             ListItem(
                 headlineContent = { Text(text = stringResource(id = R.string.home_consumptions_type_electricity_title)) },
                 trailingContent = {
                     Text(
-                        text = "${String.format("%.1f", consumption.value)} kWh",
+                        text = "$formattedConsumptionValue kWh",
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -52,7 +60,7 @@ fun ElectricityConsumptionDetails(
             Divider()
 
             val carbonEmissionText = if (consumption.carbonEmissions != null) {
-                "${String.format("%.1f", consumption.carbonEmissions)} kWh"
+                unitService.getConvertedWeightWithUnit(config, consumption.carbonEmissions, 1)
             } else {
                null
             }
@@ -82,7 +90,7 @@ fun ElectricityConsumptionDetails(
 
             val costsText = if (consumption.electricity.costs != null) {
                 "${String.format("%.2f", consumption.electricity.costs)} ${
-                    UnitUtils.getSystemCurrencyUnit(
+                    unitService.getCurrencyUnit(
                         LocalConfiguration.current)}"
             } else {
                 null
@@ -107,7 +115,7 @@ fun ElectricityConsumptionDetails(
                 headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_form_begin_title)) },
                 trailingContent = {
                     Text(
-                        text = CalendarUtils.toDateString(consumption.electricity.startDate),
+                        text = CalendarUtils.toDateString(consumption.electricity.startDate, unitService.getDateFormat(config)),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -120,7 +128,20 @@ fun ElectricityConsumptionDetails(
                 headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_form_end_title)) },
                 trailingContent = {
                     Text(
-                        text = CalendarUtils.toDateString(consumption.electricity.endDate),
+                        text = CalendarUtils.toDateString(consumption.electricity.endDate, unitService.getDateFormat(config)),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            )
+
+            Divider()
+
+            ListItem(
+                headlineContent = { Text(text = stringResource(id = R.string.electricity_source_title)) },
+                trailingContent = {
+                    Text(
+                        text = consumption.electricity.electricitySource.getDisplayName(context),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -154,13 +175,13 @@ fun ElectricityConsumptionDetails(
         Spacer(modifier = Modifier.height(16.dp))
 
         val createdText = if (consumption.createdAt != null) {
-            CalendarUtils.toDateString(consumption.createdAt)
+            CalendarUtils.toDateString(consumption.createdAt, unitService.getDateFormat(config))
         } else {
             null
         }
 
         val updatedText = if (consumption.updatedAt != null) {
-            CalendarUtils.toDateString(consumption.updatedAt)
+            CalendarUtils.toDateString(consumption.updatedAt, unitService.getDateFormat(config))
         } else {
             null
         }

@@ -97,7 +97,7 @@ fun HeatingBillNotificationScreen(
                 if(enabledSwitch.value){
 
                     val reminder = notificationService.heatingReminder
-                    ReminderSelector(reminder){
+                    ReminderSelector(reminderTime = reminder){
                         //notificationReminder.value = it
                         viewModel.updateHeatingReminder(it)
                         viewModel.updateNotificationAlarm(enabledSwitch.value, ConsumptionType.HEATING)

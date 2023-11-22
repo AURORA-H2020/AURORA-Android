@@ -38,7 +38,8 @@ class ConsumptionResponse(
                         costs = item.electricity.costs,
                         endDate = Timestamp(item.electricity.endDate.time),
                         startDate = Timestamp(item.electricity.startDate.time),
-                        householdSize = item.electricity.householdSize
+                        householdSize = item.electricity.householdSize,
+                        electricitySource = ElectricitySource.parseElectricitySourceToString(item.electricitySource),
                     )
                     ConsumptionResponse(
                         id = item.id,
@@ -120,7 +121,8 @@ data class ElectricityConsumptionDataResponse(
     var costs: Double? = null,
     var endDate: Timestamp? = null,
     var startDate: Timestamp? = null,
-    var householdSize: Int? = null
+    var householdSize: Int? = null,
+    val electricitySource: String? = null
 )
 
 data class HeatingConsumptionDataResponse(

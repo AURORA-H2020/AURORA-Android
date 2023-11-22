@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -16,20 +17,25 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import eu.inscico.aurora_app.R
+import eu.inscico.aurora_app.services.shared.UnitService
 import eu.inscico.aurora_app.ui.components.timePicker.TimePickerDialog
 import eu.inscico.aurora_app.utils.CalendarUtils
+import org.koin.androidx.compose.get
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReminderTimeSelector(
+    unitService: UnitService = get(),
     initialValue: Calendar,
     callback: (Calendar) -> Unit
 ) {
 
+    val config = LocalConfiguration.current
+
     val calendar = initialValue
     val selectedTime = remember { mutableStateOf(calendar) }
-    val selectedTimeString = remember { mutableStateOf(CalendarUtils.toDateString(calendar, "HH:mm")) }
+    val selectedTimeString = remember { mutableStateOf(CalendarUtils.toDateString(calendar, unitService.getTimeFormat(config))) }
 
 
     val openTimeDialog = remember {
@@ -76,7 +82,7 @@ fun ReminderTimeSelector(
         time = selectedTime.value,
         onTimeChanged = {
             selectedTime.value = it
-            selectedTimeString.value = CalendarUtils.toDateString(it, "HH:mm")
+            selectedTimeString.value = CalendarUtils.toDateString(it, unitService.getTimeFormat(config))
             callback.invoke(selectedTime.value)
         },
         validator = {

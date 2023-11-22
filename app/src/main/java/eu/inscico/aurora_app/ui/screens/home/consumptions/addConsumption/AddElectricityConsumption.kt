@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -19,16 +20,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.firebase.Timestamp
 import eu.inscico.aurora_app.R
-import eu.inscico.aurora_app.model.consumptions.Consumption
-import eu.inscico.aurora_app.model.consumptions.ConsumptionResponse
-import eu.inscico.aurora_app.model.consumptions.ConsumptionType
-import eu.inscico.aurora_app.model.consumptions.ElectricityConsumptionDataResponse
+import eu.inscico.aurora_app.model.consumptions.*
+import eu.inscico.aurora_app.model.consumptions.ElectricitySource.Companion.getDisplayName
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.forms.AddSubtractCountFormEntry
 import eu.inscico.aurora_app.ui.components.forms.BeginEndPickerFormEntry
+import eu.inscico.aurora_app.ui.components.forms.SpinnerFormEntry
+import eu.inscico.aurora_app.ui.components.forms.SpinnerItem
 import eu.inscico.aurora_app.utils.TypedResult
-import eu.inscico.aurora_app.utils.UnitUtils
+import eu.inscico.aurora_app.services.shared.UnitService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,11 +45,15 @@ fun AddElectricityConsumption(
     isDuplicate: Boolean? = false,
     viewModel: AddConsumptionViewModel = koinViewModel(),
     navigationService: NavigationService = get(),
-    userFeedbackService: UserFeedbackService = get()
+    userFeedbackService: UserFeedbackService = get(),
+    unitService: UnitService = get()
 ) {
 
+    val context = LocalContext.current
+    val config = LocalConfiguration.current
+
     val initialConsumption = if(initialValues?.value != null){
-        String.format("%.1f",initialValues.value)
+        unitService.getValueInCorrectNumberFormat(config, String.format("%.1f",initialValues.value).replace(",",".").toDouble())
     } else {
         ""
     }
@@ -81,6 +86,11 @@ fun AddElectricityConsumption(
 
     val description = remember {
         mutableStateOf(initialValues?.description ?: "")
+    }
+
+
+    val electricitySource = remember {
+        mutableStateOf<ElectricitySource?>(initialValues?.electricity?.electricitySource)
     }
 
     val isSaveValid = remember {
@@ -163,6 +173,37 @@ fun AddElectricityConsumption(
 
         Spacer(Modifier.height(16.dp))
 
+        val allElectricitySourceSpinnerItems = viewModel.allElectricitySources.map {
+            SpinnerItem.Entry(name = it.getDisplayName(context), data = it)
+        }
+
+        val selectedEntry = if(electricitySource.value != null){
+            SpinnerItem.Entry(name = electricitySource.value!!.getDisplayName(context) , data = electricitySource.value)
+        } else {
+            null
+        }
+
+        SpinnerFormEntry(
+            title = stringResource(id = R.string.electricity_source_title),
+            selectedEntry = selectedEntry,
+            allEntries = allElectricitySourceSpinnerItems,
+            callback = { item, _ ->
+                electricitySource.value = item.data as ElectricitySource
+            }
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = stringResource(id = R.string.electricity_source_description),
+            modifier = Modifier.padding(horizontal = 16.dp),
+            style = MaterialTheme.typography.labelSmall,
+            textAlign = TextAlign.Start,
+            color = MaterialTheme.colorScheme.onSecondary
+        )
+
+        Spacer(Modifier.height(16.dp))
+
         BeginEndPickerFormEntry(
             initialBeginCalendarAsLong = beginDateTime.value,
             initialEndCalendarAsLong = endDateTime.value,
@@ -214,7 +255,7 @@ fun AddElectricityConsumption(
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
             trailingIcon = {
-                Text(text = UnitUtils.getSystemCurrencyUnit(LocalConfiguration.current))
+                Text(text = unitService.getCurrencyUnit(LocalConfiguration.current))
             }
         )
 
@@ -292,7 +333,8 @@ fun AddElectricityConsumption(
                         costs = costs.value.replace(",",".").toDoubleOrNull(),
                         endDate = Timestamp(Date(endDateTime.value)),
                         startDate = Timestamp(Date(beginDateTime.value)),
-                        householdSize = peopleInHousehold.value
+                        householdSize = peopleInHousehold.value,
+                        electricitySource = ElectricitySource.parseElectricitySourceToString(electricitySource.value ?: ElectricitySource.DEFAULT)
                     )
 
                     val descriptionValue = description.value.ifEmpty {

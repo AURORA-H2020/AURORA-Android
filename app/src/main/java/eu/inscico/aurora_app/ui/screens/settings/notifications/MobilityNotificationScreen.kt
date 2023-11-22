@@ -97,7 +97,7 @@ fun MobilityNotificationScreen(
                 if(enabledSwitch.value){
 
                     val reminder = notificationService.mobilityReminder
-                    ReminderSelector(reminder){
+                    ReminderSelector(reminderTime = reminder){
                         //notificationReminder.value = it
                         viewModel.updateMobilityReminder(it)
                         viewModel.updateNotificationAlarm(enabledSwitch.value, ConsumptionType.TRANSPORTATION)

@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -39,6 +40,7 @@ fun AllConsumptionsListScreen(
 ) {
 
     val context = LocalContext.current
+    val config = LocalConfiguration.current
 
     val allConsumptions = viewModel.userConsumptions.observeAsState()
     val searchResults = viewModel.searchResults.observeAsState()
@@ -47,7 +49,7 @@ fun AllConsumptionsListScreen(
     }
     val state = rememberLazyListState()
 
-    viewModel.searchForResults(allConsumptions.value, context, searchString.value)
+    viewModel.searchForResults(config, allConsumptions.value, context, searchString.value)
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -79,7 +81,7 @@ fun AllConsumptionsListScreen(
 
         AuroraSearchBar {
             searchString.value = it
-            viewModel.searchForResults(allConsumptions.value, context, searchString.value)
+            viewModel.searchForResults(config, allConsumptions.value, context, searchString.value)
         }
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -91,7 +93,13 @@ fun AllConsumptionsListScreen(
                     .clip(shape = RoundedCornerShape(16.dp)),
                 state = state,
             ) {
-                items(consumptions) { item ->
+                items(consumptions.sortedByDescending {
+                    when(it){
+                        is Consumption.ElectricityConsumption -> it.electricity.startDate
+                        is Consumption.HeatingConsumption -> it.heating.startDate
+                        is Consumption.TransportationConsumption -> it.transportation.dateOfTravel
+                    }
+                     }) { item ->
 
                     ConsumptionListItem(consumption = item) {
                         val id = when(it){

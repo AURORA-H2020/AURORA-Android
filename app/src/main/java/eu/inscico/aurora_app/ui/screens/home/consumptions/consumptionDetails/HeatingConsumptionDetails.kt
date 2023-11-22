@@ -19,14 +19,18 @@ import eu.inscico.aurora_app.model.consumptions.Consumption
 import eu.inscico.aurora_app.model.consumptions.DistrictHeatingSource.Companion.getDisplayNameRes
 import eu.inscico.aurora_app.model.consumptions.HeatingFuelType.Companion.getDisplayNameRes
 import eu.inscico.aurora_app.utils.CalendarUtils
-import eu.inscico.aurora_app.utils.UnitUtils
+import eu.inscico.aurora_app.services.shared.UnitService
+import org.koin.androidx.compose.get
 import kotlin.text.*
 
 
 @Composable
 fun HeatingConsumptionDetails(
-    consumption: Consumption.HeatingConsumption
+    consumption: Consumption.HeatingConsumption,
+    unitService: UnitService = get()
 ) {
+
+    val config = LocalConfiguration.current
 
     Column(
         modifier = Modifier
@@ -44,11 +48,13 @@ fun HeatingConsumptionDetails(
                 .clip(shape = RoundedCornerShape(16.dp))
         ) {
 
+            val formattedConsumptionValue = unitService.getValueInCorrectNumberFormat(config, String.format("%.1f", consumption.value).replace(",",".").toDouble())
+
             ListItem(
                 headlineContent = { Text(text = stringResource(id = R.string.home_consumptions_type_heating_title)) },
                 trailingContent = {
                     Text(
-                        text = "${String.format("%.1f", consumption.value)} kWh",
+                        text = "$formattedConsumptionValue kWh",
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -58,7 +64,7 @@ fun HeatingConsumptionDetails(
             Divider()
 
             val carbonEmissionText = if (consumption.carbonEmissions != null) {
-                "${String.format("%.2f", consumption.carbonEmissions)} kWh"
+                unitService.getConvertedWeightWithUnit(config, consumption.carbonEmissions, 1)
             } else {
                 null
             }
@@ -90,7 +96,7 @@ fun HeatingConsumptionDetails(
 
             val costsText = if (consumption.heating.costs != null) {
                 "${String.format("%.1f", consumption.heating.costs)} ${
-                    UnitUtils.getSystemCurrencyUnit(
+                    unitService.getCurrencyUnit(
                         LocalConfiguration.current)}"
             } else {
                 null
@@ -115,7 +121,7 @@ fun HeatingConsumptionDetails(
                 headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_form_begin_title)) },
                 trailingContent = {
                     Text(
-                        text = CalendarUtils.toDateString(consumption.heating.startDate),
+                        text = CalendarUtils.toDateString(consumption.heating.startDate, unitService.getDateFormat(config)),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -128,7 +134,7 @@ fun HeatingConsumptionDetails(
                 headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_form_end_title)) },
                 trailingContent = {
                     Text(
-                        text = CalendarUtils.toDateString(consumption.heating.endDate),
+                        text = CalendarUtils.toDateString(consumption.heating.endDate, unitService.getDateFormat(config)),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -191,13 +197,13 @@ fun HeatingConsumptionDetails(
 
 
         val createdText = if (consumption.createdAt != null) {
-            CalendarUtils.toDateString(consumption.createdAt)
+            CalendarUtils.toDateString(consumption.createdAt, unitService.getDateFormat(config))
         } else {
             null
         }
 
         val updatedText = if (consumption.updatedAt != null) {
-            CalendarUtils.toDateString(consumption.updatedAt)
+            CalendarUtils.toDateString(consumption.updatedAt, unitService.getDateFormat(config))
         } else {
             null
         }

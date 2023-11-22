@@ -7,13 +7,10 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -27,11 +24,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.common.io.Files.append
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.photovoltaics.PhotovoltaicInvestmentResult
-import eu.inscico.aurora_app.services.firebase.CountriesService
-import eu.inscico.aurora_app.services.pvgis.PVGISAPIService
+import eu.inscico.aurora_app.services.shared.UnitService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.AppBar
 import eu.inscico.aurora_app.ui.components.container.ScrollableContent
@@ -43,13 +38,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
-import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun PhotovoltaicCalculatorScreen(
     viewModel: PhotovoltaicCalculatorViewModel = koinViewModel(),
-    userFeedbackService: UserFeedbackService = get()
+    userFeedbackService: UserFeedbackService = get(),
+    unitService: UnitService = get()
 ) {
 
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -77,7 +72,7 @@ fun PhotovoltaicCalculatorScreen(
             ScrollableContent(background = MaterialTheme.colorScheme.background) {
 
                 val countryCurrency = userCountry.value?.currencyCode ?: "EUR"
-                val currencySymbol = UnitUtils.getCurrencyUnitByLocale(countryCurrency)
+                val currencySymbol = unitService.getCurrencyUnitByLocale(countryCurrency)
                 val result = investmentResultLive.value
 
                 if (result != null) {

@@ -19,12 +19,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
-import eu.inscico.aurora_app.model.City
-import eu.inscico.aurora_app.model.photovoltaics.PhotovoltaicInvestmentResult
-import eu.inscico.aurora_app.utils.UnitUtils
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -24,7 +24,8 @@ import eu.inscico.aurora_app.model.consumptionSummary.EnergyLabel.Companion.getL
 import eu.inscico.aurora_app.model.consumptions.ConsumptionType
 import eu.inscico.aurora_app.model.consumptions.ConsumptionType.Companion.getDisplayNameRes
 import eu.inscico.aurora_app.model.consumptions.ConsumptionType.Companion.getIconRes
-import eu.inscico.aurora_app.utils.UnitUtils
+import eu.inscico.aurora_app.services.shared.UnitService
+import org.koin.androidx.compose.get
 
 @Composable
 fun ConsumptionSummaryLabel(
@@ -33,6 +34,7 @@ fun ConsumptionSummaryLabel(
     consumptionType: ConsumptionType,
     label: EnergyLabel?,
     isCarbonEmission: Boolean = true,
+    unitService: UnitService = get()
 ) {
 
     val context = LocalContext.current
@@ -71,7 +73,7 @@ fun ConsumptionSummaryLabel(
             val valueText = if(isCarbonEmission){
                 context.getString(
                     R.string.home_your_carbon_emissions_labels_value_produced_with_year_title,
-                    UnitUtils.getConvertedWeightWithUnit(weightInKg = value, locale = configuration.locales[0], decimals = 1),
+                    unitService.getConvertedWeightWithUnit(config = configuration, weightInKg = value, decimals = 1),
                     year
                 )
             } else {

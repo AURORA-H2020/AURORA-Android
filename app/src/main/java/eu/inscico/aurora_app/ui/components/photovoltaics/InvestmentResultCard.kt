@@ -19,8 +19,8 @@ import eu.inscico.aurora_app.ui.components.FormEntry
 import eu.inscico.aurora_app.ui.components.FormEntryType
 import eu.inscico.aurora_app.ui.theme.investmentResultGreen
 import eu.inscico.aurora_app.ui.theme.investmentResultOrange
-import eu.inscico.aurora_app.utils.ExternalUtils
-import eu.inscico.aurora_app.utils.UnitUtils
+import eu.inscico.aurora_app.services.shared.UnitService
+import org.koin.androidx.compose.get
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,7 +28,8 @@ fun InvestmentResultCard(
     currency: String,
     investmentResult: PhotovoltaicInvestmentResult,
     resetCallback: () -> Unit,
-    learnMoreCallback: () -> Unit
+    learnMoreCallback: () -> Unit,
+    unitService: UnitService = get()
 ) {
 
     val context = LocalContext.current

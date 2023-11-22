@@ -16,6 +16,7 @@ import eu.inscico.aurora_app.ui.screens.photovoltaic.PhotovoltaicCalculatorViewM
 import eu.inscico.aurora_app.ui.screens.settings.profile.EditProfileViewModel
 import eu.inscico.aurora_app.ui.screens.settings.SettingsViewModel
 import eu.inscico.aurora_app.ui.screens.settings.notifications.SettingsReminderViewModel
+import eu.inscico.aurora_app.ui.screens.settings.profile.SelectRegionViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -58,6 +59,10 @@ val viewModelModule = module {
     }
 
     viewModel {
+        SelectRegionViewModel()
+    }
+
+    viewModel {
         SettingsReminderViewModel(
             _notificationService = get()
         )
@@ -78,7 +83,8 @@ val viewModelModule = module {
 
     viewModel {
         AllConsumptionsListViewModel(
-            _consumptionService = get()
+            _consumptionService = get(),
+            _unitService = get()
         )
     }
 

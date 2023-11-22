@@ -1,6 +1,5 @@
 package eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption
 
-import android.app.LocaleConfig
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,7 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -42,7 +40,7 @@ import eu.inscico.aurora_app.ui.components.forms.SpinnerItem
 import eu.inscico.aurora_app.ui.components.timePicker.TimePickerDialog
 import eu.inscico.aurora_app.utils.CalendarUtils
 import eu.inscico.aurora_app.utils.TypedResult
-import eu.inscico.aurora_app.utils.UnitUtils
+import eu.inscico.aurora_app.services.shared.UnitService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -58,15 +56,16 @@ fun AddTransportationConsumption(
     isDuplicate: Boolean? = false,
     viewModel: AddConsumptionViewModel = koinViewModel(),
     navigationService: NavigationService = get(),
-    userFeedbackService: UserFeedbackService = get()
+    userFeedbackService: UserFeedbackService = get(),
+    unitService: UnitService = get()
 ) {
 
     val context = LocalContext.current
-    val configuration = LocalConfiguration.current
-    val keyboardController = LocalSoftwareKeyboardController.current
+    val config = LocalConfiguration.current
 
+    val convertedDistance = unitService.getConvertedDistance(config, distanceInKm = initialValues?.value, decimals = 1)
     val initialDistance = if (initialValues?.value != null) {
-        "${UnitUtils.getConvertedDistance(distanceInKm = initialValues.value, locale = configuration.locales[0], decimals = 1)}"
+        unitService.getValueInCorrectNumberFormat(config, convertedDistance)
     } else {
         ""
     }
@@ -184,7 +183,7 @@ fun AddTransportationConsumption(
                             calendar.timeInMillis = startOfTravelAsLong.value
 
                             Text(
-                                text = CalendarUtils.toDateString(calendar),
+                                text = CalendarUtils.toDateString(calendar, unitService.getDateFormat(config)),
                                 style = TextStyle(
                                     color = MaterialTheme.colorScheme.onSecondary,
                                     fontSize = 15.sp,
@@ -219,7 +218,7 @@ fun AddTransportationConsumption(
                             calendar.timeInMillis = startOfTravelAsLong.value
 
                             Text(
-                                text = CalendarUtils.toDateString(calendar, "HH:mm"),
+                                text = CalendarUtils.toDateString(calendar, unitService.getTimeFormat(config)),
                                 style = TextStyle(
                                     color = MaterialTheme.colorScheme.onSecondary,
                                     fontSize = 15.sp,
@@ -268,7 +267,7 @@ fun AddTransportationConsumption(
                                 calendar.timeInMillis = endOfTravelAsLong.value
 
                                 Text(
-                                    text = CalendarUtils.toDateString(calendar),
+                                    text = CalendarUtils.toDateString(calendar, unitService.getDateFormat(config)),
                                     style = TextStyle(
                                         color = MaterialTheme.colorScheme.onSecondary,
                                         fontSize = 15.sp,
@@ -303,7 +302,7 @@ fun AddTransportationConsumption(
                                 calendar.timeInMillis = endOfTravelAsLong.value
 
                                 Text(
-                                    text = CalendarUtils.toDateString(calendar, "HH:mm"),
+                                    text = CalendarUtils.toDateString(calendar, unitService.getTimeFormat(config)),
                                     style = TextStyle(
                                         color = MaterialTheme.colorScheme.onSecondary,
                                         fontSize = 15.sp,
@@ -546,7 +545,7 @@ fun AddTransportationConsumption(
             ),
 
             trailingIcon = {
-                Text(text = UnitUtils.getSystemDistanceUnit(LocalConfiguration.current))
+                Text(text = unitService.getDistanceUnit(config))
             }
         )
 
@@ -662,7 +661,7 @@ fun AddTransportationConsumption(
                     }
 
                     val distanceValue = distance.value.replace(",", ".").toDoubleOrNull()
-                    val distanceValueKm = UnitUtils.getDistanceValueMetric(distanceValue ?: 0.0 , configuration.locales[0])
+                    val distanceValueKm = unitService.getCalculatedDistanceValueForUnit(config, distanceValue ?: 0.0)
 
                     val consumptionResponse = ConsumptionResponse(
                         category = ConsumptionType.parseConsumptionTypeToString(ConsumptionType.TRANSPORTATION),

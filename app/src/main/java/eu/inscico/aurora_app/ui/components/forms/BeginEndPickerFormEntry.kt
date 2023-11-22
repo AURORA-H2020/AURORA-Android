@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -23,18 +24,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import eu.inscico.aurora_app.R
+import eu.inscico.aurora_app.services.shared.UnitService
 import eu.inscico.aurora_app.ui.components.datePicker.MaterialDatePickerDialog
 import eu.inscico.aurora_app.utils.CalendarUtils
+import org.koin.androidx.compose.get
 import java.util.*
 
 @Composable
 fun BeginEndPickerFormEntry(
+    unitService: UnitService = get(),
     initialBeginCalendarAsLong: Long = Calendar.getInstance().timeInMillis,
     initialEndCalendarAsLong: Long = Calendar.getInstance().timeInMillis + (86400000 * 2).toLong(),
     beginDateValidator: ((Calendar)-> Boolean)? = null,
     endDateValidator: ((Calendar)-> Boolean)? = null,
     callback: (beginCalendarAsLong: Long?, endCalendarAsLong: Long?) -> Unit
 ){
+
+    val config = LocalConfiguration.current
 
     val openBeginDateTimePicker = remember {
         mutableStateOf(false)
@@ -76,7 +82,7 @@ fun BeginEndPickerFormEntry(
                     beginCalendar.timeInMillis = beginCalendarAsLong.value
 
                     Text(
-                        text = CalendarUtils.toDateString(beginCalendar),
+                        text = CalendarUtils.toDateString(beginCalendar, unitService.getDateFormat(config)),
                         style = TextStyle(
                             color = MaterialTheme.colorScheme.onSecondary,
                             fontSize = 15.sp,
@@ -115,7 +121,7 @@ fun BeginEndPickerFormEntry(
                     endCalendar.timeInMillis = endCalendarAsLong.value
 
                     Text(
-                        text = CalendarUtils.toDateString(endCalendar),
+                        text = CalendarUtils.toDateString(endCalendar, unitService.getDateFormat(config)),
                         style = TextStyle(
                             color = MaterialTheme.colorScheme.onSecondary,
                             fontSize = 15.sp,

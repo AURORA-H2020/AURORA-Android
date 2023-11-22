@@ -38,16 +38,18 @@ import eu.inscico.aurora_app.ui.components.forms.SpinnerItem
 import eu.inscico.aurora_app.ui.components.timePicker.TimePickerDialog
 import eu.inscico.aurora_app.ui.screens.home.recurringConsumptions.AddOrUpdateRecurringConsumptionViewModel
 import eu.inscico.aurora_app.utils.CalendarUtils
-import eu.inscico.aurora_app.utils.UnitUtils
+import eu.inscico.aurora_app.services.shared.UnitService
+import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTransportationRecurringConsumptionScreen(
+    unitService: UnitService = get(),
     initialValues: RecurringConsumptionTransportationData? = null,
     viewModel: AddOrUpdateRecurringConsumptionViewModel = koinViewModel(),
-    callback: (RecurringConsumptionTransportationData?) -> Unit
+    callback: (RecurringConsumptionTransportationData?) -> Unit,
 ) {
 
     val context = LocalContext.current
@@ -82,7 +84,7 @@ fun AddTransportationRecurringConsumptionScreen(
     }
 
     val initialDistance = if(initialValues?.distance != null){
-        "${UnitUtils.getConvertedDistance(distanceInKm = initialValues.distance, locale = configuration.locales[0], decimals = 1)}"
+        "${unitService.getConvertedDistance(configuration, distanceInKm = initialValues.distance, decimals = 1)}"
     } else {
         ""
     }
@@ -97,7 +99,7 @@ fun AddTransportationRecurringConsumptionScreen(
         timeOfTravel.timeInMillis = startOfTravelAsLong.value
 
         val distanceValue = distance.value.replace(",", ".").toDoubleOrNull()
-        val distanceValueKm = UnitUtils.getDistanceValueMetric(distanceValue ?: 0.0 , configuration.locales[0])
+        val distanceValueKm = unitService.getCalculatedDistanceValueForUnit(configuration, distanceValue ?: 0.0 )
 
         return when(transportationSection.value){
             TransportationTypeSection.CARS_AND_MOTORCYCLES -> {
@@ -179,7 +181,7 @@ fun AddTransportationRecurringConsumptionScreen(
                         calendar.timeInMillis = startOfTravelAsLong.value
 
                         Text(
-                            text = CalendarUtils.toDateString(calendar, "HH:mm"),
+                            text = CalendarUtils.toDateString(calendar, unitService.getTimeFormat(configuration)),
                             style = TextStyle(
                                 color = MaterialTheme.colorScheme.onSecondary,
                                 fontSize = 15.sp,
@@ -331,7 +333,7 @@ fun AddTransportationRecurringConsumptionScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
 
             trailingIcon = {
-                Text(modifier = Modifier.padding(end = 32.dp), text = UnitUtils.getDistanceUnit(configuration.locales[0]))
+                Text(modifier = Modifier.padding(end = 32.dp), text = unitService.getDistanceUnit(configuration))
             }
         )
 

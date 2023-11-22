@@ -21,15 +21,18 @@ import eu.inscico.aurora_app.model.consumptions.Consumption
 import eu.inscico.aurora_app.model.consumptions.PublicVehicleOccupancy.Companion.getDisplayName
 import eu.inscico.aurora_app.model.consumptions.TransportationType.Companion.getDisplayNameRes
 import eu.inscico.aurora_app.utils.CalendarUtils
-import eu.inscico.aurora_app.utils.UnitUtils
+import eu.inscico.aurora_app.services.shared.UnitService
+import org.koin.androidx.compose.get
 
 
 @Composable
 fun TransportationConsumptionDetails(
-    consumption: Consumption.TransportationConsumption
+    consumption: Consumption.TransportationConsumption,
+    unitService: UnitService = get()
 ) {
 
     val context = LocalContext.current
+    val config = LocalConfiguration.current
 
     Column(
         modifier = Modifier
@@ -51,7 +54,7 @@ fun TransportationConsumptionDetails(
                 headlineContent = { Text(text = stringResource(id = R.string.home_consumptions_type_transportation_title)) },
                 trailingContent = {
                     Text(
-                        text = UnitUtils.getConvertedDistanceWithUnit(consumption.value, locale = LocalConfiguration.current.locales[0], decimals = 1),
+                        text = unitService.getConvertedDistanceWithUnit(config, consumption.value, decimals = 1),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -61,7 +64,7 @@ fun TransportationConsumptionDetails(
             Divider()
 
             val carbonEmissionText = if (consumption.carbonEmissions != null) {
-                "${String.format("%.1f", consumption.carbonEmissions)} kWh"
+                unitService.getConvertedWeightWithUnit(config, consumption.carbonEmissions, 1)
             } else {
                 null
             }
@@ -96,7 +99,7 @@ fun TransportationConsumptionDetails(
                     Text(
                         text = CalendarUtils.toDateString(
                             consumption.transportation.dateOfTravel,
-                            "dd.MM.yyyy, HH:mm"
+                            unitService.getDateFormat(config, true)
                         ),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium
@@ -114,7 +117,7 @@ fun TransportationConsumptionDetails(
                         Text(
                             text = CalendarUtils.toDateString(
                                 consumption.transportation.dateOfTravelEnd,
-                                "dd.MM.yyyy, HH:mm"
+                                unitService.getDateFormat(config, true)
                             ),
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = MaterialTheme.typography.bodyMedium
@@ -184,13 +187,13 @@ fun TransportationConsumptionDetails(
         Spacer(modifier = Modifier.height(16.dp))
 
         val createdText = if (consumption.createdAt != null) {
-            CalendarUtils.toDateString(consumption.createdAt)
+            CalendarUtils.toDateString(consumption.createdAt, unitService.getDateFormat(config))
         } else {
             null
         }
 
         val updatedText = if (consumption.updatedAt != null) {
-            CalendarUtils.toDateString(consumption.updatedAt)
+            CalendarUtils.toDateString(consumption.updatedAt, unitService.getDateFormat(config))
         } else {
             null
         }

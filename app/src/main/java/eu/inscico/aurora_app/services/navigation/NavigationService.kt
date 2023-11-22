@@ -89,6 +89,11 @@ class NavigationService {
         navControllerTabSettings?.navigate(navDirection)
     }
 
+    fun toSelectRegion() {
+        val navDirection = NavGraphDirections.SelectRegion.getNavRoute()
+        navControllerTabSettings?.navigate(navDirection)
+    }
+
     fun toUpdateUserPassword() {
         val navDirection = NavGraphDirections.UpdateUserPassword.getNavRoute()
         navControllerTabSettings?.navigate(navDirection)
