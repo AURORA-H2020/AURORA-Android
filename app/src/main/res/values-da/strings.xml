@@ -110,6 +110,10 @@
     <string name="home_add_consumption_form_description_info_text_title">Du kan tilføje en beskrivelse til dit indlæg for at hjælpe med at finde den senere.</string>
     <string name="home_add_consumption_form_heating_fuel_type_title">Vælg din type af opvarmning. Du kan finde disse oplysninger på din varmeregning.</string>
     <string name="home_add_consumption_heating_fuel_title">Brændstof til opvarmning</string>
+    <string name="electricity_source_title">Strømkilde</string>
+    <string name="electricity_source_description">Vælg den rigtige strømkilde.</string>
+    <string name="electricity_source_default">Standard</string>
+    <string name="electricity_source_home_photovoltaics">Solceller til hjemmet</string>
     <string name="heating_fuel_type_oil_title">Olie</string>
     <string name="heating_fuel_type_natural_gas_title">Naturgas</string>
     <string name="heating_fuel_type_lpg_title">LPG (Liquefied Petroleum Gas)</string>
@@ -203,7 +207,15 @@
     <string name="home_duplicate_consumption_button_title">Duplikér</string>
     <string name="settings_app_bar_title">Indstillinger</string>
     <string name="settings_profile_section_title">Konto</string>
-    <string name="settings_profile_edit_profile_title">"Rediger profil"</string>
+    <string name="settings_profile_edit_profile_title">Rediger profil</string>
+    <string name="settings_profile_select_region_title">Vælg region</string>
+    <string name="settings_profile_select_region_germany_title">Tyskland</string>
+    <string name="settings_profile_select_region_portugal_title">Portugal</string>
+    <string name="settings_profile_select_region_slovenia_title">Slovenien</string>
+    <string name="settings_profile_select_region_denmark_title">Danmark</string>
+    <string name="settings_profile_select_region_united_kingdom_title">Storbritannien</string>
+    <string name="settings_profile_select_region_usa_title">USA</string>
+    <string name="settings_profile_select_region_system_title">System</string>
     <string name="settings_profile_change_password_title">Skift adgangskode</string>
     <string name="settings_profile_change_email_title">Skift e-mail</string>
     <string name="settings_profile_logout_title">Log ud</string>
