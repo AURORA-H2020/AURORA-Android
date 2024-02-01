@@ -289,10 +289,6 @@ fun AddTransportationConsumption(
 
                             Row(
                                 modifier = Modifier
-                                    .clickable {
-                                        openTimePickerForEndDate.value =
-                                            !openTimePickerForEndDate.value
-                                    }
                                     .defaultMinSize(minWidth = 90.dp, minHeight = 35.dp),
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.End
@@ -302,18 +298,35 @@ fun AddTransportationConsumption(
                                 calendar.timeInMillis = endOfTravelAsLong.value
 
                                 Text(
+                                    modifier = Modifier.clickable {
+                                        openTimePickerForEndDate.value =
+                                            !openTimePickerForEndDate.value
+                                    },
                                     text = CalendarUtils.toDateString(calendar, unitService.getTimeFormat(config)),
                                     style = TextStyle(
                                         color = MaterialTheme.colorScheme.onSecondary,
                                         fontSize = 15.sp,
                                         textAlign = TextAlign.End,
-
                                         ),
                                     textAlign = TextAlign.End
                                 )
 
                                 Image(
+                                    modifier = Modifier.clickable {
+                                        openTimePickerForEndDate.value =
+                                            !openTimePickerForEndDate.value
+                                    },
                                     painter = painterResource(id = R.drawable.outline_arrow_drop_down_24),
+                                    contentDescription = "",
+                                    colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSecondary)
+                                )
+
+                                Spacer(modifier = Modifier.width(8.dp))
+
+                                Image(modifier = Modifier.clickable {
+                                    endOfTravelVisible.value = false
+                                },
+                                    painter = painterResource(id = R.drawable.round_close_24),
                                     contentDescription = "",
                                     colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSecondary)
                                 )
