@@ -351,4 +351,7 @@
     <string name="settings_export_data_share_dialog">Your data has been successfully downloaded.Do you want to export it?</string>
     <string name="consumption_detail_recurring_consumption_automatically_generated_text">This entry was automatically added via recurring consumptions.</string>
     <string name="recurring_consumptions_changed_behaviour_popup_text">Has your regular energy behaviour changed?</string>
+
+    <!-- User Feedback-->
+    <string name="userfeedback_add_consumption_no_internet_connection">It seems you\'re offline. Your data will automatically sync as soon as you reconnect to the internet.</string>
 </resources>

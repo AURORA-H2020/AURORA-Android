@@ -11,6 +11,7 @@ import eu.inscico.aurora_app.services.firebase.*
 import eu.inscico.aurora_app.services.jsonParsing.JsonParsingService
 import eu.inscico.aurora_app.services.jsonParsing.MoshiJsonParsingService
 import eu.inscico.aurora_app.services.navigation.NavigationService
+import eu.inscico.aurora_app.services.network.NetworkService
 import eu.inscico.aurora_app.services.notification.NotificationCreationService
 import eu.inscico.aurora_app.services.notification.NotificationService
 import eu.inscico.aurora_app.services.pvgis.PVGISAPIService
@@ -90,7 +91,7 @@ val servicesModule = module {
     }
 
     single {
-        ConsumptionsService(_firestore = get(), _firebaseAuth = get())
+        ConsumptionsService(_firestore = get(), _firebaseAuth = get(), _networkService = get())
     }
 
     single {
@@ -116,6 +117,12 @@ val servicesModule = module {
     single {
         UnitService(
             context = androidContext()
+        )
+    }
+
+    single {
+        NetworkService(
+            _context = androidContext()
         )
     }
 

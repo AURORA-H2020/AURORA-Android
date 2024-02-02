@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -23,6 +24,7 @@ import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptions.*
 import eu.inscico.aurora_app.model.consumptions.ElectricitySource.Companion.getDisplayName
 import eu.inscico.aurora_app.services.navigation.NavigationService
+import eu.inscico.aurora_app.services.network.NetworkService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.forms.AddSubtractCountFormEntry
 import eu.inscico.aurora_app.ui.components.forms.BeginEndPickerFormEntry
@@ -46,11 +48,14 @@ fun AddElectricityConsumption(
     viewModel: AddConsumptionViewModel = koinViewModel(),
     navigationService: NavigationService = get(),
     userFeedbackService: UserFeedbackService = get(),
+    networkService: NetworkService = get(),
     unitService: UnitService = get()
 ) {
 
     val context = LocalContext.current
     val config = LocalConfiguration.current
+
+    val hasInternet = networkService.hasInternetConnectionLive.observeAsState()
 
     val initialConsumption = if(initialValues?.value != null){
         unitService.getValueInCorrectNumberFormat(config, String.format("%.1f",initialValues.value).replace(",",".").toDouble())
@@ -363,7 +368,14 @@ fun AddElectricityConsumption(
                             }
                             when (result) {
                                 is TypedResult.Failure -> {
-                                    userFeedbackService.showSnackbar(R.string.settings_add_consumption_entry_fail_message)
+                                    if(result.reason == "NO_INTERNET"){
+                                        userFeedbackService.showSnackbar(R.string.userfeedback_add_consumption_no_internet_connection)
+                                        withContext(Dispatchers.Main) {
+                                            navigationService.navControllerTabHome?.popBackStack()
+                                        }
+                                    } else {
+                                        userFeedbackService.showSnackbar(R.string.settings_add_consumption_entry_fail_message)
+                                    }
                                 }
                                 is TypedResult.Success -> {
                                     withContext(Dispatchers.Main) {
@@ -385,6 +397,20 @@ fun AddElectricityConsumption(
                     color = Color.White
                 )
             }
+        }
+
+        if(hasInternet.value != true){
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = stringResource(id = R.string.userfeedback_add_consumption_no_internet_connection),
+                modifier = Modifier.padding(horizontal = 16.dp),
+                style = MaterialTheme.typography.labelSmall,
+                textAlign = TextAlign.Start,
+                color = MaterialTheme.colorScheme.onSecondary
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
