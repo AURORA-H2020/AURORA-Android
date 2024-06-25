@@ -348,7 +348,7 @@ class UnitService(
 
     // endregion
 
-    // region: Currency
+    // region: Time
     // ---------------------------------------------------------------------------------------------
 
     fun getDateFormat(config: Configuration, withTime: Boolean = false): String {
@@ -425,6 +425,13 @@ class UnitService(
             RegionEnum.UNITED_KINGDOM -> "HH:mm"
             RegionEnum.USA -> "h:mm a"
         }
+    }
+
+    fun parseToUTC(){
+    }
+
+    fun parseToLocalTime(){
+
     }
 
     // endregion
