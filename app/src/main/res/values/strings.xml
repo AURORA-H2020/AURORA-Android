@@ -219,6 +219,7 @@
     <string name="home_recurring_consumptions_list_item_disabled_title">Disabled</string>
     <string name="home_recurring_consumptions_update_title">Edit</string>
     <string name="home_duplicate_consumption_button_title">Duplicate</string>
+    <string name="consumption_detail_energy_usage_label">Energy usage</string>
     <!--Settings-->
     <string name="settings_app_bar_title">Settings</string>
     <string name="settings_profile_section_title">Account</string>

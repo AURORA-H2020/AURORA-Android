@@ -61,8 +61,6 @@ fun HeatingConsumptionDetails(
                 }
             )
 
-            Divider()
-
             val carbonEmissionText = if (consumption.carbonEmissions != null) {
                 unitService.getConvertedWeightWithUnit(config, consumption.carbonEmissions, 1)
             } else {
@@ -70,11 +68,35 @@ fun HeatingConsumptionDetails(
             }
 
             if (carbonEmissionText != null) {
+                Divider()
                 ListItem(
                     headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_carbon_emissions_title)) },
                     trailingContent = {
                         Text(
                             text = carbonEmissionText,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                )
+            }
+
+            val energyExpendedText = if (consumption.energyExpended != null) {
+                "${unitService.getConvertedWeight(config, consumption.carbonEmissions, 1)} ${stringResource(
+                    id = R.string.home_your_carbon_emissions_bar_chart_label_energy_expended_title
+                )}"
+            } else {
+                null
+            }
+
+            if (energyExpendedText != null) {
+                Divider()
+                
+                ListItem(
+                    headlineContent = { Text(text = stringResource(id = R.string.consumption_detail_energy_usage_label)) },
+                    trailingContent = {
+                        Text(
+                            text = energyExpendedText,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = MaterialTheme.typography.bodyMedium
                         )
