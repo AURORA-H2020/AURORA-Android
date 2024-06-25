@@ -89,6 +89,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage-ktx'
     implementation 'com.google.firebase:firebase-functions-ktx'
     implementation 'com.google.firebase:firebase-config-ktx'
+    implementation 'com.google.firebase:firebase-appcheck-playintegrity'
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
 
 
