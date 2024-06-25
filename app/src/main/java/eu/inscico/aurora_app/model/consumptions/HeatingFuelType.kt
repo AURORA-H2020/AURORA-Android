@@ -21,6 +21,10 @@ enum class HeatingFuelType {
     SOLAR_THERMAL,
     @Json(name = "district")
     DISTRICT,
+    @Json(name = "butane")
+    BUTANE,
+    @Json(name = "firewood")
+    FIREWOOD,
     @Json(name = "electric")
     ELECTRIC;
 
@@ -37,6 +41,8 @@ enum class HeatingFuelType {
                 SOLAR_THERMAL -> R.string.heating_fuel_type_solar_thermal_title
                 DISTRICT -> R.string.heating_fuel_type_district_title
                 ELECTRIC -> R.string.heating_fuel_type_electric_title
+                FIREWOOD -> R.string.heating_fuel_type_firewood_title
+                BUTANE -> R.string.heating_fuel_type_butane_title
             }
         }
 
@@ -55,6 +61,8 @@ enum class HeatingFuelType {
                 "solarThermal" -> SOLAR_THERMAL
                 "district" -> DISTRICT
                 "electric" -> ELECTRIC
+                "firewood" -> FIREWOOD
+                "butane" -> BUTANE
                 else -> null
             }
         }
@@ -70,6 +78,8 @@ enum class HeatingFuelType {
                 SOLAR_THERMAL -> "solarThermal"
                 DISTRICT -> "district"
                 ELECTRIC -> "electric"
+                FIREWOOD -> "firewood"
+                BUTANE -> "butane"
             }
         }
 
@@ -84,6 +94,8 @@ enum class HeatingFuelType {
                 SOLAR_THERMAL,
                 DISTRICT,
                 ELECTRIC,
+                FIREWOOD,
+                BUTANE
             )
         }
 
@@ -98,6 +110,8 @@ enum class HeatingFuelType {
                 SOLAR_THERMAL.getDisplayNameRes(),
                 DISTRICT.getDisplayNameRes(),
                 ELECTRIC.getDisplayNameRes(),
+                FIREWOOD.getDisplayNameRes(),
+                BUTANE.getDisplayNameRes()
             )
         }
 

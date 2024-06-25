@@ -146,6 +146,8 @@
     <string name="district_heating_source_type_geo_thermal_title">Geo thermal energy</string>
     <string name="district_heating_source_type_biomass_title">Biomass</string>
     <string name="district_heating_source_type_waste_treatment_title">Waste treatment</string>
+    <string name="heating_fuel_type_firewood_title">Firewood</string>
+    <string name="heating_fuel_type_butane_title">Butane</string>
     <string name="district_heating_source_type_default_title">Default</string>
     <string name="home_add_consumption_transportation_type_title">Transportation type</string>
     <string name="home_add_consumption_transportation_type_section_cars_and_bikes_title">Cars &amp; Motorcycles</string>
