@@ -50,6 +50,7 @@ class UnitService(
                 }
             }
             RegionEnum.GERMANY,
+            RegionEnum.SPAIN,
             RegionEnum.PORTUGAL,
             RegionEnum.SLOVENIA,
             RegionEnum.DENMARK -> "km"
@@ -108,6 +109,7 @@ class UnitService(
             RegionEnum.GERMANY,
             RegionEnum.PORTUGAL,
             RegionEnum.SLOVENIA,
+            RegionEnum.SPAIN,
             RegionEnum.DENMARK -> {
                 val formattedDistance = if (decimals != null) {
                     String.format("%.${decimals}f", distanceInKm).replace(",", ".")
@@ -149,6 +151,7 @@ class UnitService(
             }
             RegionEnum.GERMANY,
             RegionEnum.PORTUGAL,
+            RegionEnum.SPAIN,
             RegionEnum.SLOVENIA,
             RegionEnum.DENMARK -> {
                 value.toString().replace(".", ",")
@@ -189,6 +192,7 @@ class UnitService(
                 }
             }
             RegionEnum.GERMANY,
+            RegionEnum.SPAIN,
             RegionEnum.PORTUGAL,
             RegionEnum.SLOVENIA,
             RegionEnum.DENMARK -> {
@@ -225,6 +229,7 @@ class UnitService(
                 }
             }
             RegionEnum.GERMANY,
+            RegionEnum.SPAIN,
             RegionEnum.PORTUGAL,
             RegionEnum.SLOVENIA,
             RegionEnum.DENMARK -> {
@@ -282,6 +287,7 @@ class UnitService(
                 }
             }
             RegionEnum.GERMANY,
+            RegionEnum.SPAIN,
             RegionEnum.PORTUGAL,
             RegionEnum.SLOVENIA,
             RegionEnum.DENMARK -> {
@@ -332,6 +338,7 @@ class UnitService(
                 currencySymbol
             }
             RegionEnum.GERMANY,
+            RegionEnum.SPAIN,
             RegionEnum.PORTUGAL,
             RegionEnum.SLOVENIA -> "€"
             RegionEnum.DENMARK -> "DKK"
@@ -370,6 +377,7 @@ class UnitService(
             }
             RegionEnum.GERMANY,
             RegionEnum.PORTUGAL,
+            RegionEnum.SPAIN,
             RegionEnum.SLOVENIA,
             RegionEnum.DENMARK -> "dd.MM.yyyy"
             RegionEnum.UNITED_KINGDOM -> "dd/MM/yyyy"
@@ -393,6 +401,7 @@ class UnitService(
                 }
                 RegionEnum.GERMANY,
                 RegionEnum.PORTUGAL,
+                RegionEnum.SPAIN,
                 RegionEnum.SLOVENIA,
                 RegionEnum.DENMARK,
                 RegionEnum.UNITED_KINGDOM -> "$dateFormat HH:mm"
@@ -420,6 +429,7 @@ class UnitService(
             }
             RegionEnum.GERMANY,
             RegionEnum.PORTUGAL,
+            RegionEnum.SPAIN,
             RegionEnum.SLOVENIA,
             RegionEnum.DENMARK,
             RegionEnum.UNITED_KINGDOM -> "HH:mm"
