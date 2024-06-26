@@ -130,6 +130,8 @@
     <string name="electricity_source_title">Electricity source</string>
     <string name="electricity_source_description">Select the appropriate electricity source.</string>
     <string name="electricity_source_default">Default</string>
+    <string name="electricity_source_default_standard">National Grid (standard)</string>
+    <string name="electricity_source_default_green">National Grid (green provider)</string>
     <string name="electricity_source_home_photovoltaics">Home photovoltaics</string>
     <string name="heating_fuel_type_oil_title">Oil</string>
     <string name="heating_fuel_type_natural_gas_title">Natural gas</string>
