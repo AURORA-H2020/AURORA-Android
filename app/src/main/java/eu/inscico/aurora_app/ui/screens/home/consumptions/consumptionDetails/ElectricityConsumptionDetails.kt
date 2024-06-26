@@ -137,6 +137,19 @@ fun ElectricityConsumptionDetails(
                 .clip(shape = RoundedCornerShape(16.dp))
         ) {
 
+            ListItem(
+                headlineContent = { Text(text = stringResource(id = R.string.electricity_source_title)) },
+                trailingContent = {
+                    Text(
+                        text = consumption.electricity.electricitySource.getDisplayName(context),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            )
+
+            Divider()
+
             val costsText = if (consumption.electricity.costs != null) {
                 "${String.format("%.2f", consumption.electricity.costs)} ${
                     unitService.getCurrencyUnit(
@@ -178,19 +191,6 @@ fun ElectricityConsumptionDetails(
                 trailingContent = {
                     Text(
                         text = CalendarUtils.toDateString(consumption.electricity.endDate, unitService.getDateFormat(config)),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            )
-
-            Divider()
-
-            ListItem(
-                headlineContent = { Text(text = stringResource(id = R.string.electricity_source_title)) },
-                trailingContent = {
-                    Text(
-                        text = consumption.electricity.electricitySource.getDisplayName(context),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium
                     )

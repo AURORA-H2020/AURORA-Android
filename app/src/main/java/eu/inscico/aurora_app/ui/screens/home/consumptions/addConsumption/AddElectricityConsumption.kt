@@ -121,6 +121,37 @@ fun AddElectricityConsumption(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        val allElectricitySourceSpinnerItems = viewModel.allElectricitySources.map {
+            SpinnerItem.Entry(name = it.getDisplayName(context), data = it)
+        }
+
+        val selectedEntry = if(electricitySource.value != null){
+            SpinnerItem.Entry(name = electricitySource.value!!.getDisplayName(context) , data = electricitySource.value)
+        } else {
+            null
+        }
+
+        SpinnerFormEntry(
+            title = stringResource(id = R.string.electricity_source_title),
+            selectedEntry = selectedEntry,
+            allEntries = allElectricitySourceSpinnerItems,
+            callback = { item, _ ->
+                electricitySource.value = item.data as ElectricitySource
+            }
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = stringResource(id = R.string.electricity_source_description),
+            modifier = Modifier.padding(horizontal = 16.dp),
+            style = MaterialTheme.typography.labelSmall,
+            textAlign = TextAlign.Start,
+            color = MaterialTheme.colorScheme.onSecondary
+        )
+
+        Spacer(Modifier.height(16.dp))
+
         val consumptionLabel = if(electricitySource.value == ElectricitySource.HOME_PHOTOVOLTAICS){
             stringResource(id = R.string.home_add_consumption_form_energy_produced_title)
         } else {
@@ -229,37 +260,6 @@ fun AddElectricityConsumption(
 
         Text(
             text = stringResource(id = R.string.home_add_consumption_form_people_in_household_description_title),
-            modifier = Modifier.padding(horizontal = 16.dp),
-            style = MaterialTheme.typography.labelSmall,
-            textAlign = TextAlign.Start,
-            color = MaterialTheme.colorScheme.onSecondary
-        )
-
-        Spacer(Modifier.height(16.dp))
-
-        val allElectricitySourceSpinnerItems = viewModel.allElectricitySources.map {
-            SpinnerItem.Entry(name = it.getDisplayName(context), data = it)
-        }
-
-        val selectedEntry = if(electricitySource.value != null){
-            SpinnerItem.Entry(name = electricitySource.value!!.getDisplayName(context) , data = electricitySource.value)
-        } else {
-            null
-        }
-
-        SpinnerFormEntry(
-            title = stringResource(id = R.string.electricity_source_title),
-            selectedEntry = selectedEntry,
-            allEntries = allElectricitySourceSpinnerItems,
-            callback = { item, _ ->
-                electricitySource.value = item.data as ElectricitySource
-            }
-        )
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Text(
-            text = stringResource(id = R.string.electricity_source_description),
             modifier = Modifier.padding(horizontal = 16.dp),
             style = MaterialTheme.typography.labelSmall,
             textAlign = TextAlign.Start,
