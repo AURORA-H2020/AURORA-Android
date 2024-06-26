@@ -63,7 +63,7 @@ fun AddElectricityConsumption(
         ""
     }
 
-    val initialEnergyExportedFromHomePV = if(initialValues?.value != null){
+    val initialEnergyExportedFromHomePV = if(initialValues?.electricity?.electricityExported != null){
         unitService.getValueInCorrectNumberFormat(config, String.format("%.1f",initialValues.electricity.electricityExported).replace(",",".").toDouble())
     } else {
         ""
