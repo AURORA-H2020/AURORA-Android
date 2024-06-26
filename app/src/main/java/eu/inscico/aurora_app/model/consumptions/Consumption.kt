@@ -242,6 +242,8 @@ sealed class Consumption {
                             )
                         }
                         TransportationType.PLANE,
+                        TransportationType.PLANE_INTRA_EU,
+                        TransportationType.PLANE_EXTRA_EU,
                         TransportationType.ELECTRIC_BIKE,
                         TransportationType.ELECTRIC_SCOOTER,
                         TransportationType.BIKE,

@@ -175,6 +175,9 @@
     <string name="home_add_consumption_transportation_type_item_diesel_passenger_train_title">Diesel passenger train</string>
     <string name="home_add_consumption_transportation_type_item_high_speed_train_title">High speed train</string>
     <string name="home_add_consumption_transportation_type_item_plane_title">Plane</string>
+    <string name="home_add_consumption_transportation_type_item_plane_domestic_title">Plane (domestic)</string>
+    <string name="home_add_consumption_transportation_type_item_plane_intra_eu_title">Plane (intra EU)</string>
+    <string name="home_add_consumption_transportation_type_item_plane_extra_eu_title">Plane (extra EU)</string>
     <string name="home_add_consumption_transportation_type_item_electric_bike_title">Electric bike</string>
     <string name="home_add_consumption_transportation_type_item_electric_scooter_title">Electric scooter</string>
     <string name="home_add_consumption_transportation_type_item_bike_title">Bike</string>
