@@ -127,60 +127,6 @@ fun AddHeatingConsumption(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color.Transparent,
-                unfocusedBorderColor = Color.Transparent,
-                containerColor = MaterialTheme.colorScheme.surface
-            ),
-            shape = RoundedCornerShape(16.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            value = consumption.value,
-            label = {
-                Text(text = stringResource(id = R.string.home_add_consumption_form_consumption_title))
-            },
-            onValueChange = {
-                consumption.value = it
-                isSaveValid.value = isSaveValid()
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
-            trailingIcon = { Text(text = "kWh") }
-        )
-
-        Spacer(Modifier.height(4.dp))
-
-        Text(
-            text = stringResource(id = R.string.home_add_consumption_form_heating_consumption_description_title),
-            modifier = Modifier.padding(horizontal = 16.dp),
-            style = MaterialTheme.typography.labelSmall,
-            textAlign = TextAlign.Start,
-            color = MaterialTheme.colorScheme.onSecondary
-        )
-
-        Spacer(Modifier.height(16.dp))
-
-        AddSubtractCountFormEntry(
-            titleRes = R.string.home_add_consumption_form_people_in_household_title,
-            initialValue = peopleInHousehold.value,
-            isNullCountPossible = false){
-            peopleInHousehold.value = it
-        }
-
-
-        Spacer(Modifier.height(4.dp))
-
-        Text(
-            text = stringResource(id = R.string.home_add_consumption_form_people_in_household_description_title),
-            modifier = Modifier.padding(horizontal = 16.dp),
-            style = MaterialTheme.typography.labelSmall,
-            textAlign = TextAlign.Start,
-            color = MaterialTheme.colorScheme.onSecondary
-        )
-
-        Spacer(Modifier.height(16.dp))
-
         val allHeatingFuelSpinnerEntries = viewModel.allHeatingFuels.map {
             SpinnerItem.Entry(name = it.getDisplayName(context), data = it)
         }
@@ -230,6 +176,60 @@ fun AddHeatingConsumption(
 
         Text(
             text = stringResource(id = R.string.home_add_consumption_form_heating_fuel_type_title),
+            modifier = Modifier.padding(horizontal = 16.dp),
+            style = MaterialTheme.typography.labelSmall,
+            textAlign = TextAlign.Start,
+            color = MaterialTheme.colorScheme.onSecondary
+        )
+
+        Spacer(Modifier.height(16.dp))
+
+        OutlinedTextField(
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
+            shape = RoundedCornerShape(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            value = consumption.value,
+            label = {
+                Text(text = stringResource(id = R.string.home_add_consumption_form_consumption_title))
+            },
+            onValueChange = {
+                consumption.value = it
+                isSaveValid.value = isSaveValid()
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+            trailingIcon = { Text(text = "kWh") }
+        )
+
+        Spacer(Modifier.height(4.dp))
+
+        Text(
+            text = stringResource(id = R.string.home_add_consumption_form_heating_consumption_description_title),
+            modifier = Modifier.padding(horizontal = 16.dp),
+            style = MaterialTheme.typography.labelSmall,
+            textAlign = TextAlign.Start,
+            color = MaterialTheme.colorScheme.onSecondary
+        )
+
+        Spacer(Modifier.height(16.dp))
+
+        AddSubtractCountFormEntry(
+            titleRes = R.string.home_add_consumption_form_people_in_household_title,
+            initialValue = peopleInHousehold.value,
+            isNullCountPossible = false){
+            peopleInHousehold.value = it
+        }
+
+
+        Spacer(Modifier.height(4.dp))
+
+        Text(
+            text = stringResource(id = R.string.home_add_consumption_form_people_in_household_description_title),
             modifier = Modifier.padding(horizontal = 16.dp),
             style = MaterialTheme.typography.labelSmall,
             textAlign = TextAlign.Start,
