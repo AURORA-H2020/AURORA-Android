@@ -111,7 +111,10 @@
     <string name="home_consumptions_all_entries_title">All consumption entries</string>
     <string name="home_add_consumption_title">Add consumption</string>
     <string name="home_add_consumption_form_consumption_title">Consumption</string>
+    <string name="home_add_consumption_form_energy_produced_title">Energy produced</string>
+    <string name="home_add_consumption_form_energy_exported_title">Energy exported</string>
     <string name="home_add_consumption_form_electricity_consumption_description_title">You can find this information in your electricity bill.</string>
+    <string name="home_add_consumption_form_electricity_energy_expanded_description_title">You can usually find this information on an app or website provided by your PV installation contractor.</string>
     <string name="home_add_consumption_form_heating_consumption_description_title">You can find this information in your heating bill.</string>
     <string name="home_add_consumption_form_people_in_household_title">People in household:</string>
     <string name="home_add_consumption_form_people_in_household_description_title">How many people, including you, live in your household</string>

@@ -63,8 +63,18 @@ fun AddElectricityConsumption(
         ""
     }
 
+    val initialEnergyExportedFromHomePV = if(initialValues?.value != null){
+        unitService.getValueInCorrectNumberFormat(config, String.format("%.1f",initialValues.electricity.electricityExported).replace(",",".").toDouble())
+    } else {
+        ""
+    }
+
     val consumption = remember {
         mutableStateOf(initialConsumption)
+    }
+
+    val electricityExpandedFromHomePV = remember {
+        mutableStateOf(initialEnergyExportedFromHomePV)
     }
 
     val peopleInHousehold = remember {
@@ -111,6 +121,12 @@ fun AddElectricityConsumption(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        val consumptionLabel = if(electricitySource.value == ElectricitySource.HOME_PHOTOVOLTAICS){
+            stringResource(id = R.string.home_add_consumption_form_energy_produced_title)
+        } else {
+            stringResource(id = R.string.home_add_consumption_form_consumption_title)
+        }
+
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -124,10 +140,10 @@ fun AddElectricityConsumption(
             shape = RoundedCornerShape(16.dp),
             value = consumption.value,
             label = {
-                Text(text = stringResource(id = R.string.home_add_consumption_form_consumption_title))
+                Text(text = consumptionLabel)
             },
             onValueChange = {
-                
+
                 val isValueInCorrectFormat = viewModel.isDecimalInputValid(it)
                 if(isValueInCorrectFormat || it.isEmpty()){
                     val valueWithCorrectDecimalPoint = if(Locale.getDefault() == Locale.US || Locale.getDefault() == Locale.UK){
@@ -145,10 +161,53 @@ fun AddElectricityConsumption(
             }
         )
 
+        if(electricitySource.value == ElectricitySource.HOME_PHOTOVOLTAICS){
+
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                ,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent,
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
+                shape = RoundedCornerShape(16.dp),
+                value = electricityExpandedFromHomePV.value,
+                label = {
+                    Text(text = stringResource(id = R.string.home_add_consumption_form_energy_exported_title))
+                },
+                onValueChange = {
+
+                    val isValueInCorrectFormat = viewModel.isDecimalInputValid(it)
+                    if(isValueInCorrectFormat || it.isEmpty()){
+                        val valueWithCorrectDecimalPoint = if(Locale.getDefault() == Locale.US || Locale.getDefault() == Locale.UK){
+                            it.replace(",",".")
+                        } else {
+                            it.replace(".",",")
+                        }
+                        electricityExpandedFromHomePV.value = valueWithCorrectDecimalPoint
+                    }
+                    isSaveValid.value = isValueInCorrectFormat && it.replace(",",".").toDoubleOrNull() != null
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
+                trailingIcon = {
+                    Text(text = "kWh")
+                }
+            )
+        }
+
         Spacer(Modifier.height(4.dp))
 
+        val consumptionInfoText = if(electricitySource.value == ElectricitySource.HOME_PHOTOVOLTAICS){
+            stringResource(id = R.string.home_add_consumption_form_electricity_energy_expanded_description_title)
+        } else {
+            stringResource(id = R.string.home_add_consumption_form_electricity_consumption_description_title)
+        }
+
         Text(
-            text = stringResource(id = R.string.home_add_consumption_form_electricity_consumption_description_title),
+            text = consumptionInfoText,
             modifier = Modifier.padding(horizontal = 16.dp),
             style = MaterialTheme.typography.labelSmall,
             textAlign = TextAlign.Start,
@@ -329,17 +388,25 @@ fun AddElectricityConsumption(
 
             Button(
                 modifier = Modifier
-                    .padding(horizontal = 32.dp).fillMaxWidth(),
+                    .padding(horizontal = 32.dp)
+                    .fillMaxWidth(),
                 enabled = isSaveValid.value,
                 shape = RoundedCornerShape(32.dp),
                 onClick = {
+
+                    val electricityExported = if(electricitySource.value == ElectricitySource.HOME_PHOTOVOLTAICS){
+                        electricityExpandedFromHomePV.value.replace(",",".").toDoubleOrNull()
+                    } else {
+                        null
+                    }
 
                     val electricityConsumptionDataResponse = ElectricityConsumptionDataResponse(
                         costs = costs.value.replace(",",".").toDoubleOrNull(),
                         endDate = Timestamp(Date(endDateTime.value)),
                         startDate = Timestamp(Date(beginDateTime.value)),
                         householdSize = peopleInHousehold.value,
-                        electricitySource = ElectricitySource.parseElectricitySourceToString(electricitySource.value ?: ElectricitySource.DEFAULT)
+                        electricitySource = ElectricitySource.parseElectricitySourceToString(electricitySource.value ?: ElectricitySource.DEFAULT),
+                        electricityExported = electricityExported
                     )
 
                     val descriptionValue = description.value.ifEmpty {

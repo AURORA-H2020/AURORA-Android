@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptions.Consumption
+import eu.inscico.aurora_app.model.consumptions.ElectricitySource
 import eu.inscico.aurora_app.model.consumptions.ElectricitySource.Companion.getDisplayName
 import eu.inscico.aurora_app.utils.CalendarUtils
 import eu.inscico.aurora_app.services.shared.UnitService
@@ -79,7 +80,7 @@ fun ElectricityConsumptionDetails(
             }
 
             val energyExpendedText = if (consumption.energyExpended != null) {
-                "${unitService.getConvertedWeight(config, consumption.carbonEmissions, 1)} ${stringResource(
+                "${unitService.getConvertedWeight(config, consumption.energyExpended, 1)} ${stringResource(
                     id = R.string.home_your_carbon_emissions_bar_chart_label_energy_expended_title
                 )}"
             } else {
@@ -99,6 +100,31 @@ fun ElectricityConsumptionDetails(
                         )
                     }
                 )
+            }
+
+            if(consumption.electricity.electricitySource == ElectricitySource.HOME_PHOTOVOLTAICS){
+
+                val energyExportedText = if (consumption.electricity.electricityExported != null) {
+                    "${unitService.getConvertedWeight(config, consumption.electricity.electricityExported, 1)} ${stringResource(
+                        id = R.string.home_your_carbon_emissions_bar_chart_label_energy_expended_title
+                    )}"
+                } else {
+                    null
+                }
+
+                if(energyExportedText != null){
+                    Divider()
+                    ListItem(
+                        headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_form_energy_exported_title)) },
+                        trailingContent = {
+                            Text(
+                                text = energyExportedText,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    )
+                }
             }
         }
 

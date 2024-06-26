@@ -94,7 +94,8 @@ sealed class Consumption {
                         endDate = endDate,
                         startDate = startDate,
                         householdSize = item.electricity?.householdSize ?: return null,
-                        electricitySource = electricitySource
+                        electricitySource = electricitySource,
+                        electricityExported = item.electricity?.electricityExported
                     )
                     ElectricityConsumption(
                         id = item.id ?: return null,
@@ -107,7 +108,7 @@ sealed class Consumption {
                         value = item.value ?: return null,
                         version = item.version,
                         electricity = electricity,
-                        generatedByRecurringConsumptionId = item.generatedByRecurringConsumptionId
+                        generatedByRecurringConsumptionId = item.generatedByRecurringConsumptionId,
                     )
                 }
                 ConsumptionType.HEATING -> {
@@ -283,7 +284,8 @@ data class ElectricityConsumptionData(
     val endDate: Calendar,
     val startDate: Calendar,
     val householdSize: Int,
-    val electricitySource: ElectricitySource
+    val electricitySource: ElectricitySource,
+    val electricityExported: Double?
 )
 
 data class HeatingConsumptionData(

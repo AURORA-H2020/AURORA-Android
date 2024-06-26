@@ -122,7 +122,8 @@ data class ElectricityConsumptionDataResponse(
     var endDate: Timestamp? = null,
     var startDate: Timestamp? = null,
     var householdSize: Int? = null,
-    val electricitySource: String? = null
+    val electricitySource: String? = null,
+    var electricityExported: Double? = null
 )
 
 data class HeatingConsumptionDataResponse(

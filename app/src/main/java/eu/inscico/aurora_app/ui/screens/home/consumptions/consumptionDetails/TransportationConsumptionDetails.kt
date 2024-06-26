@@ -84,7 +84,7 @@ fun TransportationConsumptionDetails(
                 )
             }
             val energyExpendedText = if (consumption.energyExpended != null) {
-                "${unitService.getConvertedWeight(config, consumption.carbonEmissions, 1)} ${stringResource(
+                "${unitService.getConvertedWeight(config, consumption.energyExpended, 1)} ${stringResource(
                     id = R.string.home_your_carbon_emissions_bar_chart_label_energy_expended_title
                 )}"
             } else {
