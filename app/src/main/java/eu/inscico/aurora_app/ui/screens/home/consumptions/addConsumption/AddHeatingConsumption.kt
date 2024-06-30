@@ -64,14 +64,36 @@ fun AddHeatingConsumption(
     // set language, only necessary for screenshot ui tests
     LocaleUtils.updateLocale(context, language)
 
-    val initialConsumption = if(initialValue?.value != null){
-        unitService.getValueInUserPreferredNumberFormat(config, String.format("%.1f",initialValue.value).replace(",",".").toDouble())
+    val convertedInitialConsumption = if(initialValue?.value != null){
+
+        when(initialValue.heating.heatingFuel){
+            HeatingFuelType.BIOMASS,
+            HeatingFuelType.LOCALLY_PRODUCED_BIOMASS,
+            HeatingFuelType.FIREWOOD,
+            HeatingFuelType.BUTANE -> {
+                unitService.getWeightInUserPreferredUnit(config, initialValue.value, 1)
+            }
+            HeatingFuelType.OIL,
+            HeatingFuelType.LPG -> {
+                unitService.getVolumeInUserPreferredUnit(config, initialValue.value, 1)
+            }
+            HeatingFuelType.NATURAL_GAS,
+            HeatingFuelType.GEO_THERMAL,
+            HeatingFuelType.SOLAR_THERMAL,
+            HeatingFuelType.DISTRICT,
+            HeatingFuelType.ELECTRIC -> {
+                initialValue.value
+            }
+        }
     } else {
-        ""
+        0.0
     }
 
+    val convertedInitialConsumptionInUsersNumberFormat =
+        unitService.getValueInUserPreferredNumberFormat(config, convertedInitialConsumption)
+
     val consumption = remember {
-        mutableStateOf(initialConsumption)
+        mutableStateOf(convertedInitialConsumptionInUsersNumberFormat)
     }
 
     val peopleInHousehold = remember {
@@ -184,6 +206,27 @@ fun AddHeatingConsumption(
 
         Spacer(Modifier.height(16.dp))
 
+        val consumptionUnit = when(heatingFuel.value){
+            HeatingFuelType.BIOMASS,
+            HeatingFuelType.LOCALLY_PRODUCED_BIOMASS,
+            HeatingFuelType.FIREWOOD,
+            HeatingFuelType.BUTANE -> {
+                unitService.getUserPreferredWeightUnit(config)
+            }
+            HeatingFuelType.OIL,
+            HeatingFuelType.LPG -> {
+                unitService.getUserPreferredVolumeUnit(config)
+            }
+            HeatingFuelType.NATURAL_GAS,
+            HeatingFuelType.GEO_THERMAL,
+            HeatingFuelType.SOLAR_THERMAL,
+            HeatingFuelType.DISTRICT,
+            HeatingFuelType.ELECTRIC -> {
+                "kWh"
+            }
+            else -> { "kWh" }
+        }
+
         OutlinedTextField(
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Color.Transparent,
@@ -203,7 +246,7 @@ fun AddHeatingConsumption(
                 isSaveValid.value = isSaveValid()
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
-            trailingIcon = { Text(text = "kWh") }
+            trailingIcon = { Text(text = consumptionUnit) }
         )
 
         Spacer(Modifier.height(4.dp))
@@ -371,8 +414,30 @@ fun AddHeatingConsumption(
                     }
 
                     val finalValue = consumption.value.replace(",",".").toDoubleOrNull()
+                    val finalHeatingFuel = heatingFuel.value
+                    if(finalValue != null && finalHeatingFuel != null) {
+                    val consumptionValue = when(finalHeatingFuel){
+                        HeatingFuelType.BIOMASS,
+                        HeatingFuelType.LOCALLY_PRODUCED_BIOMASS,
+                        HeatingFuelType.FIREWOOD,
+                        HeatingFuelType.BUTANE -> {
+                            val consumptionInKg = unitService.getWeightInKg(config, finalValue)
+                            consumptionInKg
+                        }
+                        HeatingFuelType.OIL,
+                        HeatingFuelType.LPG -> {
+                            val consumptionInLiter = unitService.getVolumeInLiter(config, finalValue)
+                            consumptionInLiter
+                        }
+                        HeatingFuelType.NATURAL_GAS,
+                        HeatingFuelType.GEO_THERMAL,
+                        HeatingFuelType.SOLAR_THERMAL,
+                        HeatingFuelType.DISTRICT,
+                        HeatingFuelType.ELECTRIC -> {
+                            finalValue
+                        }
+                    }
 
-                    if(finalValue != null && heatingFuel.value != null) {
 
                         val heatingConsumptionDataResponse = HeatingConsumptionDataResponse(
                             costs = costs.value.replace(",",".").toDoubleOrNull(),
@@ -389,7 +454,7 @@ fun AddHeatingConsumption(
 
                         val consumptionResponse = ConsumptionResponse(
                             category = ConsumptionType.parseConsumptionTypeToString(ConsumptionType.HEATING),
-                            value = finalValue,
+                            value = consumptionValue,
                             description = descriptionValue,
                             createdAt = Timestamp(initialValue?.createdAt?.time ?: Date(System.currentTimeMillis())),
                             electricity = null,
@@ -421,6 +486,8 @@ fun AddHeatingConsumption(
                                         navigationService.navControllerTabHome?.popBackStack()
                                     }
                                 }
+
+                                else -> {}
                             }
                         }
                     } else {

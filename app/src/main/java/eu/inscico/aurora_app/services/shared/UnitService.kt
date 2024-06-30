@@ -341,7 +341,11 @@ class UnitService(
         return "$convertedWeightFormatted ${getUserPreferredWeightUnit(config)}"
     }
 
-    fun getWeightInKg(config: Configuration, distance: Double): Double {
+    fun getWeightInKg(config: Configuration, weight: Double?): Double {
+
+        if (weight == null || weight == 0.0) {
+            return 0.0
+        }
 
         return when (appRegion) {
             RegionEnum.SYSTEM -> {
@@ -351,12 +355,12 @@ class UnitService(
                     return when (measurementSystem) {
                         LocaleData.MeasurementSystem.UK,
                         LocaleData.MeasurementSystem.US -> {
-                            distance * 0.45359237
+                            weight * 0.45359237
                         }
-                        else -> distance
+                        else -> weight
                     }
                 } else {
-                    distance
+                    weight
                 }
             }
             RegionEnum.GERMANY,
@@ -364,11 +368,11 @@ class UnitService(
             RegionEnum.PORTUGAL,
             RegionEnum.SLOVENIA,
             RegionEnum.DENMARK -> {
-                distance
+                weight
             }
             RegionEnum.UNITED_KINGDOM,
             RegionEnum.USA -> {
-                distance * 0.45359237
+                weight * 0.45359237
             }
         }
     }
