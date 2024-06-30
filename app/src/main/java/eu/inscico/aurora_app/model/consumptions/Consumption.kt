@@ -221,7 +221,8 @@ sealed class Consumption {
                                 dateOfTravelEnd = dateOfTravelEnd,
                                 privateVehicleOccupancy = item.transportation?.privateVehicleOccupancy ?: return null,
                                 transportationType = transportationType,
-                                publicVehicleOccupancy = null
+                                publicVehicleOccupancy = null,
+                                fuelConsumption = item.transportation?.fuelConsumption
                             )
                         }
                         TransportationType.ELECTRIC_BUS,
@@ -238,7 +239,8 @@ sealed class Consumption {
                                 dateOfTravelEnd = dateOfTravelEnd,
                                 publicVehicleOccupancy = publicVehicleOccupancy ?: return null,
                                 transportationType = transportationType,
-                                privateVehicleOccupancy = null
+                                privateVehicleOccupancy = null,
+                                fuelConsumption = null
                             )
                         }
                         TransportationType.PLANE,
@@ -253,7 +255,8 @@ sealed class Consumption {
                                 dateOfTravelEnd = dateOfTravelEnd,
                                 publicVehicleOccupancy = null,
                                 transportationType = transportationType,
-                                privateVehicleOccupancy = null
+                                privateVehicleOccupancy = null,
+                                fuelConsumption = null
                             )
                         }
                         null -> return null
@@ -304,5 +307,6 @@ data class TransportationConsumptionData(
     val dateOfTravelEnd: Calendar?,
     val privateVehicleOccupancy: Int?,
     val publicVehicleOccupancy: PublicVehicleOccupancy?,
-    val transportationType: TransportationType
+    val transportationType: TransportationType,
+    val fuelConsumption: Double?
 )

@@ -94,7 +94,8 @@ class ConsumptionResponse(
                         dateOfTravelEnd = dateOfTravelEnd,
                         privateVehicleOccupancy = item.transportation.privateVehicleOccupancy,
                         publicVehicleOccupancy = item.transportation.publicVehicleOccupancy?.parsePublicVehicleOccupancyToString(),
-                        transportationType = item.transportation.transportationType.parseTransportationTypeToString()
+                        transportationType = item.transportation.transportationType.parseTransportationTypeToString(),
+                        fuelConsumption = item.transportation.fuelConsumption
                     )
                     ConsumptionResponse(
                         id = item.id,
@@ -140,5 +141,6 @@ data class TransportationConsumptionDataResponse(
     var dateOfTravelEnd: Timestamp? = null,
     var privateVehicleOccupancy: Int? = null,
     var publicVehicleOccupancy: String? = null,
-    var transportationType: String? = null
+    var transportationType: String? = null,
+    val fuelConsumption: Double? = null
 )

@@ -188,6 +188,8 @@
     <string name="home_add_consumption_transportation_public_occupancy_medium_title">Medium occupancy</string>
     <string name="home_add_consumption_transportation_public_occupancy_nearly_full_title">Nearly full</string>
     <string name="home_add_consumption_transportation_distance_title">Distance</string>
+    <string name="home_add_consumption_transportation_fuel_consumption_optional_title">Fuel consumption (optional)</string>
+    <string name="home_add_consumption_transportation_fuel_consumption_title">Fuel consumption</string>
     <string name="home_add_consumption_transportation_start_of_travel_title">Start of travel</string>
     <string name="home_add_consumption_transportation_end_of_travel_title">End of travel</string>
     <string name="home_add_consumption_carbon_emissions_title">Carbon emissions</string>
