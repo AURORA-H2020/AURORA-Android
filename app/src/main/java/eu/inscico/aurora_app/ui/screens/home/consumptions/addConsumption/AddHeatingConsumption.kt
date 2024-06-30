@@ -65,7 +65,7 @@ fun AddHeatingConsumption(
     LocaleUtils.updateLocale(context, language)
 
     val initialConsumption = if(initialValue?.value != null){
-        unitService.getValueInCorrectNumberFormat(config, String.format("%.1f",initialValue.value).replace(",",".").toDouble())
+        unitService.getValueInUserPreferredNumberFormat(config, String.format("%.1f",initialValue.value).replace(",",".").toDouble())
     } else {
         ""
     }

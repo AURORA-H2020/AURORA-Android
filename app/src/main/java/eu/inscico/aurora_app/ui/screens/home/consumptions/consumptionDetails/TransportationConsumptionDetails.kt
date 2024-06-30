@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptions.Consumption
 import eu.inscico.aurora_app.model.consumptions.PublicVehicleOccupancy.Companion.getDisplayName
+import eu.inscico.aurora_app.model.consumptions.TransportationType
 import eu.inscico.aurora_app.model.consumptions.TransportationType.Companion.getDisplayNameRes
 import eu.inscico.aurora_app.utils.CalendarUtils
 import eu.inscico.aurora_app.services.shared.UnitService
@@ -54,13 +55,16 @@ fun TransportationConsumptionDetails(
                 headlineContent = { Text(text = stringResource(id = R.string.home_consumptions_type_transportation_title)) },
                 trailingContent = {
                     Text(
-                        text = unitService.getConvertedDistanceWithUnit(config, consumption.value, decimals = 1),
+                        text = unitService.getConvertedDistanceWithUnit(
+                            config,
+                            consumption.value,
+                            decimals = 1
+                        ),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
             )
-
 
 
             val carbonEmissionText = if (consumption.carbonEmissions != null) {
@@ -84,9 +88,17 @@ fun TransportationConsumptionDetails(
                 )
             }
             val energyExpendedText = if (consumption.energyExpended != null) {
-                "${unitService.getConvertedWeight(config, consumption.energyExpended, 1)} ${stringResource(
-                    id = R.string.home_your_carbon_emissions_bar_chart_label_energy_expended_title
-                )}"
+                "${
+                    unitService.getWeightInUserPreferredUnit(
+                        config,
+                        consumption.energyExpended,
+                        1
+                    )
+                } ${
+                    stringResource(
+                        id = R.string.home_your_carbon_emissions_bar_chart_label_energy_expended_title
+                    )
+                }"
             } else {
                 null
             }
@@ -131,7 +143,7 @@ fun TransportationConsumptionDetails(
                 }
             )
 
-            if(consumption.transportation.dateOfTravelEnd != null){
+            if (consumption.transportation.dateOfTravelEnd != null) {
 
                 Divider()
 
@@ -168,6 +180,7 @@ fun TransportationConsumptionDetails(
                 consumption.transportation.publicVehicleOccupancy != null -> consumption.transportation.publicVehicleOccupancy.getDisplayName(
                     context
                 )
+
                 consumption.transportation.privateVehicleOccupancy != null -> "${consumption.transportation.privateVehicleOccupancy}"
                 else -> null
             }
@@ -179,6 +192,32 @@ fun TransportationConsumptionDetails(
                     trailingContent = {
                         Text(
                             text = occupancyText,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                )
+            }
+
+            if (consumption.transportation.transportationType == TransportationType.ELECTRIC_CAR
+                || consumption.transportation.transportationType == TransportationType.HYBRID_CAR
+                || consumption.transportation.transportationType == TransportationType.FUEL_CAR
+                || consumption.transportation.transportationType == TransportationType.MOTORCYCLE
+                || consumption.transportation.transportationType == TransportationType.ELECTRIC_MOTORCYCLE
+            ) {
+                val fuelConsumptionText = if(
+                    consumption.transportation.transportationType == TransportationType.ELECTRIC_CAR
+                    || consumption.transportation.transportationType == TransportationType.ELECTRIC_MOTORCYCLE){
+                        unitService.getConvertedKWhPerDistanceWithUnit(config, consumption.transportation.fuelConsumption, decimals = 1)
+                    } else {
+                        unitService.getConvertedVolumePerDistanceWithUnit(config, consumption.transportation.fuelConsumption, decimals = 1)
+                }
+                Divider()
+                ListItem(
+                    headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_transportation_fuel_consumption_title)) },
+                    trailingContent = {
+                        Text(
+                            text = fuelConsumptionText,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = MaterialTheme.typography.bodyMedium
                         )
@@ -242,11 +281,10 @@ fun TransportationConsumptionDetails(
                             )
                         }
                     )
-
-                    Divider()
                 }
 
                 if (updatedText != null) {
+                    Divider()
                     ListItem(
                         headlineContent = { Text(text = stringResource(id = R.string.updated)) },
                         trailingContent = {

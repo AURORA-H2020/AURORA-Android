@@ -48,7 +48,7 @@ fun HeatingConsumptionDetails(
                 .clip(shape = RoundedCornerShape(16.dp))
         ) {
 
-            val formattedConsumptionValue = unitService.getValueInCorrectNumberFormat(config, String.format("%.1f", consumption.value).replace(",",".").toDouble())
+            val formattedConsumptionValue = unitService.getValueInUserPreferredNumberFormat(config, String.format("%.1f", consumption.value).replace(",",".").toDouble())
 
             ListItem(
                 headlineContent = { Text(text = stringResource(id = R.string.home_consumptions_type_heating_title)) },
@@ -82,7 +82,7 @@ fun HeatingConsumptionDetails(
             }
 
             val energyExpendedText = if (consumption.energyExpended != null) {
-                "${unitService.getConvertedWeight(config, consumption.energyExpended, 1)} ${stringResource(
+                "${unitService.getWeightInUserPreferredUnit(config, consumption.energyExpended, 1)} ${stringResource(
                     id = R.string.home_your_carbon_emissions_bar_chart_label_energy_expended_title
                 )}"
             } else {

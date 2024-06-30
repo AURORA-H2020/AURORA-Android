@@ -1,6 +1,5 @@
 package eu.inscico.aurora_app.ui.components.consumptionSummery
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -130,7 +129,7 @@ fun OverallConsumptionSummaryLabel(
                         } else {
                             context.getString(
                                 R.string.home_your_carbon_emissions_labels_overall_used_value_title,
-                                unitService.getConvertedWeight(config = configuration, weightInKg = value, decimals = 1).toString(),
+                                unitService.getWeightInUserPreferredUnit(config = configuration, weightInKg = value, decimals = 1).toString(),
                             )
                         }
 

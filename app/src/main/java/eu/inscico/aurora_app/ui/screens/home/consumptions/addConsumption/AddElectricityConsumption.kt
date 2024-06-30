@@ -58,13 +58,13 @@ fun AddElectricityConsumption(
     val hasInternet = networkService.hasInternetConnectionLive.observeAsState()
 
     val initialConsumption = if(initialValues?.value != null){
-        unitService.getValueInCorrectNumberFormat(config, String.format("%.1f",initialValues.value).replace(",",".").toDouble())
+        unitService.getValueInUserPreferredNumberFormat(config, String.format("%.1f",initialValues.value).replace(",",".").toDouble())
     } else {
         ""
     }
 
     val initialEnergyExportedFromHomePV = if(initialValues?.electricity?.electricityExported != null){
-        unitService.getValueInCorrectNumberFormat(config, String.format("%.1f",initialValues.electricity.electricityExported).replace(",",".").toDouble())
+        unitService.getValueInUserPreferredNumberFormat(config, String.format("%.1f",initialValues.electricity.electricityExported).replace(",",".").toDouble())
     } else {
         ""
     }
@@ -175,16 +175,14 @@ fun AddElectricityConsumption(
             },
             onValueChange = {
 
+                // display new value if format correct
                 val isValueInCorrectFormat = viewModel.isDecimalInputValid(it)
                 if(isValueInCorrectFormat || it.isEmpty()){
-                    val valueWithCorrectDecimalPoint = if(Locale.getDefault() == Locale.US || Locale.getDefault() == Locale.UK){
-                        it.replace(",",".")
-                    } else {
-                        it.replace(".",",")
-                    }
-                    consumption.value = valueWithCorrectDecimalPoint
+                    consumption.value = unitService.getValueWithLocalDecimalPoint(it)
                 }
-                isSaveValid.value = isValueInCorrectFormat && it.replace(",",".").toDoubleOrNull() != null
+                // check if input is valid
+                val valueAsDouble = unitService.getValueStringAsDouble(it)
+                isSaveValid.value = isValueInCorrectFormat && valueAsDouble != null
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
             trailingIcon = {
@@ -211,16 +209,14 @@ fun AddElectricityConsumption(
                 },
                 onValueChange = {
 
+                    // display new value if format correct
                     val isValueInCorrectFormat = viewModel.isDecimalInputValid(it)
                     if(isValueInCorrectFormat || it.isEmpty()){
-                        val valueWithCorrectDecimalPoint = if(Locale.getDefault() == Locale.US || Locale.getDefault() == Locale.UK){
-                            it.replace(",",".")
-                        } else {
-                            it.replace(".",",")
-                        }
-                        electricityExpandedFromHomePV.value = valueWithCorrectDecimalPoint
+                        electricityExpandedFromHomePV.value = unitService.getValueWithLocalDecimalPoint(it)
                     }
-                    isSaveValid.value = isValueInCorrectFormat && it.replace(",",".").toDoubleOrNull() != null
+                    // check if input is valid
+                    val valueAsDouble = unitService.getValueStringAsDouble(it)
+                    isSaveValid.value = isValueInCorrectFormat && valueAsDouble != null
                 },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
                 trailingIcon = {
@@ -307,15 +303,14 @@ fun AddElectricityConsumption(
                 Text(text = stringResource(id = R.string.home_add_consumption_form_costs_title))
             },
             onValueChange = {
+                // display new value if format correct
                 val isValueInCorrectFormat = viewModel.isDecimalInputValid(it)
                 if(isValueInCorrectFormat || it.isEmpty()){
-                    val valueWithCorrectDecimalPoint = if(Locale.getDefault() == Locale.US || Locale.getDefault() == Locale.UK){
-                        it.replace(",",".")
-                    } else {
-                        it.replace(".",",")
-                    }
-                    costs.value = valueWithCorrectDecimalPoint
+                    costs.value = unitService.getValueWithLocalDecimalPoint(it)
                 }
+                // check if input is valid
+                val valueAsDouble = unitService.getValueStringAsDouble(it)
+                isSaveValid.value = isValueInCorrectFormat && valueAsDouble != null
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
             trailingIcon = {
@@ -395,13 +390,13 @@ fun AddElectricityConsumption(
                 onClick = {
 
                     val electricityExported = if(electricitySource.value == ElectricitySource.HOME_PHOTOVOLTAICS){
-                        electricityExpandedFromHomePV.value.replace(",",".").toDoubleOrNull()
+                        unitService.getValueStringAsDouble(electricityExpandedFromHomePV.value)
                     } else {
                         null
                     }
 
                     val electricityConsumptionDataResponse = ElectricityConsumptionDataResponse(
-                        costs = costs.value.replace(",",".").toDoubleOrNull(),
+                        costs = unitService.getValueStringAsDouble(costs.value),
                         endDate = Timestamp(Date(endDateTime.value)),
                         startDate = Timestamp(Date(beginDateTime.value)),
                         householdSize = peopleInHousehold.value,
@@ -415,7 +410,7 @@ fun AddElectricityConsumption(
 
                     val consumptionResponse = ConsumptionResponse(
                         category = ConsumptionType.parseConsumptionTypeToString(ConsumptionType.ELECTRICITY),
-                        value = consumption.value.replace(",",".").toDoubleOrNull(),
+                        value = unitService.getValueStringAsDouble(consumption.value),
                         description = descriptionValue,
                         createdAt = Timestamp(initialValues?.createdAt?.time ?: Date(System.currentTimeMillis())),
                         electricity = electricityConsumptionDataResponse,
