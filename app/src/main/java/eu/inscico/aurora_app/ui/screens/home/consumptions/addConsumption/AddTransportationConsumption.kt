@@ -70,7 +70,7 @@ fun AddTransportationConsumption(
 
     val convertedDistance = unitService.getDistanceInUsersPreferredUnit(config, distanceInKm = initialValues?.value, decimals = 1)
     val initialDistance = if (initialValues?.value != null) {
-        unitService.getValueInUserPreferredNumberFormat(config, convertedDistance)
+        unitService.getValueInUserPreferredNumberFormat(config, convertedDistance, 1)
     } else {
         ""
     }
@@ -145,7 +145,7 @@ fun AddTransportationConsumption(
             unitService.getVolumePerDistanceInUserPreferredUnit(config, literPer100km = initialValues?.transportation?.fuelConsumption, decimals = 1)
         }
     val initialFuelConsumption = if (initialValues?.transportation?.fuelConsumption != null) {
-        unitService.getValueInUserPreferredNumberFormat(config, convertedFuelConsumption)
+        unitService.getValueInUserPreferredNumberFormat(config, convertedFuelConsumption, 1)
     } else {
         ""
     }
@@ -719,10 +719,10 @@ fun AddTransportationConsumption(
                     val fuelConsumptionValue = fuelConsumption.value.replace(",", ".").toDoubleOrNull()
                     val fuelConsumptionInLper100km = if(transportationType.value == TransportationType.ELECTRIC_MOTORCYCLE ||
                         transportationType.value == TransportationType.ELECTRIC_CAR){
-                        unitService.getKWhPerDistanceInKWhPer100Km(config, fuelConsumptionValue ?: 0.0, decimals = 1)
+                        unitService.getKWhPerDistanceInKWhPer100Km(config, fuelConsumptionValue ?: 0.0)
 
                     } else {
-                        unitService.getVolumePerDistanceInLiterPer100Km(config, fuelConsumptionValue ?: 0.0, decimals = 1)
+                        unitService.getVolumePerDistanceInLiterPer100Km(config, fuelConsumptionValue ?: 0.0)
                     }
 
                     val transportationConsumptionDataResponse = when (transportationSection.value) {

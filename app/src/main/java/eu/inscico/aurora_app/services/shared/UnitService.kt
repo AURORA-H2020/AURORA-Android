@@ -152,7 +152,7 @@ class UnitService(
         }
     }
 
-    fun getValueInUserPreferredNumberFormat(config: Configuration, value: Double): String {
+    fun getValueInUserPreferredNumberFormat(config: Configuration, value: Double, decimals: Int? = 0): String {
         return when (appRegion) {
             RegionEnum.SYSTEM -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -161,11 +161,11 @@ class UnitService(
 
                     when (measurementSystem) {
                         LocaleData.MeasurementSystem.UK,
-                        LocaleData.MeasurementSystem.US -> value.toString().replace(",", ".")
-                        else -> value.toString().replace(".", ",")
+                        LocaleData.MeasurementSystem.US -> String.format("%.${decimals}f", value).replace(",", ".")
+                        else -> String.format("%.${decimals}f", value).replace(".", ",")
                     }
                 } else {
-                    value.toString().replace(",", ".")
+                    String.format("%.${decimals}f", value).replace(",", ".")
                 }
             }
             RegionEnum.GERMANY,
@@ -173,11 +173,11 @@ class UnitService(
             RegionEnum.SPAIN,
             RegionEnum.SLOVENIA,
             RegionEnum.DENMARK -> {
-                value.toString().replace(".", ",")
+                String.format("%.${decimals}f", value).replace(".", ",")
             }
             RegionEnum.UNITED_KINGDOM,
             RegionEnum.USA -> {
-                value.toString().replace(",", ".")
+                String.format("%.${decimals}f", value).replace(",", ".")
             }
         }
     }
@@ -188,7 +188,7 @@ class UnitService(
         decimals: Int? = 0
     ): String {
         val convertedDistance = getDistanceInUsersPreferredUnit(config, distanceInKm, decimals)
-        val convertedDistanceFormatted = getValueInUserPreferredNumberFormat(config, convertedDistance)
+        val convertedDistanceFormatted = getValueInUserPreferredNumberFormat(config, convertedDistance, decimals)
         return "$convertedDistanceFormatted ${getUserPreferredDistanceUnit(config)}"
     }
 
@@ -337,7 +337,7 @@ class UnitService(
         decimals: Int? = 0
     ): String {
         val convertedWeight = getWeightInUserPreferredUnit(config, weightInKg, decimals)
-        val convertedWeightFormatted = getValueInUserPreferredNumberFormat(config, convertedWeight)
+        val convertedWeightFormatted = getValueInUserPreferredNumberFormat(config, convertedWeight, decimals)
         return "$convertedWeightFormatted ${getUserPreferredWeightUnit(config)}"
     }
 
@@ -416,11 +416,10 @@ class UnitService(
     fun getGallonsPer100Miles(
         config: Configuration,
         volumeInLiter: Double?,
-        decimals: Int? = null
     ): Double {
 
-        val gallonsPerLiter = getVolumeInUserPreferredUnit(config, volumeInLiter, decimals)
-        val milesPer100Km = getDistanceInUsersPreferredUnit(config, 100.0, decimals)
+        val gallonsPerLiter = getVolumeInUserPreferredUnit(config, volumeInLiter, 10)
+        val milesPer100Km = getDistanceInUsersPreferredUnit(config, 100.0, 10)
         return milesPer100Km / gallonsPerLiter
     }
 
@@ -436,7 +435,6 @@ class UnitService(
     fun getVolumePerDistanceInLiterPer100Km(
         config: Configuration,
         valueInUsersUnit: Double?,
-        decimals: Int? = 0
     ): Double {
 
         if (valueInUsersUnit == null || valueInUsersUnit == 0.0) {
@@ -451,33 +449,14 @@ class UnitService(
                     return when (measurementSystem) {
                         LocaleData.MeasurementSystem.UK,
                         LocaleData.MeasurementSystem.US -> {
-                            val formattedValue = if (decimals != null) {
-                                String.format("%.${decimals}f", 282.481053 / valueInUsersUnit)
-                                    .replace(",", ".")
-                                    .toDouble()
-                            } else {
-                                282.481053 / valueInUsersUnit
-                            }
-                            formattedValue
+                            282.481053 / valueInUsersUnit
                         }
                         else -> {
-                            val formattedValue = if (decimals != null) {
-                                String.format("%.${decimals}f", valueInUsersUnit).replace(",", ".")
-                                    .toDouble()
-                            } else {
-                                valueInUsersUnit
-                            }
-                            formattedValue
+                            valueInUsersUnit
                         }
                     }
                 } else {
-                    val formattedValue = if (decimals != null) {
-                        String.format("%.${decimals}f", valueInUsersUnit).replace(",", ".")
-                            .toDouble()
-                    } else {
-                        valueInUsersUnit
-                    }
-                    formattedValue
+                    valueInUsersUnit
                 }
             }
             RegionEnum.GERMANY,
@@ -485,24 +464,11 @@ class UnitService(
             RegionEnum.SLOVENIA,
             RegionEnum.SPAIN,
             RegionEnum.DENMARK -> {
-                val formattedValue = if (decimals != null) {
-                    String.format("%.${decimals}f", valueInUsersUnit).replace(",", ".")
-                        .toDouble()
-                } else {
-                    valueInUsersUnit
-                }
-                formattedValue
+                valueInUsersUnit
             }
             RegionEnum.UNITED_KINGDOM,
             RegionEnum.USA -> {
-                val formattedValue = if (decimals != null) {
-                    String.format("%.${decimals}f", 282.481053 / valueInUsersUnit)
-                        .replace(",", ".")
-                        .toDouble()
-                } else {
-                    282.481053 / valueInUsersUnit
-                }
-                formattedValue
+                282.481053 / valueInUsersUnit
             }
         }
     }
@@ -530,7 +496,7 @@ class UnitService(
                                     .replace(",", ".")
                                     .toDouble()
                             } else {
-                                getGallonsPer100Miles(config, literPer100km,decimals)
+                                getGallonsPer100Miles(config, literPer100km)
                             }
                             formattedValue
                         }
@@ -587,7 +553,7 @@ class UnitService(
         decimals: Int? = 0
     ): String {
         val convertedVolumePerDistance = getVolumePerDistanceInUserPreferredUnit(config, volumeInLiter, decimals)
-        val convertedVolumePerDistanceFormatted = getValueInUserPreferredNumberFormat(config, convertedVolumePerDistance)
+        val convertedVolumePerDistanceFormatted = getValueInUserPreferredNumberFormat(config, convertedVolumePerDistance, decimals)
         return "$convertedVolumePerDistanceFormatted ${getUserPreferredVolumePerDistanceUnit(config)}"
     }
     // endregion
@@ -629,15 +595,16 @@ class UnitService(
     fun getKWhPerKmInKWhPerMile(
         config: Configuration,
         kWh: Double?,
-        decimals: Int? = null
     ): Double {
 
         if (kWh == null || kWh == 0.0) {
             return 0.0
         }
 
-        val milesPer100Km = getDistanceInUsersPreferredUnit(config, 100.0, 5)
-        return milesPer100Km / kWh
+        //mi/kWh = 100 ÷ 1.609344 ÷ kWh/100km
+        //val milesPer100Km = 100.0 / getDistanceInUsersPreferredUnit(config, 1.0, decimals) / kWh
+        val milesPer100Km = getDistanceInUsersPreferredUnit(config, 100.0, 10)
+        return String.format("%.${10}f", milesPer100Km / kWh).replace(",", ".").toDouble()
     }
 
     fun getKWhPerMileInKWhPerKm(
@@ -650,8 +617,10 @@ class UnitService(
             return 0.0
         }
 
-        val milesInKm = getDistanceInKm(config, 100.0)
-        return milesInKm / kWh
+        //100 ÷ 1.609344 ÷ mi/kWh
+        val kWhPerMilesInKm = 100.0 / getDistanceInKm(config, 1.0) / kWh
+
+        return String.format("%.${10}f", kWhPerMilesInKm).replace(",", ".").toDouble()
     }
 
     fun getKWhPerDistanceInUserPreferredUnit(
@@ -673,11 +642,11 @@ class UnitService(
                         LocaleData.MeasurementSystem.UK,
                         LocaleData.MeasurementSystem.US -> {
                             val formattedValue = if (decimals != null) {
-                                String.format("%.${decimals}f", getKWhPerKmInKWhPerMile(config, kWhPer100Km,decimals))
+                                String.format("%.${decimals}f", getKWhPerKmInKWhPerMile(config, kWhPer100Km))
                                     .replace(",", ".")
                                     .toDouble()
                             } else {
-                                getKWhPerKmInKWhPerMile(config, kWhPer100Km,decimals)
+                                getKWhPerKmInKWhPerMile(config, kWhPer100Km)
                             }
                             formattedValue
                         }
@@ -717,11 +686,11 @@ class UnitService(
             RegionEnum.UNITED_KINGDOM,
             RegionEnum.USA -> {
                 val formattedDistance = if (decimals != null) {
-                    String.format("%.${decimals}f", getKWhPerKmInKWhPerMile(config, kWhPer100Km,decimals))
+                    String.format("%.${decimals}f", getKWhPerKmInKWhPerMile(config, kWhPer100Km))
                         .replace(",", ".")
                         .toDouble()
                 } else {
-                    getKWhPerKmInKWhPerMile(config, kWhPer100Km, decimals)
+                    getKWhPerKmInKWhPerMile(config, kWhPer100Km)
                 }
                 formattedDistance
             }
@@ -731,7 +700,6 @@ class UnitService(
     fun getKWhPerDistanceInKWhPer100Km(
         config: Configuration,
         kWhInUserUnit: Double?,
-        decimals: Int? = 0
     ): Double {
 
         if (kWhInUserUnit == null || kWhInUserUnit == 0.0) {
@@ -746,33 +714,16 @@ class UnitService(
                     return when (measurementSystem) {
                         LocaleData.MeasurementSystem.UK,
                         LocaleData.MeasurementSystem.US -> {
-                            val formattedValue = if (decimals != null) {
-                                String.format("%.${decimals}f", getKWhPerMileInKWhPerKm(config, kWhInUserUnit,decimals))
-                                    .replace(",", ".")
-                                    .toDouble()
-                            } else {
-                                getKWhPerMileInKWhPerKm(config, kWhInUserUnit, decimals)
-                            }
-                            formattedValue
+                                getKWhPerMileInKWhPerKm(config, kWhInUserUnit, 10)
                         }
                         else -> {
-                            val formattedValue = if (decimals != null) {
-                                String.format("%.${decimals}f", kWhInUserUnit).replace(",", ".")
+                                String.format("%.${10}f", kWhInUserUnit).replace(",", ".")
                                     .toDouble()
-                            } else {
-                                kWhInUserUnit
-                            }
-                            formattedValue
                         }
                     }
                 } else {
-                    val formattedValue = if (decimals != null) {
-                        String.format("%.${decimals}f", kWhInUserUnit).replace(",", ".")
+                        String.format("%.${10}f", kWhInUserUnit).replace(",", ".")
                             .toDouble()
-                    } else {
-                        kWhInUserUnit
-                    }
-                    formattedValue
                 }
             }
             RegionEnum.GERMANY,
@@ -780,24 +731,14 @@ class UnitService(
             RegionEnum.SLOVENIA,
             RegionEnum.SPAIN,
             RegionEnum.DENMARK -> {
-                val formattedDistance = if (decimals != null) {
-                    String.format("%.${decimals}f", kWhInUserUnit).replace(",", ".")
+                    String.format("%.${10}f", kWhInUserUnit).replace(",", ".")
                         .toDouble()
-                } else {
-                    kWhInUserUnit
-                }
-                formattedDistance
             }
             RegionEnum.UNITED_KINGDOM,
             RegionEnum.USA -> {
-                val formattedDistance = if (decimals != null) {
-                    String.format("%.${decimals}f", getKWhPerMileInKWhPerKm(config, kWhInUserUnit, decimals))
+                    String.format("%.${10}f", getKWhPerMileInKWhPerKm(config, kWhInUserUnit, 10))
                         .replace(",", ".")
                         .toDouble()
-                } else {
-                    getKWhPerMileInKWhPerKm(config, kWhInUserUnit, decimals)
-                }
-                formattedDistance
             }
         }
     }
@@ -808,7 +749,7 @@ class UnitService(
         decimals: Int? = 0
     ): String {
         val convertedKWhPerDistance = getKWhPerDistanceInUserPreferredUnit(config, kWhPerDistance, decimals)
-        val convertedKWhPerDistanceFormatted = getValueInUserPreferredNumberFormat(config, convertedKWhPerDistance)
+        val convertedKWhPerDistanceFormatted = getValueInUserPreferredNumberFormat(config, convertedKWhPerDistance, decimals)
         return "$convertedKWhPerDistanceFormatted ${getUserPreferredKWhPerDistanceUnit(config)}"
     }
 

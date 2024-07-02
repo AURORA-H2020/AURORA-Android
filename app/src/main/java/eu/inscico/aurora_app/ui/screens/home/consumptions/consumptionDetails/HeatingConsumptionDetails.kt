@@ -102,7 +102,7 @@ fun HeatingConsumptionDetails(
             }
 
             val energyExpendedText = if (consumption.energyExpended != null) {
-                "${unitService.getWeightInUserPreferredUnit(config, consumption.energyExpended, 1)} ${stringResource(
+                "${unitService.getValueInUserPreferredNumberFormat(config, consumption.energyExpended, 1)} ${stringResource(
                     id = R.string.home_your_carbon_emissions_bar_chart_label_energy_expended_title
                 )}"
             } else {

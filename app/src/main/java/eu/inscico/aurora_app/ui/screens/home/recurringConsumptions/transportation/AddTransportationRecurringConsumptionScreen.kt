@@ -85,7 +85,7 @@ fun AddTransportationRecurringConsumptionScreen(
 
     val convertedDistance = unitService.getDistanceInUsersPreferredUnit(configuration, distanceInKm = initialValues?.distance, decimals = 1)
     val initialDistance = if (initialValues?.distance != null) {
-        unitService.getValueInUserPreferredNumberFormat(configuration, convertedDistance)
+        unitService.getValueInUserPreferredNumberFormat(configuration, convertedDistance, 1)
     } else {
         ""
     }
@@ -117,15 +117,15 @@ fun AddTransportationRecurringConsumptionScreen(
         timeOfTravel.timeInMillis = startOfTravelAsLong.value
 
         val distanceValue = distance.value.replace(",", ".").toDoubleOrNull()
-        val distanceValueKm = unitService.getDistanceInKm(configuration, distanceValue ?: 0.0 )
+        val distanceValueKm = unitService.getDistanceInKm(configuration, distanceValue ?: 0.0)
 
         val fuelConsumptionValue = fuelConsumption.value.replace(",", ".").toDoubleOrNull()
         val fuelConsumptionInLper100km = if(transportationType.value == TransportationType.ELECTRIC_MOTORCYCLE ||
             transportationType.value == TransportationType.ELECTRIC_CAR){
-            unitService.getKWhPerDistanceInKWhPer100Km(configuration, fuelConsumptionValue ?: 0.0, decimals = 1)
+            unitService.getKWhPerDistanceInKWhPer100Km(configuration, fuelConsumptionValue ?: 0.0)
 
         } else {
-            unitService.getVolumePerDistanceInLiterPer100Km(configuration, fuelConsumptionValue ?: 0.0, decimals = 1)
+            unitService.getVolumePerDistanceInLiterPer100Km(configuration, fuelConsumptionValue ?: 0.0)
         }
 
 

@@ -1,5 +1,6 @@
 package eu.inscico.aurora_app.ui.screens.home.consumptions.consumptionDetails
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -41,6 +42,8 @@ fun TransportationConsumptionDetails(
             .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        Log.e("FIREBASEHELP", consumption.id)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -89,7 +92,7 @@ fun TransportationConsumptionDetails(
             }
             val energyExpendedText = if (consumption.energyExpended != null) {
                 "${
-                    unitService.getWeightInUserPreferredUnit(
+                    unitService.getValueInUserPreferredNumberFormat(
                         config,
                         consumption.energyExpended,
                         1
