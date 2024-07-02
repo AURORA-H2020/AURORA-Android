@@ -216,7 +216,7 @@ fun AddElectricityConsumption(
                     }
                     // check if input is valid
                     val valueAsDouble = unitService.getValueStringAsDouble(it)
-                    isSaveValid.value = isValueInCorrectFormat && valueAsDouble != null
+                    isSaveValid.value = isValueInCorrectFormat || it.isEmpty()
                 },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
                 trailingIcon = {

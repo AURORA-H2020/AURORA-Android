@@ -101,6 +101,27 @@ fun ElectricityConsumptionDetails(
                     }
                 )
             }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .clip(shape = RoundedCornerShape(16.dp))
+        ) {
+
+            ListItem(
+                headlineContent = { Text(text = stringResource(id = R.string.electricity_source_title)) },
+                trailingContent = {
+                    Text(
+                        text = consumption.electricity.electricitySource.getDisplayName(context),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            )
 
             if(consumption.electricity.electricitySource == ElectricitySource.HOME_PHOTOVOLTAICS){
 
@@ -126,27 +147,6 @@ fun ElectricityConsumptionDetails(
                     )
                 }
             }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .clip(shape = RoundedCornerShape(16.dp))
-        ) {
-
-            ListItem(
-                headlineContent = { Text(text = stringResource(id = R.string.electricity_source_title)) },
-                trailingContent = {
-                    Text(
-                        text = consumption.electricity.electricitySource.getDisplayName(context),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            )
 
             Divider()
 
