@@ -57,16 +57,28 @@ fun AddElectricityConsumption(
 
     val hasInternet = networkService.hasInternetConnectionLive.observeAsState()
 
-    val initialConsumption = if(initialValues?.value != null){
-        unitService.getValueInUserPreferredNumberFormat(config, String.format("%.1f",initialValues.value).replace(",",".").toDouble())
+    val initialConsumption = if (initialValues?.value != null) {
+        unitService.getValueInUserPreferredNumberFormat(
+            config,
+            String.format("%.1f", initialValues.value).replace(",", ".").toDouble()
+        )
     } else {
         ""
     }
 
-    val initialEnergyExportedFromHomePV = if(initialValues?.electricity?.electricityExported != null){
-        unitService.getValueInUserPreferredNumberFormat(config, String.format("%.1f",initialValues.electricity.electricityExported).replace(",",".").toDouble())
-    } else {
-        ""
+    val initialEnergyExportedFromHomePV =
+        if (initialValues?.electricity?.electricityExported != null) {
+            unitService.getValueInUserPreferredNumberFormat(
+                config,
+                String.format("%.1f", initialValues.electricity.electricityExported)
+                    .replace(",", ".").toDouble()
+            )
+        } else {
+            ""
+        }
+
+    val isEnergyExportedError = remember {
+        mutableStateOf(false)
     }
 
     val consumption = remember {
@@ -82,15 +94,21 @@ fun AddElectricityConsumption(
     }
 
     val beginDateTime = remember {
-        mutableStateOf(initialValues?.electricity?.startDate?.timeInMillis ?: Calendar.getInstance().timeInMillis)
+        mutableStateOf(
+            initialValues?.electricity?.startDate?.timeInMillis
+                ?: Calendar.getInstance().timeInMillis
+        )
     }
 
     val endDateTime = remember {
-        mutableStateOf(initialValues?.electricity?.endDate?.timeInMillis ?: (Calendar.getInstance().timeInMillis + (86400000 * 2).toLong()))
+        mutableStateOf(
+            initialValues?.electricity?.endDate?.timeInMillis
+                ?: (Calendar.getInstance().timeInMillis + (86400000 * 2).toLong())
+        )
     }
 
-    val initialCosts = if(initialValues?.electricity?.costs != null){
-        String.format("%.1f",initialValues.electricity.costs)
+    val initialCosts = if (initialValues?.electricity?.costs != null) {
+        String.format("%.1f", initialValues.electricity.costs)
     } else {
         ""
     }
@@ -109,7 +127,12 @@ fun AddElectricityConsumption(
     }
 
     val isSaveValid = remember {
-        mutableStateOf(viewModel.isDecimalInputValid(consumption.value) && consumption.value.replace(",", ".").toDoubleOrNull() != null)
+        mutableStateOf(
+            viewModel.isDecimalInputValid(consumption.value) && consumption.value.replace(
+                ",",
+                "."
+            ).toDoubleOrNull() != null
+        )
     }
 
 
@@ -125,8 +148,11 @@ fun AddElectricityConsumption(
             SpinnerItem.Entry(name = it.getDisplayName(context), data = it)
         }
 
-        val selectedEntry = if(electricitySource.value != null){
-            SpinnerItem.Entry(name = electricitySource.value!!.getDisplayName(context) , data = electricitySource.value)
+        val selectedEntry = if (electricitySource.value != null) {
+            SpinnerItem.Entry(
+                name = electricitySource.value!!.getDisplayName(context),
+                data = electricitySource.value
+            )
         } else {
             null
         }
@@ -152,17 +178,17 @@ fun AddElectricityConsumption(
 
         Spacer(Modifier.height(16.dp))
 
-        val consumptionLabel = if(electricitySource.value == ElectricitySource.HOME_PHOTOVOLTAICS){
-            stringResource(id = R.string.home_add_consumption_form_energy_produced_title)
-        } else {
-            stringResource(id = R.string.home_add_consumption_form_consumption_title)
-        }
+        val consumptionLabel =
+            if (electricitySource.value == ElectricitySource.HOME_PHOTOVOLTAICS) {
+                stringResource(id = R.string.home_add_consumption_form_energy_produced_title)
+            } else {
+                stringResource(id = R.string.home_add_consumption_form_consumption_title)
+            }
 
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-            ,
+                .padding(horizontal = 16.dp),
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Color.Transparent,
                 unfocusedBorderColor = Color.Transparent,
@@ -177,26 +203,28 @@ fun AddElectricityConsumption(
 
                 // display new value if format correct
                 val isValueInCorrectFormat = viewModel.isDecimalInputValid(it)
-                if(isValueInCorrectFormat || it.isEmpty()){
+                if (isValueInCorrectFormat || it.isEmpty()) {
                     consumption.value = unitService.getValueWithLocalDecimalPoint(it)
                 }
                 // check if input is valid
                 val valueAsDouble = unitService.getValueStringAsDouble(it)
                 isSaveValid.value = isValueInCorrectFormat && valueAsDouble != null
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Decimal,
+                imeAction = ImeAction.Done
+            ),
             trailingIcon = {
                 Text(text = "kWh")
             }
         )
 
-        if(electricitySource.value == ElectricitySource.HOME_PHOTOVOLTAICS){
+        if (electricitySource.value == ElectricitySource.HOME_PHOTOVOLTAICS) {
 
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                ,
+                    .padding(horizontal = 16.dp),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = Color.Transparent,
                     unfocusedBorderColor = Color.Transparent,
@@ -204,6 +232,7 @@ fun AddElectricityConsumption(
                 ),
                 shape = RoundedCornerShape(16.dp),
                 value = electricityExpandedFromHomePV.value,
+                isError = isEnergyExportedError.value,
                 label = {
                     Text(text = stringResource(id = R.string.home_add_consumption_form_energy_exported_title))
                 },
@@ -211,27 +240,59 @@ fun AddElectricityConsumption(
 
                     // display new value if format correct
                     val isValueInCorrectFormat = viewModel.isDecimalInputValid(it)
-                    if(isValueInCorrectFormat || it.isEmpty()){
-                        electricityExpandedFromHomePV.value = unitService.getValueWithLocalDecimalPoint(it)
+                    if (isValueInCorrectFormat || it.isEmpty()) {
+                        electricityExpandedFromHomePV.value =
+                            unitService.getValueWithLocalDecimalPoint(it)
                     }
                     // check if input is valid
                     val valueAsDouble = unitService.getValueStringAsDouble(it)
-                    isSaveValid.value = isValueInCorrectFormat || it.isEmpty()
+                    val isInputValid = isValueInCorrectFormat || it.isEmpty()
+
+                    val isValueValid = if (it.isEmpty()) {
+                        true
+                    } else {
+                        if (isInputValid) {
+                            if (valueAsDouble != null) {
+                                valueAsDouble < consumption.value.toDouble()
+                            } else {
+                                false
+                            }
+                        } else {
+                            false
+                        }
+                    }
+
+                    isEnergyExportedError.value = !isValueValid
+                    isSaveValid.value = isValueValid
                 },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Decimal,
+                    imeAction = ImeAction.Done
+                ),
                 trailingIcon = {
                     Text(text = "kWh")
                 }
             )
+            if (isEnergyExportedError.value) {
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    text = stringResource(id = R.string.home_add_consumption_form_energy_exported_error_title),
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    style = MaterialTheme.typography.labelSmall,
+                    textAlign = TextAlign.Start,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
         }
 
         Spacer(Modifier.height(4.dp))
 
-        val consumptionInfoText = if(electricitySource.value == ElectricitySource.HOME_PHOTOVOLTAICS){
-            stringResource(id = R.string.home_add_consumption_form_electricity_energy_expanded_description_title)
-        } else {
-            stringResource(id = R.string.home_add_consumption_form_electricity_consumption_description_title)
-        }
+        val consumptionInfoText =
+            if (electricitySource.value == ElectricitySource.HOME_PHOTOVOLTAICS) {
+                stringResource(id = R.string.home_add_consumption_form_electricity_energy_expanded_description_title)
+            } else {
+                stringResource(id = R.string.home_add_consumption_form_electricity_consumption_description_title)
+            }
 
         Text(
             text = consumptionInfoText,
@@ -305,14 +366,17 @@ fun AddElectricityConsumption(
             onValueChange = {
                 // display new value if format correct
                 val isValueInCorrectFormat = viewModel.isDecimalInputValid(it)
-                if(isValueInCorrectFormat || it.isEmpty()){
+                if (isValueInCorrectFormat || it.isEmpty()) {
                     costs.value = unitService.getValueWithLocalDecimalPoint(it)
                 }
                 // check if input is valid
                 val valueAsDouble = unitService.getValueStringAsDouble(it)
                 isSaveValid.value = isValueInCorrectFormat && valueAsDouble != null
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Decimal,
+                imeAction = ImeAction.Done
+            ),
             trailingIcon = {
                 Text(text = unitService.getCurrencyUnit(LocalConfiguration.current))
             }
@@ -355,7 +419,7 @@ fun AddElectricityConsumption(
                 imeAction = ImeAction.Done
             ),
             onValueChange = {
-                if(it.length <= 5000){
+                if (it.length <= 5000) {
                     description.value = it
                 }
             }
@@ -389,18 +453,21 @@ fun AddElectricityConsumption(
                 shape = RoundedCornerShape(32.dp),
                 onClick = {
 
-                    val electricityExported = if(electricitySource.value == ElectricitySource.HOME_PHOTOVOLTAICS){
-                        unitService.getValueStringAsDouble(electricityExpandedFromHomePV.value)
-                    } else {
-                        null
-                    }
+                    val electricityExported =
+                        if (electricitySource.value == ElectricitySource.HOME_PHOTOVOLTAICS) {
+                            unitService.getValueStringAsDouble(electricityExpandedFromHomePV.value)
+                        } else {
+                            null
+                        }
 
                     val electricityConsumptionDataResponse = ElectricityConsumptionDataResponse(
                         costs = unitService.getValueStringAsDouble(costs.value),
                         endDate = Timestamp(Date(endDateTime.value)),
                         startDate = Timestamp(Date(beginDateTime.value)),
                         householdSize = peopleInHousehold.value,
-                        electricitySource = ElectricitySource.parseElectricitySourceToString(electricitySource.value ?: ElectricitySource.DEFAULT),
+                        electricitySource = ElectricitySource.parseElectricitySourceToString(
+                            electricitySource.value ?: ElectricitySource.DEFAULT
+                        ),
                         electricityExported = electricityExported
                     )
 
@@ -408,10 +475,12 @@ fun AddElectricityConsumption(
                         null
                     }
 
-                    val createdAt = if(isDuplicate == true){
-                        Timestamp( Date(System.currentTimeMillis()) )
+                    val createdAt = if (isDuplicate == true) {
+                        Timestamp(Date(System.currentTimeMillis()))
                     } else {
-                        Timestamp(initialValues?.createdAt?.time ?: Date(System.currentTimeMillis()))
+                        Timestamp(
+                            initialValues?.createdAt?.time ?: Date(System.currentTimeMillis())
+                        )
                     }
 
                     val consumptionResponse = ConsumptionResponse(
@@ -424,19 +493,20 @@ fun AddElectricityConsumption(
                         transportation = null
                     )
 
-                    if(consumptionResponse.value != null){
+                    if (consumptionResponse.value != null) {
                         CoroutineScope(Dispatchers.IO).launch {
 
-                            val result = if(initialValues != null && isDuplicate == false){
+                            val result = if (initialValues != null && isDuplicate == false) {
                                 consumptionResponse.id = initialValues.id
-                                consumptionResponse.updatedAt = Timestamp(Calendar.getInstance().time)
+                                consumptionResponse.updatedAt =
+                                    Timestamp(Calendar.getInstance().time)
                                 viewModel.updateConsumption(consumptionResponse)
                             } else {
                                 viewModel.createConsumption(consumptionResponse)
                             }
                             when (result) {
                                 is TypedResult.Failure -> {
-                                    if(result.reason == "NO_INTERNET"){
+                                    if (result.reason == "NO_INTERNET") {
                                         userFeedbackService.showSnackbar(R.string.userfeedback_add_consumption_no_internet_connection)
                                         withContext(Dispatchers.Main) {
                                             navigationService.navControllerTabHome?.popBackStack()
@@ -445,6 +515,7 @@ fun AddElectricityConsumption(
                                         userFeedbackService.showSnackbar(R.string.settings_add_consumption_entry_fail_message)
                                     }
                                 }
+
                                 is TypedResult.Success -> {
                                     withContext(Dispatchers.Main) {
                                         navigationService.navControllerTabHome?.popBackStack()
@@ -467,7 +538,7 @@ fun AddElectricityConsumption(
             }
         }
 
-        if(hasInternet.value != true){
+        if (hasInternet.value != true) {
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
