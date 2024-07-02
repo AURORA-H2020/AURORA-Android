@@ -174,6 +174,19 @@ fun ElectricityConsumptionDetails(
             }
 
             ListItem(
+                headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_form_people_in_household_title)) },
+                trailingContent = {
+                    Text(
+                        text = consumption.electricity.householdSize.toString(),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            )
+
+            Divider()
+
+            ListItem(
                 headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_form_begin_title)) },
                 trailingContent = {
                     Text(
