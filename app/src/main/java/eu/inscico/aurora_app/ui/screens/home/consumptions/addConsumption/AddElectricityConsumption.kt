@@ -408,11 +408,17 @@ fun AddElectricityConsumption(
                         null
                     }
 
+                    val createdAt = if(isDuplicate == true){
+                        Timestamp( Date(System.currentTimeMillis()) )
+                    } else {
+                        Timestamp(initialValues?.createdAt?.time ?: Date(System.currentTimeMillis()))
+                    }
+
                     val consumptionResponse = ConsumptionResponse(
                         category = ConsumptionType.parseConsumptionTypeToString(ConsumptionType.ELECTRICITY),
                         value = unitService.getValueStringAsDouble(consumption.value),
                         description = descriptionValue,
-                        createdAt = Timestamp(initialValues?.createdAt?.time ?: Date(System.currentTimeMillis())),
+                        createdAt = createdAt,
                         electricity = electricityConsumptionDataResponse,
                         heating = null,
                         transportation = null

@@ -438,7 +438,6 @@ fun AddHeatingConsumption(
                         }
                     }
 
-
                         val heatingConsumptionDataResponse = HeatingConsumptionDataResponse(
                             costs = costs.value.replace(",",".").toDoubleOrNull(),
                             endDate = Timestamp(Date(endDateTime.value)),
@@ -452,11 +451,17 @@ fun AddHeatingConsumption(
                             null
                         }
 
+                        val createdAt = if(isDuplicate == true){
+                            Timestamp( Date(System.currentTimeMillis()) )
+                        } else {
+                            Timestamp(initialValue?.createdAt?.time ?: Date(System.currentTimeMillis()))
+                        }
+
                         val consumptionResponse = ConsumptionResponse(
                             category = ConsumptionType.parseConsumptionTypeToString(ConsumptionType.HEATING),
                             value = consumptionValue,
                             description = descriptionValue,
-                            createdAt = Timestamp(initialValue?.createdAt?.time ?: Date(System.currentTimeMillis())),
+                            createdAt = createdAt,
                             electricity = null,
                             heating = heatingConsumptionDataResponse,
                             transportation = null

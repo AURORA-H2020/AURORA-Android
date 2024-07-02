@@ -762,13 +762,17 @@ fun AddTransportationConsumption(
                     val distanceValue = distance.value.replace(",", ".").toDoubleOrNull()
                     val distanceValueKm = unitService.getDistanceInKm(config, distanceValue ?: 0.0)
 
+                    val createdAt = if(isDuplicate == true){
+                        Timestamp( Date(System.currentTimeMillis()) )
+                    } else {
+                        Timestamp(initialValues?.createdAt?.time ?: Date(System.currentTimeMillis()))
+                    }
+
                     val consumptionResponse = ConsumptionResponse(
                         category = ConsumptionType.parseConsumptionTypeToString(ConsumptionType.TRANSPORTATION),
                         value = distanceValueKm,
                         description = descriptionValue,
-                        createdAt = Timestamp(
-                            initialValues?.createdAt?.time ?: Date(System.currentTimeMillis())
-                        ),
+                        createdAt = createdAt,
                         electricity = null,
                         heating = null,
                         transportation = transportationConsumptionDataResponse
