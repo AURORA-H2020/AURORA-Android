@@ -827,10 +827,10 @@ class UnitService(
                     return when (measurementSystem) {
                         LocaleData.MeasurementSystem.UK,
                         LocaleData.MeasurementSystem.US -> "gal"
-                        else -> "l"
+                        else -> "L"
                     }
                 } else {
-                    "l"
+                    "L"
                 }
             }
             RegionEnum.GERMANY,
@@ -838,7 +838,7 @@ class UnitService(
             RegionEnum.PORTUGAL,
             RegionEnum.SLOVENIA,
             RegionEnum.DENMARK -> {
-                "l"
+                "L"
             }
             RegionEnum.UNITED_KINGDOM,
             RegionEnum.USA -> "gal"
