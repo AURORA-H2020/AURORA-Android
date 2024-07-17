@@ -97,7 +97,11 @@
     <string name="home_consumptions_all_entries_title">Alle forbrug-indlæg</string>
     <string name="home_add_consumption_title">Tilføj forbrug</string>
     <string name="home_add_consumption_form_consumption_title">Forbrug</string>
+    <string name="home_add_consumption_form_energy_produced_title">Produceret energi</string>
+    <string name="home_add_consumption_form_energy_exported_title">Eksporteret energi</string>
+    <string name="home_add_consumption_form_energy_exported_error_title">Der kan ikke eksportere mere energi, end der produceres.</string>
     <string name="home_add_consumption_form_electricity_consumption_description_title">Du kan finde disse oplysninger på din elregning.</string>
+    <string name="home_add_consumption_form_electricity_energy_expanded_description_title">Du kan normalt finde disse oplysninger i en app eller på den hjemmeside, som din solcelleinstallatør stiller til rådighed.</string>
     <string name="home_add_consumption_form_heating_consumption_description_title">Du kan finde disse oplysninger på din varmeregning.</string>
     <string name="home_add_consumption_form_people_in_household_title">"Personer i husstanden: "</string>
     <string name="home_add_consumption_form_people_in_household_description_title">Hvor mange personer, inklusiv dig selv, bor der i din husstand?</string>
@@ -113,6 +117,8 @@
     <string name="electricity_source_title">Strømkilde</string>
     <string name="electricity_source_description">Vælg den rigtige strømkilde.</string>
     <string name="electricity_source_default">Standard</string>
+    <string name="electricity_source_default_standard">elnettet(standard)</string>
+    <string name="electricity_source_default_green">elnettet (grøn el)</string>
     <string name="electricity_source_home_photovoltaics">Solceller til hjemmet</string>
     <string name="heating_fuel_type_oil_title">Olie</string>
     <string name="heating_fuel_type_natural_gas_title">Naturgas</string>
@@ -132,6 +138,8 @@
     <string name="district_heating_source_type_geo_thermal_title">Geotermisk energi</string>
     <string name="district_heating_source_type_biomass_title">Biomasse</string>
     <string name="district_heating_source_type_waste_treatment_title">Affaldsforbrænding</string>
+    <string name="heating_fuel_type_firewood_title">Brænde</string>
+    <string name="heating_fuel_type_butane_title">Butan</string>
     <string name="district_heating_source_type_default_title">Standard</string>
     <string name="home_add_consumption_transportation_type_title">Transporttype</string>
     <string name="home_add_consumption_transportation_type_section_cars_and_bikes_title">Biler og motorcykler</string>
@@ -154,6 +162,9 @@
     <string name="home_add_consumption_transportation_type_item_diesel_passenger_train_title">Dieseltog</string>
     <string name="home_add_consumption_transportation_type_item_high_speed_train_title">Højhastighedstog</string>
     <string name="home_add_consumption_transportation_type_item_plane_title">Fly</string>
+    <string name="home_add_consumption_transportation_type_item_plane_domestic_title">Fly (indenrigs)</string>
+    <string name="home_add_consumption_transportation_type_item_plane_intra_eu_title">Fly (inden for EU)</string>
+    <string name="home_add_consumption_transportation_type_item_plane_extra_eu_title">Fly (uden for EU)</string>
     <string name="home_add_consumption_transportation_type_item_electric_bike_title">Elcyckel</string>
     <string name="home_add_consumption_transportation_type_item_electric_scooter_title">El-scooter/løbehjul</string>
     <string name="home_add_consumption_transportation_type_item_bike_title">Cykel</string>
@@ -164,6 +175,8 @@
     <string name="home_add_consumption_transportation_public_occupancy_medium_title">Middel pladsforhold</string>
     <string name="home_add_consumption_transportation_public_occupancy_nearly_full_title">Næsten fyldt</string>
     <string name="home_add_consumption_transportation_distance_title">Afstand</string>
+    <string name="home_add_consumption_transportation_fuel_consumption_optional_title">Brændstofforbrug (valgfri)</string>
+    <string name="home_add_consumption_transportation_fuel_consumption_title">Brændstofforbrug</string>
     <string name="home_add_consumption_transportation_start_of_travel_title">Rejsestart</string>
     <string name="home_add_consumption_transportation_end_of_travel_title">Rejsens afslutning</string>
     <string name="home_add_consumption_carbon_emissions_title">CO₂-udledninger</string>
@@ -205,17 +218,21 @@
     <string name="home_recurring_consumptions_list_item_disabled_title">Deaktiveret</string>
     <string name="home_recurring_consumptions_update_title">Redigér</string>
     <string name="home_duplicate_consumption_button_title">Duplikér</string>
+    <string name="consumption_detail_energy_usage_label">Energiforbrug</string>
     <string name="settings_app_bar_title">Indstillinger</string>
     <string name="settings_profile_section_title">Konto</string>
     <string name="settings_profile_edit_profile_title">Rediger profil</string>
     <string name="settings_profile_select_region_title">Vælg region</string>
+    <string name="settings_profile_select_number_formatting_title">Formatering af tal</string>
     <string name="settings_profile_select_region_germany_title">Tyskland</string>
     <string name="settings_profile_select_region_portugal_title">Portugal</string>
+    <string name="settings_profile_select_region_spain_title">Spanien</string>
     <string name="settings_profile_select_region_slovenia_title">Slovenien</string>
     <string name="settings_profile_select_region_denmark_title">Danmark</string>
     <string name="settings_profile_select_region_united_kingdom_title">Storbritannien</string>
     <string name="settings_profile_select_region_usa_title">USA</string>
     <string name="settings_profile_select_region_system_title">System</string>
+    <string name="settings_profile_select_region_info_description">Du kan angive, hvordan tal skal formateres ved at ændre dine systemindstillinger. Bemærk, at dette ikke påvirker din kontos region men kun justerer, hvordan tal vises i appen.</string>
     <string name="settings_profile_change_password_title">Skift adgangskode</string>
     <string name="settings_profile_change_email_title">Skift e-mail</string>
     <string name="settings_profile_logout_title">Log ud</string>
@@ -331,4 +348,5 @@
     <string name="settings_export_data_share_dialog">Dine data er blevet downloadet. Ønsker du at eksportere dem?</string>
     <string name="consumption_detail_recurring_consumption_automatically_generated_text">Denne indtastning blev automatisk tilføjet via tilbagevendende forbrug.</string>
     <string name="recurring_consumptions_changed_behaviour_popup_text">Har din normale energiadfærd ændret sig?</string>
+    <string name="userfeedback_add_consumption_no_internet_connection">Det ser ud til, at du er offline. Dine data synkroniseres automatisk, så snart du får forbindelse til internettet igen.</string>
 </resources>
