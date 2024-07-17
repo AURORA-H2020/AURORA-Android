@@ -129,7 +129,7 @@ fun OverallConsumptionSummaryLabel(
                         } else {
                             context.getString(
                                 R.string.home_your_carbon_emissions_labels_overall_used_value_title,
-                                unitService.getConvertedWeightWithUnit(config = configuration, weightInKg = value, decimals = 1),
+                                unitService.getWeightInUserPreferredUnit(config = configuration, weightInKg = value, decimals = 1).toString(),
                             )
                         }
 

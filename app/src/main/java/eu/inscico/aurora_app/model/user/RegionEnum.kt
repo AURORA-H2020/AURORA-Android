@@ -11,6 +11,7 @@ enum class RegionEnum {
     SLOVENIA,
     DENMARK,
     UNITED_KINGDOM,
+    SPAIN,
     USA;
 
     companion object {
@@ -23,6 +24,7 @@ enum class RegionEnum {
                 "denmark" -> DENMARK
                 "united_kingdom" -> UNITED_KINGDOM
                 "usa" -> USA
+                "spain" -> SPAIN
                 else -> SYSTEM
             }
         }
@@ -34,6 +36,7 @@ enum class RegionEnum {
                 PORTUGAL -> "portugal"
                 SLOVENIA -> "slovenia"
                 DENMARK -> "denmark"
+                SPAIN -> "spain"
                 UNITED_KINGDOM -> "united_kingdom"
                 USA -> "usa"
             }
@@ -47,6 +50,7 @@ enum class RegionEnum {
                 SLOVENIA -> R.string.settings_profile_select_region_slovenia_title
                 DENMARK -> R.string.settings_profile_select_region_denmark_title
                 UNITED_KINGDOM -> R.string.settings_profile_select_region_united_kingdom_title
+                SPAIN -> R.string.settings_profile_select_region_spain_title
                 USA -> R.string.settings_profile_select_region_usa_title
             }
         }
@@ -62,6 +66,7 @@ enum class RegionEnum {
                 PORTUGAL,
                 SLOVENIA,
                 DENMARK,
+                SPAIN,
                 UNITED_KINGDOM,
                 USA
             )

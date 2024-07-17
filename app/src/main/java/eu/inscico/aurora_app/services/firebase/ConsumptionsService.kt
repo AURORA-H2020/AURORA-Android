@@ -1,5 +1,11 @@
 package eu.inscico.aurora_app.services.firebase
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.ConnectivityManager.OnNetworkActiveListener
+import android.net.NetworkCapabilities
+import android.util.Log
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -7,11 +13,18 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.toObject
 import eu.inscico.aurora_app.model.consumptions.Consumption
 import eu.inscico.aurora_app.model.consumptions.ConsumptionResponse
+import eu.inscico.aurora_app.services.network.NetworkService
 import eu.inscico.aurora_app.utils.TypedResult
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlin.reflect.full.declaredMemberProperties
 
 class ConsumptionsService(
+    private val _networkService: NetworkService,
     private val _firestore: FirebaseFirestore,
     private val _firebaseAuth: FirebaseAuth
 ) {
@@ -74,8 +87,15 @@ class ConsumptionsService(
 
             val authId = _firebaseAuth.currentUser?.uid ?: return TypedResult.Failure("")
 
-            _firestore.collection(usersCollectionName).document(authId)
-                .collection(collectionName).document().set(consumptionResponseAsMap).await()
+            val request =
+                _firestore.collection(usersCollectionName).document(authId)
+                    .collection(collectionName).document().set(consumptionResponseAsMap)
+
+            if(_networkService.isNetworkAvailable()){
+                request.await()
+            } else {
+                return TypedResult.Failure("NO_INTERNET")
+            }
 
             return TypedResult.Success(true)
         } catch (e: Exception) {
@@ -92,8 +112,14 @@ class ConsumptionsService(
             val consumptionResponseAsMap = parseConsumptionResponseToMap(consumptionResponse).toMutableMap()
             consumptionResponseAsMap.remove("id")
 
-            _firestore.collection(usersCollectionName).document(authId)
-                .collection(collectionName).document(docId).set(consumptionResponseAsMap).await()
+            val request = _firestore.collection(usersCollectionName).document(authId)
+                .collection(collectionName).document(docId).set(consumptionResponseAsMap)
+
+            if(_networkService.isNetworkAvailable()){
+                request.await()
+            } else {
+                return TypedResult.Failure("NO_INTERNET")
+            }
 
             return TypedResult.Success(true)
         } catch (e: Exception) {

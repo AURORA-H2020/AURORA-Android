@@ -42,7 +42,7 @@ class AddOrUpdateRecurringConsumptionViewModel(
                 TransportationType.METRO_TRAM_OR_URBAN_LIGHT_TRAIN, TransportationType.ELECTRIC_PASSENGER_TRAIN, TransportationType.DIESEL_PASSENGER_TRAIN, TransportationType.HIGH_SPEED_TRAIN)),
             SpinnerItem.Section(section = TransportationTypeSection.AVIATION, name = context.getString(
                 R.string.home_add_consumption_transportation_type_section_aviation_title), entries = listOf(
-                TransportationType.PLANE)),
+                TransportationType.PLANE, TransportationType.PLANE_INTRA_EU, TransportationType.PLANE_EXTRA_EU )),
             SpinnerItem.Section(section = TransportationTypeSection.OTHER, name = context.getString(
                 R.string.home_add_consumption_transportation_type_section_other_title), entries = listOf(
                 TransportationType.ELECTRIC_BIKE, TransportationType.ELECTRIC_SCOOTER, TransportationType.BIKE, TransportationType.WALKING)),

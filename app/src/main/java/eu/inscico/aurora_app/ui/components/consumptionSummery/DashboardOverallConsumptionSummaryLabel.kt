@@ -129,7 +129,7 @@ fun DashboardConsumptionSummaryLabel(
             Text(
                 text = context.getString(
                     R.string.home_your_carbon_emissions_labels_overall_used_value_title,
-                    unitService.getValueInCorrectNumberFormat(configuration, usedEnergyValueFormatted)
+                    unitService.getValueInUserPreferredNumberFormat(configuration, usedEnergyValueFormatted)
                 ),
                 style = MaterialTheme.typography.labelSmall,
                 color = energyTextColor,

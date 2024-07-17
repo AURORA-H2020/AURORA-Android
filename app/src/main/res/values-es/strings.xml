@@ -97,7 +97,11 @@
     <string name="home_consumptions_all_entries_title">Todas las entradas de consumo</string>
     <string name="home_add_consumption_title">Introduzca su  consumo</string>
     <string name="home_add_consumption_form_consumption_title">Consumo</string>
+    <string name="home_add_consumption_form_energy_produced_title">Energía producida</string>
+    <string name="home_add_consumption_form_energy_exported_title">Energía exportada</string>
+    <string name="home_add_consumption_form_energy_exported_error_title">No se puede exportar más energía de la que se produce.</string>
     <string name="home_add_consumption_form_electricity_consumption_description_title">Puede encontrar esta información en su factura de electricidad.</string>
+    <string name="home_add_consumption_form_electricity_energy_expanded_description_title">Por lo general, puede encontrar esta información en una aplicación o página web proporcionada por su contratista de instalación fotovoltaica.</string>
     <string name="home_add_consumption_form_heating_consumption_description_title">Puede encontrar esta información en su factura de calefacción.</string>
     <string name="home_add_consumption_form_people_in_household_title">Personas en el domicilio:</string>
     <string name="home_add_consumption_form_people_in_household_description_title">¿Cuántas personas, incluyendo tú, viven en tu domicilio?</string>
@@ -113,6 +117,8 @@
     <string name="electricity_source_title">Fuente de electricidad</string>
     <string name="electricity_source_description">Seleccione la fuente de electricidad adecuada.</string>
     <string name="electricity_source_default">Por defecto</string>
+    <string name="electricity_source_default_standard">Red nacional (estándar)</string>
+    <string name="electricity_source_default_green">Red nacional (proveedor ecológico)</string>
     <string name="electricity_source_home_photovoltaics">Fotovoltaica doméstica</string>
     <string name="heating_fuel_type_oil_title">Gasolina</string>
     <string name="heating_fuel_type_natural_gas_title">Gas natural</string>
@@ -132,6 +138,8 @@
     <string name="district_heating_source_type_geo_thermal_title">Energía geotérmica</string>
     <string name="district_heating_source_type_biomass_title">Biomasa</string>
     <string name="district_heating_source_type_waste_treatment_title">Tratamiento de residuos</string>
+    <string name="heating_fuel_type_firewood_title">Leña</string>
+    <string name="heating_fuel_type_butane_title">Butano</string>
     <string name="district_heating_source_type_default_title">Por defecto</string>
     <string name="home_add_consumption_transportation_type_title">Tipo de transporte</string>
     <string name="home_add_consumption_transportation_type_section_cars_and_bikes_title">Coches y motos</string>
@@ -154,6 +162,9 @@
     <string name="home_add_consumption_transportation_type_item_diesel_passenger_train_title">Tren de pasajeros diesel</string>
     <string name="home_add_consumption_transportation_type_item_high_speed_train_title">Tren de alta velocidad</string>
     <string name="home_add_consumption_transportation_type_item_plane_title">Avión</string>
+    <string name="home_add_consumption_transportation_type_item_plane_domestic_title">Avión (nacional)</string>
+    <string name="home_add_consumption_transportation_type_item_plane_intra_eu_title">Avión (intra UE)</string>
+    <string name="home_add_consumption_transportation_type_item_plane_extra_eu_title">Avión (extra EU)</string>
     <string name="home_add_consumption_transportation_type_item_electric_bike_title">Bicicleta eléctrica</string>
     <string name="home_add_consumption_transportation_type_item_electric_scooter_title">Scooter eléctrico</string>
     <string name="home_add_consumption_transportation_type_item_bike_title">Bicicleta</string>
@@ -164,6 +175,8 @@
     <string name="home_add_consumption_transportation_public_occupancy_medium_title">Ocupación media</string>
     <string name="home_add_consumption_transportation_public_occupancy_nearly_full_title">Casi completo</string>
     <string name="home_add_consumption_transportation_distance_title">Distancia</string>
+    <string name="home_add_consumption_transportation_fuel_consumption_optional_title">Consumo de combustible (opcional)</string>
+    <string name="home_add_consumption_transportation_fuel_consumption_title">Consumo de combustible</string>
     <string name="home_add_consumption_transportation_start_of_travel_title">Inicio del desplazamiento</string>
     <string name="home_add_consumption_transportation_end_of_travel_title">Fin del viaje</string>
     <string name="home_add_consumption_carbon_emissions_title">Emisiones de carbono</string>
@@ -187,7 +200,7 @@
     <string name="home_your_carbon_emissions_info_title">¿Cómo funciona?</string>
     <string name="home_your_carbon_emissions_info_description">Sus etiquetas energéticas se calculan en función de su consumo rastreado y son específicas de su ubicación. Esto significa que, a medida que vaya introduciendo datos a lo largo del año, se irán conociendo más datos sobre sus emisiones de carbono y sus presupuestos energéticos. Por ejemplo: Si sólo ha introducido los datos de todos los días de enero y diciembre, se utilizarán 2/12 del presupuesto total para calcular su etiqueta. La única excepción es el transporte, que permite obtener el presupuesto completo a partir de un determinado número de entradas anuales. Su presupuesto global se basa en la suma de sus presupuestos de electricidad, calefacción y transporte.</string>
     <string name="home_your_carbon_emissions_labels_value_produced_with_year_title">%1$s CO₂ en %2$d</string>
-    <string name="home_your_carbon_emissions_bar_chart_label_carbon_emission_title">%1$s CO₂</string>
+    <string name="home_your_carbon_emissions_bar_chart_label_carbon_emission_title">"%1$s CO₂ "</string>
     <string name="home_your_carbon_emissions_bar_chart_label_energy_expended_title">kWh</string>
     <string name="home_your_carbon_emissions_labels_value_used_with_year_title">%1$s kWh en %2$d</string>
     <string name="home_your_carbon_emissions_label_empty_title">Aún no se ha introducido ningún consumo (?)</string>
@@ -205,17 +218,21 @@
     <string name="home_recurring_consumptions_list_item_disabled_title">Desactivado</string>
     <string name="home_recurring_consumptions_update_title">Editar</string>
     <string name="home_duplicate_consumption_button_title">Duplicar</string>
+    <string name="consumption_detail_energy_usage_label">Consumo de energía</string>
     <string name="settings_app_bar_title">Ajustes</string>
     <string name="settings_profile_section_title">Cuenta</string>
     <string name="settings_profile_edit_profile_title">Editar perfil</string>
     <string name="settings_profile_select_region_title">Seleccionar región</string>
+    <string name="settings_profile_select_number_formatting_title">Formato de los números</string>
     <string name="settings_profile_select_region_germany_title">Alemania</string>
     <string name="settings_profile_select_region_portugal_title">Portugal</string>
+    <string name="settings_profile_select_region_spain_title">España</string>
     <string name="settings_profile_select_region_slovenia_title">Eslovenia</string>
     <string name="settings_profile_select_region_denmark_title">Dinamarca</string>
     <string name="settings_profile_select_region_united_kingdom_title">Reino Unido</string>
     <string name="settings_profile_select_region_usa_title">EEUU</string>
     <string name="settings_profile_select_region_system_title">Sistema</string>
+    <string name="settings_profile_select_region_info_description">Puede especificar el formato de los números anulando la configuración del sistema. Tenga en cuenta que esto no afecta a la región de su cuenta y solo ajusta cómo se muestran los números en la aplicación.</string>
     <string name="settings_profile_change_password_title">Cambiar contraseña</string>
     <string name="settings_profile_change_email_title">Cambiar email</string>
     <string name="settings_profile_logout_title">Cierre de sesión</string>
@@ -331,4 +348,5 @@
     <string name="settings_export_data_share_dialog">Sus datos se han descargado correctamente. ¿Desea exportarlos?</string>
     <string name="consumption_detail_recurring_consumption_automatically_generated_text">Esta entrada se añadió automáticamente mediante consumos recurrentes.</string>
     <string name="recurring_consumptions_changed_behaviour_popup_text">¿Ha cambiado su comportamiento energético habitual?</string>
+    <string name="userfeedback_add_consumption_no_internet_connection">"Parece que está desconectado. Sus datos se sincronizarán automáticamente en cuanto vuelva a conectarse a Internet.\n"</string>
 </resources>

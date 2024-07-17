@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptions.Consumption
+import eu.inscico.aurora_app.model.consumptions.ElectricitySource
 import eu.inscico.aurora_app.model.consumptions.ElectricitySource.Companion.getDisplayName
 import eu.inscico.aurora_app.utils.CalendarUtils
 import eu.inscico.aurora_app.services.shared.UnitService
@@ -45,7 +46,7 @@ fun ElectricityConsumptionDetails(
                 .clip(shape = RoundedCornerShape(16.dp))
         ) {
 
-            val formattedConsumptionValue = unitService.getValueInCorrectNumberFormat(config, String.format("%.1f", consumption.value).replace(",",".").toDouble())
+            val formattedConsumptionValue = unitService.getValueInUserPreferredNumberFormat(config, String.format("%.1f", consumption.value).replace(",",".").toDouble())
             ListItem(
                 headlineContent = { Text(text = stringResource(id = R.string.home_consumptions_type_electricity_title)) },
                 trailingContent = {
@@ -57,8 +58,6 @@ fun ElectricityConsumptionDetails(
                 }
             )
 
-            Divider()
-
             val carbonEmissionText = if (consumption.carbonEmissions != null) {
                 unitService.getConvertedWeightWithUnit(config, consumption.carbonEmissions, 1)
             } else {
@@ -66,11 +65,36 @@ fun ElectricityConsumptionDetails(
             }
 
             if(carbonEmissionText != null) {
+                Divider()
+
                 ListItem(
                     headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_carbon_emissions_title)) },
                     trailingContent = {
                         Text(
                             text = carbonEmissionText,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                )
+            }
+
+            val energyExpendedText = if (consumption.energyExpended != null) {
+                "${unitService.getValueInUserPreferredNumberFormat(config, consumption.energyExpended, 1)} ${stringResource(
+                    id = R.string.home_your_carbon_emissions_bar_chart_label_energy_expended_title
+                )}"
+            } else {
+                null
+            }
+
+            if (energyExpendedText != null) {
+                Divider()
+
+                ListItem(
+                    headlineContent = { Text(text = stringResource(id = R.string.consumption_detail_energy_usage_label)) },
+                    trailingContent = {
+                        Text(
+                            text = energyExpendedText,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = MaterialTheme.typography.bodyMedium
                         )
@@ -87,6 +111,44 @@ fun ElectricityConsumptionDetails(
                 .padding(16.dp)
                 .clip(shape = RoundedCornerShape(16.dp))
         ) {
+
+            ListItem(
+                headlineContent = { Text(text = stringResource(id = R.string.electricity_source_title)) },
+                trailingContent = {
+                    Text(
+                        text = consumption.electricity.electricitySource.getDisplayName(context),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            )
+
+            if(consumption.electricity.electricitySource == ElectricitySource.HOME_PHOTOVOLTAICS){
+
+                val energyExportedText = if (consumption.electricity.electricityExported != null) {
+                    "${unitService.getValueInUserPreferredNumberFormat(config, consumption.electricity.electricityExported, 1)} ${stringResource(
+                        id = R.string.home_your_carbon_emissions_bar_chart_label_energy_expended_title
+                    )}"
+                } else {
+                    null
+                }
+
+                if(energyExportedText != null){
+                    Divider()
+                    ListItem(
+                        headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_form_energy_exported_title)) },
+                        trailingContent = {
+                            Text(
+                                text = energyExportedText,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    )
+                }
+            }
+
+            Divider()
 
             val costsText = if (consumption.electricity.costs != null) {
                 "${String.format("%.2f", consumption.electricity.costs)} ${
@@ -112,6 +174,19 @@ fun ElectricityConsumptionDetails(
             }
 
             ListItem(
+                headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_form_people_in_household_title)) },
+                trailingContent = {
+                    Text(
+                        text = consumption.electricity.householdSize.toString(),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            )
+
+            Divider()
+
+            ListItem(
                 headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_form_begin_title)) },
                 trailingContent = {
                     Text(
@@ -129,19 +204,6 @@ fun ElectricityConsumptionDetails(
                 trailingContent = {
                     Text(
                         text = CalendarUtils.toDateString(consumption.electricity.endDate, unitService.getDateFormat(config)),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            )
-
-            Divider()
-
-            ListItem(
-                headlineContent = { Text(text = stringResource(id = R.string.electricity_source_title)) },
-                trailingContent = {
-                    Text(
-                        text = consumption.electricity.electricitySource.getDisplayName(context),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium
                     )

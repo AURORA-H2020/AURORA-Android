@@ -67,9 +67,9 @@ fun ConsumptionListItem(
         is Consumption.TransportationConsumption -> unitService.getConvertedWeightWithUnit(config, consumption.carbonEmissions, decimals = 1)
     }
 
-    val consumptionValue = when (consumption) {
-        is Consumption.ElectricityConsumption -> "${String.format("%.0f", consumption.value)} kWh"
-        is Consumption.HeatingConsumption -> "${String.format("%.0f", consumption.value)} kWh"
+    val energyExpendedValue = when (consumption) {
+        is Consumption.ElectricityConsumption -> "${String.format("%.0f", consumption.energyExpended)} kWh"
+        is Consumption.HeatingConsumption -> "${String.format("%.0f", consumption.energyExpended)} kWh"
         is Consumption.TransportationConsumption -> unitService.getConvertedDistanceWithUnit(config, consumption.value, decimals = 1)
     }
 
@@ -172,7 +172,7 @@ fun ConsumptionListItem(
         trailingContent = {
             Column(horizontalAlignment = Alignment.End) {
                 Text(
-                    text = consumptionValue,
+                    text = energyExpendedValue,
                     style = MaterialTheme.typography.labelMedium,
                     textAlign = TextAlign.Start,
                     color = MaterialTheme.colorScheme.onSecondary

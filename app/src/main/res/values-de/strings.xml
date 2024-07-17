@@ -97,7 +97,11 @@
     <string name="home_consumptions_all_entries_title">All Verbrauchseinträge</string>
     <string name="home_add_consumption_title">Verbrauch hinzufügen</string>
     <string name="home_add_consumption_form_consumption_title">Verbrauch</string>
+    <string name="home_add_consumption_form_energy_produced_title">Erzeugte Energie</string>
+    <string name="home_add_consumption_form_energy_exported_title">Ausgeführte Energie</string>
+    <string name="home_add_consumption_form_energy_exported_error_title">Es kann nicht mehr Energie exportiert als produziert werden.</string>
     <string name="home_add_consumption_form_electricity_consumption_description_title">Diese Information finden Sie auf Ihrer Stromrechnung.</string>
+    <string name="home_add_consumption_form_electricity_energy_expanded_description_title">Diese Informationen finden Sie in der Regel in einer App oder auf einer Website, die von Ihrem Solar-Installateur bereitgestellt wird.</string>
     <string name="home_add_consumption_form_heating_consumption_description_title">Diese Information finden Sie auf Ihrer Heizkostenabrechnung.</string>
     <string name="home_add_consumption_form_people_in_household_title">Personen im Haushalt:</string>
     <string name="home_add_consumption_form_people_in_household_description_title">Wie viele Personen, einschließlich Ihnen, leben in Ihrem Haushalt?</string>
@@ -113,6 +117,8 @@
     <string name="electricity_source_title">Stromquelle</string>
     <string name="electricity_source_description">Wählen Sie die Quelle Ihres Stromverbrauchs aus.</string>
     <string name="electricity_source_default">Standard</string>
+    <string name="electricity_source_default_standard">Nationales Stromnetz (Standard)</string>
+    <string name="electricity_source_default_green">Nationales Stromnetz (grüner Anbieter)</string>
     <string name="electricity_source_home_photovoltaics">Eigene Photovoltaik</string>
     <string name="heating_fuel_type_oil_title">Öl</string>
     <string name="heating_fuel_type_natural_gas_title">Erdgas</string>
@@ -132,6 +138,8 @@
     <string name="district_heating_source_type_geo_thermal_title">Geothermische Energie</string>
     <string name="district_heating_source_type_biomass_title">Biomasse</string>
     <string name="district_heating_source_type_waste_treatment_title">Abfallbehandlung</string>
+    <string name="heating_fuel_type_firewood_title">Brennholz</string>
+    <string name="heating_fuel_type_butane_title">Butan</string>
     <string name="district_heating_source_type_default_title">Standard</string>
     <string name="home_add_consumption_transportation_type_title">Verkehrsmittel</string>
     <string name="home_add_consumption_transportation_type_section_cars_and_bikes_title">Autos &amp; Motorräder</string>
@@ -154,6 +162,9 @@
     <string name="home_add_consumption_transportation_type_item_diesel_passenger_train_title">Diesel-Personenzug</string>
     <string name="home_add_consumption_transportation_type_item_high_speed_train_title">Hochgeschwindigkeitszug</string>
     <string name="home_add_consumption_transportation_type_item_plane_title">Flugzeug</string>
+    <string name="home_add_consumption_transportation_type_item_plane_domestic_title">Flugzeug (Inland)</string>
+    <string name="home_add_consumption_transportation_type_item_plane_intra_eu_title">Flugzeug (innerhalb der EU)</string>
+    <string name="home_add_consumption_transportation_type_item_plane_extra_eu_title">Flugzeug (außerhalb der EU)</string>
     <string name="home_add_consumption_transportation_type_item_electric_bike_title">Elektrofahrrad</string>
     <string name="home_add_consumption_transportation_type_item_electric_scooter_title">Elektroroller</string>
     <string name="home_add_consumption_transportation_type_item_bike_title">Fahrrad</string>
@@ -164,6 +175,8 @@
     <string name="home_add_consumption_transportation_public_occupancy_medium_title">Mittlere Auslastung</string>
     <string name="home_add_consumption_transportation_public_occupancy_nearly_full_title">Nahezu voll</string>
     <string name="home_add_consumption_transportation_distance_title">Entfernung</string>
+    <string name="home_add_consumption_transportation_fuel_consumption_optional_title">Kraftstoffverbrauch (optional)</string>
+    <string name="home_add_consumption_transportation_fuel_consumption_title">Kraftstoffverbrauch</string>
     <string name="home_add_consumption_transportation_start_of_travel_title">Beginn der Fahrt</string>
     <string name="home_add_consumption_transportation_end_of_travel_title">Ende der Fahrt</string>
     <string name="home_add_consumption_carbon_emissions_title">CO₂-Emissionen</string>
@@ -205,17 +218,21 @@
     <string name="home_recurring_consumptions_list_item_disabled_title">Deaktiviert</string>
     <string name="home_recurring_consumptions_update_title">Bearbeiten</string>
     <string name="home_duplicate_consumption_button_title">Duplizieren</string>
+    <string name="consumption_detail_energy_usage_label">Energieverbrauch</string>
     <string name="settings_app_bar_title">Einstellungen</string>
     <string name="settings_profile_section_title">Konto</string>
     <string name="settings_profile_edit_profile_title">Profil bearbeiten</string>
     <string name="settings_profile_select_region_title">Region auswählen</string>
+    <string name="settings_profile_select_number_formatting_title">Zahlenformatierung</string>
     <string name="settings_profile_select_region_germany_title">Deutschland</string>
     <string name="settings_profile_select_region_portugal_title">Portugal</string>
+    <string name="settings_profile_select_region_spain_title">Spanien</string>
     <string name="settings_profile_select_region_slovenia_title">Slowenien</string>
     <string name="settings_profile_select_region_denmark_title">Dänemark</string>
     <string name="settings_profile_select_region_united_kingdom_title">Vereinigtes Königreich</string>
     <string name="settings_profile_select_region_usa_title">USA</string>
     <string name="settings_profile_select_region_system_title">System</string>
+    <string name="settings_profile_select_region_info_description">Sie können festlegen, wie die Zahlen formatiert werden sollen und Ihre Systemeinstellung überschreiben. Bitte beachten Sie, dass dies keine Auswirkungen auf Ihre Account-Region hat und nur die Anzeige der Zahlen in der App anpasst.</string>
     <string name="settings_profile_change_password_title">Passwort ändern</string>
     <string name="settings_profile_change_email_title">E-Mail ändern</string>
     <string name="settings_profile_logout_title">Abmelden</string>
@@ -331,4 +348,5 @@
     <string name="settings_export_data_share_dialog">Ihre Daten wurden erfolgreich heruntergeladen. Möchten Sie sie exportieren?</string>
     <string name="consumption_detail_recurring_consumption_automatically_generated_text">Dieser Eintrag wurde automatisch über wiederkehrende Verbräuche hinzugefügt.</string>
     <string name="recurring_consumptions_changed_behaviour_popup_text">Hat sich Ihr reguläres Energieverhalten geändert?</string>
+    <string name="userfeedback_add_consumption_no_internet_connection">Es scheint, dass Sie offline sind. Ihre Daten werden automatisch synchronisiert, sobald Sie wieder mit dem Internet verbunden sind.</string>
 </resources>

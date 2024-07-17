@@ -77,13 +77,11 @@ enum class DistrictHeatingSource {
 
         fun getDistrictHeatingSourceList(): List<DistrictHeatingSource> {
             return listOf(
-                COAL,
                 NATURAL_GAS,
                 OIL,
                 ELECTRIC,
                 SOLAR_THERMAL,
                 GEO_THERMAL,
-                BIOMASS,
                 WASTE_TREATMENT,
                 DEFAULT
             )

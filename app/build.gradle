@@ -15,8 +15,8 @@ android {
         applicationId "eu.inscico.aurora_app"
         minSdk 26
         targetSdk 34
-        versionCode 17
-        versionName "1.1.1"
+        versionCode 18
+        versionName "1.1.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -89,6 +89,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage-ktx'
     implementation 'com.google.firebase:firebase-functions-ktx'
     implementation 'com.google.firebase:firebase-config-ktx'
+    implementation 'com.google.firebase:firebase-appcheck-playintegrity'
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
 
 

@@ -13,10 +13,10 @@
     <string name="discard">Zavrzi</string>
     <string name="yes">Da</string>
     <string name="no">Ne</string>
-    <string name="dont_ask_again">Ne sprašuj me ponovno</string>
+    <string name="dont_ask_again">Ne sprašuj ponovno</string>
     <string name="choose">Izberi</string>
     <string name="login_aurora_title">Dobrodošel v AURORI</string>
-    <string name="login_aurora_description">Opolnomočenje nove generacije državljanov s skoraj ničelnimi emisijami</string>
+    <string name="login_aurora_description">Opolnomočenje nove generacije skoraj nič emisijskih prebivalcev</string>
     <string name="login_google_sign_in_button_text">Vpiši se z Googlom</string>
     <string name="login_apple_sign_in_button_text">Vpiši se z Applom</string>
     <string name="login_email_sign_in_button_text">Vpiši se z e-pošto</string>
@@ -97,7 +97,11 @@
     <string name="home_consumptions_all_entries_title">Vsi vnosi porabe</string>
     <string name="home_add_consumption_title">Dodaj porabo</string>
     <string name="home_add_consumption_form_consumption_title">Poraba</string>
+    <string name="home_add_consumption_form_energy_produced_title">Proizvedena energija</string>
+    <string name="home_add_consumption_form_energy_exported_title">Izvožena energija</string>
+    <string name="home_add_consumption_form_energy_exported_error_title">Izvoziti ni možno več energije kot jo je proizvedene</string>
     <string name="home_add_consumption_form_electricity_consumption_description_title">Te podatke lahko najdeš na računu za elektriko.</string>
+    <string name="home_add_consumption_form_electricity_energy_expanded_description_title">Te informacije običajno najdete v aplikaciji ali na spletnem mestu, izvajalca fotovoltaične namestitve.</string>
     <string name="home_add_consumption_form_heating_consumption_description_title">Te podatke lahko najdeš na računu za ogrevanje.</string>
     <string name="home_add_consumption_form_people_in_household_title">Število oseb v gospodinjstvu:</string>
     <string name="home_add_consumption_form_people_in_household_description_title">Koliko oseb, vključno s tabo, živi v tvojem gospodinjstvu.</string>
@@ -113,6 +117,8 @@
     <string name="electricity_source_title">Vir električne energije</string>
     <string name="electricity_source_description">Izberite ustrezen vir električne energije.</string>
     <string name="electricity_source_default">Privzeto</string>
+    <string name="electricity_source_default_standard">Državno omrežje (standardno)</string>
+    <string name="electricity_source_default_green">Državno omrežje (zeleni ponudnik)</string>
     <string name="electricity_source_home_photovoltaics">Domača sončna elektrarna</string>
     <string name="heating_fuel_type_oil_title">Nafta</string>
     <string name="heating_fuel_type_natural_gas_title">Zemeljski plin</string>
@@ -132,6 +138,8 @@
     <string name="district_heating_source_type_geo_thermal_title">Geotermalna energija</string>
     <string name="district_heating_source_type_biomass_title">Biomasa</string>
     <string name="district_heating_source_type_waste_treatment_title">Ravnanje z odpadki</string>
+    <string name="heating_fuel_type_firewood_title">Les za kurjavo</string>
+    <string name="heating_fuel_type_butane_title">Butan</string>
     <string name="district_heating_source_type_default_title">Privzeto</string>
     <string name="home_add_consumption_transportation_type_title">Vrsta prevoza</string>
     <string name="home_add_consumption_transportation_type_section_cars_and_bikes_title">Avtomobili in motorna kolesa</string>
@@ -154,6 +162,9 @@
     <string name="home_add_consumption_transportation_type_item_diesel_passenger_train_title">Potniški vlak na dizelski pogon</string>
     <string name="home_add_consumption_transportation_type_item_high_speed_train_title">Hitri vlak</string>
     <string name="home_add_consumption_transportation_type_item_plane_title">Letalo</string>
+    <string name="home_add_consumption_transportation_type_item_plane_domestic_title">Letalo (domače)</string>
+    <string name="home_add_consumption_transportation_type_item_plane_intra_eu_title">Letalo (znotraj EU)</string>
+    <string name="home_add_consumption_transportation_type_item_plane_extra_eu_title">Letalo (izven EU)</string>
     <string name="home_add_consumption_transportation_type_item_electric_bike_title">Električno kolo</string>
     <string name="home_add_consumption_transportation_type_item_electric_scooter_title">Električni skuter</string>
     <string name="home_add_consumption_transportation_type_item_bike_title">Kolo</string>
@@ -164,6 +175,8 @@
     <string name="home_add_consumption_transportation_public_occupancy_medium_title">Srednja zasedenost</string>
     <string name="home_add_consumption_transportation_public_occupancy_nearly_full_title">Skoraj polno</string>
     <string name="home_add_consumption_transportation_distance_title">Razdalja</string>
+    <string name="home_add_consumption_transportation_fuel_consumption_optional_title">Poraba goriva (neobvezno)</string>
+    <string name="home_add_consumption_transportation_fuel_consumption_title">Poraba goriva</string>
     <string name="home_add_consumption_transportation_start_of_travel_title">Začetek potovanja</string>
     <string name="home_add_consumption_transportation_end_of_travel_title">Konec potovanja</string>
     <string name="home_add_consumption_carbon_emissions_title">Emisije ogljika</string>
@@ -205,17 +218,21 @@
     <string name="home_recurring_consumptions_list_item_disabled_title">Onemogočeno</string>
     <string name="home_recurring_consumptions_update_title">Urejanje</string>
     <string name="home_duplicate_consumption_button_title">Podvoji</string>
+    <string name="consumption_detail_energy_usage_label">Poraba energije</string>
     <string name="settings_app_bar_title">Nastavitve</string>
     <string name="settings_profile_section_title">Račun</string>
     <string name="settings_profile_edit_profile_title">Urejanje profila</string>
     <string name="settings_profile_select_region_title">Izberite regijo</string>
+    <string name="settings_profile_select_number_formatting_title">Oblikovanje številk</string>
     <string name="settings_profile_select_region_germany_title">Nemčija</string>
     <string name="settings_profile_select_region_portugal_title">Portugalska</string>
+    <string name="settings_profile_select_region_spain_title">Španija</string>
     <string name="settings_profile_select_region_slovenia_title">Slovenija</string>
     <string name="settings_profile_select_region_denmark_title">Danska</string>
     <string name="settings_profile_select_region_united_kingdom_title">Združeno kraljestvo</string>
     <string name="settings_profile_select_region_usa_title">ZDA</string>
     <string name="settings_profile_select_region_system_title">Sistem</string>
+    <string name="settings_profile_select_region_info_description">Določite lahko, kako naj bodo številke oblikovane, tako da nadomestite sistemsko nastavitev. Ta nastavitev ne vpliva na regijo vašega računa, temveč le prilagaja način prikazovanja številk v aplikaciji.</string>
     <string name="settings_profile_change_password_title">Sprememba gesla</string>
     <string name="settings_profile_change_email_title">Sprememba e-pošte</string>
     <string name="settings_profile_logout_title">Odjava</string>
@@ -331,4 +348,5 @@
     <string name="settings_export_data_share_dialog">Podatki so bili uspešno preneseni. Jih želiš izvoziti?</string>
     <string name="consumption_detail_recurring_consumption_automatically_generated_text">Ta vnos je bil samodejno dodan prek ponavljajočih se porab.</string>
     <string name="recurring_consumptions_changed_behaviour_popup_text">Ali se je vaše redno ravnanje z energijo spremenilo?</string>
+    <string name="userfeedback_add_consumption_no_internet_connection">Zdi se, da si brez povezave. Svoje podatke boš samodejno sinhroniziral takoj, ko ponovno vzpostaviš povezavo z internetom.</string>
 </resources>

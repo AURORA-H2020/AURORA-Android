@@ -5,6 +5,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -25,6 +26,7 @@ import eu.inscico.aurora_app.model.consumptions.DistrictHeatingSource.Companion.
 import eu.inscico.aurora_app.model.consumptions.HeatingFuelType.Companion.getDisplayName
 import eu.inscico.aurora_app.model.consumptions.HeatingFuelType.Companion.parseHeatingFuelToString
 import eu.inscico.aurora_app.services.navigation.NavigationService
+import eu.inscico.aurora_app.services.network.NetworkService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.forms.AddSubtractCountFormEntry
 import eu.inscico.aurora_app.ui.components.forms.BeginEndPickerFormEntry
@@ -50,23 +52,48 @@ fun AddHeatingConsumption(
     viewModel: AddConsumptionViewModel = koinViewModel(),
     navigationService: NavigationService = get(),
     userFeedbackService: UserFeedbackService = get(),
+    networkService: NetworkService = get(),
     unitService: UnitService = get()
 ){
 
     val context = LocalContext.current
     val config = LocalConfiguration.current
 
+    val hasInternet = networkService.hasInternetConnectionLive.observeAsState()
+
     // set language, only necessary for screenshot ui tests
     LocaleUtils.updateLocale(context, language)
 
-    val initialConsumption = if(initialValue?.value != null){
-        unitService.getValueInCorrectNumberFormat(config, String.format("%.1f",initialValue.value).replace(",",".").toDouble())
+    val convertedInitialConsumption = if(initialValue?.value != null){
+
+        when(initialValue.heating.heatingFuel){
+            HeatingFuelType.BIOMASS,
+            HeatingFuelType.LOCALLY_PRODUCED_BIOMASS,
+            HeatingFuelType.FIREWOOD,
+            HeatingFuelType.BUTANE -> {
+                unitService.getWeightInUserPreferredUnit(config, initialValue.value, 1)
+            }
+            HeatingFuelType.OIL,
+            HeatingFuelType.LPG -> {
+                unitService.getVolumeInUserPreferredUnit(config, initialValue.value, 1)
+            }
+            HeatingFuelType.NATURAL_GAS,
+            HeatingFuelType.GEO_THERMAL,
+            HeatingFuelType.SOLAR_THERMAL,
+            HeatingFuelType.DISTRICT,
+            HeatingFuelType.ELECTRIC -> {
+                initialValue.value
+            }
+        }
     } else {
-        ""
+        0.0
     }
 
+    val convertedInitialConsumptionInUsersNumberFormat =
+        unitService.getValueInUserPreferredNumberFormat(config, convertedInitialConsumption)
+
     val consumption = remember {
-        mutableStateOf(initialConsumption)
+        mutableStateOf(convertedInitialConsumptionInUsersNumberFormat)
     }
 
     val peopleInHousehold = remember {
@@ -122,60 +149,6 @@ fun AddHeatingConsumption(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color.Transparent,
-                unfocusedBorderColor = Color.Transparent,
-                containerColor = MaterialTheme.colorScheme.surface
-            ),
-            shape = RoundedCornerShape(16.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            value = consumption.value,
-            label = {
-                Text(text = stringResource(id = R.string.home_add_consumption_form_consumption_title))
-            },
-            onValueChange = {
-                consumption.value = it
-                isSaveValid.value = isSaveValid()
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
-            trailingIcon = { Text(text = "kWh") }
-        )
-
-        Spacer(Modifier.height(4.dp))
-
-        Text(
-            text = stringResource(id = R.string.home_add_consumption_form_heating_consumption_description_title),
-            modifier = Modifier.padding(horizontal = 16.dp),
-            style = MaterialTheme.typography.labelSmall,
-            textAlign = TextAlign.Start,
-            color = MaterialTheme.colorScheme.onSecondary
-        )
-
-        Spacer(Modifier.height(16.dp))
-
-        AddSubtractCountFormEntry(
-            titleRes = R.string.home_add_consumption_form_people_in_household_title,
-            initialValue = peopleInHousehold.value,
-            isNullCountPossible = false){
-            peopleInHousehold.value = it
-        }
-
-
-        Spacer(Modifier.height(4.dp))
-
-        Text(
-            text = stringResource(id = R.string.home_add_consumption_form_people_in_household_description_title),
-            modifier = Modifier.padding(horizontal = 16.dp),
-            style = MaterialTheme.typography.labelSmall,
-            textAlign = TextAlign.Start,
-            color = MaterialTheme.colorScheme.onSecondary
-        )
-
-        Spacer(Modifier.height(16.dp))
-
         val allHeatingFuelSpinnerEntries = viewModel.allHeatingFuels.map {
             SpinnerItem.Entry(name = it.getDisplayName(context), data = it)
         }
@@ -225,6 +198,81 @@ fun AddHeatingConsumption(
 
         Text(
             text = stringResource(id = R.string.home_add_consumption_form_heating_fuel_type_title),
+            modifier = Modifier.padding(horizontal = 16.dp),
+            style = MaterialTheme.typography.labelSmall,
+            textAlign = TextAlign.Start,
+            color = MaterialTheme.colorScheme.onSecondary
+        )
+
+        Spacer(Modifier.height(16.dp))
+
+        val consumptionUnit = when(heatingFuel.value){
+            HeatingFuelType.BIOMASS,
+            HeatingFuelType.LOCALLY_PRODUCED_BIOMASS,
+            HeatingFuelType.FIREWOOD,
+            HeatingFuelType.BUTANE -> {
+                unitService.getUserPreferredWeightUnit(config)
+            }
+            HeatingFuelType.OIL,
+            HeatingFuelType.LPG -> {
+                unitService.getUserPreferredVolumeUnit(config)
+            }
+            HeatingFuelType.NATURAL_GAS,
+            HeatingFuelType.GEO_THERMAL,
+            HeatingFuelType.SOLAR_THERMAL,
+            HeatingFuelType.DISTRICT,
+            HeatingFuelType.ELECTRIC -> {
+                "kWh"
+            }
+            else -> { "kWh" }
+        }
+
+        OutlinedTextField(
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
+            shape = RoundedCornerShape(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            value = consumption.value,
+            label = {
+                Text(text = stringResource(id = R.string.home_add_consumption_form_consumption_title))
+            },
+            onValueChange = {
+                consumption.value = it
+                isSaveValid.value = isSaveValid()
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+            trailingIcon = { Text(text = consumptionUnit) }
+        )
+
+        Spacer(Modifier.height(4.dp))
+
+        Text(
+            text = stringResource(id = R.string.home_add_consumption_form_heating_consumption_description_title),
+            modifier = Modifier.padding(horizontal = 16.dp),
+            style = MaterialTheme.typography.labelSmall,
+            textAlign = TextAlign.Start,
+            color = MaterialTheme.colorScheme.onSecondary
+        )
+
+        Spacer(Modifier.height(16.dp))
+
+        AddSubtractCountFormEntry(
+            titleRes = R.string.home_add_consumption_form_people_in_household_title,
+            initialValue = peopleInHousehold.value,
+            isNullCountPossible = false){
+            peopleInHousehold.value = it
+        }
+
+
+        Spacer(Modifier.height(4.dp))
+
+        Text(
+            text = stringResource(id = R.string.home_add_consumption_form_people_in_household_description_title),
             modifier = Modifier.padding(horizontal = 16.dp),
             style = MaterialTheme.typography.labelSmall,
             textAlign = TextAlign.Start,
@@ -366,8 +414,29 @@ fun AddHeatingConsumption(
                     }
 
                     val finalValue = consumption.value.replace(",",".").toDoubleOrNull()
-
-                    if(finalValue != null && heatingFuel.value != null) {
+                    val finalHeatingFuel = heatingFuel.value
+                    if(finalValue != null && finalHeatingFuel != null) {
+                    val consumptionValue = when(finalHeatingFuel){
+                        HeatingFuelType.BIOMASS,
+                        HeatingFuelType.LOCALLY_PRODUCED_BIOMASS,
+                        HeatingFuelType.FIREWOOD,
+                        HeatingFuelType.BUTANE -> {
+                            val consumptionInKg = unitService.getWeightInKg(config, finalValue)
+                            consumptionInKg
+                        }
+                        HeatingFuelType.OIL,
+                        HeatingFuelType.LPG -> {
+                            val consumptionInLiter = unitService.getVolumeInLiter(config, finalValue)
+                            consumptionInLiter
+                        }
+                        HeatingFuelType.NATURAL_GAS,
+                        HeatingFuelType.GEO_THERMAL,
+                        HeatingFuelType.SOLAR_THERMAL,
+                        HeatingFuelType.DISTRICT,
+                        HeatingFuelType.ELECTRIC -> {
+                            finalValue
+                        }
+                    }
 
                         val heatingConsumptionDataResponse = HeatingConsumptionDataResponse(
                             costs = costs.value.replace(",",".").toDoubleOrNull(),
@@ -382,11 +451,17 @@ fun AddHeatingConsumption(
                             null
                         }
 
+                        val createdAt = if(isDuplicate == true){
+                            Timestamp( Date(System.currentTimeMillis()) )
+                        } else {
+                            Timestamp(initialValue?.createdAt?.time ?: Date(System.currentTimeMillis()))
+                        }
+
                         val consumptionResponse = ConsumptionResponse(
                             category = ConsumptionType.parseConsumptionTypeToString(ConsumptionType.HEATING),
-                            value = finalValue,
+                            value = consumptionValue,
                             description = descriptionValue,
-                            createdAt = Timestamp(initialValue?.createdAt?.time ?: Date(System.currentTimeMillis())),
+                            createdAt = createdAt,
                             electricity = null,
                             heating = heatingConsumptionDataResponse,
                             transportation = null
@@ -402,13 +477,22 @@ fun AddHeatingConsumption(
                             }
                             when (result) {
                                 is TypedResult.Failure -> {
-                                    userFeedbackService.showSnackbar(R.string.settings_add_consumption_entry_fail_message)
+                                    if(result.reason == "NO_INTERNET"){
+                                        userFeedbackService.showSnackbar(R.string.userfeedback_add_consumption_no_internet_connection)
+                                        withContext(Dispatchers.Main) {
+                                            navigationService.navControllerTabHome?.popBackStack()
+                                        }
+                                    } else {
+                                        userFeedbackService.showSnackbar(R.string.settings_add_consumption_entry_fail_message)
+                                    }
                                 }
                                 is TypedResult.Success -> {
                                     withContext(Dispatchers.Main) {
                                         navigationService.navControllerTabHome?.popBackStack()
                                     }
                                 }
+
+                                else -> {}
                             }
                         }
                     } else {
@@ -424,6 +508,20 @@ fun AddHeatingConsumption(
 
                 Spacer(Modifier.height(16.dp))
             }
+        }
+
+        if(hasInternet.value != true){
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = stringResource(id = R.string.userfeedback_add_consumption_no_internet_connection),
+                modifier = Modifier.padding(horizontal = 16.dp),
+                style = MaterialTheme.typography.labelSmall,
+                textAlign = TextAlign.Start,
+                color = MaterialTheme.colorScheme.onSecondary
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 

@@ -83,8 +83,9 @@ fun AddTransportationRecurringConsumptionScreen(
         mutableStateOf(false)
     }
 
-    val initialDistance = if(initialValues?.distance != null){
-        "${unitService.getConvertedDistance(configuration, distanceInKm = initialValues.distance, decimals = 1)}"
+    val convertedDistance = unitService.getDistanceInUsersPreferredUnit(configuration, distanceInKm = initialValues?.distance, decimals = 1)
+    val initialDistance = if (initialValues?.distance != null) {
+        unitService.getValueInUserPreferredNumberFormat(configuration, convertedDistance, 1)
     } else {
         ""
     }
@@ -93,13 +94,40 @@ fun AddTransportationRecurringConsumptionScreen(
         mutableStateOf(initialDistance)
     }
 
+    val convertedFuelConsumption =
+        if(transportationType.value == TransportationType.ELECTRIC_CAR
+            || transportationType.value == TransportationType.ELECTRIC_MOTORCYCLE){
+            unitService.getKWhPerDistanceInUserPreferredUnit(configuration, kWhPer100Km = initialValues?.fuelConsumption, decimals = 1)
+        } else {
+            unitService.getVolumePerDistanceInUserPreferredUnit(configuration, literPer100km = initialValues?.fuelConsumption, decimals = 1)
+        }
+    val initialFuelConsumption = if (initialValues?.fuelConsumption != null) {
+        unitService.getValueInUserPreferredNumberFormat(configuration, convertedFuelConsumption)
+    } else {
+        ""
+    }
+
+    val fuelConsumption = remember {
+        mutableStateOf(initialFuelConsumption)
+    }
+
     fun assembleTransportationData(): RecurringConsumptionTransportationData? {
 
         val timeOfTravel = Calendar.getInstance()
         timeOfTravel.timeInMillis = startOfTravelAsLong.value
 
         val distanceValue = distance.value.replace(",", ".").toDoubleOrNull()
-        val distanceValueKm = unitService.getCalculatedDistanceValueForUnit(configuration, distanceValue ?: 0.0 )
+        val distanceValueKm = unitService.getDistanceInKm(configuration, distanceValue ?: 0.0)
+
+        val fuelConsumptionValue = fuelConsumption.value.replace(",", ".").toDoubleOrNull()
+        val fuelConsumptionInLper100km = if(transportationType.value == TransportationType.ELECTRIC_MOTORCYCLE ||
+            transportationType.value == TransportationType.ELECTRIC_CAR){
+            unitService.getKWhPerDistanceInKWhPer100Km(configuration, fuelConsumptionValue ?: 0.0)
+
+        } else {
+            unitService.getVolumePerDistanceInLiterPer100Km(configuration, fuelConsumptionValue ?: 0.0)
+        }
+
 
         return when(transportationSection.value){
             TransportationTypeSection.CARS_AND_MOTORCYCLES -> {
@@ -109,6 +137,7 @@ fun AddTransportationRecurringConsumptionScreen(
                     transportationType = transportationType.value ?: return null,
                     publicVehicleOccupancy = null,
                     distance = distanceValueKm,
+                    fuelConsumption = fuelConsumptionInLper100km
                 )
             }
             TransportationTypeSection.BUSSES,
@@ -119,6 +148,7 @@ fun AddTransportationRecurringConsumptionScreen(
                     transportationType = transportationType.value ?: return null,
                     publicVehicleOccupancy = occupancyApproximately.value ?: return null,
                     distance = distanceValueKm,
+                    fuelConsumption = null
                 )
             }
             TransportationTypeSection.AVIATION,
@@ -129,6 +159,7 @@ fun AddTransportationRecurringConsumptionScreen(
                     transportationType = transportationType.value ?: return null,
                     publicVehicleOccupancy = null,
                     distance = distanceValueKm,
+                    fuelConsumption = null
                 )
             }
             null -> return null
@@ -333,9 +364,59 @@ fun AddTransportationRecurringConsumptionScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
 
             trailingIcon = {
-                Text(modifier = Modifier.padding(end = 32.dp), text = unitService.getDistanceUnit(configuration))
+                Text(modifier = Modifier.padding(end = 32.dp), text = unitService.getUserPreferredDistanceUnit(configuration))
             }
         )
+
+        if(transportationType.value == TransportationType.FUEL_CAR
+            || transportationType.value == TransportationType.ELECTRIC_CAR
+            || transportationType.value == TransportationType.HYBRID_CAR
+            || transportationType.value == TransportationType.MOTORCYCLE
+            || transportationType.value == TransportationType.ELECTRIC_MOTORCYCLE){
+
+            val unit = if(transportationType.value == TransportationType.ELECTRIC_MOTORCYCLE
+                || transportationType.value == TransportationType.ELECTRIC_CAR){
+                unitService.getUserPreferredKWhPerDistanceUnit(configuration)
+            } else {
+                unitService.getUserPreferredVolumePerDistanceUnit(configuration)
+            }
+
+            Divider()
+            TextField(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent,
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
+                value = fuelConsumption.value,
+                label = {
+                    Text(text = stringResource(id = R.string.home_add_consumption_transportation_fuel_consumption_optional_title))
+                },
+                onValueChange = {
+
+                    val isValueInCorrectFormat = viewModel.isDecimalInputValid(it)
+                    if(isValueInCorrectFormat || it.isEmpty()){
+                        val valueWithCorrectDecimalPoint = if(Locale.getDefault() == Locale.US || Locale.getDefault() == Locale.UK){
+                            it.replace(",",".")
+                        } else {
+                            it.replace(".",",")
+                        }
+                        fuelConsumption.value = valueWithCorrectDecimalPoint
+                        callback.invoke(assembleTransportationData())
+                    }
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Decimal,
+                    imeAction = ImeAction.Done
+                ),
+
+                trailingIcon = {
+                    Text(modifier = Modifier.padding(end = 32.dp), text = unit)
+                }
+            )
+        }
 
     }
 }

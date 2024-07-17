@@ -28,6 +28,8 @@ enum class TransportationType {
 
     // Plane
     @Json(name = "plane") PLANE,
+    @Json(name = "planeIntraEu") PLANE_INTRA_EU,
+    @Json(name = "planeExtraEu") PLANE_EXTRA_EU,
 
     // Other
     @Json(name = "electricBike") ELECTRIC_BIKE,
@@ -54,6 +56,8 @@ enum class TransportationType {
                 "dieselPassengerTrain" -> DIESEL_PASSENGER_TRAIN
                 "highSpeedTrain" -> HIGH_SPEED_TRAIN
                 "plane" -> PLANE
+                "planeIntraEu" -> PLANE_INTRA_EU
+                "planeExtraEu" -> PLANE_EXTRA_EU
                 "electricBike" -> ELECTRIC_BIKE
                 "electricScooter" -> ELECTRIC_SCOOTER
                 "bike" -> BIKE
@@ -79,6 +83,8 @@ enum class TransportationType {
                 DIESEL_PASSENGER_TRAIN -> "dieselPassengerTrain"
                 HIGH_SPEED_TRAIN -> "highSpeedTrain"
                 PLANE -> "plane"
+                PLANE_INTRA_EU -> "planeIntraEu"
+                PLANE_EXTRA_EU -> "planeExtraEu"
                 ELECTRIC_BIKE -> "electricBike"
                 ELECTRIC_SCOOTER -> "electricScooter"
                 BIKE -> "bike"
@@ -102,7 +108,9 @@ enum class TransportationType {
                 ELECTRIC_PASSENGER_TRAIN -> R.string.home_add_consumption_transportation_type_item_electric_passenger_train_title
                 DIESEL_PASSENGER_TRAIN -> R.string.home_add_consumption_transportation_type_item_diesel_passenger_train_title
                 HIGH_SPEED_TRAIN -> R.string.home_add_consumption_transportation_type_item_high_speed_train_title
-                PLANE -> R.string.home_add_consumption_transportation_type_item_plane_title
+                PLANE -> R.string.home_add_consumption_transportation_type_item_plane_domestic_title
+                PLANE_INTRA_EU -> R.string.home_add_consumption_transportation_type_item_plane_intra_eu_title
+                PLANE_EXTRA_EU -> R.string.home_add_consumption_transportation_type_item_plane_extra_eu_title
                 ELECTRIC_BIKE -> R.string.home_add_consumption_transportation_type_item_electric_bike_title
                 ELECTRIC_SCOOTER -> R.string.home_add_consumption_transportation_type_item_electric_scooter_title
                 BIKE -> R.string.home_add_consumption_transportation_type_item_bike_title

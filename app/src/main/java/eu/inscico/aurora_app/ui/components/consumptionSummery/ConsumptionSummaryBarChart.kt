@@ -55,7 +55,7 @@ fun ConsumptionSummaryBarChart(
     val yAxisValueFormatter: AxisValueFormatter<AxisPosition.Vertical.End> =
         AxisValueFormatter { value, _ ->
             val convertedValue = if(isCarbonEmission){
-                unitService.getConvertedWeight(configuration, weightInKg = value.toDouble()).toFloat()
+                unitService.getWeightInUserPreferredUnit(configuration, weightInKg = value.toDouble()).toFloat()
             } else {
                 value
             }
@@ -77,7 +77,7 @@ fun ConsumptionSummaryBarChart(
     val yAxisName = if(isCarbonEmission){
         context.getString(
             R.string.home_your_carbon_emissions_bar_chart_label_carbon_emission_title,
-            unitService.getWeightUnit(configuration),
+            unitService.getUserPreferredWeightUnit(configuration),
         )
     } else {
         stringResource(id = R.string.home_your_carbon_emissions_bar_chart_label_energy_expended_title)
