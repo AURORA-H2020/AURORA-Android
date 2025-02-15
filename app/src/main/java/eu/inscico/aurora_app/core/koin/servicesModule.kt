@@ -14,6 +14,7 @@ import eu.inscico.aurora_app.services.firebase.CloudFunctionsService
 import eu.inscico.aurora_app.services.firebase.ConsumptionSummaryService
 import eu.inscico.aurora_app.services.firebase.ConsumptionsService
 import eu.inscico.aurora_app.services.firebase.CountriesService
+import eu.inscico.aurora_app.services.firebase.PVPlantsService
 import eu.inscico.aurora_app.services.firebase.RecurringConsumptionsService
 import eu.inscico.aurora_app.services.firebase.UserService
 import eu.inscico.aurora_app.services.jsonParsing.JsonParsingService
@@ -112,6 +113,12 @@ val servicesModule = module {
 
     single {
         ConsumptionSummaryService(
+            _firestore = get()
+        )
+    }
+
+    single {
+        PVPlantsService(
             _firestore = get()
         )
     }
