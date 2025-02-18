@@ -1,7 +1,5 @@
 package eu.inscico.aurora_app.services.firebase
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import eu.inscico.aurora_app.model.City
@@ -11,6 +9,8 @@ import eu.inscico.aurora_app.model.country.CountryResponse
 import eu.inscico.aurora_app.utils.TypedResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.*
@@ -22,14 +22,14 @@ class CountriesService(
     private val countriesCollectionName = "countries"
     private val citiesCollectionName = "cities"
 
-    private val _countriesLive = MutableLiveData<List<Country>>()
-    val countriesLive: LiveData<List<Country>> = _countriesLive
+    private val _countriesFlow = MutableStateFlow<List<Country>?>(null)
+    val countriesFlow: StateFlow<List<Country>?> = _countriesFlow
 
-    private val _citiesFromCountryLive = MutableLiveData<List<City>?>()
-    val citiesFromCountryLive: LiveData<List<City>?> = _citiesFromCountryLive
+    private val _citiesFromCountryFlow = MutableStateFlow<List<City>?>(null)
+    val citiesFromCountryFlow: StateFlow<List<City>?> = _citiesFromCountryFlow
 
-    val userCountryLive = MutableLiveData<Country?>()
-    val userCityLive = MutableLiveData<City?>()
+    val userCountryFlow = MutableStateFlow<Country?>(null)
+    val userCityFlow = MutableStateFlow<City?>(null)
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
@@ -39,7 +39,7 @@ class CountriesService(
 
     fun getCountriesDisplayList(): List<String> {
         val countryNames = mutableListOf<String>()
-        countriesLive.value?.forEach {
+        countriesFlow.value?.forEach {
             countryNames.add(getCountryNameForCode(it.countryCode))
         }
         return countryNames
@@ -74,7 +74,7 @@ class CountriesService(
             }
 
             // Update countries
-            _countriesLive.postValue(countries)
+            _countriesFlow.emit(countries)
 
             return TypedResult.Success(countries)
         } catch (e: Exception) {
@@ -94,7 +94,9 @@ class CountriesService(
                     val country = Country.from(countryResponse) ?: return TypedResult.Failure("")
                     val countryCode = country.countryCode
                     country.displayName = getCountryNameForCode(countryCode)
-                    userCountryLive.postValue(country)
+
+                    userCountryFlow.emit(country)
+
                     return TypedResult.Success(country)
                 } catch (e: Exception) {
                     return TypedResult.Failure("")
@@ -107,7 +109,7 @@ class CountriesService(
     }
 
     suspend fun loadCitiesForCountry(countryId: String): TypedResult<List<City>, Any> {
-        _citiesFromCountryLive.postValue(null)
+        _citiesFromCountryFlow.emit(null)
         try {
             // Get countries
             val citiesSnapshot = _firestore.collection(countriesCollectionName).document(countryId)
@@ -123,7 +125,7 @@ class CountriesService(
             }
 
             // Update countries
-            _citiesFromCountryLive.postValue(cities)
+            _citiesFromCountryFlow.emit(cities)
 
             return TypedResult.Success(cities)
         } catch (e: Exception) {
@@ -142,7 +144,9 @@ class CountriesService(
                     val cityResponse =
                         it.toObject<CityResponse>() ?: return TypedResult.Failure("")
                     val city = City.from(cityResponse) ?: return TypedResult.Failure("")
-                    userCityLive.postValue(city)
+
+                    userCityFlow.emit(city)
+
                     return TypedResult.Success(city)
                 } catch (e: Exception) {
                     return TypedResult.Failure("")
@@ -155,8 +159,10 @@ class CountriesService(
     }
 
     fun deleteCountriesData(){
-        _citiesFromCountryLive.postValue(null)
-        userCountryLive.postValue(null)
-        userCityLive.postValue(null)
+        CoroutineScope(Dispatchers.IO).launch {
+            _citiesFromCountryFlow.emit(null)
+            userCountryFlow.emit(null)
+            userCityFlow.emit(null)
+        }
     }
 }

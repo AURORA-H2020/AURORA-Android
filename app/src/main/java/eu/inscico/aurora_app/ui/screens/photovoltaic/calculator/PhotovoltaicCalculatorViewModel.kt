@@ -1,12 +1,10 @@
-package eu.inscico.aurora_app.ui.screens.photovoltaic
+package eu.inscico.aurora_app.ui.screens.photovoltaic.calculator
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import eu.inscico.aurora_app.model.photovoltaics.PVGISInvestmentResponse
 import eu.inscico.aurora_app.model.photovoltaics.PhotovoltaicInvestmentResult
 import eu.inscico.aurora_app.services.firebase.CountriesService
 import eu.inscico.aurora_app.services.pvgis.PVGISAPIService
-import org.koin.androidx.compose.get
 import retrofit2.Response
 
 class PhotovoltaicCalculatorViewModel(
@@ -14,8 +12,8 @@ class PhotovoltaicCalculatorViewModel(
     private val pvgisApiService: PVGISAPIService
 ): ViewModel() {
 
-    val userCity = countriesService.userCityLive
-    val userCountry = countriesService.userCountryLive
+    val userCity = countriesService.userCityFlow
+    val userCountry = countriesService.userCountryFlow
 
     val investmentResultLive = pvgisApiService.investmentResultLive
 

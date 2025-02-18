@@ -12,7 +12,8 @@ import eu.inscico.aurora_app.ui.screens.home.recurringConsumptions.RecurringCons
 import eu.inscico.aurora_app.ui.screens.login.createProfile.CreateProfileViewModel
 import eu.inscico.aurora_app.ui.screens.login.LoginViewModel
 import eu.inscico.aurora_app.ui.screens.login.signInEmail.SignInWithEmailViewModel
-import eu.inscico.aurora_app.ui.screens.photovoltaic.PhotovoltaicCalculatorViewModel
+import eu.inscico.aurora_app.ui.screens.photovoltaic.calculator.PhotovoltaicCalculatorViewModel
+import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.PVInvestmentsDashboardViewModel
 import eu.inscico.aurora_app.ui.screens.settings.profile.EditProfileViewModel
 import eu.inscico.aurora_app.ui.screens.settings.SettingsViewModel
 import eu.inscico.aurora_app.ui.screens.settings.notifications.SettingsReminderViewModel
@@ -127,6 +128,14 @@ val viewModelModule = module {
             savedStateHandle = handle,
             _cloudFunctionsService = get(),
             _authService = get(),
+            _userService = get()
+        )
+    }
+
+    viewModel {
+        PVInvestmentsDashboardViewModel(
+            _countriesService = get(),
+            _pvPlantService = get(),
             _userService = get()
         )
     }

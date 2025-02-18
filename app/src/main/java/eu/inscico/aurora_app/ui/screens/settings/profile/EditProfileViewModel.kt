@@ -18,8 +18,8 @@ class EditProfileViewModel(
 
     val currentUserLive = _userService.userLive
 
-    val currentCountry = _countriesService.userCountryLive
-    val currentCity = _countriesService.userCityLive
+    val currentCountry = _countriesService.userCountryFlow
+    val currentCity = _countriesService.userCityFlow
 
     val genders = listOf(Gender.MALE, Gender.FEMALE, Gender.NON_BINARY, Gender.OTHER)
     val homeEnergyLabels = listOf(HomeEnergyLabel.A_PLUS, HomeEnergyLabel.A, HomeEnergyLabel.B, HomeEnergyLabel.C, HomeEnergyLabel.D, HomeEnergyLabel.E, HomeEnergyLabel.F, HomeEnergyLabel.G, HomeEnergyLabel.UNSURE, null)

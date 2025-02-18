@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,7 +57,8 @@ fun CreateProfileScreen(
     firebaseRemoteConfig: FirebaseRemoteConfig = get()
 ) {
 
-    val countries = viewModel.countries.observeAsState()
+    val countries = viewModel.countries.collectAsState()
+    val cities = viewModel.cities.collectAsState()
 
     val firstName = remember {
         mutableStateOf(viewModel.getFirstNameFromPreSelectedAccount() ?: "")
@@ -87,7 +89,7 @@ fun CreateProfileScreen(
     }
 
     val city = remember {
-        mutableStateOf(viewModel.cities.value?.first())
+        mutableStateOf(cities.value?.first())
     }
 
     val newsletterSwitch = remember {
@@ -247,11 +249,10 @@ fun CreateProfileScreen(
                     }
                 )
 
-                val citiesFromCountry = viewModel.cities.observeAsState()
                 val citiesFromCountryNames =
-                    citiesFromCountry.value?.map { it.name }?.toMutableList()
+                    cities.value?.map { it.name }?.toMutableList()
                 citiesFromCountryNames?.add(stringResource(id = R.string.create_profile_city_drop_down_other_city))
-                if (citiesFromCountry.value?.isNotEmpty() == true) {
+                if (cities.value?.isNotEmpty() == true) {
                     Divider()
 
                     FormEntry(
@@ -264,7 +265,7 @@ fun CreateProfileScreen(
                             if (name == context.getString(R.string.create_profile_city_drop_down_other_city)) {
                                 city.value = null
                             } else if (index != null) {
-                                val selectedCity = citiesFromCountry.value?.elementAt(index)
+                                val selectedCity = cities.value?.elementAt(index)
                                 city.value = selectedCity
                             }
                         }

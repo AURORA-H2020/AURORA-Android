@@ -300,10 +300,12 @@ class UserService(
     // region: PVInvestments
     // ---------------------------------------------------------------------------------------------
 
-    suspend fun loadPVInvestmentsForUser(userId: String): TypedResult<List<PVInvestment>, Any> {
+    suspend fun loadPVInvestmentsForUser(): TypedResult<List<PVInvestment>, Any> {
         _pvInvestmentsForUserLive.postValue(null)
+        val userId = _firebaseAuth.currentUser?.uid ?: return TypedResult.Failure(Exception())
+
         try {
-            // Get countries
+            // Get Investments
             val pvInvestmentsSnapshot = _firestore.collection(userCollectionName).document(userId)
                 .collection(pvInvestmentsCollectionName).get().await()
             val pvInvestments = pvInvestmentsSnapshot.mapNotNull {
@@ -317,7 +319,7 @@ class UserService(
                 }
             }
 
-            // Update countries
+            // Update Investments
             _pvInvestmentsForUserLive.postValue(pvInvestments)
 
             return TypedResult.Success(pvInvestments)

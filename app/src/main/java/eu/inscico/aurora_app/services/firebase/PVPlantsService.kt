@@ -1,7 +1,5 @@
 package eu.inscico.aurora_app.services.firebase
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import eu.inscico.aurora_app.model.City
@@ -12,24 +10,37 @@ import eu.inscico.aurora_app.model.pvPlant.PVPlantData
 import eu.inscico.aurora_app.utils.TypedResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class PVPlantsService(
-    private val _firestore: FirebaseFirestore
+    private val _firestore: FirebaseFirestore,
+    private val _countryService: CountriesService,
 ) {
     private val pvPlantsCollectionName = "pv-plants"
     private val pvPlantDataCollectionName = "data"
 
-    private val _pvPlantsLive = MutableLiveData<List<PVPlant>>()
-    val pvPlantsLive: LiveData<List<PVPlant>> = _pvPlantsLive
+    private val _pvPlantsFlow = MutableStateFlow<List<PVPlant>?>(emptyList())
+    val pvPlantsFlow: StateFlow<List<PVPlant>?> = _pvPlantsFlow
 
-    private val _dataFromPvPlantLive = MutableLiveData<List<PVPlantData>?>()
-    val dataFromPvPlantLive: LiveData<List<PVPlantData>?> = _dataFromPvPlantLive
+    private val _dataFromPvPlantFlow = MutableStateFlow<List<PVPlantData>?>(null)
+    val dataFromPvPlantFlow: StateFlow<List<PVPlantData>?> = _dataFromPvPlantFlow
+
+    private val _pvPlantForUserCityFlow = MutableStateFlow<PVPlant?>(null)
+    val pvPlantForUserCityFlow = _pvPlantForUserCityFlow
+
+    private val userCityFlow: StateFlow<City?> = _countryService.userCityFlow
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
             loadPVPlants()
+            userCityFlow.collect {
+                val id = it?.id
+                if (id != null) getPVPlantForCity(id)
+            }
         }
     }
 
@@ -49,7 +60,7 @@ class PVPlantsService(
             }
 
             // Update pvPlants
-            _pvPlantsLive.postValue(pvPlants)
+            _pvPlantsFlow.emit(pvPlants)
 
             return TypedResult.Success(pvPlants)
         } catch (e: Exception) {
@@ -58,7 +69,7 @@ class PVPlantsService(
     }
 
     suspend fun loadDataForPVPlant(plantId: String): TypedResult<List<PVPlantData>, Any> {
-        _dataFromPvPlantLive.postValue(null)
+        _dataFromPvPlantFlow.emit(null)
         try {
             // Get data
             val dataSnapshot = _firestore.collection(pvPlantDataCollectionName).document(plantId)
@@ -74,7 +85,7 @@ class PVPlantsService(
             }
 
             // Update data
-            _dataFromPvPlantLive.postValue(data)
+            _dataFromPvPlantFlow.emit(data)
 
             return TypedResult.Success(data)
         } catch (e: Exception) {
@@ -82,21 +93,21 @@ class PVPlantsService(
         }
     }
 
-    fun getUserPVPlantIfActive(userCity: City): PVPlant? {
+    suspend fun getUserPVPlantIfActive(userCity: City): PVPlant? {
         val pvPlantForCity = getPVPlantForCity(userCity.id) ?: return null
-        return if(isPVPlantActive(pvPlantForCity)){
+        return if (isPVPlantActive(pvPlantForCity)) {
             pvPlantForCity
         } else {
             null
         }
     }
 
-    fun getPVPlantForCity(cityId: String): PVPlant? {
-        val allPVPlants = _pvPlantsLive.value ?: return null
-
-        return allPVPlants.find {
+    suspend fun getPVPlantForCity(cityId: String): PVPlant? {
+        val pvPlantForUserCity = _pvPlantsFlow.first { true }?.find {
             it.city == cityId
         }
+        _pvPlantForUserCityFlow.emit(pvPlantForUserCity)
+        return pvPlantForUserCity
     }
 
     fun isPVPlantActive(pvPlant: PVPlant): Boolean {

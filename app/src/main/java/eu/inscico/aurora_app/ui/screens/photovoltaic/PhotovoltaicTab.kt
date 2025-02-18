@@ -17,7 +17,7 @@ fun PhotovoltaicTab(
     navigationService.navControllerTabPhotovoltaic = photovoltaicNavController
 
     AURORAEnergyTrackerTheme {
-        NavHost(photovoltaicNavController, startDestination = NavGraphDirections.Photovoltaic.getNavRoute()) {
+        NavHost(photovoltaicNavController, startDestination = NavGraphDirections.PhotovoltaicInvestments.getNavRoute()) {
             NavUtils.getNavGraph(this)
         }
     }

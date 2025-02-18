@@ -164,4 +164,14 @@ class NavigationService {
         navControllerTabHome?.navigate(navDirection)
     }
     // endregion
+
+    // region: Solar
+    // ---------------------------------------------------------------------------------------------
+
+
+    fun toPhotovoltaicsCalculator() {
+        val navDirection = NavGraphDirections.PhotovoltaicCalculator.getNavRoute()
+        navControllerTabPhotovoltaic?.navigate(navDirection)
+    }
+    // endregion
 }

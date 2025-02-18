@@ -30,6 +30,7 @@ fun ActionEntry(
     title: String,
     iconColor: Color = MaterialTheme.colorScheme.primary,
     titleColor: Color = MaterialTheme.colorScheme.onSecondary,
+    optionalTrailingContent: @Composable (() -> Unit)? = null,
     hasIconBackground: Boolean = false,
     callback: (() -> Unit)? = null
 ) {
@@ -77,6 +78,7 @@ fun ActionEntry(
                     lineHeight = 16.sp
                 )
             )
-        }
+        },
+        trailingContent = optionalTrailingContent
     )
 }

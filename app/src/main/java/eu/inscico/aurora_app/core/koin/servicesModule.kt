@@ -119,7 +119,8 @@ val servicesModule = module {
 
     single {
         PVPlantsService(
-            _firestore = get()
+            _firestore = get(),
+            _countryService = get()
         )
     }
 
