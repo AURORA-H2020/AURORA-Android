@@ -15,6 +15,7 @@ import eu.inscico.aurora_app.model.user.PVInvestment
 import eu.inscico.aurora_app.model.user.PVInvestmentResponse
 import eu.inscico.aurora_app.model.user.User
 import eu.inscico.aurora_app.model.user.UserResponse
+import eu.inscico.aurora_app.services.network.NetworkService
 import eu.inscico.aurora_app.utils.TypedResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +30,8 @@ class UserService(
     private val _countryService: CountriesService,
     private val _consumptionsService: ConsumptionsService,
     private val _consumptionSummariesService: ConsumptionSummaryService,
-    private val _recurringConsumptionsService: RecurringConsumptionsService
+    private val _recurringConsumptionsService: RecurringConsumptionsService,
+    private val _networkService: NetworkService,
 ) {
 
     private val userCollectionName = "users"
@@ -349,6 +351,42 @@ class UserService(
                 }
             }
     }
+
+    suspend fun createPVInvestment(pvInvestmentResponse: PVInvestmentResponse): Result<Boolean> {
+        try {
+
+            val authId = _firebaseAuth.currentUser?.uid ?: return Result.failure(Exception())
+            val investmentAsMap = parsePVInvestmentToMap(pvInvestmentResponse)
+
+            // Create investment doc
+            val request = _firestore.collection(userCollectionName).document(authId)
+                .collection(pvInvestmentsCollectionName).document().set(investmentAsMap)
+
+            if(_networkService.isNetworkAvailable()){
+                request.await()
+            } else {
+                return Result.failure(Exception())
+            }
+
+            return Result.success(true)
+        } catch (e: Exception) {
+            return Result.failure(Exception())
+        }
+    }
+
+    private fun parsePVInvestmentToMap(pvInvestmentResponse: PVInvestmentResponse): MutableMap<String, Any?> {
+
+        val userAsMap = mutableMapOf<String, Any?>()
+
+        pvInvestmentResponse.javaClass.kotlin.declaredMemberProperties.forEach {
+            val value = it.getValue(pvInvestmentResponse, it)
+            if (value != null) {
+                userAsMap[it.name] = value
+            }
+        }
+        return userAsMap
+    }
+
 
     // endregion: PVInvestments
 }

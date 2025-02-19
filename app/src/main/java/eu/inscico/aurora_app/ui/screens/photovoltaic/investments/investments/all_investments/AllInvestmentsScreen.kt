@@ -1,7 +1,9 @@
 package eu.inscico.aurora_app.ui.screens.photovoltaic.investments.investments.all_investments
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -9,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
@@ -16,8 +19,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.ui.components.AppBar
 import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.investments.all_investments.components.InvestmentListItem
@@ -43,6 +48,17 @@ fun AllInvestmentsScreen(
                 hasBackNavigation = true,
                 backNavigationCallback = {
                     navigationService.navControllerTabPhotovoltaic?.popBackStack()
+                },
+                actionButton = {
+                    Row(modifier = Modifier.padding(8.dp).clickable {
+                        navigationService.toPhotovoltaicAddInvestment()
+                    }) {
+                        Icon(
+                            painter = painterResource(R.drawable.baseline_add_24),
+                            tint = MaterialTheme.colorScheme.primary,
+                            contentDescription = "Add Photovoltaic Investment"
+                        )
+                    }
                 }
             )
         },

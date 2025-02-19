@@ -92,7 +92,8 @@ val servicesModule = module {
             _countryService = get(),
             _consumptionsService = get(),
             _consumptionSummariesService = get(),
-            _recurringConsumptionsService = get()
+            _recurringConsumptionsService = get(),
+            _networkService = get()
         )
     }
 

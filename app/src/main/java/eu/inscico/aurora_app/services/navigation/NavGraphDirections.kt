@@ -16,6 +16,7 @@ import eu.inscico.aurora_app.ui.screens.login.LoginScreen
 import eu.inscico.aurora_app.ui.screens.login.signInEmail.SignInWithEmailScreen
 import eu.inscico.aurora_app.ui.screens.photovoltaic.calculator.PhotovoltaicCalculatorScreen
 import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.dashboard.PVInvestmentsDashboardScreen
+import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.investments.add_investment.AddPVInvestmentScreen
 import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.investments.all_investments.AllInvestmentsScreen
 import eu.inscico.aurora_app.ui.screens.settings.profile.EditProfileScreen
 import eu.inscico.aurora_app.ui.screens.settings.SettingsScreen
@@ -238,6 +239,17 @@ sealed class NavGraphDirections(
         route = "photovoltaicAllInvestmentsList",
         content = {
             AllInvestmentsScreen()
+        }
+    ) {
+        fun getNavRoute(): String {
+            return route
+        }
+    }
+
+    object PhotovoltaicAddInvestment : NavGraphDirections(
+        route = "photovoltaicAddInvestment",
+        content = {
+            AddPVInvestmentScreen()
         }
     ) {
         fun getNavRoute(): String {

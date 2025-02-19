@@ -14,6 +14,7 @@ import eu.inscico.aurora_app.ui.screens.login.LoginViewModel
 import eu.inscico.aurora_app.ui.screens.login.signInEmail.SignInWithEmailViewModel
 import eu.inscico.aurora_app.ui.screens.photovoltaic.calculator.PhotovoltaicCalculatorViewModel
 import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.dashboard.PVInvestmentsDashboardViewModel
+import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.investments.add_investment.AddPVInvestmentViewModel
 import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.investments.all_investments.AllInvestmentsViewModel
 import eu.inscico.aurora_app.ui.screens.settings.profile.EditProfileViewModel
 import eu.inscico.aurora_app.ui.screens.settings.SettingsViewModel
@@ -145,6 +146,15 @@ val viewModelModule = module {
         AllInvestmentsViewModel(
             userService = get(),
             countriesService = get()
+        )
+    }
+
+    viewModel {
+        AddPVInvestmentViewModel(
+            unitService = get(),
+            countriesService = get(),
+            pvPlantService = get(),
+            userService = get()
         )
     }
 }
