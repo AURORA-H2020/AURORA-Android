@@ -1,11 +1,9 @@
-package eu.inscico.aurora_app.ui.screens.photovoltaic.investments
+package eu.inscico.aurora_app.ui.screens.photovoltaic.investments.dashboard
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,9 +32,9 @@ import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.ui.components.AppBar
 import eu.inscico.aurora_app.ui.components.DecoratedHeadline
-import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.components.LatestInvestmentsWidget
-import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.components.PVPlantProductionInfoWidget
-import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.components.PVPlantProductionWidget
+import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.dashboard.components.LatestInvestmentsWidget
+import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.dashboard.components.PVPlantProductionInfoWidget
+import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.dashboard.components.PVPlantProductionWidget
 import org.koin.androidx.compose.get
 
 @Composable
@@ -114,7 +112,7 @@ fun PVInvestmentsDashboardScreen(
 
                             Button(
                                 onClick = {
-                                    // TODO:
+                                    navigationService.toPhotovoltaicAllInvestmentsList()
                                 },
                                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.background)
                             ) {

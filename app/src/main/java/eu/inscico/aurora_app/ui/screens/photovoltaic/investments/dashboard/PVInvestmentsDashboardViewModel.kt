@@ -1,4 +1,4 @@
-package eu.inscico.aurora_app.ui.screens.photovoltaic.investments
+package eu.inscico.aurora_app.ui.screens.photovoltaic.investments.dashboard
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

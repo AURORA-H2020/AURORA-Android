@@ -1,4 +1,4 @@
-package eu.inscico.aurora_app.ui.screens.photovoltaic.investments.components
+package eu.inscico.aurora_app.ui.screens.photovoltaic.investments.dashboard.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

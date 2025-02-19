@@ -1,4 +1,4 @@
-package eu.inscico.aurora_app.ui.screens.photovoltaic.investments
+package eu.inscico.aurora_app.ui.screens.photovoltaic.investments.dashboard
 
 import eu.inscico.aurora_app.model.City
 import eu.inscico.aurora_app.model.country.Country
