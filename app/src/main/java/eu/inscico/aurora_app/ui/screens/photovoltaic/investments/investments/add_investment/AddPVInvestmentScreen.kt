@@ -203,16 +203,26 @@ fun AddPVInvestmentScreen(
                         textAlign = TextAlign.Start,
                         color = MaterialTheme.colorScheme.onSecondary
                     )
-                    Text(
-                        text = "1 Share = 0,109 kW (900,00 DKK)",
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        style = MaterialTheme.typography.labelSmall,
-                        textAlign = TextAlign.Start,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSecondary
-                    )
+                    val pvPlant = viewModel.userPVPlant.collectAsStateWithLifecycle().value
+                    val userCountry = viewModel.userCountry.collectAsStateWithLifecycle().value
+                    val kwPerShare = pvPlant?.kwPerShare
+                    val pricePerShare = pvPlant?.pricePerShare
+                    val currency = userCountry?.currencyCode
+                    if(pricePerShare != null && kwPerShare != null){
+                        val kwWithUnit = "${unitService.getValueWithLocalDecimalPoint(kwPerShare.toString())} W"
+                        val priceWithUnit = "${unitService.getValueWithLocalDecimalPoint(pricePerShare.toString())} ${currency ?: "€"}"
 
-                    Spacer(Modifier.height(16.dp))
+                        Text(
+                            text = "1 Share = $kwWithUnit ($priceWithUnit)",
+                            modifier = Modifier.padding(horizontal = 16.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            textAlign = TextAlign.Start,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSecondary
+                        )
+
+                        Spacer(Modifier.height(16.dp))
+                    }
 
                     Column(
                         Modifier

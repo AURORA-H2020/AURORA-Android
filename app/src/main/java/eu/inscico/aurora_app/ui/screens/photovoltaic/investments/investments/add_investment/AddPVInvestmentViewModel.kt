@@ -64,7 +64,7 @@ class AddPVInvestmentViewModel(
         }
     }
 
-    fun checkIfFormIsReadyToSend(){
+    fun checkIfFormIsReadyToSend() {
         viewModelScope.launch {
             state.emit(
                 state.value.copy(
@@ -91,14 +91,14 @@ class AddPVInvestmentViewModel(
 
     private fun getPVInvestmentBody(): PVInvestmentResponse {
         val pricePerShare = userPVPlant.value?.pricePerShare
-        val investmentPrice = if(pricePerShare != null){
+        val investmentPrice = if (pricePerShare != null) {
             pricePerShare * (unitService.getValueStringAsDouble(state.value.shareField) ?: 0.0)
         } else {
             null
         }
 
         val kwPerShare = userPVPlant.value?.kwPerShare
-        val investmentCapacity = if(kwPerShare != null){
+        val investmentCapacity = if (kwPerShare != null) {
             kwPerShare * (unitService.getValueStringAsDouble(state.value.shareField) ?: 0.0)
         } else {
             null
@@ -110,7 +110,7 @@ class AddPVInvestmentViewModel(
             share = unitService.getValueStringAsDouble(state.value.shareField),
             updatedAt = Timestamp.now(),
             pvPlant = userPVPlant.value?.plantId,
-            investmentDate =  Timestamp(state.value.investmentDateField.time),
+            investmentDate = Timestamp(state.value.investmentDateField.time),
             investmentPrice = investmentPrice,
             investmentCapacity = investmentCapacity,
             note = state.value.noteField

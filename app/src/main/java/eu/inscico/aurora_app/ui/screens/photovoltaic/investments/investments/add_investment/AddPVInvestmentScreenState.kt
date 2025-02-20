@@ -8,5 +8,5 @@ data class AddPVInvestmentScreenState(
     val investmentDateField: Calendar = Calendar.getInstance(),
     val noteField: String = "",
     val isSaveValid: Boolean = false,
-    val creationResult: Result<Boolean>? = null
+    val creationResult: Result<Boolean>? = null,
 )
