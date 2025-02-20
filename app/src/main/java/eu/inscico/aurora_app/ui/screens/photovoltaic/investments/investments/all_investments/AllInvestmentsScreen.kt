@@ -93,7 +93,7 @@ fun AllInvestmentsScreen(
                                     investment = investment,
                                     userCountry = state.userCountry
                                 ) {
-
+                                    navigationService.toPhotovoltaicEditInvestment(investment.id)
                                 }
 
                                 if(index < state.allInvestments.lastIndex){

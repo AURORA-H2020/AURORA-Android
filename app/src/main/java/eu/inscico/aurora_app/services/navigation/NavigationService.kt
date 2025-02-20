@@ -184,6 +184,11 @@ class NavigationService {
         navControllerTabPhotovoltaic?.navigate(navDirection)
     }
 
+    fun toPhotovoltaicEditInvestment(id: String) {
+        val navDirection = NavGraphDirections.PhotovoltaicEditInvestment.getNavRoute(id)
+        navControllerTabPhotovoltaic?.navigate(navDirection)
+    }
+
 
     // endregion
 }

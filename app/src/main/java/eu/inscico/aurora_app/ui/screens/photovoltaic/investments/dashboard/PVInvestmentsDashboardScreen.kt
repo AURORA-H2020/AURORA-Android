@@ -101,10 +101,17 @@ fun PVInvestmentsDashboardScreen(
 
                             Spacer(Modifier.height(16.dp))
 
+                            val latestInvestment = state.userInvestments?.last()
                             LatestInvestmentsWidget(
-                                latestInvestment = state.userInvestments?.last(),
-                                onEditClicked = {},
-                                onAddInvestmentClicked = {},
+                                latestInvestment = latestInvestment,
+                                onEditClicked = {
+                                    if(latestInvestment != null){
+                                        navigationService.toPhotovoltaicEditInvestment(latestInvestment.id)
+                                    }
+                                },
+                                onAddInvestmentClicked = {
+                                    navigationService.toPhotovoltaicAddInvestment()
+                                },
                                 userCountry = state.userCountry
                             )
 

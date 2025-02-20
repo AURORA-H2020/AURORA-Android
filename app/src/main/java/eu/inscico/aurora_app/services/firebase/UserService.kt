@@ -374,6 +374,45 @@ class UserService(
         }
     }
 
+    suspend fun updatePVInvestment(pvInvestmentResponse: PVInvestmentResponse): Result<Boolean> {
+        try {
+
+            val authId = _firebaseAuth.currentUser?.uid ?: return Result.failure(Exception())
+            val docId = pvInvestmentResponse.id ?: return Result.failure(Exception())
+            val investmentAsMap = parsePVInvestmentToMap(pvInvestmentResponse)
+            investmentAsMap.remove("id")
+
+            // Create investment doc
+            val request = _firestore.collection(userCollectionName).document(authId)
+                .collection(pvInvestmentsCollectionName).document(docId).set(investmentAsMap)
+
+            if(_networkService.isNetworkAvailable()){
+                request.await()
+            } else {
+                return Result.failure(Exception())
+            }
+
+            return Result.success(true)
+        } catch (e: Exception) {
+            return Result.failure(Exception())
+        }
+    }
+
+    suspend fun deleteInvestment(investment: PVInvestment?): Result<Boolean> {
+        val authId = _firebaseAuth.currentUser?.uid ?: return Result.failure(Exception())
+        val investmentId = investment?.id ?: return Result.failure(Exception())
+
+        try {
+            _firestore.collection(userCollectionName).document(authId)
+                .collection(pvInvestmentsCollectionName).document(investmentId)
+                .delete()
+
+            return Result.success(true)
+        } catch (e: Exception) {
+            return Result.failure(Exception())
+        }
+    }
+
     private fun parsePVInvestmentToMap(pvInvestmentResponse: PVInvestmentResponse): MutableMap<String, Any?> {
 
         val userAsMap = mutableMapOf<String, Any?>()

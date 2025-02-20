@@ -1,4 +1,4 @@
-package eu.inscico.aurora_app.ui.screens.photovoltaic.investments.investments.add_investment
+package eu.inscico.aurora_app.ui.screens.photovoltaic.investments.investments.edit_investment
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,6 +20,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -56,15 +57,16 @@ import eu.inscico.aurora_app.ui.components.datePicker.MaterialDatePickerDialog
 import eu.inscico.aurora_app.ui.theme.electricityYellow
 import eu.inscico.aurora_app.utils.CalendarUtils
 import org.koin.androidx.compose.get
+import org.koin.androidx.compose.koinViewModel
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddPVInvestmentScreen(
-    viewModel: AddPVInvestmentViewModel = get(),
+fun EditPVInvestmentScreen(
+    viewModel: EditPVInvestmentViewModel = koinViewModel(),
+    userFeedbackService: UserFeedbackService = get(),
     navigationService: NavigationService = get(),
-    unitService: UnitService = get(),
-    userFeedbackService: UserFeedbackService = get()
+    unitService: UnitService = get()
 ) {
 
     val state = viewModel.state.collectAsStateWithLifecycle().value
@@ -81,13 +83,28 @@ fun AddPVInvestmentScreen(
         MaterialTheme.colorScheme.onSurfaceVariant
     }
 
-    LaunchedEffect(key1 = state.creationResult) {
-       state.creationResult?.onSuccess {
-           userFeedbackService.showSnackbar("Das Investment wurde erfolgreich hinzugefügt.")
-           navigationService.navControllerTabPhotovoltaic?.popBackStack()
-       }
-        state.creationResult?.onFailure {
-            userFeedbackService.showSnackbar("Ein Fehler ist aufgetreten. Das Investment konnte nicht hinzugefügt werden.")
+    LaunchedEffect(Unit) {
+        viewModel.fetchInvestment()
+        viewModel.checkIfFormIsReadyToSend()
+    }
+
+    LaunchedEffect(key1 = state.editResult) {
+        state.editResult?.onSuccess {
+            userFeedbackService.showSnackbar("Das Investment wurde erfolgreich aktualisiert.")
+            navigationService.navControllerTabPhotovoltaic?.popBackStack()
+        }
+        state.editResult?.onFailure {
+            userFeedbackService.showSnackbar("Ein Fehler ist aufgetreten. Das Investment konnte nicht aktualisiert werden.")
+        }
+    }
+
+    LaunchedEffect(key1 = state.deleteResult) {
+        state.deleteResult?.onSuccess {
+            userFeedbackService.showSnackbar("Das Investment wurde erfolgreich gelöscht.")
+            navigationService.navControllerTabPhotovoltaic?.popBackStack()
+        }
+        state.deleteResult?.onFailure {
+            userFeedbackService.showSnackbar("Ein Fehler ist aufgetreten. Das Investment konnte nicht gelöscht werden.")
         }
     }
 
@@ -98,6 +115,25 @@ fun AddPVInvestmentScreen(
                 hasBackNavigation = true,
                 backNavigationCallback = {
                     navigationService.navControllerTabPhotovoltaic?.popBackStack()
+                },
+                actionButton = {
+                    Row(modifier = Modifier.padding(8.dp).clickable {
+                        userFeedbackService.showDialog(
+                            title = "Sind Sie sicher?",
+                            message = "Möchten Sie das Investment wirklich löschen?",
+                            confirmButtonText = "Löschen",
+                            confirmButtonCallback = {
+                                viewModel.deletePVInvestment()
+                            },
+                            dismissButtonText = "Abbrechen"
+                        )
+                    }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.outline_delete_outline_24),
+                            tint = MaterialTheme.colorScheme.error,
+                            contentDescription = null
+                        )
+                    }
                 }
             )
         },
@@ -135,25 +171,6 @@ fun AddPVInvestmentScreen(
                         textAlign = TextAlign.Start,
                         color = MaterialTheme.colorScheme.onSecondary
                     )
-
-                    Button(
-                        onClick = {
-
-                        },
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.background)
-                    ) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Row(horizontalArrangement = Arrangement.Center) {
-                                Text(
-                                    text = "How to invest?",
-                                    color = MaterialTheme.colorScheme.onBackground
-                                )
-                            }
-                        }
-                    }
 
                     Spacer(Modifier.height(16.dp))
 
@@ -318,7 +335,7 @@ fun AddPVInvestmentScreen(
                             enabled = state.isSaveValid,
                             shape = RoundedCornerShape(32.dp),
                             onClick = {
-                                viewModel.createPVInvestment()
+                                viewModel.updatePVInvestment()
                             },
                             colors = ButtonDefaults.buttonColors(containerColor = buttonColor)) {
                             Text(

@@ -1,5 +1,6 @@
-package eu.inscico.aurora_app.ui.screens.photovoltaic.investments.investments.add_investment
+package eu.inscico.aurora_app.ui.screens.photovoltaic.investments.investments.edit_investment
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Timestamp
@@ -13,18 +14,38 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
-class AddPVInvestmentViewModel(
+class EditPVInvestmentViewModel(
+    savedStateHandle: SavedStateHandle,
+    val userService: UserService,
     val unitService: UnitService,
-    val countriesService: CountriesService,
     val pvPlantService: PVPlantsService,
-    val userService: UserService
+    val countryService: CountriesService
 ) : ViewModel() {
 
-    val state = MutableStateFlow(AddPVInvestmentScreenState())
+    val state = MutableStateFlow(EditPVInvestmentScreenState())
 
-    val userCity = countriesService.userCityFlow
-    val userCountry = countriesService.userCountryFlow
+    val investmentId: String = savedStateHandle["id"] ?: ""
+
     val userPVPlant = pvPlantService.pvPlantForUserCityFlow
+    val userCountry = countryService.userCountryFlow
+
+    fun fetchInvestment(){
+        viewModelScope.launch {
+
+            val currentInvestment = userService.pvInvestmentsForUserLive.value?.firstOrNull {
+                investmentId == it.id
+            }
+
+            state.emit(
+                state.value.copy(
+                    pvInvestmentToEdit = currentInvestment,
+                    shareField = unitService.getValueWithLocalDecimalPoint(currentInvestment?.share.toString()),
+                    noteField = currentInvestment?.note ?: "",
+                    investmentDateField = currentInvestment?.investmentDate ?: Calendar.getInstance()
+                )
+            )
+        }
+    }
 
     private fun updateSharesField(shares: String) {
         viewModelScope.launch {
@@ -56,16 +77,6 @@ class AddPVInvestmentViewModel(
         }
     }
 
-    fun checkIfFormIsReadyToSend() {
-        viewModelScope.launch {
-            state.emit(
-                state.value.copy(
-                    isSaveValid = isSaveValid()
-                )
-            )
-        }
-    }
-
     fun isShareFieldValid(shareInput: String): Boolean {
         // display new value if format correct
         val isValueInCorrectFormat = FormFieldsUtils.isDecimalInputValid(shareInput)
@@ -79,6 +90,16 @@ class AddPVInvestmentViewModel(
 
     private fun isSaveValid(): Boolean {
         return state.value.shareField.isNotEmpty()
+    }
+
+    fun checkIfFormIsReadyToSend() {
+        viewModelScope.launch {
+            state.emit(
+                state.value.copy(
+                    isSaveValid = isSaveValid()
+                )
+            )
+        }
     }
 
     private fun getPVInvestmentBody(): PVInvestmentResponse {
@@ -97,27 +118,39 @@ class AddPVInvestmentViewModel(
         }
 
         return PVInvestmentResponse(
-            id = null,
-            city = userCity.value?.id,
-            share = unitService.getValueStringAsDouble(state.value.shareField),
+            id = state.value.pvInvestmentToEdit?.id,
+            city = state.value.pvInvestmentToEdit?.city,
+            pvPlant = state.value.pvInvestmentToEdit?.pvPlant,
+            investmentPrice = state.value.pvInvestmentToEdit?.investmentPrice,
+            investmentCapacity = state.value.pvInvestmentToEdit?.investmentCapacity,
             updatedAt = Timestamp.now(),
-            pvPlant = userPVPlant.value?.plantId,
+            share = unitService.getValueStringAsDouble(state.value.shareField),
             investmentDate = Timestamp(state.value.investmentDateField.time),
-            investmentPrice = investmentPrice,
-            investmentCapacity = investmentCapacity,
             note = state.value.noteField
 
         )
     }
 
-    fun createPVInvestment() {
+    fun updatePVInvestment() {
         viewModelScope.launch {
             val body = getPVInvestmentBody()
 
-            val result: Result<Boolean> = userService.createPVInvestment(body)
+            val result: Result<Boolean> = userService.updatePVInvestment(body)
             state.emit(
                 state.value.copy(
-                    creationResult = result
+                    editResult = result
+                )
+            )
+        }
+    }
+
+    fun deletePVInvestment() {
+        viewModelScope.launch {
+            val pvInvestment = state.value.pvInvestmentToEdit
+            val result = userService.deleteInvestment(pvInvestment)
+            state.emit(
+                state.value.copy(
+                    editResult = result
                 )
             )
         }
