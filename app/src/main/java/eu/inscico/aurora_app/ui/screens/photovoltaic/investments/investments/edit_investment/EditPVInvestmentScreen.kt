@@ -37,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -72,6 +73,7 @@ fun EditPVInvestmentScreen(
     val state = viewModel.state.collectAsStateWithLifecycle().value
 
     val config = LocalConfiguration.current
+    val context = LocalContext.current
 
     val openDatePickerForStartDate = remember {
         mutableStateOf(false)
@@ -90,28 +92,28 @@ fun EditPVInvestmentScreen(
 
     LaunchedEffect(key1 = state.editResult) {
         state.editResult?.onSuccess {
-            userFeedbackService.showSnackbar("Das Investment wurde erfolgreich aktualisiert.")
+            userFeedbackService.showSnackbar(context.getString(R.string.userfeedback_edit_investment_update_success))
             navigationService.navControllerTabPhotovoltaic?.popBackStack()
         }
         state.editResult?.onFailure {
-            userFeedbackService.showSnackbar("Ein Fehler ist aufgetreten. Das Investment konnte nicht aktualisiert werden.")
+            userFeedbackService.showSnackbar(context.getString(R.string.userfeedback_edit_investment_update_failure))
         }
     }
 
     LaunchedEffect(key1 = state.deleteResult) {
         state.deleteResult?.onSuccess {
-            userFeedbackService.showSnackbar("Das Investment wurde erfolgreich gelöscht.")
+            userFeedbackService.showSnackbar(context.getString(R.string.userfeedback_edit_investment_delete_success))
             navigationService.navControllerTabPhotovoltaic?.popBackStack()
         }
         state.deleteResult?.onFailure {
-            userFeedbackService.showSnackbar("Ein Fehler ist aufgetreten. Das Investment konnte nicht gelöscht werden.")
+            userFeedbackService.showSnackbar(context.getString(R.string.userfeedback_edit_investment_delete_failure))
         }
     }
 
     Scaffold(
         topBar = {
             AppBar(
-                title = "Add Investment",
+                title = stringResource(R.string.solar_power_edit_investment_headline),
                 hasBackNavigation = true,
                 backNavigationCallback = {
                     navigationService.navControllerTabPhotovoltaic?.popBackStack()
@@ -119,13 +121,13 @@ fun EditPVInvestmentScreen(
                 actionButton = {
                     Row(modifier = Modifier.padding(8.dp).clickable {
                         userFeedbackService.showDialog(
-                            title = "Sind Sie sicher?",
-                            message = "Möchten Sie das Investment wirklich löschen?",
-                            confirmButtonText = "Löschen",
+                            title = context.getString(R.string.userdialog_delete_investment_title),
+                            message = context.getString(R.string.userdialog_delete_investment_message),
+                            confirmButtonText = context.getString(R.string.delete),
                             confirmButtonCallback = {
                                 viewModel.deletePVInvestment()
                             },
-                            dismissButtonText = "Abbrechen"
+                            dismissButtonText = context.getString(R.string.cancel)
                         )
                     }) {
                         Icon(
@@ -157,7 +159,7 @@ fun EditPVInvestmentScreen(
                 ) {
 
                     DecoratedHeadline(
-                        headline = "Important!",
+                        headline = stringResource(R.string.solar_power_edit_investment_info_text_title),
                         leadingIconRes = R.drawable.outline_warning_amber_24,
                         leadingIconColor = electricityYellow
                     )
@@ -166,7 +168,7 @@ fun EditPVInvestmentScreen(
 
                     Text(
                         modifier = Modifier.padding(16.dp),
-                        text = "Entering you investment data is exclussively for recording purposes. This does not formulate an actual investment or binding order in any form.",
+                        text = stringResource(R.string.solar_power_edit_investment_info_text_message),
                         style = MaterialTheme.typography.labelMedium,
                         textAlign = TextAlign.Start,
                         color = MaterialTheme.colorScheme.onSecondary
@@ -185,7 +187,7 @@ fun EditPVInvestmentScreen(
                         shape = RoundedCornerShape(16.dp),
                         value = state.shareField,
                         label = {
-                            Text(text = "Shares")
+                            Text(text = stringResource(R.string.solar_power_latest_investment_shares_title))
                         },
                         onValueChange = {
                             viewModel.isShareFieldValid(it)
@@ -200,7 +202,7 @@ fun EditPVInvestmentScreen(
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text = "How much of the solar panel installation's capacity your investment corresponds to. You should find this information in the documents you received when you made your investment.",
+                        text = stringResource(R.string.solar_power_add_investment_shares_info_text),
                         modifier = Modifier.padding(horizontal = 16.dp),
                         style = MaterialTheme.typography.labelSmall,
                         textAlign = TextAlign.Start,
@@ -216,7 +218,7 @@ fun EditPVInvestmentScreen(
                         val priceWithUnit = "${unitService.getValueWithLocalDecimalPoint(pricePerShare.toString())} ${currency ?: "€"}"
 
                         Text(
-                            text = "1 Share = $kwWithUnit ($priceWithUnit)",
+                            text = "${context.getString(R.string.solar_power_add_investment_shares_info_text_cost_info_part_1)} $kwWithUnit ($priceWithUnit)",
                             modifier = Modifier.padding(horizontal = 16.dp),
                             style = MaterialTheme.typography.labelSmall,
                             textAlign = TextAlign.Start,
@@ -236,7 +238,7 @@ fun EditPVInvestmentScreen(
                         ListItem(
                             modifier = Modifier
                                 .fillMaxWidth(),
-                            headlineContent = { Text(text = "Investment Date") },
+                            headlineContent = { Text(text = stringResource(R.string.solar_power_latest_investment_date_title)) },
                             trailingContent = {
                                 Row(
                                     horizontalArrangement = Arrangement.End,
@@ -284,7 +286,7 @@ fun EditPVInvestmentScreen(
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text = "The day you made the investment on.",
+                        text = stringResource(R.string.solar_power_add_investment_date_info_text),
                         modifier = Modifier.padding(horizontal = 16.dp),
                         style = MaterialTheme.typography.labelSmall,
                         textAlign = TextAlign.Start,
@@ -304,7 +306,7 @@ fun EditPVInvestmentScreen(
                         shape = RoundedCornerShape(16.dp),
                         value = state.noteField,
                         label = {
-                            Text(text = "Note")
+                            Text(text = stringResource(R.string.solar_power_add_investment_note_title))
                         },
                         onValueChange = {
                             viewModel.updateNoteField(it)
@@ -318,7 +320,7 @@ fun EditPVInvestmentScreen(
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text = "Add a note to your investment for personal reference.",
+                        text = stringResource(R.string.solar_power_add_investment_note_info_text),
                         modifier = Modifier.padding(horizontal = 16.dp),
                         style = MaterialTheme.typography.labelSmall,
                         textAlign = TextAlign.Start,

@@ -344,6 +344,25 @@
     <string name="solar_power_investment_result_value_unit_kwh_title">%1$s kWh</string>
     <string name="solar_power_investment_result_your_investment_title">Your investment</string>
     <string name="solar_power_investment_result_annual_energy_production_title">Annual energy production</string>
+    <string name="solar_power_latest_investment_headline">Your Latest Investment</string>
+    <string name="solar_power_latest_investment_investment_title">Investment</string>
+    <string name="solar_power_latest_investment_capacity_title">Capacity</string>
+    <string name="solar_power_latest_investment_share_title">Share</string>
+    <string name="solar_power_latest_investment_shares_title">Shares</string>
+    <string name="solar_power_latest_investment_date_title">Investment Date</string>
+    <string name="solar_power_add_investment_headline">Add Investment</string>
+    <string name="solar_power_edit_investment_headline">Your Investment</string>
+    <string name="solar_power_edit_investment_info_text_title">Important!</string>
+    <string name="solar_power_edit_investment_info_text_message">If you have made additional investments at a later date, please add a new investment instead. Editing your existing investments may result in inaccurate tracking</string>
+    <string name="solar_power_add_investment_info_text_message">Entering your investment data is exclussively for recording purposes. This does not formulate an actual investment or binding order in any form.</string>
+    <string name="solar_power_add_investment_how_to_invest_button_title">How to invest?</string>
+    <string name="solar_power_add_investment_shares_info_text">How much of the solar panel installation\'s capacity your investment corresponds to. You should find this information in the documents you received when you made your investment.</string>
+    <string name="solar_power_add_investment_shares_info_text_cost_info_part_1">1 Share = </string>
+    <string name="solar_power_add_investment_date_info_text">The day you made the investment on.</string>
+    <string name="solar_power_add_investment_note_title">Note</string>
+    <string name="solar_power_add_investment_note_info_text">Add a note to your investment for personal reference.</string>
+
+
     <!--Dialogs-->
     <string name="dialog_settings_logout_title">Are you sure you want to logout?</string>
     <string name="dialog_consumption_delete_title">Are you sure you want to delete the entry?</string>
@@ -368,6 +387,14 @@
     <string name="settings_export_data_share_dialog">Your data has been successfully downloaded.Do you want to export it?</string>
     <string name="consumption_detail_recurring_consumption_automatically_generated_text">This entry was automatically added via recurring consumptions.</string>
     <string name="recurring_consumptions_changed_behaviour_popup_text">Has your regular energy behaviour changed?</string>
+    <string name="userfeedback_edit_investment_create_success">Your investment was created successfully</string>
+    <string name="userfeedback_edit_investment_create_failure">Something went wrong. Your investment could not be created</string>
+    <string name="userfeedback_edit_investment_update_success">Your investment was updated successfully</string>
+    <string name="userfeedback_edit_investment_update_failure">Something went wrong. Your investment could not be updated</string>
+    <string name="userfeedback_edit_investment_delete_success">Your investment was deleted successfully</string>
+    <string name="userfeedback_edit_investment_delete_failure">Something went wrong. Your investment could not be deleted</string>
+    <string name="userdialog_delete_investment_title">Are you sure?</string>
+    <string name="userdialog_delete_investment_message">Are you sure you want to delete this investment?</string>
 
     <!-- User Feedback-->
     <string name="userfeedback_add_consumption_no_internet_connection">It seems you\'re offline. Your data will automatically sync as soon as you reconnect to the internet.</string>

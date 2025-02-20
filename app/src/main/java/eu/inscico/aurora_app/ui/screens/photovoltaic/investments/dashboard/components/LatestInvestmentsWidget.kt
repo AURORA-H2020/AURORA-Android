@@ -47,7 +47,7 @@ fun LatestInvestmentsWidget(
     if(latestInvestment != null) {
 
             DecoratedHeadline(
-                headline = "Your latest Investment",
+                headline = stringResource(R.string.solar_power_latest_investment_headline),
                 leadingIconRes = R.drawable.outline_receipt_24,
                 actionIconRes = R.drawable.outline_edit_24,
                 onActionClicked = {
@@ -66,13 +66,13 @@ fun LatestInvestmentsWidget(
             val currencySymbol = unitService.getCurrencyUnitByLocale(countryCurrency)
 
             ActionEntry(
-                title = "Investition",
+                title = stringResource(R.string.solar_power_latest_investment_investment_title),
                 iconRes = R.drawable.outline_account_balance_wallet_24,
                 isNavigation = false,
                 titleColor = MaterialTheme.colorScheme.onSurface,
                 optionalTrailingContent = {
                     Text(
-                        text = "${latestInvestment.investmentPrice ?: 0} $currencySymbol",
+                        text = "${unitService.getValueWithDecimalsAsString(value = latestInvestment.investmentPrice, decimals = 2, withLocalDecimalPoint = true)} $currencySymbol",
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = TextStyle(
                             fontSize = 17.sp,
@@ -85,12 +85,12 @@ fun LatestInvestmentsWidget(
             Divider()
 
             ActionEntry(
-                title = "Capacity",
+                title = stringResource(R.string.solar_power_latest_investment_capacity_title),
                 iconRes = R.drawable.outline_brightness_low_24,
                 isNavigation = false,
                 optionalTrailingContent = {
                     Text(
-                        text = "${latestInvestment.investmentCapacity} W",
+                        text = "${latestInvestment.investmentCapacity} kW",
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = TextStyle(
                             fontSize = 17.sp,
@@ -103,7 +103,7 @@ fun LatestInvestmentsWidget(
             Divider()
 
             ActionEntry(
-                title = "Share",
+                title = stringResource(R.string.solar_power_latest_investment_share_title),
                 iconRes = R.drawable.outline_border_all_24,
                 isNavigation = false,
                 optionalTrailingContent = {
@@ -121,7 +121,7 @@ fun LatestInvestmentsWidget(
             Divider()
 
             ActionEntry(
-                title = "Investment Date",
+                title = stringResource(R.string.solar_power_latest_investment_date_title),
                 iconRes = R.drawable.outline_date_range_24,
                 isNavigation = false,
                 optionalTrailingContent = {

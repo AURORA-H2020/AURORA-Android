@@ -7,6 +7,7 @@ import android.icu.util.ULocale
 import android.os.Build
 import eu.inscico.aurora_app.model.user.RegionEnum
 import eu.inscico.aurora_app.utils.PrefsUtils
+import java.text.DecimalFormat
 import java.util.*
 
 class UnitService(
@@ -30,6 +31,22 @@ class UnitService(
 
     // region: Number Formatting
     // ---------------------------------------------------------------------------------------------
+    fun roundToDecimalPlaces(value: Double?, decimals: Int): String {
+        if(value == null)return "0.0"
+        val pattern = StringBuilder("#.")
+        repeat(decimals) { pattern.append("0") } // Erstellt ein Muster wie "#.00"
+        val decimalFormat = DecimalFormat(pattern.toString())
+        return decimalFormat.format(value)
+    }
+
+    fun getValueWithDecimalsAsString(value: Double?, decimals: Int = 1, withLocalDecimalPoint: Boolean = false): String {
+        val valueRounded = roundToDecimalPlaces(value = value, decimals = decimals)
+        return if(withLocalDecimalPoint){
+            getValueWithLocalDecimalPoint(valueRounded)
+        } else {
+            valueRounded
+        }
+    }
 
     fun getValueWithLocalDecimalPoint(value: String?): String {
         return if(Locale.getDefault() == Locale.US || Locale.getDefault() == Locale.UK){
