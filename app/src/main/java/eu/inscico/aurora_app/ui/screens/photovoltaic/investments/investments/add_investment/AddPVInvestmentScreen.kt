@@ -56,6 +56,7 @@ import eu.inscico.aurora_app.ui.components.DecoratedHeadline
 import eu.inscico.aurora_app.ui.components.datePicker.MaterialDatePickerDialog
 import eu.inscico.aurora_app.ui.theme.electricityYellow
 import eu.inscico.aurora_app.utils.CalendarUtils
+import eu.inscico.aurora_app.utils.ExternalUtils
 import org.koin.androidx.compose.get
 import java.util.Calendar
 
@@ -81,6 +82,10 @@ fun AddPVInvestmentScreen(
         MaterialTheme.colorScheme.primary
     } else {
         MaterialTheme.colorScheme.onSurfaceVariant
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchPvPlantForUserCity()
     }
 
     LaunchedEffect(key1 = state.creationResult) {
@@ -140,7 +145,7 @@ fun AddPVInvestmentScreen(
 
                     Button(
                         onClick = {
-
+                            ExternalUtils.openBrowser(context = context, url = state.pvPlantForUserCity?.infoURL)
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.background)
                     ) {

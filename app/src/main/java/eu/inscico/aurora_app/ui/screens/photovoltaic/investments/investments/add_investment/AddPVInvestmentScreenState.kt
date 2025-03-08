@@ -1,5 +1,6 @@
 package eu.inscico.aurora_app.ui.screens.photovoltaic.investments.investments.add_investment
 
+import eu.inscico.aurora_app.model.pvPlant.PVPlant
 import java.util.Calendar
 
 data class AddPVInvestmentScreenState(
@@ -9,4 +10,5 @@ data class AddPVInvestmentScreenState(
     val noteField: String = "",
     val isSaveValid: Boolean = false,
     val creationResult: Result<Boolean>? = null,
+    val pvPlantForUserCity: PVPlant? = null
 )

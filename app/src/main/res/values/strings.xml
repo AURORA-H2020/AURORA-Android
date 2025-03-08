@@ -361,6 +361,7 @@
     <string name="solar_power_add_investment_date_info_text">The day you made the investment on.</string>
     <string name="solar_power_add_investment_note_title">Note</string>
     <string name="solar_power_add_investment_note_info_text">Add a note to your investment for personal reference.</string>
+    <string name="solar_power_all_investments_disclaimer_text">Adding multiple investments is only necessary if you later buy additional shares.</string>
 
 
     <!--Dialogs-->

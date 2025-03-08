@@ -122,4 +122,17 @@ class AddPVInvestmentViewModel(
             )
         }
     }
+
+    fun fetchPvPlantForUserCity() {
+        viewModelScope.launch {
+
+            pvPlantService.pvPlantForUserCityFlow.collect {
+                state.emit(
+                    state.value.copy(
+                        pvPlantForUserCity = it,
+                    )
+                )
+            }
+        }
+    }
 }
