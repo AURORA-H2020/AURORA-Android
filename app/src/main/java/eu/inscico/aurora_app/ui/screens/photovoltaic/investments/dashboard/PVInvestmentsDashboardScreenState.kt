@@ -11,5 +11,6 @@ data class PVInvestmentsDashboardScreenState(
     val pvPlantForUserCity: PVPlant? = null,
     val isPVPlantActive: Boolean = false,
     val userCountry: Country? = null,
-    val userCity: City? = null
+    val userCity: City? = null,
+    val latestPVInvestment: PVInvestment? = null
 )

@@ -101,7 +101,7 @@ fun PVInvestmentsDashboardScreen(
 
                             Spacer(Modifier.height(16.dp))
 
-                            val latestInvestment = state.userInvestments?.last()
+                            val latestInvestment = state.latestPVInvestment
                             LatestInvestmentsWidget(
                                 latestInvestment = latestInvestment,
                                 onEditClicked = {

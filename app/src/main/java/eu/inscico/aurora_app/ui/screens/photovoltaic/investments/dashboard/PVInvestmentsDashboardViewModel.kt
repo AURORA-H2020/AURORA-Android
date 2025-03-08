@@ -73,6 +73,8 @@ class PVInvestmentsDashboardViewModel(
                             userInvestments = result.value
                         )
                     )
+
+                    getLatestInvestment()
                 }
             }
         }
@@ -90,6 +92,18 @@ class PVInvestmentsDashboardViewModel(
                     )
                 )
             }
+        }
+    }
+
+    fun getLatestInvestment(){
+        viewModelScope.launch {
+            val latestInvestment = state.value.userInvestments?.maxByOrNull { it.investmentDate }
+
+            state.emit(
+                state.value.copy(
+                    latestPVInvestment =  latestInvestment ?: state.value.userInvestments?.last()
+                )
+            )
         }
     }
 }
