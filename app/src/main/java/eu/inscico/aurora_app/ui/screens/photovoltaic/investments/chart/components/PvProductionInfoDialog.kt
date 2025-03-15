@@ -24,6 +24,7 @@ import eu.inscico.aurora_app.utils.ExternalUtils
 
 @Composable
 fun PvProductionInfoDialog(
+    plantId: String?,
     showDialog: MutableState<Boolean>,
 ) {
 
@@ -62,7 +63,7 @@ fun PvProductionInfoDialog(
                         top = 8.dp,
                         bottom = 8.dp
                     ),
-                    text = "Your investment in your local AURORA solar power installations helps reduce your carbon footprint. Here you can see a breakdown of the total energy produced by the installation (Total production) and your investment's contribution (Your Production). Your contribution is automatically added as an offset to your profile each friday morning to help you reach near-zero emissions.",
+                    text = "Your investment in your local AURORA solar power installations helps reduce your carbon footprint. Here you can see a breakdown of the total energy produced by the installation (Total Production) and your investment's contribution (Your Production). Your contribution is automatically added as an offset to your profile each Friday morning to help you reach near-zero emissions.",
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodyMedium
                 )
@@ -75,7 +76,7 @@ fun PvProductionInfoDialog(
                         Text(stringResource(id = R.string.okay))
                     }
                     TextButton(onClick = {
-                        val url = "https://aurora-dashboard-git-develop-aurora-h2020.vercel.app/de-DE/pv-data?site=DK01"
+                        val url = "https://aurora-dashboard-git-develop-aurora-h2020.vercel.app/de-DE/pv-data?site=$plantId"
                         ExternalUtils.openBrowser(context, url)
                     }) {
                         Text("See full data")

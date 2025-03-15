@@ -238,6 +238,7 @@ fun PvProductionChartScreen(
         }
 )
     PvProductionInfoDialog(
-        showInfoDialog
+        plantId = state.value.pvPlant?.plantId,
+        showDialog = showInfoDialog
     )
 }

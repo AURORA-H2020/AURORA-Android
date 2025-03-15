@@ -22,9 +22,12 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -32,9 +35,11 @@ import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.ui.components.AppBar
 import eu.inscico.aurora_app.ui.components.DecoratedHeadline
+import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.chart.components.PvProductionInfoDialog
 import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.dashboard.components.LatestInvestmentsWidget
 import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.dashboard.components.PVPlantProductionInfoWidget
 import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.dashboard.components.PVPlantProductionWidget
+import eu.inscico.aurora_app.utils.ExternalUtils
 import org.koin.androidx.compose.get
 
 @Composable
@@ -44,6 +49,9 @@ fun PVInvestmentsDashboardScreen(
 ) {
 
     val state = viewModel.state.collectAsStateWithLifecycle().value
+    val context = LocalContext.current
+
+    val showDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = Unit) {
         viewModel.fetchUserCountryAndCity()
@@ -88,10 +96,13 @@ fun PVInvestmentsDashboardScreen(
                                 leadingIconRes = R.drawable.outline_assessment_24,
                                 actionIconRes = R.drawable.baseline_question_mark_24,
                                 onActionClicked = {
-
+                                    showDialog.value = true
                                 }
                             )
-
+                            PvProductionInfoDialog(
+                                plantId = state.pvPlantForUserCity.plantId,
+                                showDialog = showDialog
+                            )
                             Spacer(Modifier.height(16.dp))
 
                             if(state.userInvestments != null &&  state.plantData != null) {
@@ -161,7 +172,7 @@ fun PVInvestmentsDashboardScreen(
                                     modifier = Modifier
                                         .padding(8.dp)
                                         .clickable {
-                                            // TODO:
+                                            ExternalUtils.openBrowser(context = context, url = state.pvPlantForUserCity.infoURL)
                                         },
                                     text = "How to invest?",
                                     color = MaterialTheme.colorScheme.onBackground
