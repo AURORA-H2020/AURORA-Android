@@ -72,7 +72,7 @@ class PVPlantsService(
         _dataFromPvPlantFlow.emit(null)
         try {
             // Get data
-            val dataSnapshot = _firestore.collection(pvPlantDataCollectionName).document(plantId)
+            val dataSnapshot = _firestore.collection(pvPlantsCollectionName).document(plantId)
                 .collection(pvPlantDataCollectionName).get().await()
             val data = dataSnapshot.mapNotNull {
                 try {

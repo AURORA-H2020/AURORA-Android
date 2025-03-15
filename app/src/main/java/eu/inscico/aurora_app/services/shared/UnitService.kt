@@ -32,9 +32,11 @@ class UnitService(
     // region: Number Formatting
     // ---------------------------------------------------------------------------------------------
     fun roundToDecimalPlaces(value: Double?, decimals: Int): String {
-        if(value == null)return "0.0"
-        val pattern = StringBuilder("#.")
-        repeat(decimals) { pattern.append("0") } // Erstellt ein Muster wie "#.00"
+        if (value == null) return "0.0"
+
+        val pattern = StringBuilder("0.") // Hier "0." statt "#." für führende 0
+        repeat(decimals) { pattern.append("0") } // Erstellt z. B. "0.00"
+
         val decimalFormat = DecimalFormat(pattern.toString())
         return decimalFormat.format(value)
     }

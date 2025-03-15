@@ -96,7 +96,10 @@ fun PVInvestmentsDashboardScreen(
 
                             PVPlantProductionWidget(
                                 yourProduction = 123.0,
-                                pvPlant = state.pvPlantForUserCity
+                                pvPlant = state.pvPlantForUserCity,
+                                onClick = {
+                                    navigationService.toPhotovoltaicProductionChart()
+                                }
                             )
 
                             Spacer(Modifier.height(16.dp))

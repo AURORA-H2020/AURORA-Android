@@ -1,5 +1,6 @@
 package eu.inscico.aurora_app.ui.screens.photovoltaic.investments.dashboard.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,12 +20,16 @@ import eu.inscico.aurora_app.model.pvPlant.PVPlant
 @Composable
 fun PVPlantProductionWidget(
     yourProduction: Double,
-    pvPlant: PVPlant
+    pvPlant: PVPlant,
+    onClick: (() -> Unit)? = null
 ) {
 
     Card(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable {
+                onClick?.invoke()
+            },
         elevation = 0.dp,
         backgroundColor = MaterialTheme.colorScheme.surface,
         shape = RoundedCornerShape(8.dp)
