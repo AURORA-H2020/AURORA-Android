@@ -194,7 +194,7 @@ fun PvProductionChartScreen(
 
                         val firstInvestment = state.value.firstProductionValueDate
                         val investmentSum = state.value.summedProductionValue
-                        Log.e("HELP", "investmentSum: $investmentSum")
+
                         Row(modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically) {
@@ -221,6 +221,10 @@ fun PvProductionChartScreen(
 
                         if (state.value.pvPlant != null && state.value.plantData != null && state.value.userInvestments != null) {
                             PvProductionBarChart(
+                                modifier = Modifier
+                                .fillMaxWidth()
+                                .height(400.dp)
+                                .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 24.dp),
                                 pvPlant = state.value.pvPlant!!,
                                 pvPlantData = state.value.plantData!!,
                                 userInvestments = state.value.userInvestments!!,

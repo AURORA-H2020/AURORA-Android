@@ -115,7 +115,7 @@ class PvProductionBarChartViewModel: ViewModel() {
         val finalList = if(list.size >= index){
             list.subList(list.size - index, list.size)
         } else {
-            fillListForConcreteEntryCount(list)
+            fillListForConcreteEntryCount(list = list, neededListSize = index.toLong())
         }
         return finalList
     }

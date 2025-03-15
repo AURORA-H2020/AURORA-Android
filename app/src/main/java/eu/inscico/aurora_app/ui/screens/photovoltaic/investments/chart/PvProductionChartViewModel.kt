@@ -13,7 +13,6 @@ import eu.inscico.aurora_app.services.firebase.PVPlantsService
 import eu.inscico.aurora_app.services.firebase.UserService
 import eu.inscico.aurora_app.utils.CalendarUtils
 import eu.inscico.aurora_app.utils.TypedResult
-import eu.inscico.aurora_app.utils.toDateFormat
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.time.ZoneId
@@ -181,7 +180,11 @@ class PvProductionChartViewModel(
                                 current = current.minusDays(1)
                             }
 
-                            val listSinceInvestment = plantData?.subList(plantData.size - index, plantData.size)
+                            val listSinceInvestment = if((plantData?.size ?: 0) >= index){
+                                plantData?.subList(plantData.size - index, plantData.size)
+                            } else {
+                                plantData
+                            }
                             listSinceInvestment
                         }
                     }

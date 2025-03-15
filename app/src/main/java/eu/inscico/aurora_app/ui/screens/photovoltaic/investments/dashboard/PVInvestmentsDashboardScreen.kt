@@ -94,13 +94,18 @@ fun PVInvestmentsDashboardScreen(
 
                             Spacer(Modifier.height(16.dp))
 
-                            PVPlantProductionWidget(
-                                yourProduction = 123.0,
-                                pvPlant = state.pvPlantForUserCity,
-                                onClick = {
-                                    navigationService.toPhotovoltaicProductionChart()
-                                }
-                            )
+                            if(state.userInvestments != null &&  state.plantData != null) {
+                                PVPlantProductionWidget(
+                                    yourProduction = state.userProductionLast30Days,
+                                    pvPlantProduction = state.totalProductionLast30Days,
+                                    pvPlant = state.pvPlantForUserCity,
+                                    pvPlantData = state.plantData,
+                                    userInvestments = state.userInvestments,
+                                    onClick = {
+                                        navigationService.toPhotovoltaicProductionChart()
+                                    }
+                                )
+                            }
 
                             Spacer(Modifier.height(16.dp))
 

@@ -52,6 +52,8 @@ fun PvProductionBarChart(
     userInvestments: List<PVInvestment>,
     timeRangeType: ChartTimeRangeType,
     productionOption: DisplayOption,
+    modifier: Modifier = Modifier,
+    isSimpleView: Boolean = false,
     unitService: UnitService = get(),
     viewModel: PvProductionBarChartViewModel = koinViewModel()
 ) {
@@ -119,7 +121,7 @@ fun PvProductionBarChart(
     val guidelineTextComponent = TextComponent.Builder()
     guidelineTextComponent.color = MaterialTheme.colorScheme.outlineVariant.toArgb()
 
-    Column(Modifier.padding(bottom = 24.dp)) {
+    Column() {
 
 
         val chartScrollSpec = ChartScrollSpec(
@@ -162,36 +164,47 @@ fun PvProductionBarChart(
             }
         }
 
-        Chart(
-            chartScrollSpec = chartScrollSpec,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(400.dp)
-                .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp),
-            chart = chart,
-            model = viewModel.getBarChartDataForProductionType(
-                productionType = productionOption,
-                pvPlantData = pvPlantData,
-                timeRangeType = timeRangeType
-            ),
-            startAxis = startAxis(
-                label = labelTextComponent.build(),
-                tick = null,
-                tickLength = 0.dp,
-                guideline = null,
-                maxLabelCount = 5,
-                title = yAxisName,
-                titleComponent = labelTextComponent.build(),
-                valueFormatter = yAxisValueFormatter
-            ),
-            bottomAxis = bottomAxis(
-                tick = null,
-                label = axisTextComponent.build(),
-                guideline = axisGuidelineComponent(MaterialTheme.colorScheme.outlineVariant),
-                valueFormatter = xAxisValueFormatter,
-                labelRotationDegrees = 90f,
-                sizeConstraint = Axis.SizeConstraint.TextWidth("dd. MMM")
-            ),
-        )
+        if(isSimpleView){
+            Chart(
+                modifier = modifier,
+                chart = chart,
+                model = viewModel.getBarChartDataForProductionType(
+                    productionType = productionOption,
+                    pvPlantData = pvPlantData,
+                    timeRangeType = timeRangeType
+                )
+            )
+
+        } else {
+
+            Chart(
+                chartScrollSpec = chartScrollSpec,
+                modifier = modifier,
+                chart = chart,
+                model = viewModel.getBarChartDataForProductionType(
+                    productionType = productionOption,
+                    pvPlantData = pvPlantData,
+                    timeRangeType = timeRangeType
+                ),
+                startAxis = startAxis(
+                    label = labelTextComponent.build(),
+                    tick = null,
+                    tickLength = 0.dp,
+                    guideline = null,
+                    maxLabelCount = 5,
+                    title = yAxisName,
+                    titleComponent = labelTextComponent.build(),
+                    valueFormatter = yAxisValueFormatter
+                ),
+                bottomAxis = bottomAxis(
+                    tick = null,
+                    label = axisTextComponent.build().apply { padding = MutableDimensions(horizontalDp = 4f, verticalDp = 0f)},
+                    guideline = axisGuidelineComponent(MaterialTheme.colorScheme.outlineVariant),
+                    valueFormatter = xAxisValueFormatter,
+                    labelRotationDegrees = 90f,
+                    sizeConstraint = Axis.SizeConstraint.TextWidth("dd. MMM")
+                ),
+            )
+        }
     }
 }
