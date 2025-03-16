@@ -29,9 +29,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -63,6 +65,7 @@ fun PvProductionChartScreen(
 ) {
 
     val context = LocalContext.current
+    val config = LocalConfiguration.current
     val state = viewModel.state.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState(
@@ -198,8 +201,11 @@ fun PvProductionChartScreen(
                         Row(modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically) {
+
+                            val label = "${context.getString(R.string.since)} ${CalendarUtils.toDateString(calendarDay = firstInvestment, unitService.getDateFormat(config))}"
+
                             Text(
-                                text = "Seit ${CalendarUtils.toDateString(calendarDay = firstInvestment, "dd.MM.yyyy")}",
+                                text = label,
                                 modifier = Modifier.padding(horizontal = 16.dp),
                                 style = MaterialTheme.typography.labelSmall,
                                 textAlign = TextAlign.Start,

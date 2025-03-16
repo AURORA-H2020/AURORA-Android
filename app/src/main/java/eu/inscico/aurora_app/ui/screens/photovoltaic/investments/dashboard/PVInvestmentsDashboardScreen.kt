@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -62,7 +63,7 @@ fun PVInvestmentsDashboardScreen(
     Scaffold(
         topBar = {
             AppBar(
-                title = "Ihr Solarstrom",
+                title = stringResource(R.string.solar_power_title),
                 hasBackNavigation = false,
             )
         },
@@ -91,8 +92,8 @@ fun PVInvestmentsDashboardScreen(
                             Spacer(Modifier.height(8.dp))
 
                             DecoratedHeadline(
-                                headline = "Produktion",
-                                supportingText = "In the last 30 days",
+                                headline = stringResource(R.string.solar_power_production_chart_title),
+                                supportingText = stringResource(R.string.solar_power_production_chart_time_range_past_30_days_title),
                                 leadingIconRes = R.drawable.outline_assessment_24,
                                 actionIconRes = R.drawable.baseline_question_mark_24,
                                 onActionClicked = {
@@ -147,7 +148,7 @@ fun PVInvestmentsDashboardScreen(
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
                                     Text(
-                                        text = "View all Investments",
+                                        text = stringResource(R.string.solar_power_production_see_all_investments_title),
                                         color = MaterialTheme.colorScheme.onBackground
                                     )
                                 }
@@ -174,7 +175,7 @@ fun PVInvestmentsDashboardScreen(
                                         .clickable {
                                             ExternalUtils.openBrowser(context = context, url = state.pvPlantForUserCity.infoURL)
                                         },
-                                    text = "How to invest?",
+                                    text = stringResource(R.string.solar_power_add_investment_how_to_invest_button_title),
                                     color = MaterialTheme.colorScheme.onBackground
                                 )
                             }
@@ -187,7 +188,7 @@ fun PVInvestmentsDashboardScreen(
                         } else {
                             Spacer(Modifier.height(16.dp))
                             Text(
-                                text = "This feature is currently not supported in your region.",
+                                text = stringResource(R.string.solar_power_feature_not_available_yet_title),
                                 modifier = Modifier
                                     .padding(16.dp)
                                     .fillMaxWidth(),
@@ -212,7 +213,7 @@ fun PVInvestmentsDashboardScreen(
                             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                         ) {
                             androidx.compose.material3.Text(
-                                text = "Estimate savings",
+                                text = stringResource(R.string.userdialog_estimate_savings_button_title),
                                 style = MaterialTheme.typography.labelLarge,
                                 color = Color.White
                             )

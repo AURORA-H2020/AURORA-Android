@@ -52,7 +52,7 @@ fun PvProductionInfoDialog(
                         top = 8.dp,
                         bottom = 8.dp
                     ),
-                    text = "Wie funktioniert das?",
+                    text = stringResource(R.string.userdialog_how_does_it_work_info_dialog_title),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.titleMedium
                 )
@@ -63,7 +63,7 @@ fun PvProductionInfoDialog(
                         top = 8.dp,
                         bottom = 8.dp
                     ),
-                    text = "Your investment in your local AURORA solar power installations helps reduce your carbon footprint. Here you can see a breakdown of the total energy produced by the installation (Total Production) and your investment's contribution (Your Production). Your contribution is automatically added as an offset to your profile each Friday morning to help you reach near-zero emissions.",
+                    text = stringResource(R.string.userdialog_how_does_it_work_info_dialog_description),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodyMedium
                 )
@@ -79,7 +79,7 @@ fun PvProductionInfoDialog(
                         val url = "https://aurora-dashboard-git-develop-aurora-h2020.vercel.app/de-DE/pv-data?site=$plantId"
                         ExternalUtils.openBrowser(context, url)
                     }) {
-                        Text("See full data")
+                        Text(stringResource(R.string.userdialog_how_does_it_work_info_dialog_see_full_data_button_title))
                     }
                 }
             }

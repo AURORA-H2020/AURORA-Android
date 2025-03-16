@@ -49,7 +49,7 @@ fun AllInvestmentsScreen(
     Scaffold(
         topBar = {
             AppBar(
-                title = "Your Investments",
+                title = stringResource(R.string.solar_power_your_investments_title),
                 hasBackNavigation = true,
                 backNavigationCallback = {
                     navigationService.navControllerTabPhotovoltaic?.popBackStack()
@@ -63,7 +63,7 @@ fun AllInvestmentsScreen(
                         Icon(
                             painter = painterResource(R.drawable.baseline_add_24),
                             tint = MaterialTheme.colorScheme.primary,
-                            contentDescription = "Add Photovoltaic Investment"
+                            contentDescription = stringResource(R.string.solar_power_add_pv_investment_title)
                         )
                     }
                 }

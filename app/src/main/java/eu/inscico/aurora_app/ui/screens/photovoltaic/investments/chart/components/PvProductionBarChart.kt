@@ -59,6 +59,7 @@ fun PvProductionBarChart(
 ) {
 
     val context = LocalContext.current
+    val config = LocalConfiguration.current
     val state = viewModel.state.collectAsStateWithLifecycle().value
 
     LaunchedEffect(Unit) {
@@ -73,7 +74,7 @@ fun PvProductionBarChart(
 
             val date = Calendar.getInstance()
             date.timeInMillis = realTimestamp
-            val help = CalendarUtils.toDateString(date, "dd. MMM")
+            val help = CalendarUtils.toDateString(date, unitService.getDateFormat(config, withYear = false))
 
             val index = value.toInt()
             if(chartValue.chartEntryModel.entries.first().size < 10){

@@ -142,7 +142,7 @@ fun LatestInvestmentsWidget(
     } else {
 
         DecoratedHeadline(
-            headline = "Your latest Investment",
+            headline = stringResource(R.string.solar_power_latest_investment_headline),
             leadingIconRes = R.drawable.outline_receipt_24,
         )
 
@@ -163,7 +163,7 @@ fun LatestInvestmentsWidget(
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
                 Text(
-                    text = "Add Investment",
+                    text = stringResource(R.string.solar_power_add_investment_headline),
                     style = MaterialTheme.typography.labelLarge,
                     color = Color.White
                 )

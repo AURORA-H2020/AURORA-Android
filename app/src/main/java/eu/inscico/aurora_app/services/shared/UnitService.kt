@@ -957,7 +957,7 @@ class UnitService(
     // region: Time
     // ---------------------------------------------------------------------------------------------
 
-    fun getDateFormat(config: Configuration, withTime: Boolean = false): String {
+    fun getDateFormat(config: Configuration, withTime: Boolean = false, withYear: Boolean = true): String {
 
         val dateFormat = when (appRegion) {
             RegionEnum.SYSTEM -> {
@@ -966,21 +966,21 @@ class UnitService(
                         LocaleData.getMeasurementSystem(ULocale.forLocale(config.locales[0]))
 
                     when (measurementSystem) {
-                        LocaleData.MeasurementSystem.US -> "MM/dd/yyyy"
-                        LocaleData.MeasurementSystem.UK -> "dd/MM/yyyy"
-                        else -> "dd.MM.yyyy"
+                        LocaleData.MeasurementSystem.US -> if(withYear) "MM/dd/yyyy" else "MM/dd"
+                        LocaleData.MeasurementSystem.UK -> if(withYear) "dd/MM/yyyy" else "dd/MM"
+                        else -> if(withYear) "dd.MM.yyyy" else "dd.MM."
                     }
                 } else {
-                    "dd.MM.yyyy"
+                    if(withYear) "dd.MM.yyyy" else "dd.MM."
                 }
             }
             RegionEnum.GERMANY,
             RegionEnum.PORTUGAL,
             RegionEnum.SPAIN,
             RegionEnum.SLOVENIA,
-            RegionEnum.DENMARK -> "dd.MM.yyyy"
-            RegionEnum.UNITED_KINGDOM -> "dd/MM/yyyy"
-            RegionEnum.USA -> "MM/dd/yyyy"
+            RegionEnum.DENMARK -> if(withYear) "dd.MM.yyyy" else "dd.MM."
+            RegionEnum.UNITED_KINGDOM -> if(withYear) "dd/MM/yyyy" else "dd/MM"
+            RegionEnum.USA -> if(withYear) "MM/dd/yyyy" else "MM/dd"
         }
 
         return if(withTime){

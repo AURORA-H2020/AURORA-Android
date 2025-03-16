@@ -17,7 +17,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.pvPlant.PVPlant
 import eu.inscico.aurora_app.model.pvPlant.PVPlantData
 import eu.inscico.aurora_app.model.pvProductionChart.ChartTimeRangeType
@@ -51,7 +53,7 @@ fun PVPlantProductionWidget(
             Row(Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(top = 16.dp, start = 16.dp).weight(1f)) {
                     Text(
-                        text = "Your production",
+                        text = stringResource(R.string.solar_power_production_chart_option_your_production),
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -63,7 +65,7 @@ fun PVPlantProductionWidget(
                     )
                     Spacer(Modifier.height(16.dp))
                     Text(
-                        text = "Total production",
+                        text = stringResource(R.string.solar_power_production_chart_option_total_production),
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.onSurface
                     )
