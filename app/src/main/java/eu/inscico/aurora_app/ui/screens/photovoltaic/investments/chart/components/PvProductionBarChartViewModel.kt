@@ -87,7 +87,12 @@ class PvProductionBarChartViewModel: ViewModel() {
     private fun fillListForConcreteEntryCount(list: List<Pair<Long,Float>>, neededListSize: Long = 30): List<Pair<Long,Float>>{
 
         val daysBefore = ZonedDateTime.now().minusDays(neededListSize).truncatedTo(ChronoUnit.DAYS)
-        val firstDateInList = Calendar.getInstance().apply { timeInMillis = list.minBy { it.first }.first }.toInstant().atZone(ZoneId.systemDefault()).truncatedTo(ChronoUnit.DAYS)
+        val firstDateInList =
+            if(list.isEmpty()){
+                ZonedDateTime.now()
+            } else {
+                Calendar.getInstance().apply { timeInMillis = list.minBy { it.first }.first }.toInstant().atZone(ZoneId.systemDefault()).truncatedTo(ChronoUnit.DAYS)
+            }
 
         val filledList = mutableListOf<Pair<Long,Float>>()
         filledList.addAll(list)
@@ -104,6 +109,10 @@ class PvProductionBarChartViewModel: ViewModel() {
     private fun getListSinceInvestmentDate( list: List<Pair<Long,Float>>): List<Pair<Long,Float>>{
         val firstInvestmentDate = state.value.firstInvestmentDate
         val lastPlantDataProductionDate = state.value.lastPlantDataProductionDate
+
+        if(lastPlantDataProductionDate.isBefore(firstInvestmentDate)){
+            return listOf(Pair(first = firstInvestmentDate.plusHours(10).toInstant().toEpochMilli(), second = 0f))
+        }
 
         var index = 0
         var current = firstInvestmentDate

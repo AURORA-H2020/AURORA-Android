@@ -63,8 +63,7 @@ fun ElectricityByPVConsumptionDetails(
 
     LaunchedEffect(Unit) {
         val currentPvInvestment =
-            userService.pvInvestmentsForUser.value?.firstOrNull()
-            //userService.pvInvestmentsForUser.value?.find { it.id == consumption.generatedByPvInvestmentId }
+            userService.pvInvestmentsForUser.value?.find { it.id == consumption.generatedByPvInvestmentId }
         pvInvestment.value = currentPvInvestment
 
         val pvPlantFromInvestment = pvPlantsService.pvPlantsFlow.value?.firstOrNull { it.id == pvInvestment.value?.pvPlant }

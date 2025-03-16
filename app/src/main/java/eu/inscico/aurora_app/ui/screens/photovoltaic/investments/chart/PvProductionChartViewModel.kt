@@ -284,6 +284,10 @@ class PvProductionChartViewModel(
         val firstInvestmentDate = allInvestments.minBy { it.investmentDate.timeInMillis }.investmentDate.toInstant().atZone(ZoneId.systemDefault()).truncatedTo(ChronoUnit.DAYS)
         val lastPlantDataProductionDate = plantData.maxBy { it.date.timeInMillis }.date.toInstant().atZone(ZoneId.systemDefault()).truncatedTo(ChronoUnit.DAYS)
 
+        if(lastPlantDataProductionDate.isBefore(firstInvestmentDate)){
+            return listOf(Pair(first = firstInvestmentDate.plusHours(10).toInstant().toEpochMilli(), second = 0f))
+        }
+
         var index = 0
         var current = firstInvestmentDate
         while(current.isBefore(lastPlantDataProductionDate)){

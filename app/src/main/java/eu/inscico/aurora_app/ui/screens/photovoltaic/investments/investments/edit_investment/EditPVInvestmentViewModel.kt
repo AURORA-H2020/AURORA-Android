@@ -117,6 +117,12 @@ class EditPVInvestmentViewModel(
             null
         }
 
+        val createdAt = if(state.value.pvInvestmentToEdit?.createdAt != null){
+            Timestamp(state.value.pvInvestmentToEdit!!.createdAt!!.time)
+        } else {
+            Timestamp.now()
+        }
+
         return PVInvestmentResponse(
             id = state.value.pvInvestmentToEdit?.id,
             city = state.value.pvInvestmentToEdit?.city,
@@ -124,6 +130,7 @@ class EditPVInvestmentViewModel(
             investmentPrice = state.value.pvInvestmentToEdit?.investmentPrice,
             investmentCapacity = state.value.pvInvestmentToEdit?.investmentCapacity,
             updatedAt = Timestamp.now(),
+            createdAt =createdAt,
             share = unitService.getValueStringAsDouble(state.value.shareField),
             investmentDate = Timestamp(state.value.investmentDateField.time),
             note = state.value.noteField
