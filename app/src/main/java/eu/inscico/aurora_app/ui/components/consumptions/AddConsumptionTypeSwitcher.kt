@@ -42,6 +42,7 @@ fun AddConsumptionTypeSwitcher(
     }
 
     val consumptionColor = when (selectedConsumption.value) {
+        ConsumptionType.ELECTRICITY_PV_INVESTMENT,
         ConsumptionType.ELECTRICITY -> electricityYellow
         ConsumptionType.HEATING -> heatingRed
         ConsumptionType.TRANSPORTATION -> mobilityBlue
@@ -49,6 +50,7 @@ fun AddConsumptionTypeSwitcher(
 
     fun getIconRes(type: ConsumptionType): Int {
         return when (type) {
+            ConsumptionType.ELECTRICITY_PV_INVESTMENT,
             ConsumptionType.ELECTRICITY -> R.drawable.outline_electric_bolt_24
             ConsumptionType.HEATING -> R.drawable.outline_local_fire_department_24
             ConsumptionType.TRANSPORTATION -> R.drawable.outline_directions_car_24
@@ -100,6 +102,7 @@ fun AddConsumptionTypeSwitcher(
             ) {
 
                 val consumptionSwitchItems = when (selectedConsumption.value) {
+                    ConsumptionType.ELECTRICITY_PV_INVESTMENT,
                     ConsumptionType.ELECTRICITY -> {
                         listOf(ConsumptionType.TRANSPORTATION, ConsumptionType.HEATING)
                     }

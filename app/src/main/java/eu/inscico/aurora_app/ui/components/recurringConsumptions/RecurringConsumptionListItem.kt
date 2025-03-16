@@ -39,12 +39,14 @@ fun RecurringConsumptionListItem(
     val headlineText = recurringConsumption.category.getDisplayName(context)
     val recurringUnitText = recurringConsumption.frequency.unit.getDisplayName(context)
     val iconResource = when(recurringConsumption.category){
+        ConsumptionType.ELECTRICITY_PV_INVESTMENT,
         ConsumptionType.ELECTRICITY -> {R.drawable.outline_electric_bolt_24}
         ConsumptionType.HEATING -> {R.drawable.outline_local_fire_department_24}
         ConsumptionType.TRANSPORTATION -> {R.drawable.outline_directions_car_24}
     }
 
     val iconColor = when(recurringConsumption.category){
+        ConsumptionType.ELECTRICITY_PV_INVESTMENT,
         ConsumptionType.ELECTRICITY -> electricityYellow
         ConsumptionType.HEATING -> heatingRed
         ConsumptionType.TRANSPORTATION -> mobilityBlue

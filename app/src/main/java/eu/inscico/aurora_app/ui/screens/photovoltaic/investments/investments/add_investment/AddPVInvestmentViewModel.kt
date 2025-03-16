@@ -101,7 +101,7 @@ class AddPVInvestmentViewModel(
             city = userCity.value?.id,
             share = unitService.getValueStringAsDouble(state.value.shareField),
             updatedAt = Timestamp.now(),
-            pvPlant = userPVPlant.value?.plantId,
+            pvPlant = userPVPlant.value?.id,
             investmentDate = Timestamp(state.value.investmentDateField.time),
             investmentPrice = investmentPrice,
             investmentCapacity = investmentCapacity,

@@ -50,7 +50,7 @@ class NavigationService {
             }
         }
         CoroutineScope(Dispatchers.IO).launch {
-            delay(1)
+            delay(300)
             withContext(Dispatchers.Main) {
                 then.invoke()
             }

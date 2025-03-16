@@ -244,6 +244,7 @@ class NotificationService(
             ConsumptionType.ELECTRICITY -> ElectricityReminderAlarmReceiver::class.java
             ConsumptionType.HEATING -> HeatingReminderAlarmReceiver::class.java
             ConsumptionType.TRANSPORTATION -> TransportationReminderAlarmReceiver::class.java
+            ConsumptionType.ELECTRICITY_PV_INVESTMENT -> null
         }
         val intent = Intent(context, receiver)
 

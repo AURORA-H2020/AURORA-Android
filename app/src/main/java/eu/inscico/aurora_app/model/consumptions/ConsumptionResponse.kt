@@ -25,7 +25,8 @@ class ConsumptionResponse(
     var heating: HeatingConsumptionDataResponse? = null,
     var transportation: TransportationConsumptionDataResponse? = null,
 
-    var generatedByRecurringConsumptionId: String? = null
+    var generatedByRecurringConsumptionId: String? = null,
+    var generatedByPvInvestmentId: String? = null
 ) {
 
     companion object {
@@ -54,7 +55,8 @@ class ConsumptionResponse(
                         electricity = electricity,
                         heating = null,
                         transportation = null,
-                        generatedByRecurringConsumptionId = item.generatedByRecurringConsumptionId
+                        generatedByRecurringConsumptionId = item.generatedByRecurringConsumptionId,
+                        generatedByPvInvestmentId = item.generatedByPvInvestmentId
                     )
                 }
                 is Consumption.HeatingConsumption -> {

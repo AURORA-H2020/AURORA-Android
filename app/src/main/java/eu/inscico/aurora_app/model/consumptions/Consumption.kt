@@ -16,7 +16,8 @@ sealed class Consumption {
         val description: String?,
         val electricity: ElectricityConsumptionData,
         val generatedByRecurringConsumptionId: String? = null,
-        val electricitySource: ElectricitySource = ElectricitySource.DEFAULT
+        val electricitySource: ElectricitySource = ElectricitySource.DEFAULT,
+        val generatedByPvInvestmentId: String? = null
     ) : Consumption()
 
     data class HeatingConsumption(
@@ -53,6 +54,7 @@ sealed class Consumption {
             val category = ConsumptionType.parseStringToConsumptionType(item.category)
 
             return when (category) {
+                ConsumptionType.ELECTRICITY_PV_INVESTMENT,
                 ConsumptionType.ELECTRICITY -> {
                     val startDate = if (item.electricity?.startDate != null) {
                         Calendar.getInstance().apply {
@@ -109,6 +111,7 @@ sealed class Consumption {
                         version = item.version,
                         electricity = electricity,
                         generatedByRecurringConsumptionId = item.generatedByRecurringConsumptionId,
+                        generatedByPvInvestmentId = item.generatedByPvInvestmentId
                     )
                 }
                 ConsumptionType.HEATING -> {

@@ -19,6 +19,7 @@ import eu.inscico.aurora_app.services.network.NetworkService
 import eu.inscico.aurora_app.utils.TypedResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlin.reflect.full.declaredMemberProperties
@@ -45,12 +46,16 @@ class UserService(
     val pvInvestmentsForUserLive: LiveData<List<PVInvestment>?> = _pvInvestmentsForUserLive
     private var _pvInvestmentsListener: ListenerRegistration? = null
 
+    private val _pvInvestmentsForUser = MutableStateFlow<List<PVInvestment>?>(null)
+    val pvInvestmentsForUser = _pvInvestmentsForUser
+
     init {
         val userId = _firebaseAuth.currentUser?.uid
         userId?.let {
             CoroutineScope(Dispatchers.IO).launch {
                 getUserByAuthId(userId)
                 setPVInvestmentsListener(userId)
+                loadPVInvestmentsForUser()
             }
         }
     }
@@ -323,6 +328,7 @@ class UserService(
 
             // Update Investments
             _pvInvestmentsForUserLive.postValue(pvInvestments)
+            _pvInvestmentsForUser.emit(pvInvestments)
 
             return TypedResult.Success(pvInvestments)
         } catch (e: Exception) {

@@ -28,6 +28,7 @@ import eu.inscico.aurora_app.ui.components.consumptions.DuplicateConsumptionButt
 import eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption.AddElectricityConsumption
 import eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption.AddHeatingConsumption
 import eu.inscico.aurora_app.ui.screens.home.consumptions.addConsumption.AddTransportationConsumption
+import eu.inscico.aurora_app.ui.screens.home.consumptions.consumptionDetails.ElectricityByPVConsumptionDetails
 import eu.inscico.aurora_app.ui.screens.home.consumptions.consumptionDetails.ElectricityConsumptionDetails
 import eu.inscico.aurora_app.ui.screens.home.consumptions.consumptionDetails.HeatingConsumptionDetails
 import eu.inscico.aurora_app.ui.screens.home.consumptions.consumptionDetails.TransportationConsumptionDetails
@@ -89,20 +90,85 @@ fun ConsumptionDetailScreen(
                             isDuplicate = true
                         )
                     }
+
                     is Consumption.HeatingConsumption -> {
                         AddHeatingConsumption(
                             initialValue = castConsumption,
                             isDuplicate = true
                         )
                     }
+
                     is Consumption.TransportationConsumption -> {
                         AddTransportationConsumption(
                             initialValues = castConsumption,
                             isDuplicate = true
                         )
                     }
+
                     null -> {}
                 }
+            }
+        }
+    } else if ((consumption.value as? Consumption.ElectricityConsumption)?.generatedByPvInvestmentId != null) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            val consumptionNameRes = R.string.home_consumptions_type_electricity_pv_title
+
+            AppBar(
+                title = stringResource(id = consumptionNameRes),
+                hasBackNavigation = true,
+                backNavigationCallback = {
+                    navigationService.navControllerTabHome?.popBackStack()
+                },
+                actionButton = {
+                    Row() {
+                        Image(
+                            painter = painterResource(id = R.drawable.outline_delete_outline_24),
+                            modifier = Modifier
+                                .size(38.dp)
+                                .padding(horizontal = 7.dp)
+                                .clickable {
+                                    userFeedbackService.showDialog(
+                                        message = context.getString(R.string.dialog_consumption_delete_title),
+                                        confirmButtonText = context.getString(R.string.delete),
+                                        confirmButtonCallback = {
+                                            if (consumption.value != null) {
+                                                CoroutineScope(Dispatchers.IO).launch {
+                                                    val result =
+                                                        viewModel.deleteConsumption(consumption.value!!)
+                                                    when (result) {
+                                                        is TypedResult.Failure -> {
+                                                            userFeedbackService.showSnackbar(R.string.settings_delete_consumption_entry_fail_message)
+                                                        }
+
+                                                        is TypedResult.Success -> {
+                                                            withContext(Dispatchers.Main) {
+                                                                navigationService.navControllerTabHome?.popBackStack()
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            } else {
+                                                userFeedbackService.showSnackbar(R.string.settings_delete_consumption_entry_fail_message)
+                                            }
+                                        }
+                                    )
+                                },
+                            contentDescription = "",
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.error)
+                        )
+                    }
+                }
+            )
+
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+
+                ElectricityByPVConsumptionDetails(consumption.value as Consumption.ElectricityConsumption)
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     } else {
@@ -157,6 +223,7 @@ fun ConsumptionDetailScreen(
                                                         is TypedResult.Failure -> {
                                                             userFeedbackService.showSnackbar(R.string.settings_delete_consumption_entry_fail_message)
                                                         }
+
                                                         is TypedResult.Success -> {
                                                             withContext(Dispatchers.Main) {
                                                                 navigationService.navControllerTabHome?.popBackStack()
@@ -184,26 +251,38 @@ fun ConsumptionDetailScreen(
                         is Consumption.ElectricityConsumption -> {
                             AddElectricityConsumption(initialValues = consumption.value as Consumption.ElectricityConsumption)
                         }
+
                         is Consumption.HeatingConsumption -> {
                             AddHeatingConsumption(initialValue = consumption.value as Consumption.HeatingConsumption)
                         }
+
                         is Consumption.TransportationConsumption -> {
                             AddTransportationConsumption(initialValues = consumption.value as Consumption.TransportationConsumption)
                         }
+
                         null -> {}
                     }
                 } else {
 
                     when (consumption.value) {
                         is Consumption.ElectricityConsumption -> {
-                            ElectricityConsumptionDetails(consumption.value as Consumption.ElectricityConsumption)
+                            val parsedConsumption =
+                                consumption.value as Consumption.ElectricityConsumption
+                            if (parsedConsumption.generatedByPvInvestmentId != null) {
+                                ElectricityByPVConsumptionDetails(parsedConsumption)
+                            } else {
+                                ElectricityConsumptionDetails(parsedConsumption)
+                            }
                         }
+
                         is Consumption.HeatingConsumption -> {
                             HeatingConsumptionDetails(consumption.value as Consumption.HeatingConsumption)
                         }
+
                         is Consumption.TransportationConsumption -> {
                             TransportationConsumptionDetails(consumption.value as Consumption.TransportationConsumption)
                         }
+
                         null -> {}
                     }
 
