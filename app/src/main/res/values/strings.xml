@@ -373,8 +373,8 @@
 
     <string name="solar_power_production_chart_title">Production</string>
     <string name="solar_power_production_chart_display_option_title">Anzeige</string>
-    <string name="solar_power_production_chart_option_total_production">Your Production</string>
-    <string name="solar_power_production_chart_option_your_production">Total Production</string>
+    <string name="solar_power_production_chart_option_total_production">Total Production</string>
+    <string name="solar_power_production_chart_option_your_production">Your Production</string>
     <string name="solar_power_production_chart_time_range_title">Time Range</string>
     <string name="solar_power_production_chart_time_range_past_30_days_title">In the past 30 days</string>
     <string name="solar_power_production_chart_time_range_since_investment_title">Since Investment</string>
