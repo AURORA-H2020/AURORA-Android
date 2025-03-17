@@ -9,6 +9,7 @@ import eu.inscico.aurora_app.model.user.RegionEnum
 import eu.inscico.aurora_app.utils.PrefsUtils
 import java.text.DecimalFormat
 import java.util.*
+import kotlin.math.roundToInt
 
 class UnitService(
     private val context: Context
@@ -42,6 +43,9 @@ class UnitService(
     }
 
     fun getValueWithDecimalsAsString(value: Double?, decimals: Int = 1, withLocalDecimalPoint: Boolean = false): String {
+        if(decimals == 0){
+            return (value ?: 0.0).roundToInt().toString()
+        }
         val valueRounded = roundToDecimalPlaces(value = value, decimals = decimals)
         return if(withLocalDecimalPoint){
             getValueWithLocalDecimalPoint(valueRounded)

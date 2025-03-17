@@ -59,7 +59,7 @@ fun PVPlantProductionWidget(
                     )
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        text = "${unitService.getValueWithDecimalsAsString(value = yourProduction, decimals = 2, withLocalDecimalPoint = true)} kW",
+                        text = "${unitService.getValueWithDecimalsAsString(value = yourProduction, decimals = 0, withLocalDecimalPoint = true)} kW",
                         style = MaterialTheme.typography.headlineMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -71,7 +71,7 @@ fun PVPlantProductionWidget(
                     )
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        text = "${unitService.getValueWithDecimalsAsString(value = pvPlantProduction, decimals = 2, withLocalDecimalPoint = true)} kW",
+                        text = "${unitService.getValueWithDecimalsAsString(value = pvPlantProduction, decimals = 0, withLocalDecimalPoint = true)} kW",
                         style = MaterialTheme.typography.headlineMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )

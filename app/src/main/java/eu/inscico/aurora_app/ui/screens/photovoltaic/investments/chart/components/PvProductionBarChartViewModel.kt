@@ -133,26 +133,20 @@ class PvProductionBarChartViewModel: ViewModel() {
 
         val userProductionPerDay = mutableListOf<Pair<Long, Float>>()
 
-        val lastPlanProductionDate = state.value.lastPlantDataProductionDate
-        val firstInvestmentDate = state.value.firstInvestmentDate
         val pvPlant = state.value.pvPlant
         val plantData = state.value.pvPlantData
+        val userInvestments = state.value.allUserInvestments
 
-        var current = firstInvestmentDate
-        while (current.isBefore(lastPlanProductionDate) || current.isEqual(lastPlanProductionDate)) {
-            var summedCapacityFromUserForThisDay = 0.0
-            getAllPvInvestmentsForDay(current).forEach {
-                summedCapacityFromUserForThisDay += (it.investmentCapacity ?: 0.0)
+        plantData?.forEach {
+            val allPvInvestmentsForDay = getAllPvInvestmentsForDay(currentDay = it.date.toInstant().atZone(ZoneId.systemDefault()))
+
+            var summedInvestmentCapacity = 0.0
+            allPvInvestmentsForDay.forEach {
+                summedInvestmentCapacity += it.investmentCapacity ?: 0.0
             }
+            val capacityPercentage = (summedInvestmentCapacity / (pvPlant?.capacity ?: 0.0)) * it.Ep
 
-            val proportion = summedCapacityFromUserForThisDay / (pvPlant?.capacity ?: 0.0)
-            val producedEnergyForDay = plantData?.find {
-                it.date.toInstant().atZone(ZoneId.systemDefault()).truncatedTo(ChronoUnit.DAYS) == current
-            }?.Ep ?: 0.0
-            val value = (proportion / 100) * producedEnergyForDay
-            userProductionPerDay.add(Pair(first = current.plusHours(11).toInstant().toEpochMilli(), second = value.toFloat()))
-
-            current = current.plusDays(1)
+            userProductionPerDay.add(Pair(first = it.date.timeInMillis, second = capacityPercentage.toFloat()))
         }
         return userProductionPerDay
     }

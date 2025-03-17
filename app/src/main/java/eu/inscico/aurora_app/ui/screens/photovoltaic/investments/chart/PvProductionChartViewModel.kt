@@ -207,27 +207,18 @@ class PvProductionChartViewModel(
         pvPlant: PVPlant,
         plantData: List<PVPlantData>
     ): List<Pair<Long, Float>> {
-
         val userProductionPerDay = mutableListOf<Pair<Long, Float>>()
 
-        val lastPlanProductionDate = plantData.maxBy { it.date.timeInMillis }.date.toInstant().atZone(ZoneId.systemDefault()).truncatedTo(ChronoUnit.DAYS)
-        val firstInvestmentDate = allInvestments.minBy { it.investmentDate }.investmentDate.toInstant().atZone(ZoneId.systemDefault()).truncatedTo(ChronoUnit.DAYS)
+        plantData.forEach {
+            val allPvInvestmentsForDay = getAllPvInvestmentsForDay(allPvInvestments = allInvestments, currentDay = it.date.toInstant().atZone(ZoneId.systemDefault()))
 
-        var current = firstInvestmentDate
-        while (current.isBefore(lastPlanProductionDate) || current.isEqual(lastPlanProductionDate)) {
-            var summedCapacityFromUserForThisDay = 0.0
-            getAllPvInvestmentsForDay(allInvestments, current).forEach {
-                summedCapacityFromUserForThisDay += (it.investmentCapacity ?: 0.0)
+            var summedInvestmentCapacity = 0.0
+            allPvInvestmentsForDay.forEach {
+                summedInvestmentCapacity += it.investmentCapacity ?: 0.0
             }
+            val capacityPercentage = (summedInvestmentCapacity / (pvPlant.capacity ?: 0.0)) * it.Ep
 
-            val proportion = summedCapacityFromUserForThisDay / (pvPlant.capacity ?: 0.0)
-            val producedEnergyForDay = plantData.find {
-                it.date.toInstant().atZone(ZoneId.systemDefault()).truncatedTo(ChronoUnit.DAYS) == current
-            }?.Ep ?: 0.0
-            val value = (proportion / 100) * producedEnergyForDay
-            userProductionPerDay.add(Pair(first = current.plusHours(10).toInstant().toEpochMilli(), second = value.toFloat()))
-
-            current = current.plusDays(1)
+            userProductionPerDay.add(Pair(first = it.date.timeInMillis, second = capacityPercentage.toFloat()))
         }
         return userProductionPerDay
     }

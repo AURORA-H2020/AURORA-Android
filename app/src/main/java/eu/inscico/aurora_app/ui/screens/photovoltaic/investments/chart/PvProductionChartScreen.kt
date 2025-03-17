@@ -156,7 +156,7 @@ fun PvProductionChartScreen(
                             }
                         },
                         text = {
-                            Text(text = stringResource(id = R.string.solar_power_production_chart_option_total_production))
+                            Text(text = stringResource(id = R.string.solar_power_production_chart_option_your_production))
                         },
                         selectedContentColor = MaterialTheme.colorScheme.primary,
                     )
@@ -170,7 +170,7 @@ fun PvProductionChartScreen(
                             }
                         },
                         text = {
-                            Text(text = stringResource(id = R.string.solar_power_production_chart_option_your_production))
+                            Text(text = stringResource(id = R.string.solar_power_production_chart_option_total_production))
                         },
                     )
                 }
@@ -213,7 +213,7 @@ fun PvProductionChartScreen(
                             )
 
                             Text(
-                                text = "${unitService.getValueWithDecimalsAsString(value = investmentSum, decimals = 2, withLocalDecimalPoint = true)} kW",
+                                text = "${unitService.getValueWithDecimalsAsString(value = investmentSum, decimals = 0, withLocalDecimalPoint = true)} kW",
                                 modifier = Modifier.padding(horizontal = 16.dp),
                                 style = MaterialTheme.typography.titleLarge,
                                 textAlign = TextAlign.End,
