@@ -32,6 +32,7 @@ class UserService(
     private val _consumptionsService: ConsumptionsService,
     private val _consumptionSummariesService: ConsumptionSummaryService,
     private val _recurringConsumptionsService: RecurringConsumptionsService,
+    private val _recommendationsService: RecommendationsService,
     private val _networkService: NetworkService,
 ) {
 
@@ -89,6 +90,10 @@ class UserService(
 
                         _consumptionsService.setConsumptionsListener(userCollectionName, authId)
                         _recurringConsumptionsService.setRecurringConsumptionsListener(
+                            userCollectionName,
+                            authId
+                        )
+                        _recommendationsService.setRecommendationsListener(
                             userCollectionName,
                             authId
                         )
@@ -300,6 +305,7 @@ class UserService(
         _consumptionsService.deleteData()
         _countryService.deleteCountriesData()
         _consumptionSummariesService.deleteData()
+        _recommendationsService.deleteData()
     }
 
     // endregion: User

@@ -13,6 +13,8 @@ import eu.inscico.aurora_app.ui.screens.login.createProfile.CreateProfileViewMod
 import eu.inscico.aurora_app.ui.screens.login.LoginViewModel
 import eu.inscico.aurora_app.ui.screens.login.signInEmail.SignInWithEmailViewModel
 import eu.inscico.aurora_app.ui.screens.photovoltaic.calculator.PhotovoltaicCalculatorViewModel
+import eu.inscico.aurora_app.ui.screens.recommendations.RecommendationDetailViewModel
+import eu.inscico.aurora_app.ui.screens.recommendations.RecommendationsListViewModel
 import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.chart.PvProductionChartViewModel
 import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.chart.components.PvProductionBarChart
 import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.chart.components.PvProductionBarChartViewModel
@@ -120,6 +122,19 @@ val viewModelModule = module {
     viewModel {
         RecurringConsumptionsListViewModel(
             _recurringConsumptionsService = get()
+        )
+    }
+
+    viewModel {
+        RecommendationsListViewModel(
+            _recommendationsService = get()
+        )
+    }
+
+    viewModel { (handle: SavedStateHandle) ->
+        RecommendationDetailViewModel(
+            savedStateHandle = handle,
+            _recommendationsService = get()
         )
     }
 

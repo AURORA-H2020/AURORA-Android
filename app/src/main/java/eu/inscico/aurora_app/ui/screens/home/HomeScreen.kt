@@ -177,6 +177,23 @@ fun HomeScreen(
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.surface)
                             .clickable {
+                                navigationService.toRecommendationsList()
+                            },
+                        headlineContent = { Text(stringResource(id = R.string.home_recommendations_button_title)) },
+                        leadingContent = {
+                            Image(
+                                painterResource(id = R.drawable.outline_lightbulb_24),
+                                contentDescription = "",
+                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+                                alignment = Alignment.CenterEnd
+                            )
+                        }
+                    )
+                    Divider()
+                    ListItem(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.surface)
+                            .clickable {
                                 ExternalUtils.openBrowser(
                                     context = context,
                                     url = LINK_AURORA_PROJECT_DESCRIPTION

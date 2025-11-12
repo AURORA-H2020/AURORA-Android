@@ -165,6 +165,20 @@ class NavigationService {
     }
     // endregion
 
+    // region: Recommendations
+    // ---------------------------------------------------------------------------------------------
+
+    fun toRecommendationsList() {
+        val navDirection = NavGraphDirections.Recommendations.getNavRoute()
+        navControllerTabHome?.navigate(navDirection)
+    }
+
+    fun toRecommendationDetails(id: String) {
+        val navDirection = NavGraphDirections.RecommendationDetails.getNavRoute(id)
+        navControllerTabHome?.navigate(navDirection)
+    }
+    // endregion
+
     // region: Solar
     // ---------------------------------------------------------------------------------------------
 
