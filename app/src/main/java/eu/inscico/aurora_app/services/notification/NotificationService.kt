@@ -5,6 +5,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import eu.inscico.aurora_app.model.consumptions.ConsumptionType
@@ -219,6 +220,13 @@ class NotificationService(
     fun updateBehaviourChangePopup(time: Long, isEnabled: Boolean = true) {
 
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        
+        // Check if we can schedule exact alarms on Android 14+ (API 34+)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && !alarmManager.canScheduleExactAlarms()) {
+            Log.w("NotificationService", "Cannot schedule exact alarms - permission not granted")
+            return
+        }
+        
         val receiver = RecurringConsumptionsBehaviourChangedPopupReceiver::class.java
         val intent = Intent(context, receiver)
 
@@ -232,13 +240,23 @@ class NotificationService(
 
         alarmManager.cancel(pendingIntent)
         if(isEnabled){
-            alarmManager.set(AlarmManager.RTC_WAKEUP, time, pendingIntent)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent)
+            } else {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, time, pendingIntent)
+            }
         }
     }
 
     fun updateNotificationAlarm(notificationType: ConsumptionType,nextNotificationTime: Calendar, isEnabled: Boolean = true) {
 
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        
+        // Check if we can schedule exact alarms on Android 14+ (API 34+)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && !alarmManager.canScheduleExactAlarms()) {
+            Log.w("NotificationService", "Cannot schedule exact alarms - permission not granted")
+            return
+        }
 
         val receiver = when(notificationType){
             ConsumptionType.ELECTRICITY -> ElectricityReminderAlarmReceiver::class.java
@@ -262,7 +280,11 @@ class NotificationService(
         nextNotificationTime.set(Calendar.MILLISECOND, 0)
 
         if(isEnabled){
-            alarmManager.set(AlarmManager.RTC_WAKEUP, nextNotificationTime.timeInMillis, pendingIntent)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, nextNotificationTime.timeInMillis, pendingIntent)
+            } else {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, nextNotificationTime.timeInMillis, pendingIntent)
+            }
         }
     }
 }
