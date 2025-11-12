@@ -373,7 +373,6 @@
     <string name="solar_power_add_pv_investment_title">Add Photovoltaic Investment</string>
 
     <string name="solar_power_production_chart_title">Production</string>
-    <string name="solar_power_production_chart_display_option_title">Anzeige</string>
     <string name="solar_power_production_chart_option_total_production">Total Production</string>
     <string name="solar_power_production_chart_option_your_production">Your Production</string>
     <string name="solar_power_production_chart_time_range_title">Time Range</string>
