@@ -31,6 +31,7 @@ class RecommendationsService(
             val recommendations = recommendationsSnapshot.mapNotNull {
                 try {
                     val recommendationResponse = it.toObject<RecommendationResponse>() ?: return@mapNotNull null
+                    recommendationResponse.id = it.id
                     Recommendation.from(recommendationResponse)
                 } catch (e: Exception) {
                     null
@@ -59,6 +60,7 @@ class RecommendationsService(
                     val recommendations = value.mapNotNull {
                         try {
                             val recommendationResponse = it.toObject<RecommendationResponse>() ?: return@mapNotNull null
+                            recommendationResponse.id = it.id
                             Recommendation.from(recommendationResponse)
                         } catch (e: Exception) {
                             null

@@ -10,8 +10,8 @@ data class Recommendation(
     val notifyAt: Calendar? = null,
     val title: String? = null,
     val message: String,
-    val rationale: String,
-    val priority: Int,
+    val rationale: String? = null,
+    val priority: Int? = null,
     val link: String? = null,
     val isRead: Boolean = false
 ) {
@@ -20,8 +20,8 @@ data class Recommendation(
             val id = item.id ?: return null
             val type = item.type ?: return null
             val message = item.message ?: return null
-            val rationale = item.rationale ?: return null
-            val priority = item.priority ?: return null
+            val rationale = item.rationale
+            val priority = item.priority
 
             val createdAt = if (item.createdAt != null) {
                 Calendar.getInstance().apply {
