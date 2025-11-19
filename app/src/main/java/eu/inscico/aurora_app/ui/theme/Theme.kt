@@ -67,7 +67,9 @@ fun AURORAEnergyTrackerTheme(
             window.statusBarColor = Color.TRANSPARENT
             window.navigationBarColor = Color.TRANSPARENT
             // Use light icons (white) in dark mode, dark icons in light mode
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
+            val insetsController = WindowCompat.getInsetsController(window, view)
+            insetsController.isAppearanceLightStatusBars = !darkTheme
+            insetsController.isAppearanceLightNavigationBars = !darkTheme
         }
     }
 
