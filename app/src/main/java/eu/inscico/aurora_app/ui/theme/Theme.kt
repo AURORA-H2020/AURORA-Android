@@ -1,6 +1,7 @@
 package eu.inscico.aurora_app.ui.theme
 
 import android.app.Activity
+import android.graphics.Color
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -18,7 +19,7 @@ private val DarkColorPalette = darkColorScheme(
     background = backgroundColorDark,
     onSecondary = whiteMediumEmphasis,
     surface = surfacesDarkTheme,
-    onBackground = outlineVariantDark,
+    onBackground = backgroundColorLight,
     error = error,
     tertiary = tertiary,
     outlineVariant = outlineVariantLight,
@@ -30,7 +31,7 @@ private val LightColorPalette = lightColorScheme(
     background = backgroundColorLight,
     onSecondary = blackMediumEmphasis,
     surface = surfacesLightTheme,
-    onBackground = outlineVariantLight,
+    onBackground = backgroundColorDark,
     error = error,
     tertiary = tertiary,
     outlineVariant = outlineVariantDark
@@ -62,8 +63,13 @@ fun AURORAEnergyTrackerTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            // Make status bar transparent for edge-to-edge
+            window.statusBarColor = Color.TRANSPARENT
+            window.navigationBarColor = Color.TRANSPARENT
+            // Use light icons (white) in dark mode, dark icons in light mode
+            val insetsController = WindowCompat.getInsetsController(window, view)
+            insetsController.isAppearanceLightStatusBars = !darkTheme
+            insetsController.isAppearanceLightNavigationBars = !darkTheme
         }
     }
 

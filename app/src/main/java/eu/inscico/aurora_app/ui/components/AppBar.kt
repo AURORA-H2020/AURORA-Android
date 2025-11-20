@@ -28,6 +28,7 @@ fun AppBar(
 ) {
 
     TopAppBar(
+        windowInsets = WindowInsets(0, 0, 0, 0),
         title = {
             val horizontalArrangement = if(hasBackNavigation){
                 Arrangement.Start

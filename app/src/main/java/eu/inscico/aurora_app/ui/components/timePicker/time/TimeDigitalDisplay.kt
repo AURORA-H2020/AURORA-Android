@@ -98,24 +98,26 @@ fun TimeDigitalDisplay(
                     .width(95.dp),
                 value = hour.value,
                 onValueChange = {
-                    val inputString = it.text
-                    val processedInputString = getValidHourString(inputString)
+                    if(it.text.contains(Regex("^\\d{1,3}\$"))) {
+                        val inputString = it.text
+                        val processedInputString = getValidHourString(inputString)
 
-                    val selectedHour = processedInputString.toIntOrNull()
+                        val selectedHour = processedInputString.toIntOrNull()
 
-                    if (selectedHour != null) {
-                        val selectedMinute = minute.value
-                        val currentTimeItem =
-                            TimeItem.fromValues(selectedHour, selectedMinute.text.toInt())
-                        val timeItemAsCalendar = setTimeToCalendar(currentTimeItem, time)
-                        if (validator(timeItemAsCalendar)) {
-                            hour.value = TextFieldValue(
-                                processedInputString,
-                                selection = TextRange(processedInputString.length)
-                            )
-                            onTimeChanged.invoke(timeItemAsCalendar)
-                        } else {
-                            // TODO:  
+                        if (selectedHour != null) {
+                            val selectedMinute = minute.value
+                            val currentTimeItem =
+                                TimeItem.fromValues(selectedHour, selectedMinute.text.toInt())
+                            val timeItemAsCalendar = setTimeToCalendar(currentTimeItem, time)
+                            if (validator(timeItemAsCalendar)) {
+                                hour.value = TextFieldValue(
+                                    processedInputString,
+                                    selection = TextRange(processedInputString.length)
+                                )
+                                onTimeChanged.invoke(timeItemAsCalendar)
+                            } else {
+                                // TODO:
+                            }
                         }
                     }
                 },
@@ -155,24 +157,25 @@ fun TimeDigitalDisplay(
                     .width(95.dp),
                 value = minute.value,
                 onValueChange = {
+                    if(it.text.contains(Regex("^\\d{1,3}\$"))) {
+                            val inputString = it.text
+                            val processedInputString = getValidMinuteString(inputString)
 
-                    val inputString = it.text
-                    val processedInputString = getValidMinuteString(inputString)
+                            val selectedMinute = processedInputString.toIntOrNull()
 
-                    val selectedMinute = processedInputString.toIntOrNull()
-
-                    if (selectedMinute != null) {
-                        val selectedHour = hour.value.text.toInt()
-                        val currentTimeItem =
-                            TimeItem.fromValues(selectedHour, selectedMinute)
-                        val timeItemAsCalendar = setTimeToCalendar(currentTimeItem, time)
-                        if (validator(timeItemAsCalendar)) {
-                            minute.value = TextFieldValue(
-                                processedInputString,
-                                selection = TextRange(processedInputString.length)
-                            )
-                            onTimeChanged.invoke(timeItemAsCalendar)
-                        }
+                            if (selectedMinute != null) {
+                                val selectedHour = hour.value.text.toInt()
+                                val currentTimeItem =
+                                    TimeItem.fromValues(selectedHour, selectedMinute)
+                                val timeItemAsCalendar = setTimeToCalendar(currentTimeItem, time)
+                                if (validator(timeItemAsCalendar)) {
+                                    minute.value = TextFieldValue(
+                                        processedInputString,
+                                        selection = TextRange(processedInputString.length)
+                                    )
+                                    onTimeChanged.invoke(timeItemAsCalendar)
+                                }
+                            }
                     }
                 },
                 textStyle = MaterialTheme.typography.headlineLarge,

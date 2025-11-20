@@ -10,7 +10,8 @@ data class RecurringConsumptionTransportationDataResponse(
     var publicVehicleOccupancy: String? = null,
     var hourOfTravel: Int? = null,
     var minuteOfTravel: Int? = null,
-    var distance: Double? = null
+    var distance: Double? = null,
+    var fuelConsumption: Double? = null
 ) {
 
     companion object {
@@ -28,7 +29,8 @@ data class RecurringConsumptionTransportationDataResponse(
                 publicVehicleOccupancy = item.publicVehicleOccupancy?.parsePublicVehicleOccupancyToString(),
                 hourOfTravel = hourOfTravel,
                 minuteOfTravel = minuteOfTravel,
-                distance = item.distance
+                distance = item.distance,
+                fuelConsumption = item.fuelConsumption
             )
         }
     }

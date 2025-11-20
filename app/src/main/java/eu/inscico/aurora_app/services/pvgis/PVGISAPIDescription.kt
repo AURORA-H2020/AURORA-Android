@@ -18,7 +18,7 @@ interface PVGISAPIDescription {
         @Query("loss") loss: Double = 0.14,
         @Query("pvtechchoice") pvtechchoice: String = "crystSi",
         @Query("mountingplace") mountingplace: String = "free",
-        @Query("raddatabase") raddatabase: String = "PVGIS-SARAH",
+        @Query("raddatabase") raddatabase: String = "PVGIS-SARAH2",
         @Query("outputformat") outputformat: String = "json",
     ): Response<PVGISInvestmentResponse>
 

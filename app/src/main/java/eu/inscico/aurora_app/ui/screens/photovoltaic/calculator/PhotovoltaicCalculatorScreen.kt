@@ -1,4 +1,4 @@
-package eu.inscico.aurora_app.ui.screens.photovoltaic
+package eu.inscico.aurora_app.ui.screens.photovoltaic.calculator
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.photovoltaics.PhotovoltaicInvestmentResult
+import eu.inscico.aurora_app.services.navigation.NavigationService
 import eu.inscico.aurora_app.services.shared.UnitService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.AppBar
@@ -39,19 +41,19 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun PhotovoltaicCalculatorScreen(
     viewModel: PhotovoltaicCalculatorViewModel = koinViewModel(),
     userFeedbackService: UserFeedbackService = get(),
+    navigationService: NavigationService = get(),
     unitService: UnitService = get()
 ) {
 
     val keyboardController = LocalSoftwareKeyboardController.current
     val context = LocalContext.current
 
-    val userCity = viewModel.userCity.observeAsState()
-    val userCountry = viewModel.userCountry.observeAsState()
+    val userCity = viewModel.userCity.collectAsState()
+    val userCountry = viewModel.userCountry.collectAsState()
 
     val investmentResultLive = viewModel.investmentResultLive.observeAsState()
 
@@ -62,7 +64,10 @@ fun PhotovoltaicCalculatorScreen(
 
         AppBar(
             title = stringResource(id = R.string.solar_power_title),
-            hasBackNavigation = false
+            hasBackNavigation = true,
+            backNavigationCallback = {
+                navigationService.navControllerTabPhotovoltaic?.popBackStack()
+            },
         )
 
         Column(

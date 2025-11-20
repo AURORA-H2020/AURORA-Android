@@ -5,6 +5,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import eu.inscico.aurora_app.model.consumptions.ConsumptionType
@@ -219,6 +220,9 @@ class NotificationService(
     fun updateBehaviourChangePopup(time: Long, isEnabled: Boolean = true) {
 
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        
+
+        
         val receiver = RecurringConsumptionsBehaviourChangedPopupReceiver::class.java
         val intent = Intent(context, receiver)
 
@@ -239,11 +243,14 @@ class NotificationService(
     fun updateNotificationAlarm(notificationType: ConsumptionType,nextNotificationTime: Calendar, isEnabled: Boolean = true) {
 
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        
+
 
         val receiver = when(notificationType){
             ConsumptionType.ELECTRICITY -> ElectricityReminderAlarmReceiver::class.java
             ConsumptionType.HEATING -> HeatingReminderAlarmReceiver::class.java
             ConsumptionType.TRANSPORTATION -> TransportationReminderAlarmReceiver::class.java
+            ConsumptionType.ELECTRICITY_PV_INVESTMENT -> null
         }
         val intent = Intent(context, receiver)
 

@@ -50,7 +50,7 @@ class NavigationService {
             }
         }
         CoroutineScope(Dispatchers.IO).launch {
-            delay(1)
+            delay(300)
             withContext(Dispatchers.Main) {
                 then.invoke()
             }
@@ -162,6 +162,50 @@ class NavigationService {
     fun toRecurringConsumptionDetails(id: String) {
         val navDirection = NavGraphDirections.RecurringConsumptionDetails.getNavRoute(id)
         navControllerTabHome?.navigate(navDirection)
+    }
+    // endregion
+
+    // region: Recommendations
+    // ---------------------------------------------------------------------------------------------
+
+    fun toRecommendationsList() {
+        val navDirection = NavGraphDirections.Recommendations.getNavRoute()
+        navControllerTabHome?.navigate(navDirection)
+    }
+
+    fun toRecommendationDetails(id: String) {
+        val navDirection = NavGraphDirections.RecommendationDetails.getNavRoute(id)
+        navControllerTabHome?.navigate(navDirection)
+    }
+    // endregion
+
+    // region: Solar
+    // ---------------------------------------------------------------------------------------------
+
+
+    fun toPhotovoltaicsCalculator() {
+        val navDirection = NavGraphDirections.PhotovoltaicCalculator.getNavRoute()
+        navControllerTabPhotovoltaic?.navigate(navDirection)
+    }
+
+    fun toPhotovoltaicAllInvestmentsList() {
+        val navDirection = NavGraphDirections.PhotovoltaicAllInvestmentsList.getNavRoute()
+        navControllerTabPhotovoltaic?.navigate(navDirection)
+    }
+
+    fun toPhotovoltaicAddInvestment() {
+        val navDirection = NavGraphDirections.PhotovoltaicAddInvestment.getNavRoute()
+        navControllerTabPhotovoltaic?.navigate(navDirection)
+    }
+
+    fun toPhotovoltaicEditInvestment(id: String) {
+        val navDirection = NavGraphDirections.PhotovoltaicEditInvestment.getNavRoute(id)
+        navControllerTabPhotovoltaic?.navigate(navDirection)
+    }
+
+    fun toPhotovoltaicProductionChart() {
+        val navDirection = NavGraphDirections.PhotovoltaicProductionChart.getNavRoute()
+        navControllerTabPhotovoltaic?.navigate(navDirection)
     }
     // endregion
 }

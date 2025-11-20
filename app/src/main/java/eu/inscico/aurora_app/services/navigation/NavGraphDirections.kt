@@ -14,7 +14,14 @@ import eu.inscico.aurora_app.ui.screens.login.createProfile.CreateProfileScreen
 import eu.inscico.aurora_app.ui.screens.login.AuthScreen
 import eu.inscico.aurora_app.ui.screens.login.LoginScreen
 import eu.inscico.aurora_app.ui.screens.login.signInEmail.SignInWithEmailScreen
-import eu.inscico.aurora_app.ui.screens.photovoltaic.PhotovoltaicCalculatorScreen
+import eu.inscico.aurora_app.ui.screens.photovoltaic.calculator.PhotovoltaicCalculatorScreen
+import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.chart.PvProductionChartScreen
+import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.dashboard.PVInvestmentsDashboardScreen
+import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.investments.add_investment.AddPVInvestmentScreen
+import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.investments.all_investments.AllInvestmentsScreen
+import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.investments.edit_investment.EditPVInvestmentScreen
+import eu.inscico.aurora_app.ui.screens.recommendations.RecommendationDetailScreen
+import eu.inscico.aurora_app.ui.screens.recommendations.RecommendationsListScreen
 import eu.inscico.aurora_app.ui.screens.settings.profile.EditProfileScreen
 import eu.inscico.aurora_app.ui.screens.settings.SettingsScreen
 import eu.inscico.aurora_app.ui.screens.settings.featurePreview.FeaturePreviewScreen
@@ -206,12 +213,42 @@ sealed class NavGraphDirections(
 
     // endregion
 
+    // region: Recommendations
+    // ---------------------------------------------------------------------------------------------
+
+    object Recommendations : NavGraphDirections(
+        route = "recommendations",
+        content = {
+            RecommendationsListScreen()
+        }
+    ) {
+        fun getNavRoute(): String {
+            return route
+        }
+    }
+
+    object RecommendationDetails : NavGraphDirections(
+        route = "recommendationDetails",
+        content = {
+            RecommendationDetailScreen()
+        },
+        args = listOf(
+            NavArg(name = "id", type = NavType.StringType)
+        )
+    ) {
+        fun getNavRoute(id: String): String {
+            return "recommendationDetails/${id}"
+        }
+    }
+
+    // endregion
+
 
     // region: Photovoltaic
     // ---------------------------------------------------------------------------------------------
 
-    object Photovoltaic : NavGraphDirections(
-        route = "photovoltaic",
+    object PhotovoltaicCalculator : NavGraphDirections(
+        route = "photovoltaicCalculator",
         content = {
             PhotovoltaicCalculatorScreen()
         }
@@ -220,6 +257,65 @@ sealed class NavGraphDirections(
             return route
         }
     }
+
+    object PhotovoltaicInvestments : NavGraphDirections(
+        route = "photovoltaicInvestments",
+        content = {
+            PVInvestmentsDashboardScreen()
+        }
+    ) {
+        fun getNavRoute(): String {
+            return route
+        }
+    }
+
+    object PhotovoltaicAllInvestmentsList : NavGraphDirections(
+        route = "photovoltaicAllInvestmentsList",
+        content = {
+            AllInvestmentsScreen()
+        }
+    ) {
+        fun getNavRoute(): String {
+            return route
+        }
+    }
+
+    object PhotovoltaicAddInvestment : NavGraphDirections(
+        route = "photovoltaicAddInvestment",
+        content = {
+            AddPVInvestmentScreen()
+        }
+    ) {
+        fun getNavRoute(): String {
+            return route
+        }
+    }
+
+    object PhotovoltaicEditInvestment : NavGraphDirections(
+        route = "photovoltaicEditInvestment",
+        content = {
+            EditPVInvestmentScreen()
+        },
+        args = listOf(
+            NavArg(name = "id", type = NavType.StringType)
+        )
+    ) {
+        fun getNavRoute(id: String): String {
+            return "photovoltaicEditInvestment/${id}"
+        }
+    }
+
+    object PhotovoltaicProductionChart : NavGraphDirections(
+        route = "photovoltaicProductionChart",
+        content = {
+            PvProductionChartScreen()
+        }
+    ) {
+        fun getNavRoute(): String {
+            return route
+        }
+    }
+
     // endregion
 
 

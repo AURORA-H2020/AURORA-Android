@@ -52,6 +52,7 @@ data class RecurringConsumption(
             }
 
             val transportation = RecurringConsumptionTransportationData(
+                fuelConsumption = item.transportation?.fuelConsumption,
                 timeOfTravel = timeOfTravel,
                 privateVehicleOccupancy = item.transportation?.privateVehicleOccupancy,
                 publicVehicleOccupancy = PublicVehicleOccupancy.parseStringToPublicVehicleOccupancy(

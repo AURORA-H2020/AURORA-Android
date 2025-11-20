@@ -6,6 +6,7 @@ import androidx.compose.material3.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,6 +48,8 @@ fun EditProfileScreen(
 ) {
 
     val currentUserLive = viewModel.currentUserLive.observeAsState()
+    val currentCity = viewModel.currentCity.collectAsState()
+    val currentCountry = viewModel.currentCountry.collectAsState()
 
     val firstName = remember {
         mutableStateOf(currentUserLive.value?.firstName ?: "")
@@ -192,11 +195,11 @@ fun EditProfileScreen(
                 FormEntry(
                     title = stringResource(id = R.string.create_profile_country_title),
                     formEntryType = FormEntryType.SPINNER,
-                    initialItem = viewModel.currentCountry.value?.displayName ?: "",
+                    initialItem = currentCountry.value?.displayName ?: "",
                     readOnly = true
                 )
 
-                if (viewModel.currentCity.value != null) {
+                if (currentCity.value != null) {
                     Divider()
                     FormEntry(
                         title = stringResource(id = R.string.create_profile_city_hint),

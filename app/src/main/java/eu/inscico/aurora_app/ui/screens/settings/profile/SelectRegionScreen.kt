@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptions.ElectricitySource
@@ -119,6 +120,16 @@ fun SelectRegionScreen(
                         color = Color.White
                     )
                 }
+
+                Spacer(Modifier.height(4.dp))
+
+                Text(
+                    text = stringResource(id = R.string.settings_profile_select_region_info_description),
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    style = MaterialTheme.typography.labelSmall,
+                    textAlign = TextAlign.Start,
+                    color = MaterialTheme.colorScheme.onSecondary
+                )
 
             }
         }

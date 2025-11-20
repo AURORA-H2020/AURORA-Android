@@ -92,6 +92,7 @@ fun AddOrUpdateRecurringConsumptionScreen(
     }
 
     when (consumptionType.value) {
+        ConsumptionType.ELECTRICITY_PV_INVESTMENT,
         ConsumptionType.ELECTRICITY -> {}
         ConsumptionType.HEATING -> {}
         ConsumptionType.TRANSPORTATION -> {

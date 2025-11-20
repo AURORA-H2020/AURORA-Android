@@ -134,7 +134,7 @@ fun SettingsScreen(
                     Divider()
 
                     ActionEntry(
-                        title = stringResource(id = R.string.settings_profile_select_region_title),
+                        title = stringResource(id = R.string.settings_profile_select_number_formatting_title),
                         iconRes = R.drawable.outline_public_24,
                         isNavigation = true,
                         callback = {

@@ -12,7 +12,16 @@ import eu.inscico.aurora_app.ui.screens.home.recurringConsumptions.RecurringCons
 import eu.inscico.aurora_app.ui.screens.login.createProfile.CreateProfileViewModel
 import eu.inscico.aurora_app.ui.screens.login.LoginViewModel
 import eu.inscico.aurora_app.ui.screens.login.signInEmail.SignInWithEmailViewModel
-import eu.inscico.aurora_app.ui.screens.photovoltaic.PhotovoltaicCalculatorViewModel
+import eu.inscico.aurora_app.ui.screens.photovoltaic.calculator.PhotovoltaicCalculatorViewModel
+import eu.inscico.aurora_app.ui.screens.recommendations.RecommendationDetailViewModel
+import eu.inscico.aurora_app.ui.screens.recommendations.RecommendationsListViewModel
+import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.chart.PvProductionChartViewModel
+import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.chart.components.PvProductionBarChart
+import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.chart.components.PvProductionBarChartViewModel
+import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.dashboard.PVInvestmentsDashboardViewModel
+import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.investments.add_investment.AddPVInvestmentViewModel
+import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.investments.all_investments.AllInvestmentsViewModel
+import eu.inscico.aurora_app.ui.screens.photovoltaic.investments.investments.edit_investment.EditPVInvestmentViewModel
 import eu.inscico.aurora_app.ui.screens.settings.profile.EditProfileViewModel
 import eu.inscico.aurora_app.ui.screens.settings.SettingsViewModel
 import eu.inscico.aurora_app.ui.screens.settings.notifications.SettingsReminderViewModel
@@ -71,7 +80,8 @@ val viewModelModule = module {
     viewModel {
         HomeViewModel(
             _consumptionService = get(),
-            _consumptionSummaryService = get()
+            _consumptionSummaryService = get(),
+            _pvPlantService = get()
         )
     }
 
@@ -116,6 +126,19 @@ val viewModelModule = module {
     }
 
     viewModel {
+        RecommendationsListViewModel(
+            _recommendationsService = get()
+        )
+    }
+
+    viewModel { (handle: SavedStateHandle) ->
+        RecommendationDetailViewModel(
+            savedStateHandle = handle,
+            _recommendationsService = get()
+        )
+    }
+
+    viewModel {
         PhotovoltaicCalculatorViewModel(
             countriesService = get(),
             pvgisApiService = get()
@@ -129,5 +152,50 @@ val viewModelModule = module {
             _authService = get(),
             _userService = get()
         )
+    }
+
+    viewModel {
+        PVInvestmentsDashboardViewModel(
+            _countriesService = get(),
+            _pvPlantService = get(),
+            _userService = get()
+        )
+    }
+
+    viewModel {
+        AllInvestmentsViewModel(
+            userService = get(),
+            countriesService = get()
+        )
+    }
+
+    viewModel {
+        AddPVInvestmentViewModel(
+            unitService = get(),
+            countriesService = get(),
+            pvPlantService = get(),
+            userService = get()
+        )
+    }
+
+    viewModel{ (handle: SavedStateHandle) ->
+        EditPVInvestmentViewModel(
+            savedStateHandle = handle,
+            userService = get(),
+            unitService = get(),
+            pvPlantService = get(),
+            countryService = get()
+        )
+    }
+
+    viewModel {
+        PvProductionChartViewModel(
+            _userService = get(),
+            _pvPlantService = get()
+        )
+    }
+
+    viewModel {
+        PvProductionBarChartViewModel()
     }
 }

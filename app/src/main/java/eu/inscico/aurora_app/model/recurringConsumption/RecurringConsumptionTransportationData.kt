@@ -11,7 +11,8 @@ data class RecurringConsumptionTransportationData(
     val privateVehicleOccupancy: Int?,
     val publicVehicleOccupancy: PublicVehicleOccupancy?,
     val timeOfTravel: Calendar,
-    val distance: Double
+    val distance: Double,
+    val fuelConsumption: Double?
 ) {
 
     fun from(item: RecurringConsumptionTransportationDataResponse): RecurringConsumptionTransportationData? {
@@ -26,6 +27,7 @@ data class RecurringConsumptionTransportationData(
             privateVehicleOccupancy = item.privateVehicleOccupancy,
             publicVehicleOccupancy = PublicVehicleOccupancy.parseStringToPublicVehicleOccupancy(item.publicVehicleOccupancy),
             timeOfTravel = timeOfTravel,
+            fuelConsumption = item.fuelConsumption,
             distance = item.distance ?: return null
         )
     }

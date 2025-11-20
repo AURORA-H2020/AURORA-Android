@@ -16,7 +16,8 @@ sealed class Consumption {
         val description: String?,
         val electricity: ElectricityConsumptionData,
         val generatedByRecurringConsumptionId: String? = null,
-        val electricitySource: ElectricitySource = ElectricitySource.DEFAULT
+        val electricitySource: ElectricitySource = ElectricitySource.DEFAULT,
+        val generatedByPvInvestmentId: String? = null
     ) : Consumption()
 
     data class HeatingConsumption(
@@ -53,6 +54,7 @@ sealed class Consumption {
             val category = ConsumptionType.parseStringToConsumptionType(item.category)
 
             return when (category) {
+                ConsumptionType.ELECTRICITY_PV_INVESTMENT,
                 ConsumptionType.ELECTRICITY -> {
                     val startDate = if (item.electricity?.startDate != null) {
                         Calendar.getInstance().apply {
@@ -94,7 +96,8 @@ sealed class Consumption {
                         endDate = endDate,
                         startDate = startDate,
                         householdSize = item.electricity?.householdSize ?: return null,
-                        electricitySource = electricitySource
+                        electricitySource = electricitySource,
+                        electricityExported = item.electricity?.electricityExported
                     )
                     ElectricityConsumption(
                         id = item.id ?: return null,
@@ -107,7 +110,8 @@ sealed class Consumption {
                         value = item.value ?: return null,
                         version = item.version,
                         electricity = electricity,
-                        generatedByRecurringConsumptionId = item.generatedByRecurringConsumptionId
+                        generatedByRecurringConsumptionId = item.generatedByRecurringConsumptionId,
+                        generatedByPvInvestmentId = item.generatedByPvInvestmentId
                     )
                 }
                 ConsumptionType.HEATING -> {
@@ -220,7 +224,8 @@ sealed class Consumption {
                                 dateOfTravelEnd = dateOfTravelEnd,
                                 privateVehicleOccupancy = item.transportation?.privateVehicleOccupancy ?: return null,
                                 transportationType = transportationType,
-                                publicVehicleOccupancy = null
+                                publicVehicleOccupancy = null,
+                                fuelConsumption = item.transportation?.fuelConsumption
                             )
                         }
                         TransportationType.ELECTRIC_BUS,
@@ -237,10 +242,13 @@ sealed class Consumption {
                                 dateOfTravelEnd = dateOfTravelEnd,
                                 publicVehicleOccupancy = publicVehicleOccupancy ?: return null,
                                 transportationType = transportationType,
-                                privateVehicleOccupancy = null
+                                privateVehicleOccupancy = null,
+                                fuelConsumption = null
                             )
                         }
                         TransportationType.PLANE,
+                        TransportationType.PLANE_INTRA_EU,
+                        TransportationType.PLANE_EXTRA_EU,
                         TransportationType.ELECTRIC_BIKE,
                         TransportationType.ELECTRIC_SCOOTER,
                         TransportationType.BIKE,
@@ -250,7 +258,8 @@ sealed class Consumption {
                                 dateOfTravelEnd = dateOfTravelEnd,
                                 publicVehicleOccupancy = null,
                                 transportationType = transportationType,
-                                privateVehicleOccupancy = null
+                                privateVehicleOccupancy = null,
+                                fuelConsumption = null
                             )
                         }
                         null -> return null
@@ -283,7 +292,8 @@ data class ElectricityConsumptionData(
     val endDate: Calendar,
     val startDate: Calendar,
     val householdSize: Int,
-    val electricitySource: ElectricitySource
+    val electricitySource: ElectricitySource,
+    val electricityExported: Double?
 )
 
 data class HeatingConsumptionData(
@@ -300,5 +310,6 @@ data class TransportationConsumptionData(
     val dateOfTravelEnd: Calendar?,
     val privateVehicleOccupancy: Int?,
     val publicVehicleOccupancy: PublicVehicleOccupancy?,
-    val transportationType: TransportationType
+    val transportationType: TransportationType,
+    val fuelConsumption: Double?
 )

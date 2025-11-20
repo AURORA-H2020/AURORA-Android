@@ -20,8 +20,8 @@ class CreateProfileViewModel(
 ): ViewModel() {
 
 
-    val countries = _countriesService.countriesLive
-    val cities = _countriesService.citiesFromCountryLive
+    val countries = _countriesService.countriesFlow
+    val cities = _countriesService.citiesFromCountryFlow
 
     val genders = listOf(Gender.MALE, Gender.FEMALE, Gender.NON_BINARY, Gender.OTHER, null)
     val homeEnergyLabels = listOf(HomeEnergyLabel.A_PLUS, HomeEnergyLabel.A, HomeEnergyLabel.B, HomeEnergyLabel.C, HomeEnergyLabel.D, HomeEnergyLabel.E, HomeEnergyLabel.F, HomeEnergyLabel.G, HomeEnergyLabel.UNSURE, null)

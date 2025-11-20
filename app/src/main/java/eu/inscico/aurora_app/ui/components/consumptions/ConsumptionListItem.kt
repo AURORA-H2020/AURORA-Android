@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptions.Consumption
+import eu.inscico.aurora_app.model.consumptions.ConsumptionType
 import eu.inscico.aurora_app.model.consumptions.ConsumptionType.Companion.getDisplayName
 import eu.inscico.aurora_app.ui.theme.*
 import eu.inscico.aurora_app.utils.CalendarUtils
@@ -42,7 +43,13 @@ fun ConsumptionListItem(
     val config = LocalConfiguration.current
 
     val headlineText = when (consumption) {
-        is Consumption.ElectricityConsumption -> consumption.category.getDisplayName(context)
+        is Consumption.ElectricityConsumption -> {
+            if(consumption.generatedByPvInvestmentId != null){
+                ConsumptionType.ELECTRICITY_PV_INVESTMENT.getDisplayName(context)
+            } else {
+                consumption.category.getDisplayName(context)
+            }
+        }
         is Consumption.HeatingConsumption -> consumption.category.getDisplayName(context)
         is Consumption.TransportationConsumption -> consumption.category.getDisplayName(context)
     }
@@ -67,9 +74,12 @@ fun ConsumptionListItem(
         is Consumption.TransportationConsumption -> unitService.getConvertedWeightWithUnit(config, consumption.carbonEmissions, decimals = 1)
     }
 
-    val consumptionValue = when (consumption) {
-        is Consumption.ElectricityConsumption -> "${String.format("%.0f", consumption.value)} kWh"
-        is Consumption.HeatingConsumption -> "${String.format("%.0f", consumption.value)} kWh"
+    val energyExpendedValue = when (consumption) {
+        is Consumption.ElectricityConsumption -> {
+            if(consumption.generatedByPvInvestmentId != null){
+                "${String.format("%.0f", consumption.value)} kWh"
+            } else "${String.format("%.0f", consumption.energyExpended)} kWh"}
+        is Consumption.HeatingConsumption -> "${String.format("%.0f", consumption.energyExpended)} kWh"
         is Consumption.TransportationConsumption -> unitService.getConvertedDistanceWithUnit(config, consumption.value, decimals = 1)
     }
 
@@ -94,14 +104,25 @@ fun ConsumptionListItem(
                             }
                             .size(30.dp)
                     ){
-                        Image(
-                            modifier = Modifier
-                                .matchParentSize()
-                                .padding(6.dp),
-                            painter = painterResource(id = R.drawable.outline_electric_bolt_24),
-                            contentDescription = "",
-                            colorFilter = ColorFilter.tint(color = yellow),
-                        )
+                        if(consumption.generatedByPvInvestmentId != null){
+                            Image(
+                                modifier = Modifier
+                                    .matchParentSize()
+                                    .padding(6.dp),
+                                painter = painterResource(id = R.drawable.outline_solar_power_24),
+                                contentDescription = "",
+                                colorFilter = ColorFilter.tint(color = yellow),
+                            )
+                        } else {
+                            Image(
+                                modifier = Modifier
+                                    .matchParentSize()
+                                    .padding(6.dp),
+                                painter = painterResource(id = R.drawable.outline_electric_bolt_24),
+                                contentDescription = "",
+                                colorFilter = ColorFilter.tint(color = yellow),
+                            )
+                        }
                     }
                 }
                 is Consumption.HeatingConsumption -> {
@@ -172,7 +193,7 @@ fun ConsumptionListItem(
         trailingContent = {
             Column(horizontalAlignment = Alignment.End) {
                 Text(
-                    text = consumptionValue,
+                    text = energyExpendedValue,
                     style = MaterialTheme.typography.labelMedium,
                     textAlign = TextAlign.Start,
                     color = MaterialTheme.colorScheme.onSecondary

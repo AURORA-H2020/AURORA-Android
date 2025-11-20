@@ -61,8 +61,8 @@ fun AddConsumptionScreen(
         }
 
         when (selectedConsumptionEntry.value) {
+            ConsumptionType.ELECTRICITY_PV_INVESTMENT,
             ConsumptionType.ELECTRICITY -> {
-                Log.e("addHeatingConsumption", "is selected")
                 Column(
                     Modifier.verticalScroll(rememberScrollState()),
                 ) {
@@ -70,7 +70,6 @@ fun AddConsumptionScreen(
                 }
             }
             ConsumptionType.HEATING -> {
-                Log.e("addHeatingConsumption", "is selected")
                 Column(
                     Modifier.verticalScroll(rememberScrollState()),
                 ) {
@@ -78,7 +77,6 @@ fun AddConsumptionScreen(
                 }
             }
             ConsumptionType.TRANSPORTATION -> {
-                Log.e("addHeatingConsumption", "is selected")
                 Column(
                     Modifier.verticalScroll(rememberScrollState()),
                 ) {
@@ -103,7 +101,6 @@ fun AddConsumptionScreen(
                     Spacer(Modifier.height(16.dp))
 
                     AddConsumptionButton(modifier = Modifier.testTag("addHeatingConsumption"), consumptionType = ConsumptionType.HEATING) {
-                        Log.e("addHeatingConsumption", "is selected")
                         selectedConsumptionEntry.value = it
                     }
 

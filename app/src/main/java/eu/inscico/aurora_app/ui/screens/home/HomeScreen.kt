@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -165,6 +166,23 @@ fun HomeScreen(
                         leadingContent = {
                             Image(
                                 painterResource(id = R.drawable.outline_settings_backup_restore_24),
+                                contentDescription = "",
+                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+                                alignment = Alignment.CenterEnd
+                            )
+                        }
+                    )
+                    Divider()
+                    ListItem(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.surface)
+                            .clickable {
+                                navigationService.toRecommendationsList()
+                            },
+                        headlineContent = { Text(stringResource(id = R.string.home_recommendations_button_title)) },
+                        leadingContent = {
+                            Image(
+                                painterResource(id = R.drawable.outline_lightbulb_24),
                                 contentDescription = "",
                                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
                                 alignment = Alignment.CenterEnd

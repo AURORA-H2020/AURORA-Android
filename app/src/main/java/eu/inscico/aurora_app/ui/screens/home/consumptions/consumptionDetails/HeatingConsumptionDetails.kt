@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import eu.inscico.aurora_app.R
 import eu.inscico.aurora_app.model.consumptions.Consumption
 import eu.inscico.aurora_app.model.consumptions.DistrictHeatingSource.Companion.getDisplayNameRes
+import eu.inscico.aurora_app.model.consumptions.HeatingFuelType
 import eu.inscico.aurora_app.model.consumptions.HeatingFuelType.Companion.getDisplayNameRes
 import eu.inscico.aurora_app.utils.CalendarUtils
 import eu.inscico.aurora_app.services.shared.UnitService
@@ -48,20 +49,37 @@ fun HeatingConsumptionDetails(
                 .clip(shape = RoundedCornerShape(16.dp))
         ) {
 
-            val formattedConsumptionValue = unitService.getValueInCorrectNumberFormat(config, String.format("%.1f", consumption.value).replace(",",".").toDouble())
+            val consumptionWithUnit = when(consumption.heating.heatingFuel){
+                HeatingFuelType.BIOMASS,
+                HeatingFuelType.LOCALLY_PRODUCED_BIOMASS,
+                HeatingFuelType.FIREWOOD,
+                HeatingFuelType.BUTANE -> {
+                    unitService.getConvertedWeightWithUnit(config, consumption.value, 1)
+                }
+                HeatingFuelType.OIL,
+                HeatingFuelType.LPG -> {
+                    unitService.getUserPreferredVolumeWithUnit(config, consumption.value, 1)
+                }
+                HeatingFuelType.NATURAL_GAS,
+                HeatingFuelType.GEO_THERMAL,
+                HeatingFuelType.SOLAR_THERMAL,
+                HeatingFuelType.DISTRICT,
+                HeatingFuelType.ELECTRIC -> {
+                    val formattedConsumptionValue = unitService.getValueInUserPreferredNumberFormat(config, String.format("%.1f", consumption.value).replace(",",".").toDouble())
+                    "$formattedConsumptionValue kWh"
+                }
+            }
 
             ListItem(
                 headlineContent = { Text(text = stringResource(id = R.string.home_consumptions_type_heating_title)) },
                 trailingContent = {
                     Text(
-                        text = "$formattedConsumptionValue kWh",
+                        text = consumptionWithUnit,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
             )
-
-            Divider()
 
             val carbonEmissionText = if (consumption.carbonEmissions != null) {
                 unitService.getConvertedWeightWithUnit(config, consumption.carbonEmissions, 1)
@@ -70,11 +88,35 @@ fun HeatingConsumptionDetails(
             }
 
             if (carbonEmissionText != null) {
+                Divider()
                 ListItem(
                     headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_carbon_emissions_title)) },
                     trailingContent = {
                         Text(
                             text = carbonEmissionText,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                )
+            }
+
+            val energyExpendedText = if (consumption.energyExpended != null) {
+                "${unitService.getValueInUserPreferredNumberFormat(config, consumption.energyExpended, 1)} ${stringResource(
+                    id = R.string.home_your_carbon_emissions_bar_chart_label_energy_expended_title
+                )}"
+            } else {
+                null
+            }
+
+            if (energyExpendedText != null) {
+                Divider()
+                
+                ListItem(
+                    headlineContent = { Text(text = stringResource(id = R.string.consumption_detail_energy_usage_label)) },
+                    trailingContent = {
+                        Text(
+                            text = energyExpendedText,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = MaterialTheme.typography.bodyMedium
                         )
@@ -116,6 +158,18 @@ fun HeatingConsumptionDetails(
                 Divider()
             }
 
+            ListItem(
+                headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_form_people_in_household_title)) },
+                trailingContent = {
+                    Text(
+                        text = consumption.heating.householdSize.toString(),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            )
+
+            Divider()
 
             ListItem(
                 headlineContent = { Text(text = stringResource(id = R.string.home_add_consumption_form_begin_title)) },

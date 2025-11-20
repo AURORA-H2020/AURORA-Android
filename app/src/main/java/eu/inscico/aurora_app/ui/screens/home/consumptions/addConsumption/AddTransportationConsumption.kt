@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -32,6 +33,7 @@ import eu.inscico.aurora_app.model.consumptions.PublicVehicleOccupancy.Companion
 import eu.inscico.aurora_app.model.consumptions.TransportationType.Companion.getDisplayName
 import eu.inscico.aurora_app.model.consumptions.TransportationType.Companion.parseTransportationTypeToString
 import eu.inscico.aurora_app.services.navigation.NavigationService
+import eu.inscico.aurora_app.services.network.NetworkService
 import eu.inscico.aurora_app.services.shared.UserFeedbackService
 import eu.inscico.aurora_app.ui.components.datePicker.MaterialDatePickerDialog
 import eu.inscico.aurora_app.ui.components.forms.AddSubtractCountFormEntry
@@ -57,15 +59,18 @@ fun AddTransportationConsumption(
     viewModel: AddConsumptionViewModel = koinViewModel(),
     navigationService: NavigationService = get(),
     userFeedbackService: UserFeedbackService = get(),
+    networkService: NetworkService = get(),
     unitService: UnitService = get()
 ) {
 
     val context = LocalContext.current
     val config = LocalConfiguration.current
 
-    val convertedDistance = unitService.getConvertedDistance(config, distanceInKm = initialValues?.value, decimals = 1)
+    val hasInternet = networkService.hasInternetConnectionLive.observeAsState()
+
+    val convertedDistance = unitService.getDistanceInUsersPreferredUnit(config, distanceInKm = initialValues?.value, decimals = 1)
     val initialDistance = if (initialValues?.value != null) {
-        unitService.getValueInCorrectNumberFormat(config, convertedDistance)
+        unitService.getValueInUserPreferredNumberFormat(config, convertedDistance, 1)
     } else {
         ""
     }
@@ -130,6 +135,23 @@ fun AddTransportationConsumption(
 
     val openTimePickerForEndDate = remember {
         mutableStateOf(false)
+    }
+
+    val convertedFuelConsumption =
+        if(transportationType.value == TransportationType.ELECTRIC_CAR
+        || transportationType.value == TransportationType.ELECTRIC_MOTORCYCLE){
+            unitService.getKWhPerDistanceInUserPreferredUnit(config, kWhPer100Km = initialValues?.transportation?.fuelConsumption, decimals = 1)
+    } else {
+            unitService.getVolumePerDistanceInUserPreferredUnit(config, literPer100km = initialValues?.transportation?.fuelConsumption, decimals = 1)
+        }
+    val initialFuelConsumption = if (initialValues?.transportation?.fuelConsumption != null) {
+        unitService.getValueInUserPreferredNumberFormat(config, convertedFuelConsumption, 1)
+    } else {
+        ""
+    }
+
+    val fuelConsumption = remember {
+        mutableStateOf(initialFuelConsumption)
     }
 
     fun isSaveValid(): Boolean {
@@ -289,10 +311,6 @@ fun AddTransportationConsumption(
 
                             Row(
                                 modifier = Modifier
-                                    .clickable {
-                                        openTimePickerForEndDate.value =
-                                            !openTimePickerForEndDate.value
-                                    }
                                     .defaultMinSize(minWidth = 90.dp, minHeight = 35.dp),
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.End
@@ -302,18 +320,35 @@ fun AddTransportationConsumption(
                                 calendar.timeInMillis = endOfTravelAsLong.value
 
                                 Text(
+                                    modifier = Modifier.clickable {
+                                        openTimePickerForEndDate.value =
+                                            !openTimePickerForEndDate.value
+                                    },
                                     text = CalendarUtils.toDateString(calendar, unitService.getTimeFormat(config)),
                                     style = TextStyle(
                                         color = MaterialTheme.colorScheme.onSecondary,
                                         fontSize = 15.sp,
                                         textAlign = TextAlign.End,
-
                                         ),
                                     textAlign = TextAlign.End
                                 )
 
                                 Image(
+                                    modifier = Modifier.clickable {
+                                        openTimePickerForEndDate.value =
+                                            !openTimePickerForEndDate.value
+                                    },
                                     painter = painterResource(id = R.drawable.outline_arrow_drop_down_24),
+                                    contentDescription = "",
+                                    colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSecondary)
+                                )
+
+                                Spacer(modifier = Modifier.width(8.dp))
+
+                                Image(modifier = Modifier.clickable {
+                                    endOfTravelVisible.value = false
+                                },
+                                    painter = painterResource(id = R.drawable.round_close_24),
                                     contentDescription = "",
                                     colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSecondary)
                                 )
@@ -545,9 +580,64 @@ fun AddTransportationConsumption(
             ),
 
             trailingIcon = {
-                Text(text = unitService.getDistanceUnit(config))
+                Text(text = unitService.getUserPreferredDistanceUnit(config))
             }
         )
+
+        if(transportationType.value == TransportationType.FUEL_CAR
+            || transportationType.value == TransportationType.ELECTRIC_CAR
+            || transportationType.value == TransportationType.HYBRID_CAR
+            || transportationType.value == TransportationType.MOTORCYCLE
+            || transportationType.value == TransportationType.ELECTRIC_MOTORCYCLE){
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            val unit = if(transportationType.value == TransportationType.ELECTRIC_MOTORCYCLE
+                || transportationType.value == TransportationType.ELECTRIC_CAR){
+                unitService.getUserPreferredKWhPerDistanceUnit(config)
+            } else {
+                unitService.getUserPreferredVolumePerDistanceUnit(config)
+            }
+
+
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent,
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
+                shape = RoundedCornerShape(16.dp),
+                value = fuelConsumption.value,
+                label = {
+                    Text(text = stringResource(id = R.string.home_add_consumption_transportation_fuel_consumption_optional_title))
+                },
+                onValueChange = {
+
+                    val isValueInCorrectFormat = viewModel.isDecimalInputValid(it)
+                    if (isValueInCorrectFormat || it.isEmpty()) {
+                        val valueWithCorrectDecimalPoint =
+                            if (Locale.getDefault() == Locale.US || Locale.getDefault() == Locale.UK) {
+                                it.replace(",", ".")
+                            } else {
+                                it.replace(".", ",")
+                            }
+                        fuelConsumption.value = valueWithCorrectDecimalPoint
+                    }
+                    isSaveValid.value = isSaveValid()
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Decimal,
+                    imeAction = ImeAction.Done
+                ),
+
+                trailingIcon = {
+                    Text(text = unit)
+                }
+            )
+        }
 
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -626,6 +716,15 @@ fun AddTransportationConsumption(
                         null
                     }
 
+                    val fuelConsumptionValue = fuelConsumption.value.replace(",", ".").toDoubleOrNull()
+                    val fuelConsumptionInLper100km = if(transportationType.value == TransportationType.ELECTRIC_MOTORCYCLE ||
+                        transportationType.value == TransportationType.ELECTRIC_CAR){
+                        unitService.getKWhPerDistanceInKWhPer100Km(config, fuelConsumptionValue ?: 0.0)
+
+                    } else {
+                        unitService.getVolumePerDistanceInLiterPer100Km(config, fuelConsumptionValue ?: 0.0)
+                    }
+
                     val transportationConsumptionDataResponse = when (transportationSection.value) {
                         TransportationTypeSection.CARS_AND_MOTORCYCLES -> {
                             TransportationConsumptionDataResponse(
@@ -633,7 +732,7 @@ fun AddTransportationConsumption(
                                 dateOfTravelEnd = dateOfTravelEnd,
                                 privateVehicleOccupancy = occupancyPrecisely.value,
                                 transportationType = transportationType.value?.parseTransportationTypeToString(),
-
+                                fuelConsumption = fuelConsumptionInLper100km
                                 )
                         }
                         TransportationTypeSection.BUSSES,
@@ -661,15 +760,19 @@ fun AddTransportationConsumption(
                     }
 
                     val distanceValue = distance.value.replace(",", ".").toDoubleOrNull()
-                    val distanceValueKm = unitService.getCalculatedDistanceValueForUnit(config, distanceValue ?: 0.0)
+                    val distanceValueKm = unitService.getDistanceInKm(config, distanceValue ?: 0.0)
+
+                    val createdAt = if(isDuplicate == true){
+                        Timestamp( Date(System.currentTimeMillis()) )
+                    } else {
+                        Timestamp(initialValues?.createdAt?.time ?: Date(System.currentTimeMillis()))
+                    }
 
                     val consumptionResponse = ConsumptionResponse(
                         category = ConsumptionType.parseConsumptionTypeToString(ConsumptionType.TRANSPORTATION),
                         value = distanceValueKm,
                         description = descriptionValue,
-                        createdAt = Timestamp(
-                            initialValues?.createdAt?.time ?: Date(System.currentTimeMillis())
-                        ),
+                        createdAt = createdAt,
                         electricity = null,
                         heating = null,
                         transportation = transportationConsumptionDataResponse
@@ -686,7 +789,14 @@ fun AddTransportationConsumption(
                             }
                             when (result) {
                                 is TypedResult.Failure -> {
-                                    userFeedbackService.showSnackbar(R.string.settings_add_consumption_entry_fail_message)
+                                    if(result.reason == "NO_INTERNET"){
+                                        userFeedbackService.showSnackbar(R.string.userfeedback_add_consumption_no_internet_connection)
+                                        withContext(Dispatchers.Main) {
+                                            navigationService.navControllerTabHome?.popBackStack()
+                                        }
+                                    } else {
+                                        userFeedbackService.showSnackbar(R.string.settings_add_consumption_entry_fail_message)
+                                    }
                                 }
                                 is TypedResult.Success -> {
                                     withContext(Dispatchers.Main) {
@@ -710,6 +820,20 @@ fun AddTransportationConsumption(
 
                 Spacer(Modifier.height(16.dp))
             }
+        }
+
+        if(hasInternet.value != true){
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = stringResource(id = R.string.userfeedback_add_consumption_no_internet_connection),
+                modifier = Modifier.padding(horizontal = 16.dp),
+                style = MaterialTheme.typography.labelSmall,
+                textAlign = TextAlign.Start,
+                color = MaterialTheme.colorScheme.onSecondary
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
